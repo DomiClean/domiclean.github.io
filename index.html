@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Domi Clean - Nettoyage à domicile</title>
+  <style>
+    /* Couleurs basées sur le logo */
+    :root {
+      --bleu-clair: #00c6ff;
+      --vert-clair: #93db3b;
+      --vert-clair-fonce: #6ca21d;
+      --bleu-fonce: #007bbd;
+      --blanc: #fff;
+      --gris-fonce: #333;
+      --gris-clair: #f8f8f8;
+    }
+
+    /* Reset & base */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--gris-clair);
+      color: var(--gris-fonce);
+    }
+
+    h1, h2, p {
+      margin: 0 0 10px 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    a {
+      text-decoration: none;
+      color: var(--bleu-fonce);
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+    a:hover {
+      color: var(--bleu-clair);
+    }
+
+    /* HEADER */
+    header {
+      background-color: var(--vert-clair);
+      color: var(--blanc);
+      padding: 30px 15px 25px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 4px 8px rgba(0,0,15);
+    }
+
+    header .logo {
+      max-width: 220px;
+      height: auto;
+      filter: drop-shadow(1px 1px 4px rgba(0,0,50));
+      margin-bottom: 15px;
+    }
+
+    header h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      text-shadow: 1px 1px 5px rgba(0,0,0,0.4);
+    }
+
+    header .slogan {
+      font-style: italic;
+      font-size: 1.3rem;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    }
+
+    /* NAVIGATION */
+    nav {
+      background-color: var(--bleu-clair);
+      box-shadow: inset 0 -3px 8px rgba(0,0,0,0.1);
+    }
+
+    nav ul {
+      margin: 0;
+      padding: 10px 0;
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      gap: 30px;
+    }
+
+    nav ul li a {
+      color: var(--blanc);
+      font-weight: 700;
+      padding: 10px 15px;
+      border-radius: 0px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    nav ul li a:hover,
+    nav ul li a:focus {
+      background-color: var(--vert-clair);
+      color: var(--blanc);
+      outline: none;
+    }
+
+    /* HERO */
+    .hero {
+      background-color: var(--bleu-clair); /* un vert clair plus doux */
+      color: var(--blanc);
+      padding: 70px 20px 80px;
+      text-align: center;
+      box-shadow: inset 0 -4px 10px rgba(0,0,0,0.1);
+    }
+
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      font-weight: 700;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+      text-transform: capitalize;
+    }
+
+    .hero .btn {
+      background-color: var(--bleu-fonce);
+      color: var(--blanc);
+      padding: 15px 35px;
+      font-size: 1.3rem;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 5px 15px rgba(29, 93, 162, 0.6);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .hero .btn:hover,
+    .hero .btn:focus {
+      background-color: #080c7a;
+      outline: none;
+    }
+
+    /* SECTIONS */
+    .section {
+      background-color: var(--blanc);
+      border-left: 6px solid var(--bleu-clair);
+      padding: 40px 20px;
+      margin: 20px auto;
+      max-width: 900px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+      border-radius: 6px;
+    }
+
+    .section h2 {
+      color: var(--bleu-fonce);
+      font-weight: 700;
+      font-size: 2rem;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .services-list {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+    }
+
+    .services-list li {
+      background-color: var(--vert-clair);
+      color: var(--blanc);
+      font-weight: 600;
+      font-size: 1.2rem;
+      padding: 12px 25px;
+      border-radius: 30px;
+      box-shadow: 0 3px 7px rgba(0,0,0,0.15);
+      flex: 1 1 180px;
+      text-align: center;
+      transition: background-color 0.3s ease;
+    }
+
+    .services-list li:hover {
+      background-color: var(--vert-clair-fonce);
+      cursor: default;
+    }
+
+    /* FORMULAIRE */
+    form {
+      max-width: 500px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    form input,
+    form textarea {
+      padding: 14px 15px;
+      font-size: 1.1rem;
+      border: 2px solid var(--bleu-clair);
+      border-radius: 6px;
+      resize: vertical;
+      transition: border-color 0.3s ease;
+    }
+
+    form input:focus,
+    form textarea:focus {
+      outline: none;
+      border-color: var(--vert-clair-fonce);
+      box-shadow: 0 0 8px var(--vert-clair-fonce);
+    }
+
+    form button {
+      padding: 15px;
+      background-color: var(--vert-clair-fonce);
+      color: var(--blanc);
+      font-weight: 700;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 5px 15px rgba(108, 162, 29, 0.6);
+      text-transform: uppercase;
+    }
+
+    form button:hover,
+    form button:focus {
+      background-color: #547c12;
+      outline: none;
+    }
+
+    /* PIED DE PAGE */
+    footer {
+      background-color: var(--vert-clair-fonce);
+      color: var(--blanc);
+      text-align: center;
+      padding: 25px 15px;
+      font-size: 0.95rem;
+      box-shadow: inset 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    footer a {
+      color: var(--bleu-clair);
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      nav ul {
+        flex-direction: column;
+        gap: 20px;
+        padding: 15px;
+        align-items: center;
+      }
+
+      .services-list {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .services-list li {
+        flex: none;
+      }
+
+      header h1 {
+        font-size: 2.2rem;
+      }
+
+      .hero h2 {
+        font-size: 1.8rem;
+      }
+
+      form {
+        padding: 0 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="https://i.imgur.com/D29UJPO.png" alt="Logo Domi Clean" class="logo" />
+    <h1>Domi Clean</h1>
+    <p class="slogan">Nettoyage qualitatif et professionnel</p>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">À propos</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <h2>Services de nettoyage et d'aide à domicile</h2>
+    <a href="#devis" class="btn">Demander un devis</a>
+  </section>
+
+  <section id="services" class="section">
+    <h2>Nos Services</h2>
+    <ul class="services-list">
+      <li>Nettoyage résidentiel</li>
+      <li>Nettoyage après chantier</li>
+      <li>Nettoyage de vitres</li>
+      <li>Nettoyage urgent</li>
+    </ul>
+  </section>
+
+  <section id="about" class="section">
+    <h2>À propos de nous</h2>
+    <p>Domi Clean est une entreprise familiale spécialisée dans le nettoyage à domicile. Nous utilisons des produits de qualité pour garantir propreté et sécurité.</p>
+  </section>
+
+  <section id="devis" class="section">
+    <h2>Demander un devis gratuit</h2>
+    <form>
+      <input type="text" placeholder="Votre nom" required />
+      <input type="email" placeholder="Votre email" required />
+      <textarea placeholder="Votre message" rows="5" required></textarea>
+      <button type="submit">Envoyer</button>
+    </form>
+  </section>
+
+  <footer>
+    © 2025 Domi Clean - <a href="mailto:contact@domiclean.fr">contact@domiclean.fr</a> - Tel : 0600000000
+  </footer>
+
+</body>
+</html>

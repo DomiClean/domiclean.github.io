@@ -281,24 +281,25 @@
 </head>
 <body>
 
-    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 <script>
-  (function () {
-    emailjs.init("Z8Bg9Mz1s3k7ruxBx"); // Remplace par ton public key (ex : 'T1a2B3x...')
+  document.getElementById("devis-form").addEventListener("submit", function (e) {
+    e.preventDefault();
 
-    document.getElementById("devis-form").addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      emailjs.sendForm("service_hwm2hla", "template_yayz1yf", this)
-        .then(() => {
-          alert("Message envoyé avec succès !");
-          this.reset();
-        }, (error) => {
-          alert("Erreur lors de l'envoi : " + error.text);
-        });
+    emailjs.sendForm(
+      "service_hwm2hla",       // Ton service ID
+      "template_yayz1yf",      // Ton template ID
+      this,
+      "Z8Bg9Mz1s3k7ruxBx"       // Ton public key (user_id)
+    ).then(() => {
+      alert("Votre devis a été envoyé avec succès !");
+      this.reset();
+    }, (error) => {
+      alert("Erreur lors de l'envoi : " + error.text);
     });
-  })();
+  });
 </script>
+
 
 
   <header>

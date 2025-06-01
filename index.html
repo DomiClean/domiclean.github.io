@@ -281,26 +281,6 @@
 </head>
 <body>
 
-<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-<script>
-  document.getElementById("devis-form").addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    emailjs.sendForm(
-      "service_hwm2hla",       // Ton service ID
-      "template_yayz1yf",      // Ton template ID
-      this,
-      "ceAxgfHqfXrWzhops"       // Ton public key (user_id)
-    ).then(() => {
-      alert("Votre devis a été envoyé avec succès !");
-      this.reset();
-    }, (error) => {
-      alert("Erreur lors de l'envoi : " + error.text);
-    });
-  });
-</script>
-
-
 
   <header>
     <img src="https://i.imgur.com/D29UJPO.png" alt="Logo Domi Clean" class="logo" />
@@ -358,6 +338,31 @@
     © 2025 Domi Clean - <a href="mailto:domicleanidf@gmail.com">domicleanidf@gmail.com</a> - Tel : 0600000000
   </footer>
 
+  <script type="module">
+  import emailjs from 'https://cdn.emailjs.com/dist/email.min.mjs';
+
+  document.addEventListener("DOMContentLoaded", function () {
+    emailjs.init("ceAxgfHqfXrWzhops");
+
+    const form = document.getElementById("devis-form");
+    if (form) {
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        emailjs.sendForm("service_hwm2hla", "template_yayz1yf", form)
+          .then(() => {
+            alert("Message envoyé avec succès !");
+            form.reset();
+          }, (error) => {
+            alert("Erreur lors de l'envoi : " + error.text);
+          });
+      });
+    }
+  });
+</script>
+
+
 </body>
 </html>
+
 

@@ -155,6 +155,7 @@
       font-size: 2rem;
       margin-bottom: 20px;
       text-align: center;
+      margin-top: 20px;
     }
 
     .services-list {
@@ -280,6 +281,26 @@
 </head>
 <body>
 
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script>
+  (function () {
+    emailjs.init("Z8Bg9Mz1s3k7ruxBx"); // Remplace par ton public key (ex : 'T1a2B3x...')
+
+    document.getElementById("devis-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      emailjs.sendForm("service_hwm2hla", "template_yayz1yf", this)
+        .then(() => {
+          alert("Message envoyé avec succès !");
+          this.reset();
+        }, (error) => {
+          alert("Erreur lors de l'envoi : " + error.text);
+        });
+    });
+  })();
+</script>
+
+
   <header>
     <img src="https://i.imgur.com/D29UJPO.png" alt="Logo Domi Clean" class="logo" />
     <h1>Domi Clean</h1>
@@ -300,12 +321,19 @@
   </section>
 
   <section id="services" class="section">
-    <h2>Nos Services</h2>
+    <h2>Nos services de Nettoyage</h2>
     <ul class="services-list">
       <li>Nettoyage résidentiel</li>
       <li>Nettoyage après chantier</li>
       <li>Nettoyage de vitres</li>
       <li>Nettoyage urgent</li>
+    </ul>
+    <h2>Nos services D'aide à Domicile</h2>
+    <ul class="services-list">
+      <li>Repassage</li>
+      <li>Courses</li>
+      <li>Préparation de repas</li>
+      <li>Aide aux personnes âgées</li>
     </ul>
   </section>
 
@@ -315,18 +343,20 @@
   </section>
 
   <section id="devis" class="section">
-    <h2>Demander un devis gratuit</h2>
-    <form>
-      <input type="text" placeholder="Votre nom" required />
-      <input type="email" placeholder="Votre email" required />
-      <textarea placeholder="Votre message" rows="5" required></textarea>
-      <button type="submit">Envoyer</button>
-    </form>
-  </section>
+  <h2>Demander un devis gratuit</h2>
+  <form id="devis-form">
+    <input type="text" name="from_name" placeholder="Votre nom" required />
+    <input type="email" name="from_email" placeholder="Votre email" required />
+    <textarea name="message" placeholder="Votre message" rows="5" required></textarea>
+    <button type="submit">Envoyer</button>
+  </form>
+</section>
+
 
   <footer>
-    © 2025 Domi Clean - <a href="mailto:contact@domiclean.fr">contact@domiclean.fr</a> - Tel : 0600000000
+    © 2025 Domi Clean - <a href="mailto:domicleanidf@gmail.com">domicleanidf@gmail.com</a> - Tel : 0600000000
   </footer>
 
 </body>
 </html>
+

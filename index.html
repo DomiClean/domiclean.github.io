@@ -338,9 +338,9 @@
     © 2025 Domi Clean - <a href="mailto:domicleanidf@gmail.com">domicleanidf@gmail.com</a> - Tel : 0600000000
   </footer>
 
-  <script type="module">
-  import emailjs from 'https://cdn.emailjs.com/dist/email.min.mjs';
-
+ <!-- SDK EmailJS v3 -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
   document.addEventListener("DOMContentLoaded", function () {
     emailjs.init("ceAxgfHqfXrWzhops");
 
@@ -357,9 +357,12 @@
             alert("Erreur lors de l'envoi : " + error.text);
           });
       });
+    } else {
+      console.error("Formulaire introuvable !");
     }
   });
 </script>
+
 
 
 </body>

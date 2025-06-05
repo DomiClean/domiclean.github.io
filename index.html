@@ -108,6 +108,8 @@
         margin-bottom: 15px;
     }
 
+    
+
     .btn-toggle {
       background-color: #004080;
       color: white;
@@ -123,6 +125,19 @@
     .btn-toggle:hover {
       background-color: #48a1fa;
     }
+
+   .image-pulse {
+    width: 200px; /* ajuste la taille selon besoin */
+    animation: pulseImage 2s infinite;
+    display: block;
+    margin: 20px auto;
+  }
+
+  @keyframes pulseImage {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
 
     .services-content {
       display: none;
@@ -414,8 +429,9 @@
 
 
 <section id="services">
-    <h2>Nos Services</h2>
+<img src="https://i.imgur.com/XluH0ky.png" alt="Image pulse" class="image-pulse">
 
+    <h2>Nos Services</h2>
     <div class="button-group">
       <button class="btn-toggle" onclick="showServices('nettoyage')">Service de nettoyage</button>
       <button class="btn-toggle" onclick="showServices('aide')">Service d'aide à domicile</button>

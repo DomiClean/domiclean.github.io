@@ -10,8 +10,7 @@
 <style>
 
   body {
-    background:
-        linear-gradient(to right, #00c6ff, #93db3b);
+  background:url('https://i.imgur.com/MG2UdRh.png') center/cover fixed;
   }
 
 :root {
@@ -21,6 +20,8 @@
   --vert-clair-fonce: #63dd4d;
   --gris-clair: #f5f5f5;
   --gris-fonce: #333;
+  --glass:rgba(255,255,255,.78);
+
 }
 
 
@@ -28,8 +29,7 @@
   max-width: 900px;
   margin: 40px auto;
   padding: 30px;
-  background: white;
-  border-left: 6px solid var(--bleu-clair);
+  background: var(--glass);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
@@ -45,21 +45,25 @@
   color: var(--bleu-fonce);
   margin-top: 35px;
   font-size: 1.6em;
-  border-bottom: 2px solid var(--gris-clair);
+  border-bottom: 2px solid var(--bleu-fonce);
   padding-bottom: 5px;
 }
 
 .content p {
   font-size: 1.1em;
   line-height: 1.8;
-  color: var(--gris-fonce);
+  color: black;
   margin-top: 15px;
+  background-color: #ffffff;
+  padding-left: 10px;
+  border-radius: 10px;
+  border-left: #2baae6 2px solid;
 }
 
 .btn-retour {
   display: inline-block;
-  background-color: var(--bleu-clair);
-  color: white;
+  background-color: white;
+  color: var(--bleu-clair);
   font-weight: bold;
   padding: 10px 20px;
   border-radius: 30px;
@@ -68,7 +72,7 @@
 }
 
 .btn-retour:hover {
-  background-color: var(--vert-clair-fonce);
+  background-color: var(--bleu-clair);
   color: white;
 }
 
@@ -163,5 +167,8 @@ Et ce n’est que le début de l’aventure Domi Clean.</p>
   <h2>Un service de proximité</h2>
   <p>Implantés en Île-de-France, nous intervenons rapidement dans votre secteur. En choisissant Domi Clean, vous faites le choix d’un accompagnement humain, personnalisé, et sans mauvaises surprises.</p>
 </div>
+
+
+
 
 

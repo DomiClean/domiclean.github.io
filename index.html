@@ -1,147 +1,270 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon-32x32.png" />
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Domi Clean</title>
-  <style>
-    /* Couleurs basées sur le logo */
-    :root {
-      --bleu-clair: #00c6ff;
-      --vert-clair: #93db3b;
-      --vert-clair-fonce: #6ca21d;
-      --bleu-fonce: #007bbd;
-      --blanc: #fff;
-      --gris-fonce: #333;
-      --gris-clair: #f8f8f8;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Domi Clean – Nettoyage & Aide à domicile</title>
 
-    /* Reset & base */
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: var(--gris-clair);
-      color: var(--gris-fonce);
-    }
+<link rel="icon" type="image/png" href="favicon-32x32.png" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-    h1, h2, p {
-      margin: 0 0 10px 0;
-      padding: 0;
-      text-align: center;
-    }
-
-    .tiktok-logo {
-  display: block;
-  margin: 0 auto 0px auto;
-  width: 50px;
-  height: auto;
-  filter: drop-shadow(0 0 2px rgba(0,0,0,0.3));
-  transition: transform 0.3s ease;
+<style>
+:root{
+  --blue:#007bbd;
+  --blue-light:#00c6ff;
+  --green:#93db3b;
+  --green-dark:#6ca21d;
+  --dark:#1f2933;
+  --glass:rgba(255,255,255,.78);
 }
 
-.tiktok-logo:hover,
-.tiktok-logo:focus {
-  transform: scale(1.1);
-  cursor: pointer;
-  filter: drop-shadow(0 0 5px #fff);
-  outline: none;
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:'Inter',sans-serif;
+  background:url('https://i.imgur.com/MG2UdRh.png') center/cover fixed;
+  background-size: cover;
+  color:var(--dark);
+  line-height:1.6;
 }
 
+/* ================= LOADER ================= */
+#loader{
+  position:fixed;
+  inset:0;
+  background:white;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  z-index:3000;
+  transition:.6s;
+}
+#loader img{width:140px;animation:pulse 1.4s infinite}
+@keyframes pulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.08)}
+}
+#loader.hidden{opacity:0;visibility:hidden}
 
-    a {
-      text-decoration: none;
-      color: var(--bleu-fonce);
-      font-weight: 600;
-      transition: color 0.3s ease;
-    }
-    a:hover {
-      color: var(--bleu-clair);
-    }
-
-    /* HEADER */
-    header {
-      background-color: var(--vert-clair);
-      color: var(--blanc);
-      padding: 30px 15px 25px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      box-shadow: 0 4px 8px rgba(0,0,15);
-    }
-
-  .hero p {
-  display: block;
-  font-size: 1rem;
-  margin-bottom: 30px;
-  color: var(--blanc);
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+/* ================= HEADER ================= */
+ .header-inner {
+  display: none !important;
+  background-color: var(--glass);
+  max-width: 100%;
+  margin: auto;
+  padding: 35px 0; /* Enlève le padding gauche/droite */
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Logo à gauche, burger à droite */
+  position: relative;
 }
 
-
-    header .logo {
-      max-width: 220px;
-      height: auto;
-      filter: drop-shadow(1px 1px 4px rgba(0, 0, 50, 0.214));
-      margin-bottom: 15px;
-    }
-
-     #services h2 {
-  text-align: center;
-  margin-bottom: 30px;
-  font-size: 2em;
-  color: var(--bleu-fonce);
+.header-logo {
+  display: none; /*mobile seulement*/
+  width: 170px;
+  flex-shrink: 0;
+  margin-left: 20px; /* Optionnel, un petit espace depuis le bord */
 }
 
+.burger {
+  display: none; /* affiché seulement en mobile */
+}
 
-    .button-group {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin-bottom: 30px;
-    }
-
-    header .logo {
-        height: auto;
-        filter: drop-shadow(1px 1px 5px rgb(0, 0, 0));
-        margin-bottom: 15px;
-    }
-
-    
-
-    .btn-toggle {
-      background-color: #004080;
-      color: white;
-      border: none;
-      padding: 12px 25px;
-      font-size: 1rem;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      font-weight: 600;
-    }
-
-    .btn-toggle:hover {
-      background-color: #48a1fa;
-    }
-
-    
-  .calendly-badge-widget {
-    bottom: 80px !important; /* par défaut : 20px – tu montes ici le badge */
+@media (max-width: 768px) {
+  .burger {
+    display: flex;
   }
+}
 
-   .image-pulse {
+
+/* ================= NAV DESKTOP ================= */
+nav{
+  position:sticky;
+  padding: 5px;
+  top:0;
+  background: white;
+  z-index:10;}
+nav ul {
+  display: flex;
+  align-items: center;      
+  justify-content: center;  
+  gap: 25px;                
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+nav a{color:var(--blue);font-weight:600;text-decoration:none; top: 25px;}
+nav a:hover{color:var(--blue-light)}
+.logo-nav {width: 100px; margin-right: 50px;}
+/* ================= MENU MOBILE ================= */
+.mobile-menu {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  backdrop-filter:blur(12px);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:30px;
+  transform:translateY(-100%);
+  transition:.5s;
+  z-index:2000;
+}
+.mobile-menu.active{transform:translateY(0)}
+.mobile-menu a{
+  color:white;
+  font-size:1.6rem;
+  font-weight:700;
+  text-decoration: none;
+}
+.mobile-menu a:hover {color: #00c6ff; text-decoration: underline; transition: all 0.3s;}
+
+.burger{
+  display:none;
+  width:30px;height:22px;
+  flex-direction:column;
+  justify-content:space-between;
+  cursor:pointer;
+  z-index:1001;
+}
+.burger span{
+  height:4px;
+  background:var(--blue);
+  border-radius:5px;
+  transition:.4s;
+}
+.burger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.burger.active span:nth-child(2){opacity:0}
+.burger.active span:nth-child(3){transform:rotate(-45deg) translate(6px,-6px)}
+
+/* ❌ Croix fermeture menu mobile */
+.close-btn{
+  position:absolute;
+  top:25px;
+  right:25px;
+  font-size:2.2rem;
+  color:white;
+  cursor:pointer;
+  transition:.3s;
+}
+.close-btn:hover{
+  transform:rotate(90deg) scale(1.1);
+  opacity:.8;
+}
+
+/* ================= HERO ================= */
+.hero{
+  text-align:center;
+  padding:50px 10px;
+  background:linear-gradient(to bottom, rgba(255,255,255,.75), rgba(255,255,255,.4));
+}
+
+ .image-tiktok:hover{transform:scale(1.15)}
+.hero h2{font-size:2.5rem; margin-bottom: 0;}
+.hero .btn{
+  background:var(--blue);
+  color:white;
+  padding:15px 40px;
+  border-radius:40px;
+  font-weight:700;
+  border:none;
+  cursor:pointer;
+}
+.hero .btn:hover{background:#050a63}
+.hero p {font-size: 1.3em; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; font-style: italic; margin-bottom: 10px;}
+
+.image-tiktok {width:50px; transition:.3s; display: flex; margin-left: 35px;}
+.fb {width: 35px; transition:.3s; display: flex;}
+.fb:hover{transform:scale(1.15)}
+
+.image-pulse {
+    background-color: white;
+    border-radius: 15px;
     width: 200px; /* ajuste la taille selon besoin */
     animation: pulseImage 2s infinite;
     display: block;
     margin: 20px auto;
   }
+
+/* ================= SECTIONS ================= */
+section{
+  max-width:1100px;
+  margin:60px auto;
+  padding:40px 20px;
+  background:var(--glass);
+  border-radius:20px;
+  box-shadow:0 15px 40px rgba(0,0,0,.08);
+}
+section h2{
+  text-align:center;
+  font-size:2.2rem;
+  color:var(--blue);
+  margin-bottom:40px;
+}
+/* ================= Calendly ================= */
+.calendly-badge-widget {
+    bottom: 80px !important;
+  }
+
+/* ================= SERVICES ================= */
+.buttons{
+  display:flex;
+  justify-content:center;
+  gap:20px;
+  flex-wrap:wrap;
+}
+.buttons button{
+  padding:14px 28px;
+  border-radius:30px;
+  border:none;
+  background:var(--green);
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+}
+.buttons button:hover{background: white; color: #93db3b;}
+.service-box{display:none;text-align:center}
+.service-box.active{display:block}
+.service-box ul{list-style:none; color:#000; background-color: white; border-radius: 15px; margin-top: 20px;}
+.service-box li{padding:10px;font-size:1.1rem; }
+
+/* ================= FORM ================= */
+form{
+  max-width:500px;
+  margin:auto;
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+input,textarea{
+  padding:15px;
+  border-radius:10px;
+  border:2px solid var(--blue-light);
+}
+button.submit{
+  background:var(--green);
+  color:white;
+  font-weight:700;
+  border:none;
+  border-radius:30px;
+  padding:15px;
+  cursor: pointer;
+}
+
+button.submit:hover{ color: #93db3b; background-color: white; transition: all 0.3s;}
+
+/* ================= FOOTER ================= */
+footer{text-align:center;padding:30px;font-weight:600; background-color: var(--glass);}
+footer a{color:var(--blue)}
+footer a:hover{color: #00c6ff;}
+
+/* ================= ANIMATIONS ================= */
+.animate{opacity:0;transform:translateY(30px);transition:.9s cubic-bezier(.19,1,.22,1)}
+.animate.show{opacity:1;transform:none}
+
+/* ================= ANIMATIONS ================= */
 
   @keyframes pulseImage {
     0% { transform: scale(1); }
@@ -149,336 +272,159 @@
     100% { transform: scale(1); }
   }
 
-    .services-content {
-      display: none;
-      max-width: 700px;
-      margin: 0 auto;
-      text-align: center;
-      background: #ffffff;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
+/* ================= MOBILE ================= */
+@media(max-width:768px){
+  nav {display:none;}
+  .header-inner {
+    padding: 10px 10px; /* peu de padding pour mobile */
+    display: flex !important;
+  }
 
-    .services-content.visible {
-      display: block;
-    }
+  .header-logo {
+    width: 100px;
+    margin: auto;
+    display: flex !important;
+  }
 
-    .services-content h3 {
-      margin-bottom: 20px;
-      color: #333;
-    }
+  .header-center {
+    position: absolute;
+    left:50%;
+    transform:translateX(-50%);
+    text-align:center;
+    max-width:70%; 
+  }
 
-    .services-content ul {
-      list-style: none;
-      padding: 0;
-    }
+  .header-center h1 {
+    font-size:1.1rem; 
+    line-height:1;
+    padding-left: 20%;
+  }
 
-    .services-content li {
-      font-size: 1.1rem;
-      margin: 10px 0;
-    }
+  .header-center p {
+    font-size:0.8rem; 
+    margin-top:4px;
+    line-height:1.2;
+    padding-left: 20%;
+  }
 
-    header h1 {
-      font-size: 3rem;
-      font-weight: 700;
-      text-shadow: 1px 1px 5px rgba(0,0,0,0.4);
-    }
-
-    header .slogan {
-      font-style: italic;
-      font-size: 1.3rem;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-    }
-
-    /* NAVIGATION */
-    nav {
-      background-color: var(--bleu-clair);
-      box-shadow: inset 0 -3px 8px rgba(0,0,0,0.1);
-    }
-
-    nav ul {
-      margin: 0;
-      padding: 10px 0;
-      display: flex;
-      justify-content: center;
-      list-style: none;
-      gap: 30px;
-    }
-
-    nav ul li a {
-      color: var(--blanc);
-      font-weight: 700;
-      padding: 10px 15px;
-      border-radius: 0px;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    nav ul li a:hover,
-    nav ul li a:focus {
-      background-color: var(--vert-clair);
-      color: var(--blanc);
-      outline: none;
-    }
-
-    /* HERO */
-    .hero {
-      background-color: var(--bleu-clair); /* un vert clair plus doux */
-      color: var(--blanc);
-      padding: 70px 20px 80px;
-      text-align: center;
-      box-shadow: inset 0 -4px 10px rgba(0,0,0,0.1);
-    }
-
-    .hero h2 {
-      font-size: 2.5rem;
-      margin-bottom: 30px;
-      font-weight: 700;
-      text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
-      text-transform: capitalize;
-    }
-
-    .hero .btn {
-      background-color: var(--bleu-fonce);
-      color: var(--blanc);
-      padding: 15px 35px;
-      font-size: 1.3rem;
-      border-radius: 30px;
-      border: none;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      box-shadow: 0 5px 15px rgba(29, 93, 162, 0.6);
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-
-    .hero .btn:hover,
-    .hero .btn:focus {
-      background-color: #080c7a;
-      outline: none;
-    }
-
-    /* SECTIONS */
-    .section {
-      background-color: var(--blanc);
-      border-left: 6px solid var(--bleu-clair);
-      padding: 40px 20px;
-      margin: 20px auto;
-      max-width: 900px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-      border-radius: 6px;
-    }
-
-    .section h2 {
-      color: var(--bleu-fonce);
-      font-weight: 700;
-      font-size: 2rem;
-      margin-bottom: 20px;
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    .services-list {
-      list-style: none;
-      padding: 0;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 25px;
-    }
-
-    .services-list li {
-      background-color: var(--vert-clair);
-      color: var(--blanc);
-      font-weight: 600;
-      font-size: 1.2rem;
-      padding: 12px 25px;
-      border-radius: 30px;
-      box-shadow: 0 3px 7px rgba(0,0,0,0.15);
-      flex: 1 1 180px;
-      text-align: center;
-      transition: background-color 0.3s ease;
-    }
-
-    .services-list li:hover {
-      background-color: var(--vert-clair-fonce);
-      cursor: default;
-    }
-
-    /* FORMULAIRE */
-    form {
-      max-width: 500px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-
-    form input,
-    form textarea {
-      padding: 14px 15px;
-      font-size: 1.1rem;
-      border: 2px solid var(--bleu-clair);
-      border-radius: 6px;
-      resize: vertical;
-      transition: border-color 0.3s ease;
-    }
-
-    form input:focus,
-    form textarea:focus {
-      outline: none;
-      border-color: var(--vert-clair-fonce);
-      box-shadow: 0 0 8px var(--vert-clair-fonce);
-    }
-
-    form button {
-      padding: 15px;
-      background-color: var(--vert-clair-fonce);
-      color: var(--blanc);
-      font-weight: 700;
-      font-size: 1.1rem;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      box-shadow: 0 5px 15px rgba(108, 162, 29, 0.6);
-      text-transform: uppercase;
-    }
-
-    form button:hover,
-    form button:focus {
-      background-color: #547c12;
-      outline: none;
-    }
-
-    /* PIED DE PAGE */
-    footer {
-      background-color: var(--vert-clair-fonce);
-      color: var(--blanc);
-      text-align: center;
-      padding: 25px 15px;
-      font-size: 0.95rem;
-      box-shadow: inset 0 4px 10px rgba(0,0,0,0.15);
-    }
-
-    footer a {
-      color: black;
-      font-weight: 600;
-      text-decoration: none;
-    }
-    footer a:hover {
-      color: var(--bleu-clair);
-      text-decoration: none;
-    }
-
-    /* Responsive */
-    @media (max-width: 600px) {
-      nav ul {
-        flex-direction: column;
-        gap: 20px;
-        padding: 15px;
-        align-items: center;
-      }
-
-      .services-list {
-        flex-direction: column;
-        gap: 15px;
-      }
-
-      .services-list li {
-        flex: none;
-      }
-
-      header h1 {
-        font-size: 2.2rem;
-      }
-
-      .hero h2 {
-        font-size: 1.8rem;
-      }
-
-      form {
-        padding: 0 15px;
-      }
-
-       .btn-toggle {
-        width: 100%;
-        margin-bottom: 10px;
-      }
+  .burger {
+    display: flex;
+    position:absolute;
+    right:10px; 
+    top:50%;
+    transform:translateY(-50%);
+    width:28px;
+    height:20px;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 
       .calendly-badge-widget {
   bottom: 86px !important;
 }
-    }
-  </style>
+
+  .burger span {height:3px;}
+}
+</style>
 </head>
+
 <body>
 
+<!-- LOADER -->
+<div id="loader">
+  <img src="https://i.imgur.com/D29UJPO.png" alt="Domi Clean">
+</div>
 
-  <header>
-    <img src="https://i.imgur.com/D29UJPO.png" alt="Logo Domi Clean" class="logo" />
-    <h1>Domi Clean</h1>
-    <p class="slogan">Un service humain, un soutien quotidien</p>
-  </header>
+<!-- HEADER -->
+<header class="site-header animate">
+  <div class="header-inner">
+    <img src="https://i.imgur.com/D29UJPO.png" alt="Domi Clean" class="header-logo">
+    <div class="burger" id="burger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+</header>
 
- <nav>
+<!-- MENU MOBILE -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="close-btn" id="closeMenu">&times;</div>
+  <a href="#services">Services</a>
+  <a href="histoire.html">Notre histoire</a>
+  <a href="#about">À propos</a>
+  <a href="mailto:domicleanidf@gmail.com">Contact</a>
+</div>
+<!-- NAV DESKTOP -->
+<nav>
   <ul>
     <li>
-      <a href="#services">Nos services</a>
+      <img src="https://i.imgur.com/D29UJPO.png" alt="Domi Clean" class="logo-nav">
     </li>
+    <li><a href="#services">Services</a></li>
     <li><a href="pages2.html">Notre histoire</a></li>
     <li><a href="#about">À propos</a></li>
-    <li><a href="mailto:domicleanidf@gmail.com">Nous contacter</a></li>
+    <li><a href="mailto:domicleanidf@gmail.com">Contact</a></li>
+     <li> <a href="https://www.tiktok.com/@domi.clean" target="_blank">
+    <img src="https://i.imgur.com/7vVK938.png" class="image-tiktok" alt="TikTok">
+    <li><a href="https://www.facebook.com" target="_blank">
+    <img src="https://i.imgur.com/eJbhSZs.png" alt="Facebook" class="fb">
+</a></li>
+  </a></li>
   </ul>
 </nav>
 
 
-<section class="hero">
-  <a href="https://www.tiktok.com/@domi.clean" target="_blank" rel="noopener noreferrer" aria-label="TikTok Domi Clean">
-    <img src="https://i.imgur.com/7vVK938.png" alt="Logo TikTok" class="tiktok-logo" />
-  </a>
-  <p>Rejoignez-nous sur TikTok</p>
-  <h2>Services de nettoyage et d'aide à domicile</h2>
+<!-- HERO -->
+<section class="hero animate">
+  <h2>Service de Nettoyage & D'Aide à Domicile</h2>
+  <p>Un service humain, un soutien quotidien</p>
+<img src="https://i.imgur.com/XluH0ky.png" alt="Image pulse" class="image-pulse">
 </section>
 
 
-<section id="services">
-<img src="https://i.imgur.com/XluH0ky.png" alt="Image pulse" class="image-pulse">
+<!-- SERVICES -->
+<section id="services" class="animate">
+  <h2>Nos services</h2>
+  <div class="buttons">
+    <button onclick="showService('clean')">Nettoyage</button>
+    <button onclick="showService('home')">Aide à domicile</button>
+  </div>
+  <div id="clean" class="service-box">
+    <ul>
+      <li>Locaux professionnels</li>
+      <li>Fin de chantier</li>
+      <li>Vitrerie</li>
+      <li>Après déménagement</li>
+    </ul>
+  </div>
+  <div id="home" class="service-box">
+    <ul>
+      <li>Aide aux courses</li>
+      <li>Aide administrative</li>
+      <li>Compagnie & activités</li>
+      <li>Rendez-vous médicaux</li>
+    </ul>
+  </div>
+</section>
 
-    <h2>Nos Services</h2>
-    <div class="button-group">
-      <button class="btn-toggle" onclick="showServices('nettoyage')">Service de nettoyage</button>
-      <button class="btn-toggle" onclick="showServices('aide')">Service d'aide à domicile</button>
-    </div>
+<section id="about" class="animate">
+  <h2>À propos de nous</h2>
+  <p style="text-align:center">
+    Domi Clean est une jeune entreprise dynamique spécialisée dans le nettoyage et l'aide à domicile. Animés par l'ambition de devenir un acteur de confiance dans notre secteur, nous misons sur la qualité de nos services, la proximité avec nos clients et le sérieux de notre équipe pour vous offrir un accompagnement sur mesure, au quotidien.
+  </p>
+</section>
 
-    <div id="nettoyage" class="services-content">
-      <h3>Service de Nettoyage</h3>
-      <ul>
-        <li>Locaux</li>
-        <li>Fin de chantier</li>
-        <li>Surfaces vitrées</li>
-        <li>Après déménagement</li>
-      </ul>
-    </div>
-
-    <div id="aide" class="services-content">
-      <h3>Service d’Aide à Domicile</h3>
-      <ul>
-        <li>Aide aux courses</li>
-        <li>Aide administrative</li>
-        <li>Tenir compagnie / activités</li>
-        <li>Aide à l’alimentation et prise de médicaments</li>
-        <li>Accompagnement aux rendez-vous</li>
-        <li>Aide au lever et au coucher</li>
-      </ul>
-    </div>
-  </section>
-
-
-  <section id="about" class="section">
-    <h2>À propos de nous</h2>
-    <p>Domi Clean est une jeune entreprise dynamique spécialisée dans le nettoyage et l'aide à domicile. Animés par l'ambition de devenir un acteur de confiance dans notre secteur, nous misons sur la qualité de nos services, la proximité avec nos clients et le sérieux de notre équipe pour vous offrir un accompagnement sur mesure, au quotidien.</p>
-  </section>
+<section id="devis" class="animate">
+  <h2>Devis gratuit</h2>
+  <form id="devis-form">
+    <input type="text" name="from_name" placeholder="Nom & prénom" required>
+    <input type="email" name="from_email" placeholder="Email" required>
+    <input type="tel" name="from_tel" placeholder="Téléphone" required>
+    <textarea name="message" placeholder="Votre message" required></textarea>
+    <button class="submit">Envoyer</button>
+  </form>
+</section>
 
 <!-- Début de widget de badge Calendly -->
 <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
@@ -486,24 +432,64 @@
 <script type="text/javascript">window.onload = function() { Calendly.initBadgeWidget({ url: 'https://calendly.com/domicleanidf/30min?hide_gdpr_banner=1', text: 'Plannifier un rendez-vous <br>téléphonique', color: '#0069ff', textColor: '#ffffff' }); }</script>
 <!-- Fin de widget de badge Calendly -->
 
-  <section id="devis" class="section">
-  <h2>Demander un devis gratuit</h2>
-  <form id="devis-form">
-    <input type="text" name="from_name" placeholder="Votre nom et prénom" required />
-    <input type="email" name="from_email" placeholder="Votre email" required />
-    <textarea name="message" placeholder="Votre message" rows="5" required></textarea>
-    <button type="submit">Envoyer</button>
-  </form>
-</section>
+<footer>
+  © 2025 Domi Clean — 
+  <a href="mailto:domicleanidf@gmail.com">domicleanidf@gmail.com</a> — 
+  <a href="tel:0628487217">06 28 48 72 17</a>
+</footer>
 
+<script> // Validation spécifique pour le téléphone
+        if (field.id === "telephone") {
+            let phonePattern = /^0[1-9][0-9]{8}$/;
+            if (!phonePattern.test(field.value)) {
+                isValid = false;
+                field.nextElementSibling.textContent = "Veuillez entrer un numéro valide (ex: 0601020304).";
+                field.nextElementSibling.style.display = "block";
+            }
+        }
 
-  <footer>
-    © 2025 Domi Clean - <a href="mailto:domicleanidf@gmail.com">domicleanidf@gmail.com</a> <a href="tel:0628487217"> tel : 0628487217</a>
-  </footer>
+        // Validation spécifique pour l'email
+        if (field.id === "email") {
+            let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailPattern.test(field.value)) {
+                isValid = false;
+                field.nextElementSibling.textContent = "Veuillez entrer une adresse email valide.";
+                field.nextElementSibling.style.display = "block";
+            }
+        }
+    });</script>
 
- <!-- SDK EmailJS v3 -->
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>
+/* Loader */
+window.addEventListener("load",()=>setTimeout(()=>loader.classList.add("hidden"),800));
+
+const burger = document.getElementById("burger");
+const mobileMenu = document.getElementById("mobileMenu");
+const closeBtn = document.getElementById("closeMenu");
+
+function openMenu(){
+  burger.classList.add("active");
+  mobileMenu.classList.add("active");
+}
+function closeMenu(){
+  burger.classList.remove("active");
+  mobileMenu.classList.remove("active");
+}
+
+burger.addEventListener("click", () => {
+  mobileMenu.classList.contains("active") ? closeMenu() : openMenu();
+});
+closeBtn.addEventListener("click", closeMenu);
+mobileMenu.addEventListener("click", e => {
+  if(e.target === mobileMenu) closeMenu();
+});
+mobileMenu.querySelectorAll("a").forEach(link => link.addEventListener("click", closeMenu));
+
+/* Scroll animations */
+const obs=new IntersectionObserver(e=>e.forEach(x=>x.isIntersecting&&x.target.classList.add("show")),{threshold:.15});
+document.querySelectorAll(".animate").forEach(el=>obs.observe(el));
+
   document.addEventListener("DOMContentLoaded", function () {
     emailjs.init("ceAxgfHqfXrWzhops");
 
@@ -524,19 +510,17 @@
       console.error("Formulaire introuvable !");
     }
   });
+
+/* Services */
+function showService(id){
+  document.querySelectorAll('.service-box').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
 </script>
- <script>
-    function showServices(type) {
-      document.querySelectorAll('.services-content').forEach(div => {
-        div.classList.remove('visible');
-      });
-      document.getElementById(type).classList.add('visible');
-    }
-  </script>
-
-
 
 </body>
 </html>
+
+
 
 

@@ -423,13 +423,31 @@ footer a:hover{color: #00c6ff;}
 
 <section id="devis" class="animate">
   <h2>Devis gratuit</h2>
-  <form id="devis-form">
-    <input type="text" name="from_name" placeholder="Nom & prénom" required>
-    <input type="email" name="from_email" placeholder="Email" required>
-    <input type="tel" name="from_tel" placeholder="Téléphone" required>
-    <textarea name="message" placeholder="Votre message" required></textarea>
-    <button class="submit">Envoyer</button>
-  </form>
+<form id="devisForm">
+  <input name="nom" placeholder="Nom" required>
+  <input name="email" type="email" placeholder="Email" required>
+
+  <select name="service" id="service" required>
+    <option value="">Choisir un service</option>
+    <option value="locaux_jour">Nettoyage locaux – Jour</option>
+    <option value="locaux_nuit">Nettoyage locaux – Nuit</option>
+    <option value="vitres">Nettoyage vitres</option>
+    <option value="demenagement">Nettoyage après déménagement</option>
+  </select>
+
+  <input type="number" name="heures" id="heures" placeholder="Nombre d’heures">
+  <input type="number" name="surface" id="surface" placeholder="Surface en m²">
+
+  <button>Demander un devis</button>
+  <p id="prixResultat" style="
+  margin-top:15px;
+  font-weight:700;
+  font-size:1.2rem;
+  text-align:center;
+  color:#007bbd;
+"></p>
+</form>
+
 </section>
 
 <!-- Début de widget de badge Calendly -->
@@ -444,28 +462,6 @@ footer a:hover{color: #00c6ff;}
   <a href="tel:0628487217">06 28 48 72 17</a>
 </footer>
 
-<script> // Validation spécifique pour le téléphone
-        if (field.id === "telephone") {
-            let phonePattern = /^0[1-9][0-9]{8}$/;
-            if (!phonePattern.test(field.value)) {
-                isValid = false;
-                field.nextElementSibling.textContent = "Veuillez entrer un numéro valide (ex: 0601020304).";
-                field.nextElementSibling.style.display = "block";
-            }
-        }
-
-        // Validation spécifique pour l'email
-        if (field.id === "email") {
-            let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            if (!emailPattern.test(field.value)) {
-                isValid = false;
-                field.nextElementSibling.textContent = "Veuillez entrer une adresse email valide.";
-                field.nextElementSibling.style.display = "block";
-            }
-        }
-    });</script>
-
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>
 /* Loader */
 window.addEventListener("load",()=>setTimeout(()=>loader.classList.add("hidden"),800));
@@ -496,36 +492,19 @@ mobileMenu.querySelectorAll("a").forEach(link => link.addEventListener("click", 
 const obs=new IntersectionObserver(e=>e.forEach(x=>x.isIntersecting&&x.target.classList.add("show")),{threshold:.15});
 document.querySelectorAll(".animate").forEach(el=>obs.observe(el));
 
-  document.addEventListener("DOMContentLoaded", function () {
-    emailjs.init("ceAxgfHqfXrWzhops");
-
-    const form = document.getElementById("devis-form");
-    if (form) {
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        emailjs.sendForm("service_hwm2hla", "template_yayz1yf", form)
-          .then(() => {
-            alert("Message envoyé avec succès !");
-            form.reset();
-          }, (error) => {
-            alert("Erreur lors de l'envoi : " + error.text);
-          });
-      });
-    } else {
-      console.error("Formulaire introuvable !");
-    }
-  });
-
 /* Services */
 function showService(id){
   document.querySelectorAll('.service-box').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 </script>
+  
+  <script type="module" src="devis.js"></script>
+
 
 </body>
 </html>
+
 
 
 

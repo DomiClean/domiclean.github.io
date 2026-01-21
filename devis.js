@@ -1,6 +1,11 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc } from
-"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
 
 // 🔹 FIREBASE CONFIG
 const firebaseConfig = {
@@ -126,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
         surface: surface || null,
         totalTTC,
         statut: "Brouillon",
-        date: new Date()
+date: serverTimestamp()
       });
 
       alert("Votre demande de devis a bien été envoyée ✔️");

@@ -16,6 +16,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 document.addEventListener("DOMContentLoaded", () => {
+    console.log("✅ devis.js chargé");
 
   // 🔹 FORMULAIRE
   const form = document.getElementById("devisForm");

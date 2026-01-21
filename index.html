@@ -462,18 +462,41 @@ footer a:hover{color: #00c6ff;}
 </footer>
 
   <script type="module">
+/* ================= DEBUG START ================= */
+console.log("🚀 Script devis chargé");
+
+/* ================= FIREBASE IMPORT ================= */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-/* ================= FIREBASE ================= */
+/* ================= FIREBASE INIT ================= */
 const firebaseConfig = {
   apiKey: "AIzaSyDYW9O1fV-yxqxENcGe0L1-0hZIQXlWV88",
   authDomain: "domiclean01.firebaseapp.com",
   projectId: "domiclean01",
 };
 
+console.log("🔥 Initialisation Firebase…");
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+console.log("✅ Firebase initialisé", db);
+
+/* ================= DOM ================= */
+const form = document.getElementById("devisForm");
+const service = document.getElementById("service");
+const heures = document.getElementById("heures");
+const surface = document.getElementById("surface");
+const prix = document.getElementById("prixResultat");
+
+console.log("📄 Form:", form);
+console.log("📄 Service:", service);
+console.log("📄 Heures:", heures);
+console.log("📄 Surface:", surface);
+console.log("📄 Prix:", prix);
+
+if (!form || !service || !heures || !surface || !prix) {
+  console.error("❌ UN ÉLÉMENT HTML MANQUE → STOP");
+}
 
 /* ================= TARIFS ================= */
 const TARIFS = {
@@ -483,45 +506,63 @@ const TARIFS = {
   demenagement: 4
 };
 
-/* ================= DOM ================= */
-const form = document.getElementById("devisForm");
-const service = document.getElementById("service");
-const heures = document.getElementById("heures");
-const surface = document.getElementById("surface");
-const prix = document.getElementById("prixResultat");
+console.log("💰 Tarifs chargés:", TARIFS);
 
 /* ================= UI ================= */
 function updateUI() {
+  console.log("🎛 updateUI()");
   heures.style.display = "none";
   surface.style.display = "none";
-  prix.textContent = "";
 
-  if (service.value.includes("locaux")) heures.style.display = "block";
-  if (service.value === "vitres" || service.value === "demenagement")
+  if (service.value.includes("locaux")) {
+    heures.style.display = "block";
+  }
+
+  if (service.value === "vitres" || service.value === "demenagement") {
     surface.style.display = "block";
+  }
 }
 
+/* ================= CALCUL ================= */
 function calculTotal() {
-  if (service.value === "vitres")
-    return surface.value ? surface.value * TARIFS.vitres : "Sur devis";
+  console.log("🧮 calculTotal()", {
+    service: service.value,
+    heures: heures.value,
+    surface: surface.value
+  });
 
-  if (service.value === "demenagement")
+  if (service.value === "vitres") {
+    if (!surface.value) return "Sur devis";
+    return surface.value * TARIFS.vitres;
+  }
+
+  if (service.value === "demenagement") {
     return surface.value * TARIFS.demenagement;
+  }
 
-  if (service.value.includes("locaux"))
+  if (service.value.includes("locaux")) {
     return heures.value * TARIFS[service.value];
+  }
 
   return 0;
 }
 
 function afficherPrix() {
   const total = calculTotal();
-  if (total === "Sur devis") prix.textContent = "Tarif sur devis";
-  else if (total > 0) prix.textContent = `Prix estimé : ${total} € TTC`;
+  console.log("💵 Total calculé:", total);
+
+  if (total === "Sur devis") {
+    prix.textContent = "Tarif sur devis";
+  } else if (total > 0) {
+    prix.textContent = `Prix estimé : ${total} € TTC`;
+  } else {
+    prix.textContent = "";
+  }
 }
 
 /* ================= EVENTS ================= */
 service.addEventListener("change", () => {
+  console.log("🔁 Service changé:", service.value);
   updateUI();
   afficherPrix();
 });
@@ -532,31 +573,50 @@ surface.addEventListener("input", afficherPrix);
 /* ================= SUBMIT ================= */
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+  console.log("🟢 SUBMIT FORMULAIRE");
 
   const total = calculTotal();
 
-  await addDoc(collection(db, "devis"), {
+  console.log("📦 Données envoyées Firestore:", {
     nom: form.nom.value,
     email: form.email.value,
     service: service.value,
-    heures: heures.value || null,
-    surface: surface.value || null,
-    totalTTC: total,
-    statut: "Brouillon",
-    createdAt: new Date()
+    heures: heures.value,
+    surface: surface.value,
+    totalTTC: total
   });
 
-  alert("Devis envoyé ✔");
-  form.reset();
-  prix.textContent = "";
-  updateUI();
+  try {
+    const ref = await addDoc(collection(db, "devis"), {
+      nom: form.nom.value,
+      email: form.email.value,
+      service: service.value,
+      heures: heures.value || null,
+      surface: surface.value || null,
+      totalTTC: total,
+      statut: "Brouillon",
+      createdAt: new Date()
+    });
+
+    console.log("✅ DOCUMENT AJOUTÉ → ID:", ref.id);
+    alert("Devis envoyé ✔");
+
+    form.reset();
+    prix.textContent = "";
+    updateUI();
+
+  } catch (err) {
+    console.error("🔥 ERREUR FIRESTORE:", err);
+    alert("Erreur Firestore (voir console)");
+  }
 });
 
+/* ================= INIT ================= */
 updateUI();
+console.log("🧠 Script prêt");
+/* ================= DEBUG END ================= */
 </script>
 
-
-<script>
 /* Loader */
 window.addEventListener("load",()=>setTimeout(()=>loader.classList.add("hidden"),800));
 
@@ -595,6 +655,7 @@ function showService(id){
 
 </body>
 </html>
+
 
 
 

@@ -10,9 +10,11 @@ import {
   getFirestore,
   collection,
   getDocs,
+  getDoc,        // ✅ AJOUT ICI
   updateDoc,
   doc
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
 
 // 🔹 CONFIG FIREBASE
 const firebaseConfig = {
@@ -74,10 +76,12 @@ async function chargerDevis() {
           </span>
         </td>
         <td>
-          <button onclick="changerStatut('${d.id}', 'Envoyé')">Envoyer</button>
-          <button onclick="changerStatut('${d.id}', 'Accepté')">Accepter</button>
-          <button onclick="changerStatut('${d.id}', 'Refusé')">Refuser</button>
-        </td>
+  <button onclick="changerStatut('${d.id}', 'Envoyé')">Envoyer</button>
+  <button onclick="changerStatut('${d.id}', 'Accepté')">Accepter</button>
+  <button onclick="changerStatut('${d.id}', 'Refusé')">Refuser</button>
+  <button onclick="genererPDF('${d.id}')">PDF</button>
+</td>
+
       </tr>
     `;
   });
@@ -88,3 +92,62 @@ window.changerStatut = async function (id, statut) {
   await updateDoc(doc(db, "devis", id), { statut });
   chargerDevis();
 };
+
+window.genererPDF = async function (id) {
+  const { jsPDF } = window.jspdf;
+  const docPDF = new jsPDF();
+
+  // Récupération du devis
+  const snap = await getDoc(doc(db, "devis", id));
+  const devis = snap.data();
+
+  // LOGO (optionnel)
+  docPDF.setFontSize(18);
+  docPDF.text("DOMI CLEAN", 20, 20);
+
+  docPDF.setFontSize(11);
+  docPDF.text("Nettoyage & Aide à domicile", 20, 28);
+  docPDF.text("Email : domicleanidf@gmail.com", 20, 35);
+  docPDF.text("Téléphone : 06 28 48 72 17", 20, 41);
+
+  docPDF.line(20, 45, 190, 45);
+
+  // Infos client
+  docPDF.text(`Client : ${devis.nom}`, 20, 55);
+  docPDF.text(`Email : ${devis.email}`, 20, 62);
+  docPDF.text(`Service : ${devis.service}`, 20, 69);
+
+  if (devis.heures) {
+    docPDF.text(`Durée : ${devis.heures} heure(s)`, 20, 76);
+  }
+
+  if (devis.surface) {
+    docPDF.text(`Surface : ${devis.surface} m²`, 20, 76);
+  }
+
+  docPDF.line(20, 82, 190, 82);
+
+  // Total
+  docPDF.setFontSize(14);
+  docPDF.text(
+    `Total TTC : ${devis.totalTTC} €`,
+    20,
+    95
+  );
+
+  docPDF.setFontSize(10);
+  docPDF.text(
+    "Devis valable 30 jours – Paiement à réception",
+    20,
+    110
+  );
+
+  docPDF.text(
+    "Bon pour accord, signature client :",
+    20,
+    125
+  );
+
+  docPDF.save(`devis-domiclean-${id}.pdf`);
+};
+

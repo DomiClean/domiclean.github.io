@@ -108,7 +108,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 🔹 ENVOI FIRESTORE
   form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  e.preventDefault();
+  console.log("🟢 SUBMIT OK");
+
 
     const service = serviceSelect.value;
     const heures = Number(heuresInput.value);

@@ -408,13 +408,15 @@ footer a:hover{color: #00c6ff;}
 
 <script>
 /* EmailJS */
-emailjs.init({
-  publicKey: "ceAxgfHqfXrWzhops"
-});
+emailjs.init("ceAxgfHqfXrWzhops");
+
 
 /* Loader + Calendly */
-window.addEventListener("load", () => {
+const loader = document.getElementById("loader");
+if (loader) {
   setTimeout(() => loader.classList.add("hidden"), 800);
+}
+
 
   if (window.Calendly) {
     Calendly.initBadgeWidget({
@@ -424,7 +426,6 @@ window.addEventListener("load", () => {
       textColor: "#ffffff"
     });
   }
-});
 
 /* Menu mobile */
 const burger = document.getElementById("burger");

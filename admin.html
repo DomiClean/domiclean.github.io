@@ -71,7 +71,7 @@ window.verifierCode = async function () {
 
 <!-- 🗄️ SUPABASE (PDF Storage) -->
 <script>
-const supabase = supabase.createClient(
+const supabaseClient = window.supabase.createClient(
   "https://smgzffkjwokcfjdejsbd.supabase.co",
   "sb_publishable_JzkhEKjWGzWGwN_310ukew_m5EW3HrW"
 );
@@ -82,11 +82,13 @@ async function uploadFile() {
 
   document.getElementById("status").innerText = "Upload...";
 
-  await supabase.storage.from("documents").upload(file.name, file);
+  await supabaseClient.storage.from("documents").upload(file.name, file);
 
-  const { data: urlData } = supabase.storage.from("documents").getPublicUrl(file.name);
+  const { data: urlData } = supabaseClient.storage
+    .from("documents")
+    .getPublicUrl(file.name);
 
-  await supabase.from("fichiers_pdf").insert({
+  await supabaseClient.from("fichiers_pdf").insert({
     nom: file.name,
     url: urlData.publicUrl
   });
@@ -96,7 +98,7 @@ async function uploadFile() {
 }
 
 async function loadFiles() {
-  const { data } = await supabase.from("fichiers_pdf").select("*");
+  const { data } = await supabaseClient.from("fichiers_pdf").select("*");
   const list = document.getElementById("fileList");
   list.innerHTML = "";
 
@@ -112,6 +114,7 @@ async function loadFiles() {
   });
 }
 </script>
+
 
 </body>
 </html>

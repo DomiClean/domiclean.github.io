@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin PDF</title>
+
+  <!-- SUPABASE -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    body { font-family: Arial; padding:40px; background:#f4f4f4 }
+    .box { background:white; padding:20px; border-radius:8px; margin-bottom:30px }
+    button { padding:8px 14px; background:#2c7be5; color:white; border:none; border-radius:5px }
+    input { padding:8px; margin:5px 0 }
+  </style>
+</head>
+<body>
+
+<!-- 🔒 ÉCRAN CODE -->
+<div class="box" id="loginBox">
+  <h2>🔒 Accès Admin</h2>
+  <input type="text" id="codeInput" placeholder="Code d'accès">
+  <button onclick="verifierCode()">Entrer</button>
+</div>
+
+<!-- 📁 PANEL ADMIN -->
+<div id="adminPanel" style="display:none;">
+
+<h1>📁 Gestion PDF</h1>
+
+<div class="box">
+  <input type="file" id="fileInput" accept="application/pdf">
+  <button onclick="uploadFile()">Uploader</button>
+  <p id="status"></p>
+</div>
+
+<div class="box">
+  <h2>Fichiers</h2>
+  <ul id="fileList"></ul>
+</div>
+
+</div>
+
+<!-- 🔥 FIREBASE (Vérification code) -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDYW9O1fV-yxqxENcGe0L1-0hZIQXlWV88",
+  authDomain: "domiclean01.firebaseapp.com",
+  projectId: "domiclean01"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.verifierCode = async function () {
+  const code = document.getElementById("codeInput").value.toUpperCase();
+  const snap = await getDoc(doc(db, "codes_admin", code));
+
+  if (!snap.exists() || snap.data().actif !== true) {
+    alert("⛔ Code invalide");
+    return;
+  }
+
+  document.getElementById("loginBox").style.display = "none";
+  document.getElementById("adminPanel").style.display = "block";
+  loadFiles();
+}
+</script>
+
+<!-- 🗄️ SUPABASE (PDF Storage) -->
+<script>
+const supabase = supabase.createClient(
+  "https://smgzffkjwokcfjdejsbd.supabase.co",
+  "sb_publishable_JzkhEKjWGzWGwN_310ukew_m5EW3HrW"
+);
+
+async function uploadFile() {
+  const file = document.getElementById("fileInput").files[0];
+  if (!file) return alert("Choisis un PDF");
+
+  document.getElementById("status").innerText = "Upload...";
+
+  await supabase.storage.from("documents").upload(file.name, file);
+
+  const { data: urlData } = supabase.storage.from("documents").getPublicUrl(file.name);
+
+  await supabase.from("fichiers_pdf").insert({
+    nom: file.name,
+    url: urlData.publicUrl
+  });
+
+  document.getElementById("status").innerText = "✅ Upload OK";
+  loadFiles();
+}
+
+async function loadFiles() {
+  const { data } = await supabase.from("fichiers_pdf").select("*");
+  const list = document.getElementById("fileList");
+  list.innerHTML = "";
+
+  data.forEach(f => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      ${f.nom}
+      <a href="${f.url}" target="_blank">
+        <button>Télécharger</button>
+      </a>
+    `;
+    list.appendChild(li);
+  });
+}
+</script>
+
+</body>
+</html>

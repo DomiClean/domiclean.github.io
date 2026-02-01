@@ -19,7 +19,7 @@
 <div class="box" id="loginBox">
   <h2>🔒 Accès Admin</h2>
   <input type="text" id="codeInput" placeholder="Code d'accès">
-  <button onclick="verifierCode()">Entrer</button>
+<button id="loginBtn">Entrer</button>
 </div>
 
 <!-- 📁 PANEL ADMIN -->
@@ -54,9 +54,16 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-window.verifierCode = async function () {
-  const code = document.getElementById("codeInput").value.toUpperCase();
+document.getElementById("loginBtn").addEventListener("click", async () => {
+  const code = document.getElementById("codeInput").value.toUpperCase().trim();
+
+  if (!code) return alert("Entre un code");
+
+  console.log("Code saisi:", code);
+
   const snap = await getDoc(doc(db, "codes_admin", code));
+
+  console.log("Doc trouvé ?", snap.exists());
 
   if (!snap.exists() || snap.data().actif !== true) {
     alert("⛔ Code invalide");
@@ -66,8 +73,9 @@ window.verifierCode = async function () {
   document.getElementById("loginBox").style.display = "none";
   document.getElementById("adminPanel").style.display = "block";
   loadFiles();
-}
+});
 </script>
+
 
 <!-- 🗄️ SUPABASE (PDF Storage) -->
 <script>

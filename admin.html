@@ -9,62 +9,95 @@
   <style>
     body { font-family: Arial; padding:40px; background:#f4f4f4 }
     .box { background:white; padding:20px; border-radius:8px; margin-bottom:30px }
-    button { padding:8px 14px; background:#2c7be5; color:white; border:none; border-radius:5px }
+    button { padding:8px 14px; background:#2c7be5; color:white; border:none; border-radius:5px; cursor:pointer }
     input { padding:8px; margin:5px 0 }
   </style>
 </head>
 <body>
 
-<!-- 📁 PANEL ADMIN -->
 <div id="adminPanel">
+  <h1>📁 Gestion PDF</h1>
 
-<h1>📁 Gestion PDF</h1>
+  <div class="box">
+    <input type="file" id="fileInput" accept="application/pdf">
+    <button onclick="uploadFile()">Uploader</button>
+    <p id="status"></p>
+  </div>
 
-<div class="box">
-  <input type="file" id="fileInput" accept="application/pdf">
-  <button onclick="uploadFile()">Uploader</button>
-  <p id="status"></p>
+  <div class="box">
+    <h2>Fichiers</h2>
+    <ul id="fileList"></ul>
+  </div>
 </div>
 
-<div class="box">
-  <h2>Fichiers</h2>
-  <ul id="fileList"></ul>
-</div>
-
-</div>
-  
-<!-- 🗄️ SUPABASE (PDF Storage) -->
 <script>
 const supabaseClient = window.supabase.createClient(
   "https://smgzffkjwokcfjdejsbd.supabase.co",
   "sb_publishable_JzkhEKjWGzWGwN_310ukew_m5EW3HrW"
 );
 
+// 🔹 UPLOAD PDF
 async function uploadFile() {
   const file = document.getElementById("fileInput").files[0];
   if (!file) return alert("Choisis un PDF");
 
-  document.getElementById("status").innerText = "Upload...";
+  const status = document.getElementById("status");
+  status.innerText = "Upload...";
 
-  await supabaseClient.storage.from("documents").upload(file.name, file);
+  // Nom unique pour éviter conflits
+  const filePath = Date.now() + "-" + file.name;
+
+  const { error: uploadError } = await supabaseClient.storage
+    .from("Documents")
+    .upload(filePath, file);
+
+  if (uploadError) {
+    console.error(uploadError);
+    status.innerText = "❌ Erreur upload";
+    return;
+  }
 
   const { data: urlData } = supabaseClient.storage
-    .from("documents")
-    .getPublicUrl(file.name);
+    .from("Documents")
+    .getPublicUrl(filePath);
 
-  await supabaseClient.from("fichiers_pdf").insert({
-    nom: file.name,
-    url: urlData.publicUrl
-  });
+  const { error: insertError } = await supabaseClient
+    .from("fichiers_pdf")
+    .insert({
+      nom: file.name,
+      url: urlData.publicUrl
+    });
 
-  document.getElementById("status").innerText = "✅ Upload OK";
+  if (insertError) {
+    console.error(insertError);
+    status.innerText = "❌ Erreur base de données";
+    return;
+  }
+
+  status.innerText = "✅ Upload OK";
   loadFiles();
 }
 
+// 🔹 CHARGER LA LISTE
 async function loadFiles() {
-  const { data } = await supabaseClient.from("fichiers_pdf").select("*");
+  const { data, error } = await supabaseClient
+    .from("fichiers_pdf")
+    .select("*")
+    .order("id", { ascending: false });
+
   const list = document.getElementById("fileList");
   list.innerHTML = "";
+
+  if (error) {
+    console.error(error);
+    list.innerHTML = "<li>Erreur chargement</li>";
+    return;
+  }
+
+  if (!data.length) {
+    list.innerHTML = "<li>Aucun fichier</li>";
+    return;
+  }
 
   data.forEach(f => {
     const li = document.createElement("li");
@@ -77,9 +110,10 @@ async function loadFiles() {
     list.appendChild(li);
   });
 }
-  document.addEventListener("DOMContentLoaded", loadFiles);
-</script>
 
+// Charger au démarrage
+document.addEventListener("DOMContentLoaded", loadFiles);
+</script>
 
 </body>
 </html>

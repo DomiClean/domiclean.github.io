@@ -16,7 +16,7 @@
 <body>
 
 <!-- 📁 PANEL ADMIN -->
-<div id="adminPanel" style="display:none;">
+<div id="adminPanel">
 
 <h1>📁 Gestion PDF</h1>
 
@@ -32,44 +32,7 @@
 </div>
 
 </div>
-
-<!-- 🔥 FIREBASE (Vérification code) -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDYW9O1fV-yxqxENcGe0L1-0hZIQXlWV88",
-  authDomain: "domiclean01.firebaseapp.com",
-  projectId: "domiclean01"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-document.getElementById("loginBtn").addEventListener("click", async () => {
-  const code = document.getElementById("codeInput").value.toUpperCase().trim();
-
-  if (!code) return alert("Entre un code");
-
-  console.log("Code saisi:", code);
-
-  const snap = await getDoc(doc(db, "codes_admin", code));
-
-  console.log("Doc trouvé ?", snap.exists());
-
-  if (!snap.exists() || snap.data().actif !== true) {
-    alert("⛔ Code invalide");
-    return;
-  }
-
-  document.getElementById("loginBox").style.display = "none";
-  document.getElementById("adminPanel").style.display = "block";
-  loadFiles();
-});
-</script>
-
-
+  
 <!-- 🗄️ SUPABASE (PDF Storage) -->
 <script>
 const supabaseClient = window.supabase.createClient(

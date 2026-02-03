@@ -4,14 +4,83 @@
   <title>Admin PDF</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <style>
-    body { font-family: Arial; padding:40px; background:#f4f4f4 }
-    .box { background:white; padding:20px; border-radius:8px; margin-bottom:30px }
-    button { padding:8px 14px; background:#2c7be5; color:white; border:none; border-radius:5px; cursor:pointer }
-    .deleteBtn { background:#dc3545 }
-    input { padding:8px; margin:5px 0 }
-    li { margin:10px 0 }
-  </style>
+ <style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 40px;
+    background: #f4f4f4;
+    margin: 0;
+  }
+
+  .box {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+  }
+
+  button {
+    padding: 10px 16px;
+    background: #2c7be5;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .deleteBtn {
+    background: #dc3545;
+  }
+
+  input[type="file"] {
+    padding: 8px;
+    margin: 5px 0 10px 0;
+    width: 100%;
+  }
+
+  li {
+    margin: 12px 0;
+    list-style: none;
+    background: #f8f9fa;
+    padding: 12px;
+    border-radius: 6px;
+  }
+
+  /* 📱 MOBILE */
+  @media (max-width: 768px) {
+    body {
+      padding: 15px;
+    }
+
+    h1 {
+      font-size: 22px;
+    }
+
+    .box {
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 8px;
+      font-size: 15px;
+    }
+
+    li {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    li a button,
+    .deleteBtn {
+      width: 100%;
+    }
+  }
+</style>
+
 </head>
 <body>
 

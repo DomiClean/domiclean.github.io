@@ -2,15 +2,15 @@
 <html>
 <head>
   <title>Admin PDF</title>
-
-  <!-- SUPABASE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     body { font-family: Arial; padding:40px; background:#f4f4f4 }
     .box { background:white; padding:20px; border-radius:8px; margin-bottom:30px }
     button { padding:8px 14px; background:#2c7be5; color:white; border:none; border-radius:5px; cursor:pointer }
+    .deleteBtn { background:#dc3545 }
     input { padding:8px; margin:5px 0 }
+    li { margin:10px 0 }
   </style>
 </head>
 <body>
@@ -33,10 +33,9 @@
 <script>
 const supabaseClient = window.supabase.createClient(
   "https://smgzffkjwokcfjdejsbd.supabase.co",
-  "sb_publishable_JzkhEKjWGzWGwN_310ukew_m5EW3HrW"
+  "TA_NOUVELLE_CLE_ICI"
 );
 
-// 🔹 UPLOAD PDF
 async function uploadFile() {
   const file = document.getElementById("fileInput").files[0];
   if (!file) return alert("Choisis un PDF");
@@ -44,11 +43,10 @@ async function uploadFile() {
   const status = document.getElementById("status");
   status.innerText = "Upload...";
 
-  // Nom unique pour éviter conflits
   const filePath = Date.now() + "-" + file.name;
 
   const { error: uploadError } = await supabaseClient.storage
-    .from("Documents")
+    .from("documents") // ← corrigé
     .upload(filePath, file);
 
   if (uploadError) {
@@ -58,19 +56,20 @@ async function uploadFile() {
   }
 
   const { data: urlData } = supabaseClient.storage
-    .from("Documents")
+    .from("documents") // ← corrigé
     .getPublicUrl(filePath);
 
   const { error: insertError } = await supabaseClient
     .from("fichiers_pdf")
     .insert({
       nom: file.name,
-      url: urlData.publicUrl
+      url: urlData.publicUrl,
+      chemin: filePath
     });
 
   if (insertError) {
     console.error(insertError);
-    status.innerText = "❌ Erreur base de données";
+    status.innerText = "❌ Erreur base";
     return;
   }
 
@@ -78,7 +77,6 @@ async function uploadFile() {
   loadFiles();
 }
 
-// 🔹 CHARGER LA LISTE
 async function loadFiles() {
   const { data, error } = await supabaseClient
     .from("fichiers_pdf")
@@ -106,14 +104,48 @@ async function loadFiles() {
       <a href="${f.url}" target="_blank">
         <button>Télécharger</button>
       </a>
+      <button class="deleteBtn"
+        onclick="deleteFile('${f.id}', '${f.chemin}')">
+        Supprimer
+      </button>
     `;
     list.appendChild(li);
   });
 }
 
-// Charger au démarrage
+async function deleteFile(id, chemin) {
+  if (!confirm("Supprimer ce fichier ?")) return;
+
+  const { error: storageError } = await supabaseClient.storage
+    .from("documents") // ← corrigé
+    .remove([chemin]);
+
+  if (storageError) {
+    console.error(storageError);
+    alert("Erreur suppression storage");
+    return;
+  }
+
+  const { error: dbError } = await supabaseClient
+    .from("fichiers_pdf")
+    .delete()
+    .eq("id", id);
+
+  if (dbError) {
+    console.error(dbError);
+    alert("Erreur suppression base");
+    return;
+  }
+
+  loadFiles();
+}
+
 document.addEventListener("DOMContentLoaded", loadFiles);
 </script>
+
+</body>
+</html>
+
 
 </body>
 </html>

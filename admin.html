@@ -36,6 +36,12 @@ const supabaseClient = window.supabase.createClient(
   "sb_publishable_JzkhEKjWGzWGwN_310ukew_m5EW3HrW"
 );
 
+function cleanFileName(name) {
+  return name
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // enlève accents
+    .replace(/[^a-zA-Z0-9.\-_]/g, "_"); // garde seulement caractères safe
+}
+
 async function uploadFile() {
   const file = document.getElementById("fileInput").files[0];
   if (!file) return alert("Choisis un PDF");
@@ -43,10 +49,11 @@ async function uploadFile() {
   const status = document.getElementById("status");
   status.innerText = "Upload...";
 
-  const filePath = Date.now() + "-" + file.name;
+  const safeName = cleanFileName(file.name);
+  const filePath = Date.now() + "-" + safeName;
 
   const { error: uploadError } = await supabaseClient.storage
-    .from("documents") // ← corrigé
+    .from("documents")
     .upload(filePath, file);
 
   if (uploadError) {
@@ -56,22 +63,14 @@ async function uploadFile() {
   }
 
   const { data: urlData } = supabaseClient.storage
-    .from("documents") // ← corrigé
+    .from("documents")
     .getPublicUrl(filePath);
 
-  const { error: insertError } = await supabaseClient
-    .from("fichiers_pdf")
-    .insert({
-      nom: file.name,
-      url: urlData.publicUrl,
-      chemin: filePath
-    });
-
-  if (insertError) {
-    console.error(insertError);
-    status.innerText = "❌ Erreur base";
-    return;
-  }
+  await supabaseClient.from("fichiers_pdf").insert({
+    nom: file.name,
+    url: urlData.publicUrl,
+    chemin: filePath
+  });
 
   status.innerText = "✅ Upload OK";
   loadFiles();

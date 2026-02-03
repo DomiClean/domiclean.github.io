@@ -99,6 +99,47 @@
   </div>
 </div>
 
+  <script>
+const ADMIN_TOKEN_HASH = "9e7c4cdc1a19ecfdbc4c6abf72eb5420a76c3c252356c99e221d348ff799a9d9";
+
+async function sha256(str) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+async function checkAccess() {
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("token");
+
+  if (!token) return deny();
+
+  const hash = await sha256(token);
+
+  if (hash !== ADMIN_TOKEN_HASH) return deny();
+
+  // ✅ Accès autorisé
+  document.getElementById("adminPanel").style.display = "block";
+  loadFiles();
+}
+
+function deny() {
+  document.body.innerHTML = `
+    <div style="text-align:center;padding:60px;font-family:Arial">
+      <h2>⛔ Accès refusé</h2>
+      <p>Lien invalide</p>
+    </div>
+  `;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("adminPanel").style.display = "none";
+  checkAccess();
+});
+</script>
+
+
 <script>
 const supabaseClient = window.supabase.createClient(
   "https://smgzffkjwokcfjdejsbd.supabase.co",

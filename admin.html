@@ -4,87 +4,29 @@
   <title>Admin PDF</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
- <style>
-  body {
-    font-family: Arial, sans-serif;
-    padding: 40px;
-    background: #f4f4f4;
-    margin: 0;
-  }
+<style>
+/* (TON CSS INCHANGÉ) */
+body { font-family: Arial, sans-serif; padding: 40px; background: #f4f4f4; margin: 0; }
+.box { background: white; padding: 20px; border-radius: 8px; margin-bottom: 30px; }
+button { padding: 10px 16px; background: #2c7be5; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; }
+.deleteBtn { background: #dc3545; }
+input[type="file"] { padding: 8px; margin: 5px 0 10px 0; width: 100%; }
+li { margin: 12px 0; list-style: none; background: #f8f9fa; padding: 12px; border-radius: 6px; }
 
-  .box {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 30px;
-  }
-
-  button {
-    padding: 10px 16px;
-    background: #2c7be5;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-  }
-
-  .deleteBtn {
-    background: #dc3545;
-  }
-
-  input[type="file"] {
-    padding: 8px;
-    margin: 5px 0 10px 0;
-    width: 100%;
-  }
-
-  li {
-    margin: 12px 0;
-    list-style: none;
-    background: #f8f9fa;
-    padding: 12px;
-    border-radius: 6px;
-  }
-
-  /* 📱 MOBILE */
-  @media (max-width: 768px) {
-    body {
-      padding: 15px;
-    }
-
-    h1 {
-      font-size: 22px;
-    }
-
-    .box {
-      padding: 15px;
-      margin-bottom: 20px;
-    }
-
-    button {
-      width: 100%;
-      margin-top: 8px;
-      font-size: 15px;
-    }
-
-    li {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    li a button,
-    .deleteBtn {
-      width: 100%;
-    }
-  }
+@media (max-width: 768px) {
+  body { padding: 15px; }
+  h1 { font-size: 22px; }
+  .box { padding: 15px; margin-bottom: 20px; }
+  button { width: 100%; margin-top: 8px; font-size: 15px; }
+  li { display: flex; flex-direction: column; gap: 8px; }
+  li a button, .deleteBtn { width: 100%; }
+}
 </style>
-
 </head>
+
 <body>
 
-<div id="adminPanel">
+<div id="adminPanel" style="display:none;">
   <h1>📁 Gestion PDF</h1>
 
   <div class="box">
@@ -100,6 +42,8 @@
 </div>
 
 <script>
+/* ================= 🔐 TOKEN ACCESS ================= */
+
 const ADMIN_TOKEN_HASH = "85065bf1e8b36b2fa298260e1bac33c732986ae814ec8cd9acfbb8f301033f4c";
 
 async function sha256(str) {
@@ -107,21 +51,6 @@ async function sha256(str) {
   return Array.from(new Uint8Array(buf))
     .map(b => b.toString(16).padStart(2, '0'))
     .join('');
-}
-
-async function checkAccess() {
-  const params = new URLSearchParams(window.location.search);
-  const token = params.get("token");
-
-  if (!token) return deny();
-
-  const hash = await sha256(token);
-
-  if (hash !== ADMIN_TOKEN_HASH) return deny();
-
-  // ✅ Accès autorisé
-  document.getElementById("adminPanel").style.display = "block";
-  loadFiles();
 }
 
 function deny() {
@@ -133,24 +62,27 @@ function deny() {
   `;
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("adminPanel").style.display = "none";
-  checkAccess();
-});
-</script>
+async function checkAccess() {
+  const token = new URLSearchParams(window.location.search).get("token");
+  if (!token) return deny();
 
+  const hash = await sha256(token);
+  if (hash !== ADMIN_TOKEN_HASH) return deny();
 
+  document.getElementById("adminPanel").style.display = "block";
+  loadFiles(); // chargé seulement si autorisé
+}
 
-<script>
+/* ================= ☁️ SUPABASE ================= */
+
 const supabaseClient = window.supabase.createClient(
   "https://smgzffkjwokcfjdejsbd.supabase.co",
   "sb_publishable_JzkhEKjWGzWGwN_310ukew_m5EW3HrW"
 );
 
 function cleanFileName(name) {
-  return name
-    .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // enlève accents
-    .replace(/[^a-zA-Z0-9.\-_]/g, "_"); // garde seulement caractères safe
+  return name.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9.\-_]/g, "_");
 }
 
 async function uploadFile() {
@@ -160,26 +92,16 @@ async function uploadFile() {
   const status = document.getElementById("status");
   status.innerText = "Upload...";
 
-  const safeName = cleanFileName(file.name);
-  const filePath = Date.now() + "-" + safeName;
+  const filePath = Date.now() + "-" + cleanFileName(file.name);
 
-  const { error: uploadError } = await supabaseClient.storage
-    .from("documents")
-    .upload(filePath, file);
+  const { error } = await supabaseClient.storage.from("documents").upload(filePath, file);
+  if (error) return status.innerText = "❌ Erreur upload";
 
-  if (uploadError) {
-    console.error(uploadError);
-    status.innerText = "❌ Erreur upload";
-    return;
-  }
-
-  const { data: urlData } = supabaseClient.storage
-    .from("documents")
-    .getPublicUrl(filePath);
+  const { data } = supabaseClient.storage.from("documents").getPublicUrl(filePath);
 
   await supabaseClient.from("fichiers_pdf").insert({
     nom: file.name,
-    url: urlData.publicUrl,
+    url: data.publicUrl,
     chemin: filePath
   });
 
@@ -188,21 +110,17 @@ async function uploadFile() {
 }
 
 async function loadFiles() {
+  const list = document.getElementById("fileList");
+  if (!list) return; // évite l’erreur
+
   const { data, error } = await supabaseClient
     .from("fichiers_pdf")
     .select("*")
     .order("id", { ascending: false });
 
-  const list = document.getElementById("fileList");
   list.innerHTML = "";
 
-  if (error) {
-    console.error(error);
-    list.innerHTML = "<li>Erreur chargement</li>";
-    return;
-  }
-
-  if (!data.length) {
+  if (error || !data.length) {
     list.innerHTML = "<li>Aucun fichier</li>";
     return;
   }
@@ -211,13 +129,8 @@ async function loadFiles() {
     const li = document.createElement("li");
     li.innerHTML = `
       ${f.nom}
-      <a href="${f.url}" target="_blank">
-        <button>Télécharger</button>
-      </a>
-      <button class="deleteBtn"
-        onclick="deleteFile('${f.id}', '${f.chemin}')">
-        Supprimer
-      </button>
+      <a href="${f.url}" target="_blank"><button>Télécharger</button></a>
+      <button class="deleteBtn" onclick="deleteFile('${f.id}','${f.chemin}')">Supprimer</button>
     `;
     list.appendChild(li);
   });
@@ -226,36 +139,15 @@ async function loadFiles() {
 async function deleteFile(id, chemin) {
   if (!confirm("Supprimer ce fichier ?")) return;
 
-  const { error: storageError } = await supabaseClient.storage
-    .from("documents") // ← corrigé
-    .remove([chemin]);
-
-  if (storageError) {
-    console.error(storageError);
-    alert("Erreur suppression storage");
-    return;
-  }
-
-  const { error: dbError } = await supabaseClient
-    .from("fichiers_pdf")
-    .delete()
-    .eq("id", id);
-
-  if (dbError) {
-    console.error(dbError);
-    alert("Erreur suppression base");
-    return;
-  }
-
+  await supabaseClient.storage.from("documents").remove([chemin]);
+  await supabaseClient.from("fichiers_pdf").delete().eq("id", id);
   loadFiles();
 }
 
-document.addEventListener("DOMContentLoaded", loadFiles);
+/* ================= 🚀 START ================= */
+
+document.addEventListener("DOMContentLoaded", checkAccess);
 </script>
-
-</body>
-</html>
-
 
 </body>
 </html>

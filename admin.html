@@ -5,7 +5,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-/* (TON CSS INCHANGÉ) */
 body { font-family: Arial, sans-serif; padding: 40px; background: #f4f4f4; margin: 0; }
 .box { background: white; padding: 20px; border-radius: 8px; margin-bottom: 30px; }
 button { padding: 10px 16px; background: #2c7be5; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; }
@@ -42,15 +41,13 @@ li { margin: 12px 0; list-style: none; background: #f8f9fa; padding: 12px; borde
 </div>
 
 <script>
-/* ================= 🔐 TOKEN ACCESS ================= */
+/* 🔐 TOKEN ACCESS */
 
-const ADMIN_TOKEN_HASH = "85065bf1e8b36b2fa298260e1bac33c732986ae814ec8cd9acfbb8f301033f4c";
+const ADMIN_TOKEN_HASH = "d8f4a1a767ce0c041f1a22a9e0c6bc726d0078e3dcf4ea98558d2c7d11efbaea";
 
 async function sha256(str) {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
-  return Array.from(new Uint8Array(buf))
-    .map(b => b.toString(16).padStart(2, '0'))
-    .join('');
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
 function deny() {
@@ -63,17 +60,19 @@ function deny() {
 }
 
 async function checkAccess() {
-  const token = new URLSearchParams(window.location.search).get("token");
+  let token = new URLSearchParams(window.location.search).get("token");
   if (!token) return deny();
 
+  token = decodeURIComponent(token); // FIX %
   const hash = await sha256(token);
+
   if (hash !== ADMIN_TOKEN_HASH) return deny();
 
   document.getElementById("adminPanel").style.display = "block";
-  loadFiles(); // chargé seulement si autorisé
+  loadFiles();
 }
 
-/* ================= ☁️ SUPABASE ================= */
+/* ☁️ SUPABASE */
 
 const supabaseClient = window.supabase.createClient(
   "https://smgzffkjwokcfjdejsbd.supabase.co",
@@ -93,7 +92,6 @@ async function uploadFile() {
   status.innerText = "Upload...";
 
   const filePath = Date.now() + "-" + cleanFileName(file.name);
-
   const { error } = await supabaseClient.storage.from("documents").upload(filePath, file);
   if (error) return status.innerText = "❌ Erreur upload";
 
@@ -111,16 +109,16 @@ async function uploadFile() {
 
 async function loadFiles() {
   const list = document.getElementById("fileList");
-  if (!list) return; // évite l’erreur
+  if (!list) return;
 
-  const { data, error } = await supabaseClient
+  const { data } = await supabaseClient
     .from("fichiers_pdf")
     .select("*")
     .order("id", { ascending: false });
 
   list.innerHTML = "";
 
-  if (error || !data.length) {
+  if (!data || !data.length) {
     list.innerHTML = "<li>Aucun fichier</li>";
     return;
   }
@@ -138,16 +136,14 @@ async function loadFiles() {
 
 async function deleteFile(id, chemin) {
   if (!confirm("Supprimer ce fichier ?")) return;
-
   await supabaseClient.storage.from("documents").remove([chemin]);
   await supabaseClient.from("fichiers_pdf").delete().eq("id", id);
   loadFiles();
 }
-
-/* ================= 🚀 START ================= */
 
 document.addEventListener("DOMContentLoaded", checkAccess);
 </script>
 
 </body>
 </html>
+

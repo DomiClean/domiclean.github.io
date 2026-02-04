@@ -99,8 +99,8 @@
   </div>
 </div>
 
-  <script>
-const ADMIN_TOKEN_HASH = "9e7c4cdc1a19ecfdbc4c6abf72eb5420a76c3c252356c99e221d348ff799a9d9";
+<script>
+const ADMIN_TOKEN_HASH = "85065bf1e8b36b2fa298260e1bac33c732986ae814ec8cd9acfbb8f301033f4c";
 
 async function sha256(str) {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
@@ -138,6 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
   checkAccess();
 });
 </script>
+
 
 
 <script>

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>Admin PDF</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -41,7 +42,7 @@ li { margin: 12px 0; list-style: none; background: #f8f9fa; padding: 12px; borde
 </div>
 
 <script>
-/* 🔐 TOKEN ACCESS */
+/* ================= 🔐 TOKEN ACCESS ================= */
 
 const ADMIN_TOKEN_HASH = "d8f4a1a767ce0c041f1a22a9e0c6bc726d0078e3dcf4ea98558d2c7d11efbaea";
 
@@ -63,7 +64,7 @@ async function checkAccess() {
   let token = new URLSearchParams(window.location.search).get("token");
   if (!token) return deny();
 
-  token = decodeURIComponent(token); // FIX %
+  token = decodeURIComponent(token); // corrige %25
   const hash = await sha256(token);
 
   if (hash !== ADMIN_TOKEN_HASH) return deny();
@@ -72,7 +73,7 @@ async function checkAccess() {
   loadFiles();
 }
 
-/* ☁️ SUPABASE */
+/* ================= ☁️ SUPABASE ================= */
 
 const supabaseClient = window.supabase.createClient(
   "https://smgzffkjwokcfjdejsbd.supabase.co",
@@ -93,7 +94,10 @@ async function uploadFile() {
 
   const filePath = Date.now() + "-" + cleanFileName(file.name);
   const { error } = await supabaseClient.storage.from("documents").upload(filePath, file);
-  if (error) return status.innerText = "❌ Erreur upload";
+  if (error) {
+    console.error(error);
+    return status.innerText = "❌ Erreur upload";
+  }
 
   const { data } = supabaseClient.storage.from("documents").getPublicUrl(filePath);
 
@@ -146,4 +150,5 @@ document.addEventListener("DOMContentLoaded", checkAccess);
 
 </body>
 </html>
+
 

@@ -44,10 +44,11 @@ li { margin: 12px 0; list-style: none; background: #f8f9fa; padding: 12px; borde
 <script>
 /* ================= 🔐 TOKEN ACCESS ================= */
 
-const ADMIN_TOKEN_HASH = "d8f4a1a767ce0c041f1a22a9e0c6bc726d0078e3dcf4ea98558d2c7d11efbaea";
+/* Token réel : ynys12654783290 */
+const ADMIN_TOKEN_HASH = "2b61620dbd385b69db50c70f423d0f13bfd02796370b620cba9b2f9a682937d";
 
 async function sha256(str) {
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str.trim()));
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
@@ -64,7 +65,7 @@ async function checkAccess() {
   let token = new URLSearchParams(window.location.search).get("token");
   if (!token) return deny();
 
-  token = decodeURIComponent(token); // corrige %25
+  token = decodeURIComponent(token);
   const hash = await sha256(token);
 
   if (hash !== ADMIN_TOKEN_HASH) return deny();
@@ -88,6 +89,14 @@ function cleanFileName(name) {
 async function uploadFile() {
   const file = document.getElementById("fileInput").files[0];
   if (!file) return alert("Choisis un PDF");
+
+  if (file.type !== "application/pdf") {
+    return alert("Seulement des PDF !");
+  }
+
+  if (file.size > 10 * 1024 * 1024) {
+    return alert("Max 10MB");
+  }
 
   const status = document.getElementById("status");
   status.innerText = "Upload...";
@@ -113,14 +122,12 @@ async function uploadFile() {
 
 async function loadFiles() {
   const list = document.getElementById("fileList");
-  if (!list) return;
+  list.innerHTML = "";
 
   const { data } = await supabaseClient
     .from("fichiers_pdf")
     .select("*")
     .order("id", { ascending: false });
-
-  list.innerHTML = "";
 
   if (!data || !data.length) {
     list.innerHTML = "<li>Aucun fichier</li>";
@@ -129,11 +136,27 @@ async function loadFiles() {
 
   data.forEach(f => {
     const li = document.createElement("li");
-    li.innerHTML = `
-      ${f.nom}
-      <a href="${f.url}" target="_blank"><button>Télécharger</button></a>
-      <button class="deleteBtn" onclick="deleteFile('${f.id}','${f.chemin}')">Supprimer</button>
-    `;
+
+    const nameSpan = document.createElement("span");
+    nameSpan.textContent = f.nom;
+
+    const link = document.createElement("a");
+    link.href = f.url;
+    link.target = "_blank";
+
+    const btnDownload = document.createElement("button");
+    btnDownload.textContent = "Télécharger";
+    link.appendChild(btnDownload);
+
+    const btnDelete = document.createElement("button");
+    btnDelete.textContent = "Supprimer";
+    btnDelete.className = "deleteBtn";
+    btnDelete.onclick = () => deleteFile(f.id, f.chemin);
+
+    li.appendChild(nameSpan);
+    li.appendChild(link);
+    li.appendChild(btnDelete);
+
     list.appendChild(li);
   });
 }
@@ -150,5 +173,3 @@ document.addEventListener("DOMContentLoaded", checkAccess);
 
 </body>
 </html>
-
-

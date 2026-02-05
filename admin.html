@@ -25,6 +25,9 @@ li { margin: 12px 0; list-style: none; background: #f8f9fa; padding: 12px; borde
 </head>
 
 <body>
+  
+  <button onclick="logout()">Se déconnecter</button>
+
 
 <div id="adminPanel">
   <h1>📁 Gestion PDF</h1>
@@ -40,6 +43,73 @@ li { margin: 12px 0; list-style: none; background: #f8f9fa; padding: 12px; borde
     <ul id="fileList"></ul>
   </div>
 </div>
+  
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+// 🔧 CONFIG FIREBASE
+const firebaseConfig = {
+  apiKey: "AIzaSyDYW9O1fV-yxqxENcGe0L1-0hZIQXlWV88",
+  authDomain: "domiclean01.firebaseapp.com",
+  projectId: "domiclean01",
+  storageBucket: "domiclean01.firebasestorage.app",
+  messagingSenderId: "1412105890",
+  appId: "1:1412105890:web:3716be5c2af93a6eb8b9fb",
+  measurementId: "G-XQ2JY146QF"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// 🔒 Cache le panel
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("adminPanel").style.display = "none";
+});
+
+// 🧠 Affiche le formulaire login
+function showLogin() {
+  document.body.innerHTML = `
+    <div style="max-width:400px;margin:auto;padding:40px;font-family:Arial">
+      <h2>🔐 Connexion Admin</h2>
+      <input id="email" placeholder="Email" style="width:100%;padding:10px;margin-bottom:10px">
+      <input id="pass" type="password" placeholder="Mot de passe" style="width:100%;padding:10px;margin-bottom:10px">
+      <button id="loginBtn" style="width:100%;padding:10px">Connexion</button>
+      <p id="msg"></p>
+    </div>
+  `;
+
+  document.getElementById("loginBtn").onclick = async () => {
+    try {
+      await signInWithEmailAndPassword(
+        auth,
+        document.getElementById("email").value,
+        document.getElementById("pass").value
+      );
+    } catch (e) {
+      document.getElementById("msg").innerText = "❌ " + e.message;
+    }
+  };
+}
+
+// 👀 Vérifie si connecté
+onAuthStateChanged(auth, user => {
+  if (!user) {
+    showLogin();
+    return;
+  }
+
+  // ✅ connecté
+  document.getElementById("adminPanel").style.display = "block";
+  loadFiles(); // ta fonction Supabase
+});
+
+// 🚪 Déconnexion
+window.logout = async () => {
+  await signOut(auth);
+  location.reload();
+};
+</script>
 
 <script>
 /* ================= ☁️ SUPABASE ================= */

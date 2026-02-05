@@ -26,7 +26,7 @@ li { margin: 12px 0; list-style: none; background: #f8f9fa; padding: 12px; borde
 
 <body>
 
-<div id="adminPanel" style="display:none;">
+<div id="adminPanel">
   <h1>📁 Gestion PDF</h1>
 
   <div class="box">
@@ -42,38 +42,6 @@ li { margin: 12px 0; list-style: none; background: #f8f9fa; padding: 12px; borde
 </div>
 
 <script>
-/* ================= 🔐 TOKEN ACCESS ================= */
-
-/* Token réel : ynys12654783290 */
-const ADMIN_TOKEN_HASH = "2b61620dbd385b69db50c70f423d0f13bfd02796370b620cba9b2f9a682937d";
-
-async function sha256(str) {
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str.trim()));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
-}
-
-function deny() {
-  document.body.innerHTML = `
-    <div style="text-align:center;padding:60px;font-family:Arial">
-      <h2>⛔ Accès refusé</h2>
-      <p>Lien invalide</p>
-    </div>
-  `;
-}
-
-async function checkAccess() {
-  let token = new URLSearchParams(window.location.search).get("token");
-  if (!token) return deny();
-
-  token = decodeURIComponent(token);
-  const hash = await sha256(token);
-
-  if (hash !== ADMIN_TOKEN_HASH) return deny();
-
-  document.getElementById("adminPanel").style.display = "block";
-  loadFiles();
-}
-
 /* ================= ☁️ SUPABASE ================= */
 
 const supabaseClient = window.supabase.createClient(
@@ -168,7 +136,7 @@ async function deleteFile(id, chemin) {
   loadFiles();
 }
 
-document.addEventListener("DOMContentLoaded", checkAccess);
+document.addEventListener("DOMContentLoaded", loadFiles);
 </script>
 
 </body>

@@ -10,26 +10,26 @@ body { font-family: Arial, sans-serif; padding: 40px; background: #f4f4f4; margi
 .box { background: white; padding: 20px; border-radius: 8px; margin-bottom: 30px; }
 button { padding: 10px 16px; background: #2c7be5; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; }
 .deleteBtn { background: #dc3545; }
-input[type="file"] { padding: 8px; margin: 5px 0 10px 0; width: 100%; }
+input[type="file"], input { padding: 8px; margin: 5px 0 10px 0; width: 100%; }
 li { margin: 12px 0; list-style: none; background: #f8f9fa; padding: 12px; border-radius: 6px; }
-
-@media (max-width: 768px) {
-  body { padding: 15px; }
-  h1 { font-size: 22px; }
-  .box { padding: 15px; margin-bottom: 20px; }
-  button { width: 100%; margin-top: 8px; font-size: 15px; }
-  li { display: flex; flex-direction: column; gap: 8px; }
-  li a button, .deleteBtn { width: 100%; }
-}
 </style>
 </head>
 
 <body>
-  
+
+<!-- 🔐 LOGIN -->
+<div id="loginBox" style="display:none;max-width:400px;margin:auto;padding:40px">
+  <h2>🔐 Connexion Admin</h2>
+  <input id="email" placeholder="Email">
+  <input id="pass" type="password" placeholder="Mot de passe">
+  <button id="loginBtn">Connexion</button>
+  <p id="msg"></p>
+</div>
+
+<!-- 📁 ADMIN PANEL -->
+<div id="adminPanel" style="display:none;">
   <button onclick="logout()">Se déconnecter</button>
 
-
-<div id="adminPanel">
   <h1>📁 Gestion PDF</h1>
 
   <div class="box">
@@ -43,108 +43,71 @@ li { margin: 12px 0; list-style: none; background: #f8f9fa; padding: 12px; borde
     <ul id="fileList"></ul>
   </div>
 </div>
-  
+
+<!-- 🔥 FIREBASE AUTH -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// 🔧 CONFIG FIREBASE
 const firebaseConfig = {
   apiKey: "AIzaSyDYW9O1fV-yxqxENcGe0L1-0hZIQXlWV88",
   authDomain: "domiclean01.firebaseapp.com",
   projectId: "domiclean01",
   storageBucket: "domiclean01.firebasestorage.app",
   messagingSenderId: "1412105890",
-  appId: "1:1412105890:web:3716be5c2af93a6eb8b9fb",
-  measurementId: "G-XQ2JY146QF"
+  appId: "1:1412105890:web:3716be5c2af93a6eb8b9fb"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// 🔒 Cache le panel
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("adminPanel").style.display = "none";
-});
+const loginBox = document.getElementById("loginBox");
+const adminPanel = document.getElementById("adminPanel");
 
-// 🧠 Affiche le formulaire login
-function showLogin() {
-  document.body.innerHTML = `
-    <div style="max-width:400px;margin:auto;padding:40px;font-family:Arial">
-      <h2>🔐 Connexion Admin</h2>
-      <input id="email" placeholder="Email" style="width:100%;padding:10px;margin-bottom:10px">
-      <input id="pass" type="password" placeholder="Mot de passe" style="width:100%;padding:10px;margin-bottom:10px">
-      <button id="loginBtn" style="width:100%;padding:10px">Connexion</button>
-      <p id="msg"></p>
-    </div>
-  `;
-
-  document.getElementById("loginBtn").onclick = async () => {
-    try {
-      await signInWithEmailAndPassword(
-        auth,
-        document.getElementById("email").value,
-        document.getElementById("pass").value
-      );
-    } catch (e) {
-      document.getElementById("msg").innerText = "❌ " + e.message;
-    }
-  };
-}
-
-// 👀 Vérifie si connecté
-onAuthStateChanged(auth, user => {
-  if (!user) {
-    showLogin();
-    return;
+document.getElementById("loginBtn").onclick = async () => {
+  try {
+    await signInWithEmailAndPassword(auth, email.value, pass.value);
+  } catch (e) {
+    msg.innerText = "❌ " + e.message;
   }
+};
 
-  // ✅ connecté
-  document.getElementById("adminPanel").style.display = "block";
-  loadFiles(); // ta fonction Supabase
+onAuthStateChanged(auth, user => {
+  if (user) {
+    loginBox.style.display = "none";
+    adminPanel.style.display = "block";
+    loadFiles();
+  } else {
+    loginBox.style.display = "block";
+    adminPanel.style.display = "none";
+  }
 });
 
-// 🚪 Déconnexion
-window.logout = async () => {
-  await signOut(auth);
-  location.reload();
-};
+window.logout = async () => await signOut(auth);
 </script>
 
+<!-- ☁️ SUPABASE -->
 <script>
-/* ================= ☁️ SUPABASE ================= */
-
 const supabaseClient = window.supabase.createClient(
   "https://smgzffkjwokcfjdejsbd.supabase.co",
   "sb_publishable_JzkhEKjWGzWGwN_310ukew_m5EW3HrW"
 );
 
 function cleanFileName(name) {
-  return name.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-zA-Z0-9.\-_]/g, "_");
+  return name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9.\-_]/g, "_");
 }
 
 async function uploadFile() {
-  const file = document.getElementById("fileInput").files[0];
+  const file = fileInput.files[0];
   if (!file) return alert("Choisis un PDF");
+  if (file.type !== "application/pdf") return alert("Seulement PDF");
+  if (file.size > 10 * 1024 * 1024) return alert("Max 10MB");
 
-  if (file.type !== "application/pdf") {
-    return alert("Seulement des PDF !");
-  }
-
-  if (file.size > 10 * 1024 * 1024) {
-    return alert("Max 10MB");
-  }
-
-  const status = document.getElementById("status");
   status.innerText = "Upload...";
-
   const filePath = Date.now() + "-" + cleanFileName(file.name);
+
   const { error } = await supabaseClient.storage.from("documents").upload(filePath, file);
-  if (error) {
-    console.error(error);
-    return status.innerText = "❌ Erreur upload";
-  }
+  if (error) return status.innerText = "❌ Erreur upload";
 
   const { data } = supabaseClient.storage.from("documents").getPublicUrl(filePath);
 
@@ -159,55 +122,28 @@ async function uploadFile() {
 }
 
 async function loadFiles() {
-  const list = document.getElementById("fileList");
-  list.innerHTML = "";
+  fileList.innerHTML = "";
+  const { data } = await supabaseClient.from("fichiers_pdf").select("*").order("id", { ascending: false });
 
-  const { data } = await supabaseClient
-    .from("fichiers_pdf")
-    .select("*")
-    .order("id", { ascending: false });
-
-  if (!data || !data.length) {
-    list.innerHTML = "<li>Aucun fichier</li>";
-    return;
-  }
+  if (!data || !data.length) return fileList.innerHTML = "<li>Aucun fichier</li>";
 
   data.forEach(f => {
     const li = document.createElement("li");
-
-    const nameSpan = document.createElement("span");
-    nameSpan.textContent = f.nom;
-
-    const link = document.createElement("a");
-    link.href = f.url;
-    link.target = "_blank";
-
-    const btnDownload = document.createElement("button");
-    btnDownload.textContent = "Télécharger";
-    link.appendChild(btnDownload);
-
-    const btnDelete = document.createElement("button");
-    btnDelete.textContent = "Supprimer";
-    btnDelete.className = "deleteBtn";
-    btnDelete.onclick = () => deleteFile(f.id, f.chemin);
-
-    li.appendChild(nameSpan);
-    li.appendChild(link);
-    li.appendChild(btnDelete);
-
-    list.appendChild(li);
+    li.innerHTML = `${f.nom}
+      <a href="${f.url}" target="_blank"><button>Télécharger</button></a>
+      <button class="deleteBtn" onclick="deleteFile('${f.id}','${f.chemin}')">Supprimer</button>`;
+    fileList.appendChild(li);
   });
 }
 
 async function deleteFile(id, chemin) {
-  if (!confirm("Supprimer ce fichier ?")) return;
+  if (!confirm("Supprimer ?")) return;
   await supabaseClient.storage.from("documents").remove([chemin]);
   await supabaseClient.from("fichiers_pdf").delete().eq("id", id);
   loadFiles();
 }
-
-document.addEventListener("DOMContentLoaded", loadFiles);
 </script>
 
 </body>
 </html>
+

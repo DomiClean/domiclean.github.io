@@ -1,174 +1,207 @@
+<!DOCTYPE html>
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon-32x32.png" />
   <title>Domi Clean - Notre histoire</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
+  <style>
+    :root {
+      --blue: #0a6fd4;
+      --blue-pale: #e8f3fd;
+      --green: #4abf6a;
+      --cream: #fafaf8;
+      --dark: #111827;
+      --mid: #6b7280;
+      --white: #ffffff;
+      --shadow-md: 0 8px 40px rgba(10,111,212,.12);
+      --radius: 24px;
+    }
 
-<style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: linear-gradient(165deg, #e8f3fd 0%, #f5f9fe 50%, #eef7f0 100%);
+      color: var(--dark);
+      line-height: 1.8;
+      padding: 60px 20px;
+    }
 
-  body {
-  background:url('https://i.imgur.com/MG2UdRh.png') center/cover fixed;
-  }
+    .container { max-width: 800px; margin: 0 auto; }
 
-:root {
-  --bleu-clair: #2baae6;
-  --bleu-fonce: #1c4e80;
-  --vert-clair: #a8d5ba;
-  --vert-clair-fonce: #63dd4d;
-  --gris-clair: #f5f5f5;
-  --gris-fonce: #333;
-  --glass:rgba(255,255,255,.78);
+    /* Header */
+    .header-story { text-align: center; margin-bottom: 60px; }
+    .logo-story { width: 100px; margin-bottom: 20px; opacity: 0.9; }
+    h1 { font-family: 'DM Serif Display', serif; font-size: 3rem; color: var(--dark); margin-bottom: 10px; }
+    .subtitle { font-size: 1.1rem; color: var(--blue); font-weight: 500; letter-spacing: 0.02em; }
 
-}
+    /* Cartes Histoire */
+    .story-block {
+      background: var(--white);
+      padding: 45px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      margin-bottom: 40px;
+      position: relative;
+      border: 1px solid rgba(10,111,212,0.05);
+    }
+    
+    h2 { 
+      font-family: 'DM Serif Display', serif; 
+      font-size: 1.8rem; 
+      color: var(--blue); 
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
 
+    p { color: var(--dark); font-size: 1.05rem; margin-bottom: 20px; white-space: pre-line; }
+    
+    /* Éléments de liste stylisés */
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin: 25px 0;
+    }
+    .feature-item {
+      background: var(--blue-pale);
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--blue);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-.content {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 30px;
-  background: var(--glass);
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
+    .mission-box {
+      border-left: 4px solid var(--green);
+      background: #f0fdf4;
+      padding: 20px;
+      border-radius: 0 15px 15px 0;
+      margin: 20px 0;
+    }
 
-.content h1 {
-  text-align: center;
-  color: var(--bleu-fonce);
-  font-size: 2.4em;
-  margin-bottom: 20px;
-}
+    .btn-retour {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--white);
+      color: var(--blue);
+      padding: 10px 22px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      margin-bottom: 40px;
+      transition: transform 0.2s;
+    }
+    .btn-retour:hover { transform: translateX(-5px); }
 
-.content h2 {
-  color: var(--bleu-fonce);
-  margin-top: 35px;
-  font-size: 1.6em;
-  border-bottom: 2px solid var(--bleu-fonce);
-  padding-bottom: 5px;
-}
+    /* Animations */
+    .animate { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+    .animate.show { opacity: 1; transform: translateY(0); }
 
-.content p {
-  font-size: 1.1em;
-  line-height: 1.8;
-  color: black;
-  margin-top: 15px;
-  background-color: #ffffff;
-  padding-left: 10px;
-  border-radius: 10px;
-  border-left: #2baae6 2px solid;
-}
+    @media (max-width: 600px) {
+      .story-block { padding: 30px 20px; }
+      h1 { font-size: 2.2rem; }
+    }
+  </style>
+</head>
+<body>
 
-.btn-retour {
-  display: inline-block;
-  background-color: white;
-  color: var(--bleu-clair);
-  font-weight: bold;
-  padding: 10px 20px;
-  border-radius: 30px;
-  text-decoration: none;
-  transition: background-color 0.3s;
-}
+  <div class="container">
+    <a href="index.html" class="btn-retour">← Retour à l'accueil</a>
 
-.btn-retour:hover {
-  background-color: var(--bleu-clair);
-  color: white;
-}
+    <header class="header-story">
+      <img src="https://i.imgur.com/D29UJPO.png" alt="Logo" class="logo-story">
+      <h1>Notre histoire</h1>
+      <div class="subtitle">De deux lycéens nommés Yann… à la création de Domi Clean</div>
+    </header>
 
-</style>
-  </head>
+    <section class="story-block animate">
+      <h2><span>🤝</span> La rencontre</h2>
+      <p>Notre aventure a commencé en 2015, sur les bancs du lycée. Une rencontre improbable entre deux jeunes… portant le même prénom : <strong>Yann</strong>.
 
-<div class="content">
-  <div style="text-align: center; margin-bottom: 20px;">
-    <img src="https://i.imgur.com/D29UJPO.png" alt="Logo Domi Clean" style="max-width: 250px; filter: drop-shadow(1px 1px 4px rgba(0,0,0,0.2));" />
+      Mais au-delà de cette coïncidence, ce sont surtout nos points communs qui nous ont réunis :
+      🔹 Une ambition affirmée,
+      🔹 L’envie de créer quelque chose de grand.</p>
+    </section>
+
+    <section class="story-block animate">
+      <h2><span>🛠️</span> Un parcours forgé sur le terrain</h2>
+      <p>Avant de lancer notre propre société, nous avons multiplié les expériences :</p>
+      <div class="feature-list">
+        <div class="feature-item">📦 Préparateurs de commande</div>
+        <div class="feature-item">🌿 Agents en espaces verts</div>
+        <div class="feature-item">🏭 Agents de fabrication</div>
+      </div>
+      <p>et bien d’autres encore…
+
+      Toutes ces étapes nous ont forgé et renforcé notre envie d’entreprendre, de trouver un projet aligné avec nos valeurs humaines, tout en répondant à des besoins concrets sur le terrain.</p>
+    </section>
+
+    <section class="story-block animate">
+      <h2><span>💡</span> Le déclic</h2>
+      <p>Un jour, l’un de nous découvre le domaine de la santé et de l’accompagnement à domicile. Et ce fut un choc.
+
+      Manque de confort, d’écoute, de respect du rythme des personnes… Nous avons pris conscience de toutes les lacunes présentes dans un secteur pourtant si essentiel.
+
+      Nous avons alors eu une envie simple, mais puissante :
+      👉 <strong>Créer une structure qui fait mieux, avec cœur et professionnalisme.</strong></p>
+    </section>
+
+    <section class="story-block animate">
+      <h2><span>🚀</span> La naissance de Domi Clean</h2>
+      <p>Nous avons d’abord envisagé une société de transport pour personnes à mobilité réduite (TPMR). Mais après une étude à la CCI d’Évry, nous avons constaté que les coûts étaient trop élevés à ce stade.
+
+      Alors nous avons repensé notre projet, sans renier notre ambition. Et c’est ainsi qu’est née Domi Clean, une entreprise à double vocation :</p>
+      
+      <div class="mission-box">
+        <p>🧽 <strong>Le nettoyage</strong> – pour particuliers et professionnels, avec rigueur, flexibilité et confiance.
+        🤝 <strong>L’aide à domicile</strong> – pour accompagner les plus vulnérables dans le respect, la dignité et la bienveillance.</p>
+      </div>
+    </section>
+
+    <section class="story-block animate">
+      <h2><span>🌍</span> Une vision : l'humain avant tout</h2>
+      <p>Chez Domi Clean, nous voulons aller au-delà du simple service. Nous voulons créer une expérience humaine positive pour :
+
+      ✅ Nos bénéficiaires, qui méritent un accompagnement personnalisé et digne,
+      ✅ Nos clients en nettoyage, qui recherchent fiabilité et qualité,
+      ✅ Nos intervenants, que nous considérons comme des acteurs clés de notre réussite.</p>
+      
+      <p style="border-top: 1px solid #eee; padding-top: 20px; font-style: italic;">
+      Deux Yann. Une vision commune. Une société engagée : Domi Clean.
+      Notre histoire est celle de deux jeunes qui ont cru en leurs valeurs. De notre rencontre au lycée à la naissance de notre société, nous avons fait un choix : celui de bâtir une entreprise utile, humaine, et tournée vers l’avenir.
+
+      Et ce n’est que le début de l’aventure Domi Clean.</p>
+    </section>
+
+    <section class="story-block animate" style="background: var(--blue); color: white;">
+      <h2 style="color: white;">Nos valeurs & Proximité</h2>
+      <p style="color: white;">Respect, écoute, ponctualité et professionnalisme sont au cœur de chacun de nos services. Notre équipe œuvre chaque jour pour créer un lien de confiance durable avec nos bénéficiaires.
+
+      Implantés en Île-de-France, nous intervenons rapidement dans votre secteur. En choisissant Domi Clean, vous faites le choix d’un accompagnement humain, personnalisé, et sans mauvaises surprises.</p>
+    </section>
+
   </div>
 
-  <div style="text-align: center; margin-bottom: 30px;">
-    <a href="index.html" class="btn-retour">← Retour à l’accueil</a>
-  </div>
+  <script>
+    const obs = new IntersectionObserver(entries => 
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); }),
+      { threshold: 0.1 });
+    document.querySelectorAll('.animate').forEach(el => obs.observe(el));
+  </script>
 
-  <h1>Notre histoire</h1>
-  <p>De deux lycéens nommés Yann… à la création de Domi Clean<br><br>
-
-Notre aventure a commencé en 2015, sur les bancs du lycée.<br>
-Une rencontre improbable entre deux jeunes… portant le même prénom : Yann.<br><br>
-
-Mais au-delà de cette coïncidence, ce sont surtout nos points communs qui nous ont réunis :<br>
-🔹 Une ambition affirmée,<br>
-🔹 L’envie de créer quelque chose de grand,<br><br><br>
-
-
-
-Un parcours forgé sur le terrain<br><br>
-
-Avant de lancer notre propre société, nous avons multiplié les expériences :<br>
-📦 Préparateurs de commande,<br>
-🌿 Agents en espaces verts,<br>
-🏭 Agents de fabrication,<br>
-et bien d’autres encore…<br><br>
-
-Toutes ces étapes nous ont forgé et renforcé notre envie d’entreprendre, de trouver un projet aligné avec nos valeurs humaines, tout en répondant à des besoins concrets sur le terrain.<br><br><br>
-
-
-
-
-Le déclic : un secteur à fort impact humain<br><br>
-
-Un jour, l’un de nous découvre le domaine de la santé et de l’accompagnement à domicile.<br>
-Et ce fut un choc.<br><br>
-
-Manque de confort, d’écoute, de respect du rythme des personnes…<br>
-Nous avons pris conscience de toutes les lacunes présentes dans un secteur pourtant si essentiel.<br><br>
-
-Nous avons alors eu une envie simple, mais puissante :<br>
-👉 Créer une structure qui fait mieux, avec cœur et professionnalisme.<br><br><br>
-
-
-
-
-Domi Clean : une double mission<br><br>
-
-Nous avons d’abord envisagé une société de transport pour personnes à mobilité réduite (TPMR).<br>
-Mais après une étude à la CCI d’Évry, nous avons constaté que les coûts étaient trop élevés à ce stade.<br><br>
-
-Alors nous avons repensé notre projet, sans renier notre ambition.<br>
-Et c’est ainsi qu’est née Domi Clean, une entreprise à double vocation :<br><br>
-
-🧽 Le nettoyage – pour particuliers et professionnels, avec rigueur, flexibilité et confiance.<br>
-🤝 L’aide à domicile – pour accompagner les plus vulnérables dans le respect, la dignité et la bienveillance.<br><br><br>
-
-
-
-
-Une vision simple : l’humain avant tout<br><br>
-
-Chez Domi Clean, nous voulons aller au-delà du simple service.<br>
-Nous voulons créer une expérience humaine positive pour :<br><br>
-
-✅ Nos bénéficiaires, qui méritent un accompagnement personnalisé et digne,<br>
-✅ Nos clients en nettoyage, qui recherchent fiabilité et qualité,<br>
-✅ Nos intervenants, que nous considérons comme des acteurs clés de notre réussite.<br><br><br>
-
-
-
-
-Deux Yann. Une vision commune. Une société engagée : Domi Clean.<br><br>
-
-Notre histoire est celle de deux jeunes qui ont cru en leurs valeurs.<br>
-De notre rencontre au lycée à la naissance de notre société, nous avons fait un choix :<br>
-💡 Celui de bâtir une entreprise utile, humaine, et tournée vers l’avenir.<br><br>
-
-Et ce n’est que le début de l’aventure Domi Clean.</p>
-
-  <h2>Nos valeurs</h2>
-  <p>Respect, écoute, ponctualité et professionnalisme sont au cœur de chacun de nos services. Notre équipe œuvre chaque jour pour créer un lien de confiance durable avec nos bénéficiaires.</p>
-
-  <h2>Un service de proximité</h2>
-  <p>Implantés en Île-de-France, nous intervenons rapidement dans votre secteur. En choisissant Domi Clean, vous faites le choix d’un accompagnement humain, personnalisé, et sans mauvaises surprises.</p>
-</div>
-
-
+</body>
+</html>
 
 
 

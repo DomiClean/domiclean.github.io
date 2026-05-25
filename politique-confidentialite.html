@@ -2,187 +2,408 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Politique de confidentialité – Domi Clean</title>
-</head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Politique de confidentialité — Domi Clean</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="favicon-32x32.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+
 <style>
-/* ===== VARIABLES (identiques au site principal) ===== */
 :root{
-  --blue:#007bbd;
-  --blue-light:#00c6ff;
-  --dark:#1f2933;
-  --glass:rgba(255,255,255,.85);
+  --p:#0a6fd4;--p-dark:#0856a8;--p-light:#3fa9f5;--p-pale:#dbeafe;
+  --a:#22c55e;--a-dark:#16a34a;--a-pale:#dcfce7;
+  --dark:#0f172a;--dark2:#1e293b;--dark3:#334155;
+  --text:#475569;--muted:#94a3b8;--border:#e2e8f0;--bg:#f8fafc;--white:#ffffff;
+  --sh:0 4px 20px rgba(10,111,212,.1);
+  --r-sm:10px;--r:16px;--r-lg:24px;--r-f:9999px;
+  --nav-h:72px;--ease:.25s cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;font-size:1rem;line-height:1.65;color:var(--dark3);background:var(--white);overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+h1,h2,h3{font-family:'DM Serif Display',serif;line-height:1.2;color:var(--dark)}
+
+.container{width:100%;max-width:1200px;margin:0 auto;padding:0 24px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;font-size:.9375rem;font-weight:600;border-radius:var(--r-f);transition:var(--ease)}
+.btn-primary{background:var(--p);color:var(--white);box-shadow:0 4px 15px rgba(10,111,212,.3)}
+.btn-primary:hover{background:var(--p-dark);transform:translateY(-2px)}
+
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:var(--r-f)}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav-h);background:rgba(255,255,255,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 1px 24px rgba(0,0,0,.08);transition:var(--ease)}
+.nav-inner{height:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.nav-logo{display:flex;align-items:center;gap:10px;flex-shrink:0;font-family:'DM Serif Display',serif;font-size:1.35rem;color:var(--dark)}
+.nav-logo img{width:38px;height:38px;border-radius:var(--r-sm);object-fit:contain}
+.nav-logo-txt{display:flex;flex-direction:column;line-height:1.1}
+.nav-logo-txt span{color:var(--p)}
+.nav-logo-txt small{font-family:'DM Sans',sans-serif;font-size:.62rem;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.nav-links{display:flex;align-items:center;gap:2px}
+.nav-link{padding:8px 13px;font-size:.9rem;font-weight:500;color:var(--dark3);border-radius:var(--r-sm);transition:var(--ease)}
+.nav-link:hover{color:var(--p);background:var(--p-pale)}
+.nav-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.nav-tel{display:flex;align-items:center;gap:6px;font-size:.875rem;font-weight:500;color:var(--dark3);padding:8px 13px;border-radius:var(--r-f);transition:var(--ease)}
+.nav-tel:hover{color:var(--p)}
+.nav-burger{display:none;flex-direction:column;gap:5px;width:40px;height:40px;align-items:center;justify-content:center;border-radius:var(--r-sm)}
+.nav-burger span{display:block;width:22px;height:2px;background:var(--dark);border-radius:var(--r-f);transition:var(--ease)}
+.nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-burger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.drawer{position:fixed;inset:0;z-index:190;background:var(--dark);display:flex;flex-direction:column;padding:96px 28px 48px;transform:translateX(100%);transition:transform .4s cubic-bezier(.4,0,.2,1)}
+.drawer.open{transform:translateX(0)}
+.drawer-links{display:flex;flex-direction:column;gap:2px;flex:1}
+.drawer-link{font-family:'DM Serif Display',serif;font-size:1.85rem;color:rgba(255,255,255,.75);padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07);transition:var(--ease)}
+.drawer-link:hover{color:var(--white);padding-left:8px}
+.drawer-bottom{display:flex;flex-direction:column;gap:12px;margin-top:28px}
+.drawer-tel{font-size:.9375rem;color:var(--muted)}
+.drawer-tel a{color:rgba(255,255,255,.8)}
+
+/* PAGE HEADER */
+.page-header{padding:calc(var(--nav-h) + 56px) 0 56px;background:var(--bg);border-bottom:1px solid var(--border)}
+.page-header-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:.875rem;color:var(--muted);margin-bottom:14px}
+.breadcrumb a{color:var(--p);font-weight:500}
+.breadcrumb a:hover{text-decoration:underline}
+.breadcrumb-sep{color:var(--border)}
+.page-header h1{font-size:clamp(1.75rem,3vw,2.5rem);margin-bottom:8px}
+.page-header-meta{font-size:.875rem;color:var(--muted);display:flex;align-items:center;gap:6px}
+
+/* LAYOUT */
+.legal-layout{display:grid;grid-template-columns:220px 1fr;gap:48px;padding:64px 0 96px;align-items:start}
+
+/* TOC */
+.toc{position:sticky;top:calc(var(--nav-h) + 24px);background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px}
+.toc-title{font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px}
+.toc-links{display:flex;flex-direction:column;gap:2px}
+.toc-link{font-size:.875rem;color:var(--text);font-weight:500;padding:7px 10px;border-radius:var(--r-sm);transition:var(--ease)}
+.toc-link:hover{color:var(--p);background:var(--p-pale)}
+.toc-link.active{color:var(--p);background:var(--p-pale);font-weight:600}
+
+/* Sections */
+.legal-content{display:flex;flex-direction:column;gap:28px}
+.legal-section{background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);padding:32px;scroll-margin-top:calc(var(--nav-h) + 24px);transition:var(--ease)}
+.legal-section:hover{border-color:rgba(10,111,212,.2);box-shadow:var(--sh)}
+.ls-head{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.ls-ico{width:40px;height:40px;border-radius:var(--r-sm);background:var(--p-pale);display:flex;align-items:center;justify-content:center;font-size:1.125rem;flex-shrink:0}
+.ls-head h2{font-family:'DM Sans',sans-serif;font-size:1.0625rem;font-weight:700;color:var(--dark)}
+.legal-section p{font-size:.9375rem;color:var(--text);line-height:1.8}
+.legal-section p+p{margin-top:10px}
+.legal-section a{color:var(--p);font-weight:600}
+.legal-section a:hover{text-decoration:underline}
+.legal-section strong{color:var(--dark2);font-weight:600}
+
+/* List items */
+.ls-list{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.ls-list-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;
+  background:var(--bg);border-radius:var(--r-sm);
+  font-size:.9rem;color:var(--dark3);
+  border-left:3px solid var(--p);
+}
+.ls-list-item::before{content:'';width:6px;height:6px;background:var(--p);border-radius:50%;flex-shrink:0}
+
+/* Rights grid */
+.ls-rights{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.ls-right-item{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 14px;
+  background:var(--p-pale);border-radius:var(--r-sm);
+  font-size:.875rem;font-weight:600;color:var(--p);
 }
 
-/* ===== RESET ===== */
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+/* Highlight */
+.ls-highlight{margin-top:14px;padding:14px 16px;border-left:3px solid var(--a);background:var(--a-pale);border-radius:0 var(--r-sm) var(--r-sm) 0}
+.ls-highlight p{font-size:.9rem;color:var(--a-dark);font-weight:500}
+
+/* Cookie badge */
+.ls-badge-ok{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:14px;padding:10px 16px;
+  background:var(--a-pale);border-radius:var(--r-f);
+  font-size:.9rem;font-weight:600;color:var(--a-dark);
 }
 
-/* ===== BODY ===== */
-body{
-  font-family:'Inter',sans-serif;
-  background:url('https://i.imgur.com/MG2UdRh.png') center/cover fixed;
-  color:var(--dark);
-  line-height:1.7;
-  padding:40px 15px;
+/* FOOTER */
+.footer{background:var(--dark);color:rgba(255,255,255,.58);padding:80px 0 36px}
+.footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:48px;padding-bottom:60px;border-bottom:1px solid rgba(255,255,255,.07)}
+.footer-brand-logo{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.footer-brand-logo img{width:36px;height:36px;border-radius:var(--r-sm);object-fit:contain}
+.footer-brand-name{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--white)}
+.footer-desc{font-size:.875rem;line-height:1.72;margin-bottom:22px}
+.footer-socials{display:flex;gap:9px}
+.footer-soc{width:35px;height:35px;background:rgba(255,255,255,.07);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:.875rem;transition:var(--ease);color:rgba(255,255,255,.65)}
+.footer-soc:hover{background:var(--p);color:var(--white)}
+.footer-col-title{font-size:.7875rem;font-weight:700;color:var(--white);letter-spacing:.07em;text-transform:uppercase;margin-bottom:18px}
+.footer-links{display:flex;flex-direction:column;gap:9px}
+.footer-link{font-size:.875rem;transition:var(--ease)}
+.footer-link:hover{color:var(--white)}
+.footer-bottom{padding-top:28px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:.8125rem}
+.footer-bottom-links{display:flex;gap:22px;flex-wrap:wrap}
+.footer-bottom a:hover{color:var(--white)}
+
+@media(max-width:900px){.legal-layout{grid-template-columns:1fr}.toc{display:none}}
+@media(max-width:768px){
+  :root{--nav-h:64px}
+  .nav-links,.nav-tel,.nav-actions .btn{display:none}
+  .nav-burger{display:flex}
+  .ls-rights{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr;gap:30px}
+  .footer-bottom{flex-direction:column;align-items:center;text-align:center}
 }
-
-/* ===== CONTENEUR GLOBAL ===== */
-body > h1,
-body > h2,
-body > p{
-  max-width:900px;
-  margin-left:auto;
-  margin-right:auto;
-}
-
-/* ===== TITRE PRINCIPAL ===== */
-h1{
-  background:var(--glass);
-  padding:30px;
-  border-radius:20px;
-  text-align:center;
-  color:var(--blue);
-  margin-bottom:40px;
-  box-shadow:0 15px 40px rgba(0,0,0,.1);
-}
-
-/* ===== SECTIONS ===== */
-h2{
-    background:var(--glass) ;
-    padding: 10px;
-border-radius: 20px;  
-margin-top:40px;
-  margin-bottom:10px;
-  color:var(--blue);
-  font-size:1.3rem;
-  width: 500px;
-  text-align: center;
-}
-
-/* ===== PARAGRAPHES ===== */
-p{
-  background:var(--glass);
-  padding:20px 25px;
-  border-radius:15px;
-  margin-bottom:20px;
-  box-shadow:0 10px 30px rgba(0,0,0,.08);
-}
-
-/* ===== LIENS ===== */
-a{
-  color:var(--blue);
-  font-weight:600;
-  text-decoration:none;
-}
-
-li{
-  max-width: 500px;
-  background: var(--glass);
-  padding: 10px;
-  border-left: 5px solid var(--blue);
-  margin-bottom: 10px;
-  border-radius: 10px;
-  margin: 0 auto 10px ;
-}
-
-a:hover{
-  color:var(--blue-light);
-  text-decoration:underline;
-}
-
-/* ===== STRONG ===== */
-strong{
-  color:var(--blue);
-}
-
-/* ===== MOBILE ===== */
-@media (max-width:768px){
-  body{
-    padding:25px 10px;
-  }
-
-  h1{
-    font-size:1.8rem;
-    padding:25px;
-  }
-
-  p{
-    padding:18px;
-  }
-}
+@media(max-width:480px){.container{padding:0 18px}.legal-section{padding:22px 18px}}
 </style>
-
+</head>
 <body>
 
-<h1>Politique de confidentialité</h1>
+<!-- NAV -->
+<nav class="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="https://i.imgur.com/D29UJPO.png" alt="Logo Domi Clean" onerror="this.style.display='none'">
+        <div class="nav-logo-txt">
+          <span>Domi Clean</span>
+          <small>Île-de-France</small>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="index.html#services" class="nav-link">Services</a>
+        <a href="histoire.html" class="nav-link">Notre histoire</a>
+        <a href="index.html#faq" class="nav-link">FAQ</a>
+        <a href="index.html#contact" class="nav-link">Contact</a>
+      </div>
+      <div class="nav-actions">
+        <a href="tel:0628487217" class="nav-tel">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12.73a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.62 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          06 28 48 72 17
+        </a>
+        <a href="index.html#reservation" class="btn btn-primary">📅 Prendre rendez-vous</a>
+      </div>
+      <button class="nav-burger" id="burger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
 
-<h2>1. Données collectées</h2>
-<p>
-Dans le cadre de son activité, Domi Clean collecte uniquement les données
-personnelles strictement nécessaires :
-</p>
-<ul>
-  <li>Nom et prénom</li>
-  <li>Adresse email</li>
-  <li>Numéro de téléphone</li>
-  <li>Message transmis via le formulaire de contact</li>
-</ul>
+<!-- DRAWER -->
+<div class="drawer" id="drawer">
+  <div class="drawer-links">
+    <a href="index.html#services" class="drawer-link" data-close>Services</a>
+    <a href="histoire.html" class="drawer-link" data-close>Notre histoire</a>
+    <a href="index.html#faq" class="drawer-link" data-close>FAQ</a>
+    <a href="index.html#contact" class="drawer-link" data-close>Contact</a>
+  </div>
+  <div class="drawer-bottom">
+    <a href="index.html#reservation" class="btn btn-primary" style="padding:16px 36px;font-size:1rem;border-radius:var(--r-f)" data-close>📅 Prendre rendez-vous</a>
+    <p class="drawer-tel">📞 <a href="tel:0628487217">06 28 48 72 17</a></p>
+  </div>
+</div>
 
-<h2>2. Finalité de la collecte</h2>
-<p>
-Les données personnelles sont collectées uniquement afin de :
-</p>
-<ul>
-  <li>Répondre aux demandes de contact</li>
-  <li>Établir des devis</li>
-  <li>Assurer le suivi des échanges professionnels</li>
-</ul>
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="container">
+    <div class="page-header-inner">
+      <div>
+        <div class="breadcrumb">
+          <a href="index.html">Accueil</a>
+          <span class="breadcrumb-sep">›</span>
+          <span>Politique de confidentialité</span>
+        </div>
+        <h1>Politique de confidentialité</h1>
+        <div class="page-header-meta">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Dernière mise à jour : 2025
+        </div>
+      </div>
+      <a href="index.html" class="btn btn-primary">← Retour à l'accueil</a>
+    </div>
+  </div>
+</div>
 
-<h2>3. Durée de conservation</h2>
-<p>
-Les données personnelles sont conservées pour une durée maximale de
-<strong>3 ans</strong> à compter du dernier contact avec l’utilisateur,
-sauf obligation légale contraire.
-</p>
+<!-- CONTENT -->
+<div class="container">
+  <div class="legal-layout">
 
-<h2>4. Sécurité des données</h2>
-<p>
-Domi Clean met en œuvre toutes les mesures techniques et organisationnelles
-appropriées afin de garantir la sécurité et la confidentialité des données personnelles.
-</p>
+    <!-- TOC -->
+    <aside class="toc">
+      <div class="toc-title">Sommaire</div>
+      <div class="toc-links">
+        <a href="#collecte" class="toc-link active">1. Données collectées</a>
+        <a href="#finalite" class="toc-link">2. Finalité</a>
+        <a href="#conservation" class="toc-link">3. Conservation</a>
+        <a href="#securite" class="toc-link">4. Sécurité</a>
+        <a href="#partage" class="toc-link">5. Partage</a>
+        <a href="#droits" class="toc-link">6. Vos droits</a>
+        <a href="#cookies" class="toc-link">7. Cookies</a>
+      </div>
+    </aside>
 
-<h2>5. Partage des données</h2>
-<p>
-Les données personnelles ne sont en aucun cas vendues, louées ou transmises
-à des tiers.
-</p>
+    <!-- Sections -->
+    <div class="legal-content">
 
-<h2>6. Droits des utilisateurs</h2>
-<p>
-Conformément au Règlement Général sur la Protection des Données (RGPD),
-vous disposez des droits suivants :
-</p>
-<ul>
-  <li>Droit d’accès</li>
-  <li>Droit de rectification</li>
-  <li>Droit d’effacement</li>
-  <li>Droit d’opposition</li>
-</ul>
+      <div class="legal-section" id="collecte">
+        <div class="ls-head">
+          <div class="ls-ico">📋</div>
+          <h2>1. Données collectées</h2>
+        </div>
+        <p>Dans le cadre de son activité, Domi Clean collecte uniquement les données personnelles strictement nécessaires :</p>
+        <div class="ls-list">
+          <div class="ls-list-item">Nom et prénom</div>
+          <div class="ls-list-item">Adresse email</div>
+          <div class="ls-list-item">Numéro de téléphone</div>
+          <div class="ls-list-item">Message transmis via le formulaire de contact</div>
+        </div>
+      </div>
 
-<p>
-Pour exercer vos droits, vous pouvez contacter :
-<a href="mailto:domicleanidf@gmail.com">domicleanidf@gmail.com</a>
-</p>
+      <div class="legal-section" id="finalite">
+        <div class="ls-head">
+          <div class="ls-ico">🎯</div>
+          <h2>2. Finalité de la collecte</h2>
+        </div>
+        <p>Les données personnelles sont collectées uniquement afin de :</p>
+        <div class="ls-list">
+          <div class="ls-list-item">Répondre aux demandes de contact</div>
+          <div class="ls-list-item">Établir des devis personnalisés</div>
+          <div class="ls-list-item">Assurer le suivi des échanges professionnels</div>
+        </div>
+      </div>
 
-<h2>7. Cookies</h2>
-<p>
-Le site Domi Clean n’utilise aucun cookie de suivi ou de mesure d’audience.
-Aucun consentement préalable n’est requis.
-</p>
+      <div class="legal-section" id="conservation">
+        <div class="ls-head">
+          <div class="ls-ico">⏱️</div>
+          <h2>3. Durée de conservation</h2>
+        </div>
+        <p>Les données personnelles sont conservées pour une durée maximale de <strong>3 ans</strong> à compter du dernier contact avec l'utilisateur, sauf obligation légale contraire.</p>
+      </div>
 
+      <div class="legal-section" id="securite">
+        <div class="ls-head">
+          <div class="ls-ico">🛡️</div>
+          <h2>4. Sécurité des données</h2>
+        </div>
+        <p>Domi Clean met en œuvre toutes les mesures techniques et organisationnelles appropriées afin de garantir la sécurité et la confidentialité des données personnelles collectées.</p>
+      </div>
+
+      <div class="legal-section" id="partage">
+        <div class="ls-head">
+          <div class="ls-ico">🔒</div>
+          <h2>5. Partage des données</h2>
+        </div>
+        <p>Les données personnelles ne sont en aucun cas vendues, louées ou transmises à des tiers. Elles restent exclusivement utilisées par Domi Clean dans le cadre des finalités décrites ci-dessus.</p>
+      </div>
+
+      <div class="legal-section" id="droits">
+        <div class="ls-head">
+          <div class="ls-ico">⚖️</div>
+          <h2>6. Droits des utilisateurs</h2>
+        </div>
+        <p>Conformément au Règlement Général sur la Protection des Données (RGPD), vous disposez des droits suivants :</p>
+        <div class="ls-rights">
+          <div class="ls-right-item">✅ Droit d'accès</div>
+          <div class="ls-right-item">✅ Droit de rectification</div>
+          <div class="ls-right-item">✅ Droit d'effacement</div>
+          <div class="ls-right-item">✅ Droit d'opposition</div>
+        </div>
+        <div class="ls-highlight">
+          <p>Pour exercer vos droits, contactez-nous : <a href="mailto:domicleanidf@gmail.com">domicleanidf@gmail.com</a></p>
+        </div>
+      </div>
+
+      <div class="legal-section" id="cookies">
+        <div class="ls-head">
+          <div class="ls-ico">🍪</div>
+          <h2>7. Cookies</h2>
+        </div>
+        <p>Le site Domi Clean n'utilise aucun cookie de suivi ou de mesure d'audience.</p>
+        <div class="ls-badge-ok">✅ Aucun consentement préalable requis</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-logo">
+          <img src="https://i.imgur.com/D29UJPO.png" alt="Domi Clean" onerror="this.style.display='none'">
+          <span class="footer-brand-name">Domi Clean</span>
+        </div>
+        <p class="footer-desc">Services professionnels de nettoyage et d'aide à domicile en Île-de-France.</p>
+        <div class="footer-socials">
+          <a href="#" class="footer-soc" aria-label="Facebook">f</a>
+          <a href="#" class="footer-soc" aria-label="Instagram">📷</a>
+          <a href="mailto:domicleanidf@gmail.com" class="footer-soc" aria-label="Email">@</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Services</div>
+        <div class="footer-links">
+          <a href="index.html#services" class="footer-link">Nettoyage professionnel</a>
+          <a href="index.html#services" class="footer-link">Aide à domicile</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Entreprise</div>
+        <div class="footer-links">
+          <a href="histoire.html" class="footer-link">Notre histoire</a>
+          <a href="index.html#faq" class="footer-link">FAQ</a>
+          <a href="index.html#contact" class="footer-link">Contact</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Légal</div>
+        <div class="footer-links">
+          <a href="mentions-legales.html" class="footer-link">Mentions légales</a>
+          <a href="politique-confidentialite.html" class="footer-link">Confidentialité</a>
+          <a href="cgv.html" class="footer-link">CGV</a>
+        </div>
+        <div style="margin-top:22px">
+          <div class="footer-col-title">Contact</div>
+          <div class="footer-links">
+            <a href="tel:0628487217" class="footer-link">06 28 48 72 17</a>
+            <a href="mailto:domicleanidf@gmail.com" class="footer-link">domicleanidf@gmail.com</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Domi Clean — Tous droits réservés.</span>
+      <div class="footer-bottom-links">
+        <a href="mentions-legales.html" class="footer-link">Mentions légales</a>
+        <a href="politique-confidentialite.html" class="footer-link">Confidentialité</a>
+        <a href="cgv.html" class="footer-link">CGV</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const burger = document.getElementById('burger');
+const drawer = document.getElementById('drawer');
+function closeDrawer(){drawer.classList.remove('open');burger.classList.remove('open');burger.setAttribute('aria-expanded','false');document.body.style.overflow=''}
+burger.addEventListener('click',()=>{const o=drawer.classList.toggle('open');burger.classList.toggle('open',o);burger.setAttribute('aria-expanded',String(o));document.body.style.overflow=o?'hidden':''});
+document.querySelectorAll('[data-close]').forEach(el=>el.addEventListener('click',closeDrawer));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer()});
+
+const sections=document.querySelectorAll('.legal-section[id]');
+const tocLinks=document.querySelectorAll('.toc-link');
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){tocLinks.forEach(l=>l.classList.remove('active'));const a=document.querySelector(`.toc-link[href="#${e.target.id}"]`);if(a)a.classList.add('active')}});
+},{rootMargin:'-30% 0px -60% 0px'});
+sections.forEach(s=>io.observe(s));
+</script>
 </body>
 </html>

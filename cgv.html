@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conditions Générales de Vente — Domi Clean</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="favicon-32x32.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --p:#0a6fd4;--p-dark:#0856a8;--p-light:#3fa9f5;--p-pale:#dbeafe;
+  --a:#22c55e;--a-dark:#16a34a;--a-pale:#dcfce7;
+  --dark:#0f172a;--dark2:#1e293b;--dark3:#334155;
+  --text:#475569;--muted:#94a3b8;--border:#e2e8f0;--bg:#f8fafc;--white:#ffffff;
+  --sh:0 4px 20px rgba(10,111,212,.1);
+  --r-sm:10px;--r:16px;--r-lg:24px;--r-f:9999px;
+  --nav-h:72px;--ease:.25s cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;font-size:1rem;line-height:1.65;color:var(--dark3);background:var(--white);overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+h1,h2,h3{font-family:'DM Serif Display',serif;line-height:1.2;color:var(--dark)}
+
+.container{width:100%;max-width:1200px;margin:0 auto;padding:0 24px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;font-size:.9375rem;font-weight:600;border-radius:var(--r-f);transition:var(--ease)}
+.btn-primary{background:var(--p);color:var(--white);box-shadow:0 4px 15px rgba(10,111,212,.3)}
+.btn-primary:hover{background:var(--p-dark);transform:translateY(-2px)}
+
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:var(--r-f)}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav-h);background:rgba(255,255,255,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 1px 24px rgba(0,0,0,.08)}
+.nav-inner{height:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.nav-logo{display:flex;align-items:center;gap:10px;flex-shrink:0;font-family:'DM Serif Display',serif;font-size:1.35rem;color:var(--dark)}
+.nav-logo img{width:38px;height:38px;border-radius:var(--r-sm);object-fit:contain}
+.nav-logo-txt{display:flex;flex-direction:column;line-height:1.1}
+.nav-logo-txt span{color:var(--p)}
+.nav-logo-txt small{font-family:'DM Sans',sans-serif;font-size:.62rem;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.nav-links{display:flex;align-items:center;gap:2px}
+.nav-link{padding:8px 13px;font-size:.9rem;font-weight:500;color:var(--dark3);border-radius:var(--r-sm);transition:var(--ease)}
+.nav-link:hover{color:var(--p);background:var(--p-pale)}
+.nav-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.nav-tel{display:flex;align-items:center;gap:6px;font-size:.875rem;font-weight:500;color:var(--dark3);padding:8px 13px;border-radius:var(--r-f);transition:var(--ease)}
+.nav-tel:hover{color:var(--p)}
+.nav-burger{display:none;flex-direction:column;gap:5px;width:40px;height:40px;align-items:center;justify-content:center;border-radius:var(--r-sm)}
+.nav-burger span{display:block;width:22px;height:2px;background:var(--dark);border-radius:var(--r-f);transition:var(--ease)}
+.nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-burger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.drawer{position:fixed;inset:0;z-index:190;background:var(--dark);display:flex;flex-direction:column;padding:96px 28px 48px;transform:translateX(100%);transition:transform .4s cubic-bezier(.4,0,.2,1)}
+.drawer.open{transform:translateX(0)}
+.drawer-links{display:flex;flex-direction:column;gap:2px;flex:1}
+.drawer-link{font-family:'DM Serif Display',serif;font-size:1.85rem;color:rgba(255,255,255,.75);padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07);transition:var(--ease)}
+.drawer-link:hover{color:var(--white);padding-left:8px}
+.drawer-bottom{display:flex;flex-direction:column;gap:12px;margin-top:28px}
+.drawer-tel{font-size:.9375rem;color:var(--muted)}
+.drawer-tel a{color:rgba(255,255,255,.8)}
+
+/* PAGE HEADER */
+.page-header{padding:calc(var(--nav-h) + 56px) 0 56px;background:var(--bg);border-bottom:1px solid var(--border)}
+.page-header-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:.875rem;color:var(--muted);margin-bottom:14px}
+.breadcrumb a{color:var(--p);font-weight:500}
+.breadcrumb a:hover{text-decoration:underline}
+.breadcrumb-sep{color:var(--border)}
+.page-header h1{font-size:clamp(1.75rem,3vw,2.5rem);margin-bottom:8px}
+.page-header-meta{font-size:.875rem;color:var(--muted);display:flex;align-items:center;gap:6px}
+
+/* LAYOUT */
+.legal-layout{display:grid;grid-template-columns:220px 1fr;gap:48px;padding:64px 0 96px;align-items:start}
+
+/* TOC */
+.toc{position:sticky;top:calc(var(--nav-h) + 24px);background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px}
+.toc-title{font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px}
+.toc-links{display:flex;flex-direction:column;gap:2px}
+.toc-link{font-size:.875rem;color:var(--text);font-weight:500;padding:7px 10px;border-radius:var(--r-sm);transition:var(--ease)}
+.toc-link:hover{color:var(--p);background:var(--p-pale)}
+.toc-link.active{color:var(--p);background:var(--p-pale);font-weight:600}
+
+/* Sections */
+.legal-content{display:flex;flex-direction:column;gap:28px}
+.legal-section{background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);padding:32px;scroll-margin-top:calc(var(--nav-h) + 24px);transition:var(--ease)}
+.legal-section:hover{border-color:rgba(10,111,212,.2);box-shadow:var(--sh)}
+.ls-head{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.ls-ico{width:40px;height:40px;border-radius:var(--r-sm);background:var(--p-pale);display:flex;align-items:center;justify-content:center;font-size:1.125rem;flex-shrink:0}
+.ls-head h2{font-family:'DM Sans',sans-serif;font-size:1.0625rem;font-weight:700;color:var(--dark)}
+.legal-section p{font-size:.9375rem;color:var(--text);line-height:1.8}
+.legal-section p+p{margin-top:10px}
+.legal-section a{color:var(--p);font-weight:600}
+.legal-section a:hover{text-decoration:underline}
+.legal-section strong{color:var(--dark2);font-weight:600}
+
+.ls-list{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.ls-list-item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:var(--bg);border-radius:var(--r-sm);font-size:.9rem;color:var(--dark3);border-left:3px solid var(--p)}
+.ls-list-item::before{content:'';width:6px;height:6px;background:var(--p);border-radius:50%;flex-shrink:0;margin-top:6px}
+
+.ls-row{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.ls-field{display:flex;gap:0;background:var(--bg);border-radius:var(--r-sm);overflow:hidden}
+.ls-field-key{font-size:.8125rem;font-weight:600;color:var(--muted);padding:10px 14px;min-width:180px;background:var(--border);display:flex;align-items:center}
+.ls-field-val{font-size:.9rem;color:var(--dark3);padding:10px 14px;display:flex;align-items:center;flex:1}
+
+.ls-highlight{margin-top:14px;padding:14px 16px;border-left:3px solid var(--a);background:var(--a-pale);border-radius:0 var(--r-sm) var(--r-sm) 0}
+.ls-highlight p{font-size:.9rem;color:var(--a-dark);font-weight:500}
+
+.ls-warning{margin-top:14px;padding:14px 16px;border-left:3px solid #f59e0b;background:#fffbeb;border-radius:0 var(--r-sm) var(--r-sm) 0}
+.ls-warning p{font-size:.9rem;color:#92400e;font-weight:500}
+
+/* FOOTER */
+.footer{background:var(--dark);color:rgba(255,255,255,.58);padding:80px 0 36px}
+.footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:48px;padding-bottom:60px;border-bottom:1px solid rgba(255,255,255,.07)}
+.footer-brand-logo{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.footer-brand-logo img{width:36px;height:36px;border-radius:var(--r-sm);object-fit:contain}
+.footer-brand-name{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--white)}
+.footer-desc{font-size:.875rem;line-height:1.72;margin-bottom:22px}
+.footer-socials{display:flex;gap:9px}
+.footer-soc{width:35px;height:35px;background:rgba(255,255,255,.07);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:.875rem;transition:var(--ease);color:rgba(255,255,255,.65)}
+.footer-soc:hover{background:var(--p);color:var(--white)}
+.footer-col-title{font-size:.7875rem;font-weight:700;color:var(--white);letter-spacing:.07em;text-transform:uppercase;margin-bottom:18px}
+.footer-links{display:flex;flex-direction:column;gap:9px}
+.footer-link{font-size:.875rem;transition:var(--ease)}
+.footer-link:hover{color:var(--white)}
+.footer-bottom{padding-top:28px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:.8125rem}
+.footer-bottom-links{display:flex;gap:22px;flex-wrap:wrap}
+.footer-bottom a:hover{color:var(--white)}
+
+@media(max-width:900px){.legal-layout{grid-template-columns:1fr}.toc{display:none}}
+@media(max-width:768px){
+  :root{--nav-h:64px}
+  .nav-links,.nav-tel,.nav-actions .btn{display:none}
+  .nav-burger{display:flex}
+  .footer-grid{grid-template-columns:1fr;gap:30px}
+  .footer-bottom{flex-direction:column;align-items:center;text-align:center}
+  .ls-field{flex-direction:column}
+  .ls-field-key{min-width:unset}
+}
+@media(max-width:480px){.container{padding:0 18px}.legal-section{padding:22px 18px}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="https://i.imgur.com/D29UJPO.png" alt="Logo Domi Clean" onerror="this.style.display='none'">
+        <div class="nav-logo-txt">
+          <span>Domi Clean</span>
+          <small>Île-de-France</small>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="index.html#services" class="nav-link">Services</a>
+        <a href="histoire.html" class="nav-link">Notre histoire</a>
+        <a href="index.html#faq" class="nav-link">FAQ</a>
+        <a href="index.html#contact" class="nav-link">Contact</a>
+      </div>
+      <div class="nav-actions">
+        <a href="tel:0628487217" class="nav-tel">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12.73a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.62 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          06 28 48 72 17
+        </a>
+        <a href="index.html#reservation" class="btn btn-primary">📅 Prendre rendez-vous</a>
+      </div>
+      <button class="nav-burger" id="burger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- DRAWER -->
+<div class="drawer" id="drawer">
+  <div class="drawer-links">
+    <a href="index.html#services" class="drawer-link" data-close>Services</a>
+    <a href="histoire.html" class="drawer-link" data-close>Notre histoire</a>
+    <a href="index.html#faq" class="drawer-link" data-close>FAQ</a>
+    <a href="index.html#contact" class="drawer-link" data-close>Contact</a>
+  </div>
+  <div class="drawer-bottom">
+    <a href="index.html#reservation" class="btn btn-primary" style="padding:16px 36px;font-size:1rem;border-radius:var(--r-f)" data-close>📅 Prendre rendez-vous</a>
+    <p class="drawer-tel">📞 <a href="tel:0628487217">06 28 48 72 17</a></p>
+  </div>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="container">
+    <div class="page-header-inner">
+      <div>
+        <div class="breadcrumb">
+          <a href="index.html">Accueil</a>
+          <span class="breadcrumb-sep">›</span>
+          <span>CGV</span>
+        </div>
+        <h1>Conditions Générales de Vente</h1>
+        <div class="page-header-meta">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          En vigueur au 1er janvier 2025
+        </div>
+      </div>
+      <a href="index.html" class="btn btn-primary">← Retour à l'accueil</a>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="container">
+  <div class="legal-layout">
+
+    <!-- TOC -->
+    <aside class="toc">
+      <div class="toc-title">Sommaire</div>
+      <div class="toc-links">
+        <a href="#objet" class="toc-link active">1. Objet</a>
+        <a href="#prestations" class="toc-link">2. Prestations</a>
+        <a href="#devis" class="toc-link">3. Devis & commande</a>
+        <a href="#tarifs" class="toc-link">4. Tarifs</a>
+        <a href="#paiement" class="toc-link">5. Paiement</a>
+        <a href="#annulation" class="toc-link">6. Annulation</a>
+        <a href="#execution" class="toc-link">7. Exécution</a>
+        <a href="#responsabilite" class="toc-link">8. Responsabilité</a>
+        <a href="#reclamations" class="toc-link">9. Réclamations</a>
+        <a href="#donnees" class="toc-link">10. Données personnelles</a>
+        <a href="#droit" class="toc-link">11. Droit applicable</a>
+      </div>
+    </aside>
+
+    <!-- Sections -->
+    <div class="legal-content">
+
+      <div class="legal-section" id="objet">
+        <div class="ls-head">
+          <div class="ls-ico">📄</div>
+          <h2>1. Objet</h2>
+        </div>
+        <p>Les présentes Conditions Générales de Vente (CGV) régissent les relations contractuelles entre <strong>Domi Clean</strong> (ci-après « le Prestataire ») et tout client particulier ou professionnel (ci-après « le Client ») souhaitant bénéficier de ses services.</p>
+        <p>Toute commande ou acceptation de devis implique l'adhésion pleine et entière du Client aux présentes CGV.</p>
+        <div class="ls-row">
+          <div class="ls-field">
+            <span class="ls-field-key">Prestataire</span>
+            <span class="ls-field-val"><strong>Domi Clean</strong> — Entreprise individuelle</span>
+          </div>
+          <div class="ls-field">
+            <span class="ls-field-key">Email</span>
+            <span class="ls-field-val"><a href="mailto:domicleanidf@gmail.com">domicleanidf@gmail.com</a></span>
+          </div>
+          <div class="ls-field">
+            <span class="ls-field-key">Téléphone</span>
+            <span class="ls-field-val"><a href="tel:0628487217">06 28 48 72 17</a></span>
+          </div>
+          <div class="ls-field">
+            <span class="ls-field-key">Zone d'intervention</span>
+            <span class="ls-field-val">Île-de-France</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="legal-section" id="prestations">
+        <div class="ls-head">
+          <div class="ls-ico">🧹</div>
+          <h2>2. Prestations proposées</h2>
+        </div>
+        <p>Domi Clean propose deux catégories de services :</p>
+        <div class="ls-list">
+          <div class="ls-list-item"><div><strong>Nettoyage professionnel</strong> — locaux professionnels, fin de chantier, vitrerie, après déménagement</div></div>
+          <div class="ls-list-item"><div><strong>Aide à domicile</strong> — aide aux courses, aide administrative, compagnie, accompagnement médical, aide au lever/coucher, aide à la prise de médicaments</div></div>
+        </div>
+        <p style="margin-top:14px">Les prestations sont réalisées exclusivement en Île-de-France. Toute demande hors zone fera l'objet d'un accord préalable.</p>
+      </div>
+
+      <div class="legal-section" id="devis">
+        <div class="ls-head">
+          <div class="ls-ico">📋</div>
+          <h2>3. Devis & commande</h2>
+        </div>
+        <p>Tout devis est établi gratuitement, sans engagement, à la suite d'un échange téléphonique ou d'un appel de découverte via le calendrier en ligne.</p>
+        <p>Le devis précise la nature de la prestation, le tarif, les modalités d'intervention et la durée estimée. Il est valable <strong>30 jours</strong> à compter de sa date d'émission.</p>
+        <div class="ls-highlight">
+          <p>✅ La commande est confirmée par l'acceptation écrite du devis (email, SMS ou signature).</p>
+        </div>
+      </div>
+
+      <div class="legal-section" id="tarifs">
+        <div class="ls-head">
+          <div class="ls-ico">💰</div>
+          <h2>4. Tarifs</h2>
+        </div>
+        <p>Les tarifs sont exprimés en euros TTC. Ils sont établis au cas par cas selon la nature, la durée et la complexité de la prestation demandée.</p>
+        <p>Domi Clean se réserve le droit de modifier ses tarifs à tout moment. Les prestations en cours sont facturées aux tarifs convenus dans le devis accepté.</p>
+        <div class="ls-warning">
+          <p>⚠️ Tout déplacement hors zone ou prestation supplémentaire non prévue au devis peut faire l'objet d'une facturation complémentaire après accord du Client.</p>
+        </div>
+      </div>
+
+      <div class="legal-section" id="paiement">
+        <div class="ls-head">
+          <div class="ls-ico">💳</div>
+          <h2>5. Modalités de paiement</h2>
+        </div>
+        <p>Le règlement s'effectue à l'issue de chaque prestation, sauf accord contraire mentionné dans le devis.</p>
+        <div class="ls-list">
+          <div class="ls-list-item">Virement bancaire</div>
+          <div class="ls-list-item">Espèces</div>
+          <div class="ls-list-item">Chèque libellé à l'ordre de Domi Clean</div>
+          <div class="ls-list-item">Chèque emploi service universel (CESU)</div>
+        </div>
+        <p style="margin-top:14px">En cas de retard de paiement, des pénalités de <strong>3 fois le taux d'intérêt légal</strong> pourront être appliquées, conformément à l'article L.441-6 du Code de commerce.</p>
+      </div>
+
+      <div class="legal-section" id="annulation">
+        <div class="ls-head">
+          <div class="ls-ico">📅</div>
+          <h2>6. Annulation & report</h2>
+        </div>
+        <p>Le Client peut annuler ou reporter une prestation sans frais, sous réserve d'en informer Domi Clean <strong>au minimum 48 heures avant</strong> l'intervention prévue.</p>
+        <div class="ls-row">
+          <div class="ls-field">
+            <span class="ls-field-key">Annulation ≥ 48h avant</span>
+            <span class="ls-field-val" style="color:#16a34a;font-weight:600">✅ Gratuit</span>
+          </div>
+          <div class="ls-field">
+            <span class="ls-field-key">Annulation entre 24h et 48h</span>
+            <span class="ls-field-val" style="color:#d97706;font-weight:600">⚠️ 30 % du montant du devis</span>
+          </div>
+          <div class="ls-field">
+            <span class="ls-field-key">Annulation moins de 24h</span>
+            <span class="ls-field-val" style="color:#dc2626;font-weight:600">❌ 50 % du montant du devis</span>
+          </div>
+          <div class="ls-field">
+            <span class="ls-field-key">Annulation le jour même</span>
+            <span class="ls-field-val" style="color:#dc2626;font-weight:600">❌ 100 % du montant du devis</span>
+          </div>
+        </div>
+        <p style="margin-top:14px">En cas de force majeure dûment justifiée (hospitalisation, accident…), aucune pénalité ne sera appliquée.</p>
+      </div>
+
+      <div class="legal-section" id="execution">
+        <div class="ls-head">
+          <div class="ls-ico">🎯</div>
+          <h2>7. Exécution des prestations</h2>
+        </div>
+        <p>Domi Clean s'engage à réaliser les prestations avec sérieux, rigueur et ponctualité, conformément au devis accepté.</p>
+        <div class="ls-list">
+          <div class="ls-list-item">Les intervenants sont formés et sélectionnés par Domi Clean</div>
+          <div class="ls-list-item">Le matériel et les produits nécessaires peuvent être fournis par le Prestataire ou le Client (à préciser dans le devis)</div>
+          <div class="ls-list-item">Le Client s'engage à assurer un accès sécurisé aux locaux à l'heure convenue</div>
+          <div class="ls-list-item">Toute modification en cours de prestation doit faire l'objet d'un accord mutuel</div>
+        </div>
+      </div>
+
+      <div class="legal-section" id="responsabilite">
+        <div class="ls-head">
+          <div class="ls-ico">⚖️</div>
+          <h2>8. Responsabilité</h2>
+        </div>
+        <p>Domi Clean est assurée en responsabilité civile professionnelle pour couvrir tout dommage causé chez le Client dans le cadre de ses interventions.</p>
+        <p>Tout dommage doit être signalé par écrit dans les <strong>48 heures</strong> suivant la prestation. Au-delà, aucune réclamation ne pourra être prise en compte.</p>
+        <div class="ls-warning">
+          <p>⚠️ La responsabilité de Domi Clean ne saurait être engagée en cas de dommages résultant d'une mauvaise utilisation des équipements ou d'informations inexactes fournies par le Client.</p>
+        </div>
+      </div>
+
+      <div class="legal-section" id="reclamations">
+        <div class="ls-head">
+          <div class="ls-ico">💬</div>
+          <h2>9. Réclamations</h2>
+        </div>
+        <p>Toute réclamation doit être adressée par écrit à Domi Clean dans un délai de <strong>48 heures</strong> suivant la prestation, par email ou courrier.</p>
+        <div class="ls-highlight">
+          <p>📧 <a href="mailto:domicleanidf@gmail.com">domicleanidf@gmail.com</a> — Réponse sous 72 heures ouvrées.</p>
+        </div>
+        <p style="margin-top:14px">En cas de litige non résolu à l'amiable, le Client peut recourir à un médiateur de la consommation conformément aux articles L.611-1 et suivants du Code de la consommation.</p>
+      </div>
+
+      <div class="legal-section" id="donnees">
+        <div class="ls-head">
+          <div class="ls-ico">🔒</div>
+          <h2>10. Données personnelles</h2>
+        </div>
+        <p>Les données personnelles collectées dans le cadre de la relation commerciale sont traitées conformément à notre <a href="politique-confidentialite.html">Politique de confidentialité</a> et au Règlement Général sur la Protection des Données (RGPD).</p>
+        <p>Elles sont utilisées uniquement pour la gestion des devis, interventions et facturation, et ne sont jamais transmises à des tiers.</p>
+      </div>
+
+      <div class="legal-section" id="droit">
+        <div class="ls-head">
+          <div class="ls-ico">🇫🇷</div>
+          <h2>11. Droit applicable & litiges</h2>
+        </div>
+        <p>Les présentes CGV sont soumises au droit français. En cas de litige, les parties s'engagent à rechercher une solution amiable avant tout recours judiciaire.</p>
+        <p>À défaut d'accord amiable, tout litige sera soumis aux tribunaux compétents du ressort du siège social de Domi Clean.</p>
+        <div class="ls-highlight">
+          <p>✅ Ces CGV sont applicables à compter du 1er janvier 2025.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-logo">
+          <img src="https://i.imgur.com/D29UJPO.png" alt="Domi Clean" onerror="this.style.display='none'">
+          <span class="footer-brand-name">Domi Clean</span>
+        </div>
+        <p class="footer-desc">Services professionnels de nettoyage et d'aide à domicile en Île-de-France.</p>
+        <div class="footer-socials">
+          <a href="#" class="footer-soc" aria-label="Facebook">f</a>
+          <a href="#" class="footer-soc" aria-label="Instagram">📷</a>
+          <a href="mailto:domicleanidf@gmail.com" class="footer-soc" aria-label="Email">@</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Services</div>
+        <div class="footer-links">
+          <a href="index.html#services" class="footer-link">Nettoyage professionnel</a>
+          <a href="index.html#services" class="footer-link">Aide à domicile</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Entreprise</div>
+        <div class="footer-links">
+          <a href="histoire.html" class="footer-link">Notre histoire</a>
+          <a href="index.html#faq" class="footer-link">FAQ</a>
+          <a href="index.html#contact" class="footer-link">Contact</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Légal</div>
+        <div class="footer-links">
+          <a href="mentions-legales.html" class="footer-link">Mentions légales</a>
+          <a href="politique-confidentialite.html" class="footer-link">Confidentialité</a>
+          <a href="cgv.html" class="footer-link">CGV</a>
+        </div>
+        <div style="margin-top:22px">
+          <div class="footer-col-title">Contact</div>
+          <div class="footer-links">
+            <a href="tel:0628487217" class="footer-link">06 28 48 72 17</a>
+            <a href="mailto:domicleanidf@gmail.com" class="footer-link">domicleanidf@gmail.com</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Domi Clean — Tous droits réservés.</span>
+      <div class="footer-bottom-links">
+        <a href="mentions-legales.html" class="footer-link">Mentions légales</a>
+        <a href="politique-confidentialite.html" class="footer-link">Confidentialité</a>
+        <a href="cgv.html" class="footer-link">CGV</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const burger=document.getElementById('burger'),drawer=document.getElementById('drawer');
+function closeDrawer(){drawer.classList.remove('open');burger.classList.remove('open');burger.setAttribute('aria-expanded','false');document.body.style.overflow=''}
+burger.addEventListener('click',()=>{const o=drawer.classList.toggle('open');burger.classList.toggle('open',o);burger.setAttribute('aria-expanded',String(o));document.body.style.overflow=o?'hidden':''});
+document.querySelectorAll('[data-close]').forEach(el=>el.addEventListener('click',closeDrawer));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer()});
+const sections=document.querySelectorAll('.legal-section[id]'),tocLinks=document.querySelectorAll('.toc-link');
+const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){tocLinks.forEach(l=>l.classList.remove('active'));const a=document.querySelector(`.toc-link[href="#${e.target.id}"]`);if(a)a.classList.add('active')}})},{rootMargin:'-30% 0px -60% 0px'});
+sections.forEach(s=>io.observe(s));
+</script>
+</body>
+</html>

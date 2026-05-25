@@ -1,207 +1,715 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Domi Clean - Notre histoire</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notre histoire — Domi Clean</title>
+<meta name="description" content="De deux lycéens nommés Yann à la création de Domi Clean. Découvrez l'histoire de notre entreprise de nettoyage et d'aide à domicile en Île-de-France.">
+<link rel="icon" type="image/png" href="favicon-32x32.png">
 
-  <style>
-    :root {
-      --blue: #0a6fd4;
-      --blue-pale: #e8f3fd;
-      --green: #4abf6a;
-      --cream: #fafaf8;
-      --dark: #111827;
-      --mid: #6b7280;
-      --white: #ffffff;
-      --shadow-md: 0 8px 40px rgba(10,111,212,.12);
-      --radius: 24px;
-    }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: linear-gradient(165deg, #e8f3fd 0%, #f5f9fe 50%, #eef7f0 100%);
-      color: var(--dark);
-      line-height: 1.8;
-      padding: 60px 20px;
-    }
+<style>
+/* ============================================================
+   TOKENS (identiques à index.html)
+   ============================================================ */
+:root {
+  --p:      #0a6fd4;
+  --p-dark: #0856a8;
+  --p-light:#3fa9f5;
+  --p-pale: #dbeafe;
+  --a:      #22c55e;
+  --a-dark: #16a34a;
+  --a-pale: #dcfce7;
+  --dark:   #0f172a;
+  --dark2:  #1e293b;
+  --dark3:  #334155;
+  --text:   #475569;
+  --muted:  #94a3b8;
+  --border: #e2e8f0;
+  --bg:     #f8fafc;
+  --white:  #ffffff;
+  --sh:     0 4px 20px rgba(10,111,212,.1);
+  --sh-md:  0 8px 30px rgba(10,111,212,.13);
+  --sh-lg:  0 20px 60px rgba(10,111,212,.16);
+  --r-sm:   10px;
+  --r:      16px;
+  --r-lg:   24px;
+  --r-xl:   32px;
+  --r-f:    9999px;
+  --nav-h:  72px;
+  --ease:   .25s cubic-bezier(.4,0,.2,1);
+}
 
-    .container { max-width: 800px; margin: 0 auto; }
+/* ============================================================
+   RESET
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;font-size:1rem;line-height:1.65;color:var(--dark3);background:var(--white);overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
 
-    /* Header */
-    .header-story { text-align: center; margin-bottom: 60px; }
-    .logo-story { width: 100px; margin-bottom: 20px; opacity: 0.9; }
-    h1 { font-family: 'DM Serif Display', serif; font-size: 3rem; color: var(--dark); margin-bottom: 10px; }
-    .subtitle { font-size: 1.1rem; color: var(--blue); font-weight: 500; letter-spacing: 0.02em; }
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+.container{width:100%;max-width:1200px;margin:0 auto;padding:0 24px}
+.badge{
+  display:inline-flex;align-items:center;gap:6px;padding:5px 14px;
+  background:var(--p-pale);color:var(--p);
+  font-size:.8125rem;font-weight:600;letter-spacing:.02em;
+  border-radius:var(--r-f);border:1px solid rgba(10,111,212,.18);
+}
+h1,h2,h3{font-family:'DM Serif Display',serif;line-height:1.2;color:var(--dark)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;font-size:.9375rem;font-weight:600;border-radius:var(--r-f);transition:var(--ease);white-space:nowrap}
+.btn-primary{background:var(--p);color:var(--white);box-shadow:0 4px 15px rgba(10,111,212,.3)}
+.btn-primary:hover{background:var(--p-dark);transform:translateY(-2px);box-shadow:0 8px 25px rgba(10,111,212,.35)}
+.btn-ghost{background:rgba(255,255,255,.12);color:var(--white);border:1.5px solid rgba(255,255,255,.28);backdrop-filter:blur(8px)}
+.btn-ghost:hover{background:rgba(255,255,255,.22);transform:translateY(-2px)}
 
-    /* Cartes Histoire */
-    .story-block {
-      background: var(--white);
-      padding: 45px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-md);
-      margin-bottom: 40px;
-      position: relative;
-      border: 1px solid rgba(10,111,212,0.05);
-    }
-    
-    h2 { 
-      font-family: 'DM Serif Display', serif; 
-      font-size: 1.8rem; 
-      color: var(--blue); 
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
+.fu{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease}
+.fu.vis{opacity:1;transform:translateY(0)}
+.fu-d1{transition-delay:.1s}.fu-d2{transition-delay:.2s}.fu-d3{transition-delay:.3s}
 
-    p { color: var(--dark); font-size: 1.05rem; margin-bottom: 20px; white-space: pre-line; }
-    
-    /* Éléments de liste stylisés */
-    .feature-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 12px;
-      margin: 25px 0;
-    }
-    .feature-item {
-      background: var(--blue-pale);
-      padding: 10px 18px;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--blue);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:var(--r-f)}
 
-    .mission-box {
-      border-left: 4px solid var(--green);
-      background: #f0fdf4;
-      padding: 20px;
-      border-radius: 0 15px 15px 0;
-      margin: 20px 0;
-    }
+/* ============================================================
+   NAV
+   ============================================================ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav-h);transition:var(--ease)}
+.nav.scrolled{background:rgba(255,255,255,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 1px 24px rgba(0,0,0,.08)}
+.nav-inner{height:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
 
-    .btn-retour {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--white);
-      color: var(--blue);
-      padding: 10px 22px;
-      border-radius: 30px;
-      text-decoration: none;
-      font-weight: 600;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-      margin-bottom: 40px;
-      transition: transform 0.2s;
-    }
-    .btn-retour:hover { transform: translateX(-5px); }
+.nav-logo{display:flex;align-items:center;gap:10px;flex-shrink:0;font-family:'DM Serif Display',serif;font-size:1.35rem;color:var(--white)}
+.nav.scrolled .nav-logo{color:var(--dark)}
+.nav-logo img{width:38px;height:38px;border-radius:var(--r-sm);object-fit:contain}
+.nav-logo-txt{display:flex;flex-direction:column;line-height:1.1}
+.nav-logo-txt span{color:var(--p-light)}
+.nav.scrolled .nav-logo-txt span{color:var(--p)}
+.nav-logo-txt small{font-family:'DM Sans',sans-serif;font-size:.62rem;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase}
+.nav.scrolled .nav-logo-txt small{color:var(--muted)}
 
-    /* Animations */
-    .animate { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
-    .animate.show { opacity: 1; transform: translateY(0); }
+.nav-links{display:flex;align-items:center;gap:2px}
+.nav-link{padding:8px 13px;font-size:.9rem;font-weight:500;color:rgba(255,255,255,.75);border-radius:var(--r-sm);transition:var(--ease)}
+.nav-link:hover{color:var(--white);background:rgba(255,255,255,.1)}
+.nav.scrolled .nav-link{color:var(--dark3)}
+.nav.scrolled .nav-link:hover{color:var(--p);background:var(--p-pale)}
+.nav-link.active{color:var(--white);background:rgba(255,255,255,.12)}
+.nav.scrolled .nav-link.active{color:var(--p);background:var(--p-pale)}
 
-    @media (max-width: 600px) {
-      .story-block { padding: 30px 20px; }
-      h1 { font-size: 2.2rem; }
-    }
-  </style>
+.nav-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.nav-tel{display:flex;align-items:center;gap:6px;font-size:.875rem;font-weight:500;color:rgba(255,255,255,.7);padding:8px 13px;border-radius:var(--r-f);transition:var(--ease)}
+.nav-tel:hover{color:var(--white)}
+.nav.scrolled .nav-tel{color:var(--dark3)}
+.nav.scrolled .nav-tel:hover{color:var(--p)}
+
+.nav-burger{display:none;flex-direction:column;gap:5px;width:40px;height:40px;align-items:center;justify-content:center;border-radius:var(--r-sm);transition:var(--ease)}
+.nav-burger span{display:block;width:22px;height:2px;background:var(--white);border-radius:var(--r-f);transition:var(--ease)}
+.nav.scrolled .nav-burger span{background:var(--dark)}
+.nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-burger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.drawer{position:fixed;inset:0;z-index:190;background:var(--dark);display:flex;flex-direction:column;padding:96px 28px 48px;transform:translateX(100%);transition:transform .4s cubic-bezier(.4,0,.2,1)}
+.drawer.open{transform:translateX(0)}
+.drawer-links{display:flex;flex-direction:column;gap:2px;flex:1}
+.drawer-link{font-family:'DM Serif Display',serif;font-size:1.85rem;color:rgba(255,255,255,.75);padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07);transition:var(--ease)}
+.drawer-link:hover{color:var(--white);padding-left:8px}
+.drawer-bottom{display:flex;flex-direction:column;gap:12px;margin-top:28px}
+.drawer-tel{font-size:.9375rem;color:var(--muted)}
+.drawer-tel a{color:rgba(255,255,255,.8)}
+
+/* ============================================================
+   HERO PAGE
+   ============================================================ */
+.page-hero{
+  position:relative;min-height:60vh;display:flex;align-items:center;
+  background:var(--dark);overflow:hidden;
+  padding:calc(var(--nav-h) + 60px) 0 80px;
+}
+.ph-bg{position:absolute;inset:0;overflow:hidden}
+.ph-blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.4}
+.ph-blob-1{width:500px;height:500px;background:radial-gradient(circle,rgba(10,111,212,.6) 0%,transparent 70%);top:-150px;right:-100px;animation:pb1 9s ease-in-out infinite}
+.ph-blob-2{width:350px;height:350px;background:radial-gradient(circle,rgba(34,197,94,.35) 0%,transparent 70%);bottom:-80px;left:5%;animation:pb2 11s ease-in-out infinite}
+@keyframes pb1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-20px,15px) scale(1.04)}}
+@keyframes pb2{0%,100%{transform:translate(0,0)}50%{transform:translate(15px,-20px) scale(1.06)}}
+
+.ph-content{position:relative;z-index:2;text-align:center;max-width:700px;margin:0 auto}
+.ph-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 16px 6px 8px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);
+  border-radius:var(--r-f);color:rgba(255,255,255,.8);font-size:.8125rem;font-weight:500;
+  margin-bottom:28px;
+}
+.ph-dot{width:8px;height:8px;background:var(--a);border-radius:50%;animation:dot 2s ease infinite}
+@keyframes dot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.35);opacity:.65}}
+.ph-title{font-size:clamp(2.5rem,6vw,4rem);color:var(--white);margin-bottom:20px}
+.ph-title em{font-style:normal;background:linear-gradient(135deg,var(--p-light),var(--a));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ph-sub{font-size:1.125rem;color:rgba(255,255,255,.6);line-height:1.75;max-width:560px;margin:0 auto 36px}
+.ph-logo{
+  width:72px;height:72px;border-radius:var(--r-lg);
+  object-fit:contain;
+  margin:0 auto 28px;
+  filter:drop-shadow(0 4px 20px rgba(63,169,245,.3));
+}
+
+/* Scroll indicator */
+.ph-scroll{
+  position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  color:rgba(255,255,255,.35);font-size:.75rem;font-weight:500;
+}
+.ph-scroll-line{width:1px;height:32px;background:linear-gradient(to bottom,rgba(255,255,255,.35),transparent);animation:scrollLine 2s ease-in-out infinite}
+@keyframes scrollLine{0%,100%{transform:scaleY(1);opacity:.35}50%{transform:scaleY(.5);opacity:.7}}
+
+/* ============================================================
+   TIMELINE
+   ============================================================ */
+.timeline-section{padding:96px 0;background:var(--white)}
+.timeline{position:relative;max-width:900px;margin:0 auto;padding:0 20px}
+
+/* Vertical line */
+.timeline::before{
+  content:'';position:absolute;
+  top:0;bottom:0;left:50%;
+  width:2px;
+  background:linear-gradient(to bottom,var(--p),var(--p-light),var(--a),transparent);
+  transform:translateX(-50%);
+}
+
+.tl-item{
+  display:grid;grid-template-columns:1fr 60px 1fr;
+  gap:0;margin-bottom:64px;align-items:start;
+}
+.tl-item:last-child{margin-bottom:0}
+
+/* Left side */
+.tl-left{padding-right:36px;text-align:right}
+.tl-right{padding-left:36px}
+
+/* Alternating: odd items — content left, empty right */
+.tl-item:nth-child(odd) .tl-content{grid-column:1}
+.tl-item:nth-child(odd) .tl-empty{grid-column:3}
+/* Even items — empty left, content right */
+.tl-item:nth-child(even) .tl-content{grid-column:3}
+.tl-item:nth-child(even) .tl-empty{grid-column:1}
+.tl-item:nth-child(even) .tl-node-wrap{grid-column:2}
+
+/* Node in the middle */
+.tl-node-wrap{
+  grid-column:2;grid-row:1;
+  display:flex;justify-content:center;align-items:flex-start;
+  padding-top:6px;
+  position:relative;z-index:2;
+}
+.tl-node{
+  width:48px;height:48px;border-radius:50%;
+  background:linear-gradient(135deg,var(--p),var(--p-light));
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.25rem;
+  box-shadow:0 0 0 4px var(--white),0 0 0 6px rgba(10,111,212,.2),0 8px 24px rgba(10,111,212,.25);
+  flex-shrink:0;
+}
+
+/* Content card */
+.tl-card{
+  background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:28px;
+  box-shadow:var(--sh);
+  transition:var(--ease);
+  position:relative;
+}
+.tl-card:hover{box-shadow:var(--sh-md);transform:translateY(-3px);border-color:var(--p)}
+
+/* Arrow pointer toward the line */
+.tl-item:nth-child(odd) .tl-card::after{
+  content:'';position:absolute;
+  top:18px;right:-10px;
+  border:10px solid transparent;
+  border-left-color:var(--border);
+}
+.tl-item:nth-child(odd) .tl-card::before{
+  content:'';position:absolute;
+  top:19px;right:-8px;
+  border:9px solid transparent;
+  border-left-color:var(--white);
+  z-index:1;
+}
+.tl-item:nth-child(even) .tl-card::after{
+  content:'';position:absolute;
+  top:18px;left:-10px;
+  border:10px solid transparent;
+  border-right-color:var(--border);
+}
+.tl-item:nth-child(even) .tl-card::before{
+  content:'';position:absolute;
+  top:19px;left:-8px;
+  border:9px solid transparent;
+  border-right-color:var(--white);
+  z-index:1;
+}
+
+.tl-year{
+  display:inline-block;
+  font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--p);background:var(--p-pale);
+  padding:3px 10px;border-radius:var(--r-f);margin-bottom:10px;
+}
+.tl-card h2{font-size:1.25rem;margin-bottom:10px;color:var(--dark)}
+.tl-card p{font-size:.9375rem;color:var(--text);line-height:1.75}
+.tl-card p+p{margin-top:10px}
+
+/* Feature pills */
+.tl-pills{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.tl-pill{
+  display:flex;align-items:center;gap:6px;
+  padding:6px 12px;background:var(--p-pale);
+  border-radius:var(--r-f);font-size:.8125rem;font-weight:600;color:var(--p);
+}
+
+/* Highlight box */
+.tl-highlight{
+  margin-top:14px;padding:14px 16px;
+  border-left:3px solid var(--a);background:var(--a-pale);
+  border-radius:0 var(--r-sm) var(--r-sm) 0;
+}
+.tl-highlight p{font-size:.9rem;color:var(--a-dark);font-weight:500}
+
+/* ============================================================
+   VALUES SECTION
+   ============================================================ */
+.values-section{
+  background:linear-gradient(135deg,var(--dark) 0%,#0e2744 100%);
+  padding:96px 0;overflow:hidden;position:relative;
+}
+.values-section::before{
+  content:'';position:absolute;top:-100px;right:-100px;
+  width:400px;height:400px;
+  background:radial-gradient(circle,rgba(10,111,212,.25) 0%,transparent 70%);
+  pointer-events:none;
+}
+.values-header{text-align:center;max-width:600px;margin:0 auto 56px}
+.values-header .badge{background:rgba(255,255,255,.09);color:rgba(255,255,255,.82);border-color:rgba(255,255,255,.14)}
+.values-header h2{color:var(--white);margin-top:14px;font-size:clamp(2rem,4vw,2.75rem)}
+.values-header p{color:rgba(255,255,255,.6);font-size:1.0625rem;line-height:1.75;margin-top:12px}
+
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.val-card{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:var(--r-lg);padding:28px 24px;
+  transition:var(--ease);
+}
+.val-card:hover{background:rgba(255,255,255,.1);transform:translateY(-4px)}
+.val-ico{
+  width:50px;height:50px;border-radius:var(--r);
+  background:rgba(255,255,255,.08);
+  display:flex;align-items:center;justify-content:center;font-size:1.5rem;
+  margin-bottom:16px;
+}
+.val-card h3{font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;color:var(--white);margin-bottom:8px}
+.val-card p{font-size:.9rem;color:rgba(255,255,255,.55);line-height:1.7}
+
+/* CTA bottom */
+.histoire-cta{
+  text-align:center;padding:80px 0;background:var(--bg);
+}
+.histoire-cta h2{font-size:clamp(1.75rem,3vw,2.25rem);margin-bottom:12px}
+.histoire-cta p{font-size:1.0625rem;color:var(--text);margin-bottom:32px}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer{background:var(--dark);color:rgba(255,255,255,.58);padding:80px 0 36px}
+.footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:48px;padding-bottom:60px;border-bottom:1px solid rgba(255,255,255,.07)}
+.footer-brand-logo{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.footer-brand-logo img{width:36px;height:36px;border-radius:var(--r-sm);object-fit:contain}
+.footer-brand-name{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--white)}
+.footer-desc{font-size:.875rem;line-height:1.72;margin-bottom:22px}
+.footer-socials{display:flex;gap:9px}
+.footer-soc{width:35px;height:35px;background:rgba(255,255,255,.07);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:.875rem;transition:var(--ease);color:rgba(255,255,255,.65)}
+.footer-soc:hover{background:var(--p);color:var(--white)}
+.footer-col-title{font-size:.7875rem;font-weight:700;color:var(--white);letter-spacing:.07em;text-transform:uppercase;margin-bottom:18px}
+.footer-links{display:flex;flex-direction:column;gap:9px}
+.footer-link{font-size:.875rem;transition:var(--ease)}
+.footer-link:hover{color:var(--white)}
+.footer-bottom{padding-top:28px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:.8125rem}
+.footer-bottom-links{display:flex;gap:22px;flex-wrap:wrap}
+.footer-bottom a:hover{color:var(--white)}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:768px){
+  :root{--nav-h:64px}
+  .nav-links,.nav-tel,.nav-actions .btn{display:none}
+  .nav-burger{display:flex}
+
+  /* Timeline becomes single column */
+  .timeline::before{left:24px}
+  .tl-item{grid-template-columns:48px 1fr;gap:0;grid-template-rows:auto}
+  .tl-node-wrap{grid-column:1;grid-row:1;padding-top:4px;justify-content:flex-start}
+  .tl-node{width:40px;height:40px;font-size:1.1rem}
+  .tl-item:nth-child(odd) .tl-content,
+  .tl-item:nth-child(even) .tl-content{grid-column:2;grid-row:1;padding-left:20px;padding-right:0;text-align:left}
+  .tl-item:nth-child(odd) .tl-empty,
+  .tl-item:nth-child(even) .tl-empty{display:none}
+  .tl-item:nth-child(odd) .tl-card::after,
+  .tl-item:nth-child(odd) .tl-card::before,
+  .tl-item:nth-child(even) .tl-card::after,
+  .tl-item:nth-child(even) .tl-card::before{display:none}
+  .tl-left{padding-right:0;text-align:left}
+
+  .values-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr;gap:30px}
+  .footer-bottom{flex-direction:column;align-items:center;text-align:center}
+}
+
+@media(max-width:480px){
+  .container{padding:0 18px}
+  .timeline{padding:0 8px}
+}
+</style>
 </head>
 <body>
 
+<!-- ===================== NAV ===================== -->
+<nav class="nav" id="nav">
   <div class="container">
-    <a href="index.html" class="btn-retour">← Retour à l'accueil</a>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="https://i.imgur.com/D29UJPO.png" alt="Logo Domi Clean" onerror="this.style.display='none'">
+        <div class="nav-logo-txt">
+          <span>Domi Clean</span>
+          <small>Île-de-France</small>
+        </div>
+      </a>
 
-    <header class="header-story">
-      <img src="https://i.imgur.com/D29UJPO.png" alt="Logo" class="logo-story">
-      <h1>Notre histoire</h1>
-      <div class="subtitle">De deux lycéens nommés Yann… à la création de Domi Clean</div>
-    </header>
-
-    <section class="story-block animate">
-      <h2><span>🤝</span> La rencontre</h2>
-      <p>Notre aventure a commencé en 2015, sur les bancs du lycée. Une rencontre improbable entre deux jeunes… portant le même prénom : <strong>Yann</strong>.
-
-      Mais au-delà de cette coïncidence, ce sont surtout nos points communs qui nous ont réunis :
-      🔹 Une ambition affirmée,
-      🔹 L’envie de créer quelque chose de grand.</p>
-    </section>
-
-    <section class="story-block animate">
-      <h2><span>🛠️</span> Un parcours forgé sur le terrain</h2>
-      <p>Avant de lancer notre propre société, nous avons multiplié les expériences :</p>
-      <div class="feature-list">
-        <div class="feature-item">📦 Préparateurs de commande</div>
-        <div class="feature-item">🌿 Agents en espaces verts</div>
-        <div class="feature-item">🏭 Agents de fabrication</div>
+      <div class="nav-links">
+        <a href="index.html#services" class="nav-link">Services</a>
+        <a href="index.html#comment-ca-marche" class="nav-link">Comment ça marche</a>
+        <a href="histoire.html" class="nav-link active">Notre histoire</a>
+        <a href="index.html#faq" class="nav-link">FAQ</a>
+        <a href="index.html#contact" class="nav-link">Contact</a>
       </div>
-      <p>et bien d’autres encore…
 
-      Toutes ces étapes nous ont forgé et renforcé notre envie d’entreprendre, de trouver un projet aligné avec nos valeurs humaines, tout en répondant à des besoins concrets sur le terrain.</p>
-    </section>
-
-    <section class="story-block animate">
-      <h2><span>💡</span> Le déclic</h2>
-      <p>Un jour, l’un de nous découvre le domaine de la santé et de l’accompagnement à domicile. Et ce fut un choc.
-
-      Manque de confort, d’écoute, de respect du rythme des personnes… Nous avons pris conscience de toutes les lacunes présentes dans un secteur pourtant si essentiel.
-
-      Nous avons alors eu une envie simple, mais puissante :
-      👉 <strong>Créer une structure qui fait mieux, avec cœur et professionnalisme.</strong></p>
-    </section>
-
-    <section class="story-block animate">
-      <h2><span>🚀</span> La naissance de Domi Clean</h2>
-      <p>Nous avons d’abord envisagé une société de transport pour personnes à mobilité réduite (TPMR). Mais après une étude à la CCI d’Évry, nous avons constaté que les coûts étaient trop élevés à ce stade.
-
-      Alors nous avons repensé notre projet, sans renier notre ambition. Et c’est ainsi qu’est née Domi Clean, une entreprise à double vocation :</p>
-      
-      <div class="mission-box">
-        <p>🧽 <strong>Le nettoyage</strong> – pour particuliers et professionnels, avec rigueur, flexibilité et confiance.
-        🤝 <strong>L’aide à domicile</strong> – pour accompagner les plus vulnérables dans le respect, la dignité et la bienveillance.</p>
+      <div class="nav-actions">
+        <a href="tel:0628487217" class="nav-tel">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12.73a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.62 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          06 28 48 72 17
+        </a>
+        <a href="index.html#reservation" class="btn btn-primary">📅 Prendre rendez-vous</a>
       </div>
-    </section>
 
-    <section class="story-block animate">
-      <h2><span>🌍</span> Une vision : l'humain avant tout</h2>
-      <p>Chez Domi Clean, nous voulons aller au-delà du simple service. Nous voulons créer une expérience humaine positive pour :
+      <button class="nav-burger" id="burger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
 
-      ✅ Nos bénéficiaires, qui méritent un accompagnement personnalisé et digne,
-      ✅ Nos clients en nettoyage, qui recherchent fiabilité et qualité,
-      ✅ Nos intervenants, que nous considérons comme des acteurs clés de notre réussite.</p>
-      
-      <p style="border-top: 1px solid #eee; padding-top: 20px; font-style: italic;">
-      Deux Yann. Une vision commune. Une société engagée : Domi Clean.
-      Notre histoire est celle de deux jeunes qui ont cru en leurs valeurs. De notre rencontre au lycée à la naissance de notre société, nous avons fait un choix : celui de bâtir une entreprise utile, humaine, et tournée vers l’avenir.
+<!-- ===================== MOBILE DRAWER ===================== -->
+<div class="drawer" id="drawer" role="dialog" aria-label="Menu de navigation">
+  <div class="drawer-links">
+    <a href="index.html#services" class="drawer-link" data-close>Services</a>
+    <a href="index.html#comment-ca-marche" class="drawer-link" data-close>Comment ça marche</a>
+    <a href="histoire.html" class="drawer-link" data-close>Notre histoire</a>
+    <a href="index.html#faq" class="drawer-link" data-close>FAQ</a>
+    <a href="index.html#contact" class="drawer-link" data-close>Contact</a>
+  </div>
+  <div class="drawer-bottom">
+    <a href="index.html#reservation" class="btn btn-primary" style="padding:16px 36px;font-size:1rem;border-radius:var(--r-f)" data-close>📅 Prendre rendez-vous</a>
+    <p class="drawer-tel">📞 <a href="tel:0628487217">06 28 48 72 17</a></p>
+  </div>
+</div>
 
-      Et ce n’est que le début de l’aventure Domi Clean.</p>
-    </section>
-
-    <section class="story-block animate" style="background: var(--blue); color: white;">
-      <h2 style="color: white;">Nos valeurs & Proximité</h2>
-      <p style="color: white;">Respect, écoute, ponctualité et professionnalisme sont au cœur de chacun de nos services. Notre équipe œuvre chaque jour pour créer un lien de confiance durable avec nos bénéficiaires.
-
-      Implantés en Île-de-France, nous intervenons rapidement dans votre secteur. En choisissant Domi Clean, vous faites le choix d’un accompagnement humain, personnalisé, et sans mauvaises surprises.</p>
-    </section>
-
+<!-- ===================== HERO ===================== -->
+<section class="page-hero">
+  <div class="ph-bg">
+    <div class="ph-blob ph-blob-1"></div>
+    <div class="ph-blob ph-blob-2"></div>
   </div>
 
-  <script>
-    const obs = new IntersectionObserver(entries => 
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); }),
-      { threshold: 0.1 });
-    document.querySelectorAll('.animate').forEach(el => obs.observe(el));
-  </script>
+  <div class="container">
+    <div class="ph-content fu">
+      <img src="https://i.imgur.com/D29UJPO.png" alt="Domi Clean" class="ph-logo"
+           onerror="this.style.display='none'">
+      <div class="ph-eyebrow">
+        <div class="ph-dot"></div>
+        Deux Yann. Une vision commune.
+      </div>
+      <h1 class="ph-title">Notre <em>histoire</em></h1>
+      <p class="ph-sub">De leur rencontre sur les bancs du lycée à la création de Domi Clean, retracez le parcours de deux entrepreneurs passionnés par le service aux personnes.</p>
+      <a href="#timeline" class="btn btn-ghost">Découvrir l'histoire</a>
+    </div>
+  </div>
 
+  <div class="ph-scroll" aria-hidden="true">
+    <div class="ph-scroll-line"></div>
+    <span>Défiler</span>
+  </div>
+</section>
+
+<!-- ===================== TIMELINE ===================== -->
+<section class="timeline-section" id="timeline">
+  <div class="container">
+    <div class="timeline">
+
+      <!-- 1 — La rencontre -->
+      <div class="tl-item fu">
+        <div class="tl-content tl-left">
+          <div class="tl-card">
+            <div class="tl-year">2015</div>
+            <h2>🤝 La rencontre</h2>
+            <p>Notre aventure commence sur les bancs du lycée. Une rencontre improbable entre deux jeunes portant le même prénom : <strong>Yann</strong>.</p>
+            <p>Mais au-delà de cette coïncidence, ce sont surtout nos points communs qui nous réunissent : une ambition affirmée et l'envie de créer quelque chose de grand.</p>
+          </div>
+        </div>
+        <div class="tl-node-wrap">
+          <div class="tl-node">🤝</div>
+        </div>
+        <div class="tl-empty"></div>
+      </div>
+
+      <!-- 2 — Parcours terrain -->
+      <div class="tl-item fu fu-d1">
+        <div class="tl-empty"></div>
+        <div class="tl-node-wrap">
+          <div class="tl-node">🛠️</div>
+        </div>
+        <div class="tl-content tl-right">
+          <div class="tl-card">
+            <div class="tl-year">Expériences</div>
+            <h2>🛠️ Un parcours forgé sur le terrain</h2>
+            <p>Avant de lancer notre propre société, nous multiplions les expériences et apprenons la valeur du travail :</p>
+            <div class="tl-pills">
+              <span class="tl-pill">📦 Préparateurs de commande</span>
+              <span class="tl-pill">🌿 Agents en espaces verts</span>
+              <span class="tl-pill">🏭 Agents de fabrication</span>
+            </div>
+            <p>Chaque étape renforce notre envie d'entreprendre et de trouver un projet aligné avec nos valeurs humaines.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 — Le déclic -->
+      <div class="tl-item fu fu-d2">
+        <div class="tl-content tl-left">
+          <div class="tl-card">
+            <div class="tl-year">Le tournant</div>
+            <h2>💡 Le déclic</h2>
+            <p>Un jour, l'un de nous découvre le domaine de la santé et de l'accompagnement à domicile. Et ce fut une révélation.</p>
+            <p>Manque de confort, d'écoute, de respect du rythme des personnes… Nous prenons conscience de toutes les lacunes présentes dans un secteur pourtant si essentiel.</p>
+            <div class="tl-highlight">
+              <p>👉 Créer une structure qui fait mieux, avec cœur et professionnalisme.</p>
+            </div>
+          </div>
+        </div>
+        <div class="tl-node-wrap">
+          <div class="tl-node">💡</div>
+        </div>
+        <div class="tl-empty"></div>
+      </div>
+
+      <!-- 4 — Naissance -->
+      <div class="tl-item fu fu-d1">
+        <div class="tl-empty"></div>
+        <div class="tl-node-wrap">
+          <div class="tl-node">🚀</div>
+        </div>
+        <div class="tl-content tl-right">
+          <div class="tl-card">
+            <div class="tl-year">La création</div>
+            <h2>🚀 La naissance de Domi Clean</h2>
+            <p>Nous envisageons d'abord une société de transport pour personnes à mobilité réduite. Mais après une étude à la CCI d'Évry, les coûts s'avèrent trop élevés à ce stade.</p>
+            <p>Nous repensons notre projet sans renier notre ambition. C'est ainsi que naît <strong>Domi Clean</strong>, une entreprise à double vocation :</p>
+            <div class="tl-pills">
+              <span class="tl-pill">🧹 Nettoyage professionnel</span>
+              <span class="tl-pill">🤝 Aide à domicile</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 — Vision -->
+      <div class="tl-item fu fu-d2">
+        <div class="tl-content tl-left">
+          <div class="tl-card">
+            <div class="tl-year">Aujourd'hui</div>
+            <h2>🌍 L'humain avant tout</h2>
+            <p>Chez Domi Clean, nous allons au-delà du simple service. Nous créons une expérience humaine positive pour chacun :</p>
+            <div class="tl-pills">
+              <span class="tl-pill">✅ Nos bénéficiaires</span>
+              <span class="tl-pill">✅ Nos clients</span>
+              <span class="tl-pill">✅ Nos intervenants</span>
+            </div>
+            <div class="tl-highlight">
+              <p>Deux Yann. Une vision commune. Une société engagée — et ce n'est que le début.</p>
+            </div>
+          </div>
+        </div>
+        <div class="tl-node-wrap">
+          <div class="tl-node">🌍</div>
+        </div>
+        <div class="tl-empty"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== VALUES ===================== -->
+<section class="values-section">
+  <div class="container">
+    <div class="values-header fu">
+      <div class="badge">✦ Nos valeurs</div>
+      <h2>Ce qui nous guide chaque jour</h2>
+      <p>Implantés en Île-de-France, nous intervenons rapidement dans votre secteur avec ces engagements au cœur de chaque mission.</p>
+    </div>
+
+    <div class="values-grid">
+      <div class="val-card fu">
+        <div class="val-ico">🤝</div>
+        <h3>Respect & écoute</h3>
+        <p>Chaque personne est unique. Nous adaptons notre intervention à votre rythme, vos habitudes et vos besoins.</p>
+      </div>
+      <div class="val-card fu fu-d1">
+        <div class="val-ico">⏰</div>
+        <h3>Ponctualité</h3>
+        <p>Votre temps est précieux. Nos intervenants sont formés à la rigueur et au respect des horaires convenus.</p>
+      </div>
+      <div class="val-card fu fu-d2">
+        <div class="val-ico">🎯</div>
+        <h3>Professionnalisme</h3>
+        <p>Des méthodes rigoureuses, du matériel adapté et une équipe engagée pour un résultat impeccable à chaque fois.</p>
+      </div>
+      <div class="val-card fu fu-d3">
+        <div class="val-ico">💛</div>
+        <h3>Bienveillance</h3>
+        <p>Au-delà du service, c'est un lien humain que nous créons. La dignité et le bien-être de chacun sont notre priorité.</p>
+      </div>
+      <div class="val-card fu fu-d1">
+        <div class="val-ico">📍</div>
+        <h3>Proximité</h3>
+        <p>Ancrés en Île-de-France, nous intervenons rapidement dans votre secteur avec une connaissance fine du terrain.</p>
+      </div>
+      <div class="val-card fu fu-d2">
+        <div class="val-ico">💎</div>
+        <h3>Transparence</h3>
+        <p>Devis clairs, tarifs sans surprise, communication honnête. Vous savez toujours à quoi vous attendre avec nous.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CTA ===================== -->
+<section class="histoire-cta">
+  <div class="container">
+    <div class="fu">
+      <div class="badge" style="margin-bottom:20px">📅 Prendre rendez-vous</div>
+      <h2>Prêt à nous faire confiance ?</h2>
+      <p>Réservez un appel gratuit de 30 minutes et discutons ensemble de vos besoins.</p>
+      <a href="index.html#reservation" class="btn btn-primary" style="padding:16px 36px;font-size:1rem">📅 Réserver un appel gratuit</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-logo">
+          <img src="https://i.imgur.com/D29UJPO.png" alt="Domi Clean" onerror="this.style.display='none'">
+          <span class="footer-brand-name">Domi Clean</span>
+        </div>
+        <p class="footer-desc">Services professionnels de nettoyage et d'aide à domicile en Île-de-France. L'humain avant tout.</p>
+        <div class="footer-socials">
+          <a href="#" class="footer-soc" aria-label="Facebook">f</a>
+          <a href="#" class="footer-soc" aria-label="Instagram">📷</a>
+          <a href="mailto:domicleanidf@gmail.com" class="footer-soc" aria-label="Email">@</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Services</div>
+        <div class="footer-links">
+          <a href="index.html#services" class="footer-link">Nettoyage professionnel</a>
+          <a href="index.html#services" class="footer-link">Fin de chantier</a>
+          <a href="index.html#services" class="footer-link">Vitrerie</a>
+          <a href="index.html#services" class="footer-link">Aide à domicile</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Entreprise</div>
+        <div class="footer-links">
+          <a href="histoire.html" class="footer-link">Notre histoire</a>
+          <a href="index.html#faq" class="footer-link">FAQ</a>
+          <a href="index.html#contact" class="footer-link">Contact</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Légal</div>
+        <div class="footer-links">
+          <a href="mentions-legales.html" class="footer-link">Mentions légales</a>
+          <a href="politique-confidentialite.html" class="footer-link">Confidentialité</a>
+          <a href="cgv.html" class="footer-link">CGV</a>
+        </div>
+        <div style="margin-top:22px">
+          <div class="footer-col-title">Contact</div>
+          <div class="footer-links">
+            <a href="tel:0628487217" class="footer-link">06 28 48 72 17</a>
+            <a href="mailto:domicleanidf@gmail.com" class="footer-link">domicleanidf@gmail.com</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Domi Clean — Tous droits réservés.</span>
+      <div class="footer-bottom-links">
+        <a href="mentions-legales.html" class="footer-link">Mentions légales</a>
+        <a href="politique-confidentialite.html" class="footer-link">Confidentialité</a>
+        <a href="cgv.html" class="footer-link">CGV</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* Nav */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 16);
+}, { passive: true });
+
+/* Drawer */
+const burger = document.getElementById('burger');
+const drawer = document.getElementById('drawer');
+function closeDrawer() {
+  drawer.classList.remove('open');
+  burger.classList.remove('open');
+  burger.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+}
+burger.addEventListener('click', () => {
+  const open = drawer.classList.toggle('open');
+  burger.classList.toggle('open', open);
+  burger.setAttribute('aria-expanded', String(open));
+  document.body.style.overflow = open ? 'hidden' : '';
+});
+document.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', closeDrawer));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+/* Fade-up */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); io.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fu').forEach(el => io.observe(el));
+</script>
 </body>
 </html>
-
-
-

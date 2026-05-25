@@ -2,1064 +2,1463 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Domi Clean – Nettoyage & Aide à domicile</title>
-<meta name="description" content="Domi Clean, entreprise de nettoyage et d'aide à domicile. Devis gratuit, service humain et professionnel.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Domi Clean — Nettoyage & Aide à domicile en Île-de-France</title>
+<meta name="description" content="Services professionnels de nettoyage et d'aide à domicile en Île-de-France. Devis gratuit, réponse 24h. Prenez rendez-vous en ligne.">
 <meta name="robots" content="index, follow">
 <link rel="icon" type="image/png" href="favicon-32x32.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
 
 <style>
-/* ============================
-   VARIABLES & RESET
-   ============================ */
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
 :root {
-  --blue:        #0a6fd4;
-  --blue-light:  #3fa9f5;
-  --blue-pale:   #e8f3fd;
-  --green:       #4abf6a;
-  --green-dark:  #35a054;
-  --cream:       #fafaf8;
-  --dark:        #111827;
-  --mid:         #6b7280;
-  --white:       #ffffff;
-  --shadow-sm:   0 2px 12px rgba(10,111,212,.08);
-  --shadow-md:   0 8px 40px rgba(10,111,212,.12);
-  --shadow-lg:   0 20px 60px rgba(10,111,212,.16);
-  --radius:      18px;
-  --radius-sm:   10px;
+  --p:          #0a6fd4;
+  --p-dark:     #0856a8;
+  --p-light:    #3fa9f5;
+  --p-pale:     #dbeafe;
+  --a:          #22c55e;
+  --a-dark:     #16a34a;
+  --a-pale:     #dcfce7;
+  --dark:       #0f172a;
+  --dark2:      #1e293b;
+  --dark3:      #334155;
+  --text:       #475569;
+  --muted:      #94a3b8;
+  --border:     #e2e8f0;
+  --bg:         #f8fafc;
+  --white:      #ffffff;
+  --sh-sm:      0 2px 8px rgba(0,0,0,.08);
+  --sh:         0 4px 20px rgba(10,111,212,.1);
+  --sh-md:      0 8px 30px rgba(10,111,212,.13);
+  --sh-lg:      0 20px 60px rgba(10,111,212,.16);
+  --sh-xl:      0 32px 80px rgba(10,111,212,.2);
+  --r-xs:       6px;
+  --r-sm:       10px;
+  --r:          16px;
+  --r-lg:       24px;
+  --r-xl:       32px;
+  --r-f:        9999px;
+  --nav-h:      72px;
+  --ease:       .25s cubic-bezier(.4,0,.2,1);
 }
 
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+/* ============================================================
+   RESET
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'DM Sans',sans-serif;font-size:1rem;line-height:1.65;color:var(--dark3);background:var(--white);overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+ul{list-style:none}
 
-html { scroll-behavior: smooth; }
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+.container{width:100%;max-width:1200px;margin:0 auto;padding:0 24px}
+.section{padding:96px 0}
+.section--alt{background:var(--bg)}
 
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--cream);
-  color: var(--dark);
-  line-height: 1.65;
-  overflow-x: hidden;
+.badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 14px;
+  background:var(--p-pale);color:var(--p);
+  font-size:.8125rem;font-weight:600;letter-spacing:.02em;
+  border-radius:var(--r-f);border:1px solid rgba(10,111,212,.18);
 }
 
-/* ============================
+.sh{text-align:center;max-width:640px;margin:0 auto 64px}
+.sh .badge{margin-bottom:14px}
+
+h1,h2,h3,h4{font-family:'DM Serif Display',serif;line-height:1.2;color:var(--dark)}
+
+.section-title{font-size:clamp(2rem,4vw,2.75rem);margin-bottom:14px}
+.section-sub{font-size:1.0625rem;color:var(--text);line-height:1.75}
+
+/* Buttons */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:13px 28px;font-size:.9375rem;font-weight:600;
+  border-radius:var(--r-f);transition:var(--ease);white-space:nowrap;
+}
+.btn-lg{padding:16px 36px;font-size:1rem}
+.btn-primary{background:var(--p);color:var(--white);box-shadow:0 4px 15px rgba(10,111,212,.3)}
+.btn-primary:hover{background:var(--p-dark);transform:translateY(-2px);box-shadow:0 8px 25px rgba(10,111,212,.35)}
+.btn-secondary{background:var(--white);color:var(--dark);border:1.5px solid var(--border)}
+.btn-secondary:hover{border-color:var(--p);color:var(--p);transform:translateY(-2px);box-shadow:var(--sh-sm)}
+.btn-ghost{background:rgba(255,255,255,.12);color:var(--white);border:1.5px solid rgba(255,255,255,.28);backdrop-filter:blur(8px)}
+.btn-ghost:hover{background:rgba(255,255,255,.22);transform:translateY(-2px)}
+.btn-accent{background:var(--a);color:var(--white);box-shadow:0 4px 15px rgba(34,197,94,.3)}
+.btn-accent:hover{background:var(--a-dark);transform:translateY(-2px);box-shadow:0 8px 25px rgba(34,197,94,.35)}
+
+/* Animations */
+.fu{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease}
+.fu.vis{opacity:1;transform:translateY(0)}
+.fu-d1{transition-delay:.1s}.fu-d2{transition-delay:.2s}.fu-d3{transition-delay:.3s}.fu-d4{transition-delay:.4s}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:var(--r-f)}
+::-webkit-scrollbar-thumb:hover{background:var(--muted)}
+
+/* ============================================================
    LOADER
-   ============================ */
-#loader {
-  position: fixed;
-  inset: 0;
-  background: var(--white);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 18px;
-  z-index: 5000;
-  transition: opacity .5s, visibility .5s;
+   ============================================================ */
+#loader{
+  position:fixed;inset:0;z-index:9999;
+  background:linear-gradient(160deg,#0f172a 0%,#0c1e3a 55%,#0a1a0f 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity .6s,visibility .6s;overflow:hidden;
 }
-#loader img { width: 120px; animation: loaderPulse 1.4s ease-in-out infinite; }
-#loader .loader-bar {
-  width: 140px;
-  height: 3px;
-  background: var(--blue-pale);
-  border-radius: 99px;
-  overflow: hidden;
-}
-#loader .loader-bar::after {
-  content: '';
-  display: block;
-  height: 100%;
-  width: 40%;
-  background: linear-gradient(90deg, var(--blue), var(--blue-light));
-  border-radius: 99px;
-  animation: loaderSlide 1.2s ease-in-out infinite;
-}
-#loader.hidden { opacity: 0; visibility: hidden; }
+#loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
 
-@keyframes loaderPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
-@keyframes loaderSlide { 0%{transform:translateX(-120%)} 100%{transform:translateX(380%)} }
-
-/* ============================
-   NAV DESKTOP
-   ============================ */
-nav {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(255,255,255,.88);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(10,111,212,.08);
-  padding: 0 40px;
+/* Subtle floating dots in bg */
+.ld-dots{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.ld-dot{
+  position:absolute;border-radius:50%;
+  background:rgba(255,255,255,.12);
+  animation:ldDotFloat var(--dur,4s) ease-in-out infinite;
+  animation-delay:var(--del,0s);
 }
-nav ul {
-  max-width: 1100px;
-  margin: auto;
-  display: flex;
-  align-items: center;
-  gap: 36px;
-  list-style: none;
-  height: 68px;
-}
-nav ul li:first-child { margin-right: auto; }
-.logo-nav { width: 90px; display: block; }
-nav a {
-  color: var(--dark);
-  font-size: .92rem;
-  font-weight: 500;
-  text-decoration: none;
-  letter-spacing: .01em;
-  position: relative;
-  padding-bottom: 2px;
-}
-nav a::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0;
-  width: 0; height: 2px;
-  background: var(--blue);
-  border-radius: 1px;
-  transition: width .3s;
-}
-nav a:hover::after { width: 100%; }
-nav a:hover { color: var(--blue); }
-
-.nav-cta {
-  background: var(--blue) !important;
-  color: var(--white) !important;
-  padding: 9px 22px !important;
-  border-radius: 30px;
-  transition: background .25s, transform .2s !important;
-  font-weight: 600 !important;
-}
-.nav-cta:hover { background: #0858b0 !important; transform: translateY(-1px); }
-.nav-cta::after { display: none !important; }
-
-/* ============================
-   MOBILE HEADER
-   ============================ */
-.header-mobile {
-  display: none;
-  background: var(--white);
-  border-bottom: 1px solid rgba(10,111,212,.08);
-  padding: 12px 20px;
-  justify-content: space-between;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-.header-logo-mobile { width: 80px; }
-
-.burger {
-  width: 28px;
-  height: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  cursor: pointer;
-  border: none;
-  background: none;
-  padding: 0;
-}
-.burger span {
-  display: block;
-  height: 2.5px;
-  background: var(--dark);
-  border-radius: 3px;
-  transition: .35s cubic-bezier(.4,0,.2,1);
-}
-.burger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
-.burger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-.burger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
-
-/* Mobile menu overlay */
-.mobile-menu {
-  position: fixed;
-  inset: 0;
-  background: rgba(10,111,212,.97);
-  backdrop-filter: blur(20px);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 28px;
-  transform: translateY(-100%);
-  transition: transform .5s cubic-bezier(.4,0,.2,1);
-  z-index: 2000;
-}
-.mobile-menu.active { transform: translateY(0); }
-.mobile-menu a {
-  font-family: 'DM Serif Display', serif;
-  color: var(--white);
-  font-size: 2rem;
-  text-decoration: none;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity .4s, transform .4s;
-}
-.mobile-menu.active a {
-  opacity: 1;
-  transform: translateY(0);
-}
-.mobile-menu.active a:nth-child(2) { transition-delay: .1s; }
-.mobile-menu.active a:nth-child(3) { transition-delay: .18s; }
-.mobile-menu.active a:nth-child(4) { transition-delay: .26s; }
-.mobile-menu.active a:nth-child(5) { transition-delay: .34s; }
-.mobile-menu a:hover { opacity: .75; }
-.close-btn {
-  position: absolute;
-  top: 24px; right: 24px;
-  color: white;
-  font-size: 2.2rem;
-  cursor: pointer;
-  line-height: 1;
-  border: none;
-  background: none;
-  font-family: inherit;
+@keyframes ldDotFloat{
+  0%,100%{transform:translateY(0) scale(1);opacity:.12}
+  50%{transform:translateY(-20px) scale(1.15);opacity:.28}
 }
 
-/* ============================
+/* Logo + brand */
+.ld-center{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;align-items:center;
+  margin-bottom:36px;
+}
+.ld-glow{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:140px;height:140px;
+  background:radial-gradient(circle,rgba(10,111,212,.45) 0%,transparent 70%);
+  border-radius:50%;
+  animation:ldGlowPulse 2s ease-in-out infinite;
+}
+@keyframes ldGlowPulse{
+  0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.6}
+  50%{transform:translate(-50%,-50%) scale(1.5);opacity:1}
+}
+.ld-logo{
+  width:92px;height:92px;object-fit:contain;
+  position:relative;z-index:1;
+  animation:ldLogoBreathe 2s ease-in-out infinite;
+  filter:drop-shadow(0 4px 22px rgba(63,169,245,.35));
+}
+@keyframes ldLogoBreathe{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.05)}
+}
+.ld-brand{
+  font-family:'DM Serif Display',serif;font-size:1.875rem;
+  color:var(--white);margin-top:14px;position:relative;z-index:1;
+  letter-spacing:-.01em;
+}
+.ld-tagline{
+  font-size:.875rem;color:rgba(255,255,255,.45);
+  font-weight:500;margin-top:4px;position:relative;z-index:1;
+  letter-spacing:.04em;
+}
+
+/* 3 service cards appear one by one */
+.ld-svcs{
+  position:relative;z-index:2;
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:38px;
+}
+.ld-svc{
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  opacity:0;transform:translateY(12px) scale(.88);
+}
+.ld-svc:nth-child(1){animation:ldSvcIn .45s cubic-bezier(.34,1.56,.64,1) forwards .35s}
+.ld-svc:nth-child(2){animation:ldSvcIn .45s cubic-bezier(.34,1.56,.64,1) forwards .6s}
+.ld-svc:nth-child(3){animation:ldSvcIn .45s cubic-bezier(.34,1.56,.64,1) forwards .85s}
+@keyframes ldSvcIn{
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.ld-svc-ico{
+  width:46px;height:46px;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);
+  border-radius:14px;
+  display:flex;align-items:center;justify-content:center;font-size:1.375rem;
+}
+.ld-svc-lbl{
+  font-size:.7rem;color:rgba(255,255,255,.45);font-weight:500;
+  text-align:center;max-width:72px;line-height:1.3;
+}
+
+/* Broom sweep across the bottom */
+.ld-sweep-wrap{
+  position:absolute;bottom:0;left:0;right:0;height:48px;
+  overflow:hidden;pointer-events:none;z-index:2;
+}
+.ld-sweep{
+  position:absolute;bottom:9px;left:-50px;
+  font-size:1.375rem;line-height:1;
+  animation:ldSweep 1.6s cubic-bezier(.4,0,.6,1) infinite;
+}
+.ld-sweep-trail{
+  position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent 0%,rgba(10,111,212,.5) 40%,rgba(34,197,94,.5) 60%,transparent 100%);
+  animation:ldTrail 1.6s ease infinite;
+}
+@keyframes ldSweep{
+  0%{left:-50px;opacity:.7}
+  85%{opacity:.7}
+  100%{left:calc(100% + 50px);opacity:0}
+}
+@keyframes ldTrail{
+  0%{clip-path:inset(0 100% 0 0)}
+  50%{clip-path:inset(0 0% 0 0)}
+  100%{clip-path:inset(0 0 0 100%)}
+}
+
+/* Progress bar */
+.ld-bar{
+  width:180px;height:2px;
+  background:rgba(255,255,255,.1);border-radius:var(--r-f);overflow:hidden;
+  position:relative;z-index:2;
+}
+.ld-prog{
+  height:100%;
+  background:linear-gradient(90deg,var(--p),var(--p-light),var(--a));
+  animation:ldFill 1.6s ease forwards;
+}
+@keyframes ldFill{from{width:0}to{width:100%}}
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:var(--nav-h);transition:var(--ease);
+}
+.nav.scrolled{
+  background:rgba(255,255,255,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  box-shadow:0 1px 24px rgba(0,0,0,.08);
+}
+.nav-inner{height:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+
+.nav-logo{
+  display:flex;align-items:center;gap:10px;flex-shrink:0;
+  font-family:'DM Serif Display',serif;font-size:1.35rem;color:var(--dark);
+}
+.nav-logo img{width:38px;height:38px;border-radius:var(--r-sm);object-fit:contain}
+.nav-logo-txt{display:flex;flex-direction:column;line-height:1.1}
+.nav-logo-txt span{color:var(--p)}
+.nav-logo-txt small{font-family:'DM Sans',sans-serif;font-size:.62rem;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+
+.nav-links{display:flex;align-items:center;gap:2px}
+.nav-link{
+  padding:8px 13px;font-size:.9rem;font-weight:500;color:var(--dark3);
+  border-radius:var(--r-sm);transition:var(--ease);
+}
+.nav-link:hover{color:var(--p);background:var(--p-pale)}
+
+.nav-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.nav-tel{
+  display:flex;align-items:center;gap:6px;
+  font-size:.875rem;font-weight:500;color:var(--dark3);
+  padding:8px 13px;border-radius:var(--r-f);transition:var(--ease);
+}
+.nav-tel:hover{color:var(--p)}
+
+/* Hamburger */
+.nav-burger{
+  display:none;flex-direction:column;gap:5px;
+  width:40px;height:40px;align-items:center;justify-content:center;
+  border-radius:var(--r-sm);transition:var(--ease);
+}
+.nav-burger span{display:block;width:22px;height:2px;background:var(--dark);border-radius:var(--r-f);transition:var(--ease)}
+.nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-burger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* Mobile drawer */
+.drawer{
+  position:fixed;inset:0;z-index:190;background:var(--dark);
+  display:flex;flex-direction:column;padding:96px 28px 48px;
+  transform:translateX(100%);transition:transform .4s cubic-bezier(.4,0,.2,1);
+}
+.drawer.open{transform:translateX(0)}
+.drawer-links{display:flex;flex-direction:column;gap:2px;flex:1}
+.drawer-link{
+  font-family:'DM Serif Display',serif;font-size:1.85rem;
+  color:rgba(255,255,255,.75);padding:12px 0;
+  border-bottom:1px solid rgba(255,255,255,.07);transition:var(--ease);
+}
+.drawer-link:hover{color:var(--white);padding-left:8px}
+.drawer-bottom{display:flex;flex-direction:column;gap:12px;margin-top:28px}
+.drawer-tel{font-size:.9375rem;color:var(--muted)}
+.drawer-tel a{color:rgba(255,255,255,.8)}
+
+/* ============================================================
    HERO
-   ============================ */
-.hero {
-  position: relative;
-  overflow: hidden;
-  padding: 100px 20px 80px;
-  text-align: center;
-  background: linear-gradient(165deg, #e8f3fd 0%, #f5f9fe 50%, #eef7f0 100%);
+   ============================================================ */
+.hero{
+  position:relative;min-height:100svh;
+  display:flex;align-items:center;
+  background:var(--dark);overflow:hidden;
+  padding:calc(var(--nav-h) + 48px) 0 80px;
+}
+.hero-bg{position:absolute;inset:0;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.45}
+.blob-1{
+  width:620px;height:620px;
+  background:radial-gradient(circle,rgba(10,111,212,.65) 0%,transparent 70%);
+  top:-200px;right:-80px;animation:bl1 9s ease-in-out infinite;
+}
+.blob-2{
+  width:420px;height:420px;
+  background:radial-gradient(circle,rgba(34,197,94,.4) 0%,transparent 70%);
+  bottom:-80px;left:8%;animation:bl2 11s ease-in-out infinite;
+}
+.blob-3{
+  width:280px;height:280px;
+  background:radial-gradient(circle,rgba(63,169,245,.5) 0%,transparent 70%);
+  top:35%;left:-40px;animation:bl3 7s ease-in-out infinite;
+}
+@keyframes bl1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-25px,18px) scale(1.04)}}
+@keyframes bl2{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,-25px) scale(1.06)}}
+@keyframes bl3{0%,100%{transform:translate(0,0)}50%{transform:translate(12px,12px) scale(1.04)}}
+
+.hero-content{
+  position:relative;z-index:2;
+  display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;
 }
 
-/* Blob decorations */
-.hero::before, .hero::after {
-  content: '';
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: .45;
-  pointer-events: none;
+/* Hero left */
+.hero-badge-wrap{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 16px 6px 8px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);
+  border-radius:var(--r-f);color:rgba(255,255,255,.82);font-size:.8125rem;font-weight:500;
+  margin-bottom:28px;backdrop-filter:blur(8px);
 }
-.hero::before {
-  width: 500px; height: 500px;
-  background: radial-gradient(circle, #b3d9f7, transparent);
-  top: -150px; left: -100px;
+.hero-dot{
+  width:8px;height:8px;background:var(--a);border-radius:50%;
+  animation:dot 2s ease infinite;
 }
-.hero::after {
-  width: 400px; height: 400px;
-  background: radial-gradient(circle, #c5edd4, transparent);
-  bottom: -100px; right: -80px;
+@keyframes dot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.35);opacity:.65}}
+
+.hero-title{
+  font-size:clamp(2.5rem,5vw,3.75rem);color:var(--white);line-height:1.12;margin-bottom:22px;
+}
+.hero-title em{
+  font-style:normal;
+  background:linear-gradient(135deg,var(--p-light),var(--a));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{font-size:1.125rem;color:rgba(255,255,255,.62);line-height:1.75;max-width:480px;margin-bottom:38px}
+
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:44px}
+
+
+/* Hero right */
+.hero-right{position:relative;display:flex;justify-content:center;align-items:center}
+.hero-card{
+  background:rgba(255,255,255,.07);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.12);border-radius:var(--r-xl);
+  padding:30px;width:320px;animation:hFloat 5s ease-in-out infinite;
+}
+@keyframes hFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.hero-card-icon{
+  width:52px;height:52px;background:linear-gradient(135deg,var(--p),var(--p-light));
+  border-radius:var(--r);display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;margin-bottom:18px;
+}
+.hero-card-title{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--white);margin-bottom:14px}
+.hero-card-list{display:flex;flex-direction:column;gap:9px}
+.hero-card-item{
+  display:flex;align-items:center;gap:10px;
+  color:rgba(255,255,255,.68);font-size:.875rem;
+}
+.hero-card-item::before{
+  content:'';width:6px;height:6px;background:var(--a);border-radius:50%;flex-shrink:0;
 }
 
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: white;
-  border: 1px solid rgba(10,111,212,.15);
-  border-radius: 30px;
-  padding: 6px 16px;
-  font-size: .82rem;
-  font-weight: 600;
-  color: var(--blue);
-  margin-bottom: 28px;
-  box-shadow: var(--shadow-sm);
-  animation: fadeDown .6s ease both;
+.hero-fc{
+  position:absolute;
+  background:rgba(255,255,255,.09);backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.14);border-radius:var(--r);
+  padding:12px 16px;display:flex;align-items:center;gap:11px;white-space:nowrap;
 }
-.hero-badge::before {
-  content: '';
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: var(--green);
-  animation: blink 2s ease-in-out infinite;
+.hero-fc-1{top:-16px;right:-24px;animation:fc1 6s ease-in-out infinite}
+.hero-fc-2{bottom:-40px;left:-36px;animation:fc2 7s ease-in-out infinite}
+@keyframes fc1{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-8px) rotate(0)}}
+@keyframes fc2{0%,100%{transform:translateY(0) rotate(2deg)}50%{transform:translateY(-10px) rotate(-1deg)}}
+.hero-fc-ico{
+  width:36px;height:36px;border-radius:var(--r-sm);
+  display:flex;align-items:center;justify-content:center;font-size:1.125rem;
 }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+.hero-fc-txt strong{color:var(--white);display:block;font-size:.9375rem}
+.hero-fc-txt span{color:rgba(255,255,255,.55);font-size:.8rem}
 
-.hero h1 {
-  font-family: 'DM Serif Display', serif;
-  font-size: clamp(2.2rem, 6vw, 3.6rem);
-  line-height: 1.15;
-  color: var(--dark);
-  margin-bottom: 18px;
-  animation: fadeDown .7s .1s ease both;
-}
-.hero h1 em {
-  font-style: italic;
-  color: var(--blue);
+/* ============================================================
+   TRUST BAR
+   ============================================================ */
+.trust-bar{padding:26px 0;background:var(--white);border-bottom:1px solid var(--border)}
+.trust-inner{display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap}
+.trust-item{display:flex;align-items:center;gap:10px;font-size:.9rem;font-weight:500;color:var(--dark3)}
+.trust-ico{
+  width:36px;height:36px;background:var(--p-pale);border-radius:var(--r-sm);
+  display:flex;align-items:center;justify-content:center;font-size:1rem;
 }
 
-.hero-sub {
-  font-size: 1.1rem;
-  color: var(--mid);
-  max-width: 480px;
-  margin: 0 auto 36px;
-  font-weight: 300;
-  animation: fadeDown .7s .2s ease both;
-}
-
-.hero-actions {
-  display: flex;
-  justify-content: center;
-  gap: 14px;
-  flex-wrap: wrap;
-  margin-bottom: 50px;
-  animation: fadeDown .7s .3s ease both;
-}
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--blue);
-  color: white;
-  padding: 14px 28px;
-  border-radius: 30px;
-  font-weight: 600;
-  font-size: .95rem;
-  text-decoration: none;
-  transition: background .25s, transform .2s, box-shadow .2s;
-  box-shadow: 0 4px 20px rgba(10,111,212,.3);
-}
-.btn-primary:hover {
-  background: #0858b0;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(10,111,212,.35);
-}
-.btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: white;
-  color: var(--dark);
-  padding: 14px 28px;
-  border-radius: 30px;
-  font-weight: 600;
-  font-size: .95rem;
-  text-decoration: none;
-  border: 1px solid rgba(0,0,0,.1);
-  transition: border-color .25s, transform .2s;
-  box-shadow: var(--shadow-sm);
-}
-.btn-secondary:hover {
-  border-color: var(--blue);
-  color: var(--blue);
-  transform: translateY(-2px);
-}
-
-.hero-image-wrap {
-  display: inline-block;
-  position: relative;
-  animation: fadeUp .9s .35s ease both;
-}
-.hero-image-wrap img {
-  width: 180px;
-  filter: drop-shadow(0 20px 40px rgba(10,111,212,.18));
-  animation: float 4s ease-in-out infinite;
-}
-@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
-
-/* Trust strip */
-.trust-strip {
-  display: flex;
-  justify-content: center;
-  gap: 32px;
-  flex-wrap: wrap;
-  padding: 28px 20px;
-  background: white;
-  border-top: 1px solid rgba(10,111,212,.06);
-  border-bottom: 1px solid rgba(10,111,212,.06);
-}
-.trust-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: .9rem;
-  color: var(--mid);
-  font-weight: 500;
-}
-.trust-item .icon {
-  width: 38px; height: 38px;
-  border-radius: 50%;
-  background: var(--blue-pale);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
-  flex-shrink: 0;
-}
-
-/* ============================
-   SECTIONS SHARED
-   ============================ */
-.section {
-  max-width: 1100px;
-  margin: 80px auto;
-  padding: 0 20px;
-}
-.section-label {
-  display: inline-block;
-  font-size: .78rem;
-  font-weight: 700;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--blue);
-  margin-bottom: 10px;
-}
-.section-title {
-  font-family: 'DM Serif Display', serif;
-  font-size: clamp(1.7rem, 4vw, 2.3rem);
-  line-height: 1.2;
-  color: var(--dark);
-  margin-bottom: 14px;
-}
-.section-sub {
-  font-size: 1rem;
-  color: var(--mid);
-  max-width: 520px;
-  margin-bottom: 40px;
-}
-
-/* ============================
+/* ============================================================
    SERVICES
-   ============================ */
-#services .inner {
-  background: white;
-  border-radius: 24px;
-  padding: 50px 40px;
-  box-shadow: var(--shadow-md);
+   ============================================================ */
+.tabs{display:flex;gap:10px;justify-content:center;margin-bottom:44px;flex-wrap:wrap}
+.tab-btn{
+  display:flex;align-items:center;gap:8px;
+  padding:11px 24px;
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--r-f);font-size:.9375rem;font-weight:600;color:var(--text);
+  transition:var(--ease);
+}
+.tab-btn:hover{border-color:var(--p);color:var(--p)}
+.tab-btn.active{background:var(--p);border-color:var(--p);color:var(--white);box-shadow:0 4px 14px rgba(10,111,212,.25)}
+
+.panel{display:none}.panel.active{display:block}
+
+.srv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:22px}
+.srv-card{
+  background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:30px 26px;transition:var(--ease);
+}
+.srv-card:hover{border-color:var(--p);box-shadow:var(--sh-md);transform:translateY(-4px)}
+.srv-ico{
+  width:54px;height:54px;border-radius:var(--r);
+  display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:18px;
+}
+.ico-b{background:var(--p-pale)}.ico-g{background:var(--a-pale)}.ico-c{background:#cffafe}
+.ico-p{background:#ede9fe}.ico-o{background:#ffedd5}.ico-pk{background:#fce7f3}
+.srv-card h3{font-family:'DM Sans',sans-serif;font-size:1.0625rem;font-weight:700;margin-bottom:8px;color:var(--dark)}
+.srv-card p{font-size:.9rem;color:var(--text);line-height:1.65}
+
+/* ============================================================
+   PROCESS
+   ============================================================ */
+.process-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:32px;position:relative;
+}
+.process-line{
+  position:absolute;top:35px;
+  left:calc(100%/6);right:calc(100%/6);
+  height:1px;background:linear-gradient(90deg,var(--p),var(--a));opacity:.2;
+}
+.process-step{text-align:center;position:relative}
+.process-num{
+  width:70px;height:70px;border-radius:50%;
+  background:linear-gradient(135deg,var(--p),var(--p-light));
+  color:var(--white);font-family:'DM Serif Display',serif;font-size:1.5rem;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 18px;box-shadow:0 8px 24px rgba(10,111,212,.25);position:relative;z-index:2;
+}
+.process-step h3{font-family:'DM Sans',sans-serif;font-size:1.0625rem;font-weight:700;margin-bottom:7px;color:var(--dark)}
+.process-step p{font-size:.9rem;color:var(--text)}
+
+/* ============================================================
+   STATS
+   ============================================================ */
+.stats{background:linear-gradient(135deg,var(--dark) 0%,var(--dark2) 100%);padding:80px 0}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+.stat{text-align:center}
+.stat-n{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(2.5rem,5vw,3.5rem);color:var(--white);line-height:1;margin-bottom:7px;
+}
+.stat-n span{color:var(--p-light)}
+.stat-l{font-size:.9rem;color:rgba(255,255,255,.5)}
+
+/* ============================================================
+   WHY US
+   ============================================================ */
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.why-visual{position:relative}
+.why-img{
+  border-radius:var(--r-xl);overflow:hidden;
+  box-shadow:var(--sh-xl);aspect-ratio:4/3;
+  background:linear-gradient(135deg,var(--p-pale),var(--a-pale));
+}
+.why-img img{width:100%;height:100%;object-fit:cover}
+.why-badge{
+  position:absolute;bottom:-18px;right:-18px;
+  background:var(--white);border-radius:var(--r);padding:15px 18px;
+  box-shadow:var(--sh-lg);display:flex;align-items:center;gap:11px;
+}
+.why-badge-ico{
+  width:42px;height:42px;background:var(--a-pale);border-radius:var(--r-sm);
+  display:flex;align-items:center;justify-content:center;font-size:1.125rem;
+}
+.why-badge-txt strong{display:block;font-size:.9375rem;color:var(--dark)}
+.why-badge-txt span{font-size:.8125rem;color:var(--text)}
+
+.why-list{display:flex;flex-direction:column;gap:18px;margin-top:30px}
+.why-item{display:flex;gap:15px;align-items:flex-start}
+.why-item-ico{
+  width:44px;height:44px;background:var(--p-pale);border-radius:var(--r-sm);
+  display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;
+}
+.why-item h4{font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;color:var(--dark);margin-bottom:3px}
+.why-item p{font-size:.9rem;color:var(--text)}
+
+/* ============================================================
+   TESTIMONIALS
+   ============================================================ */
+
+/* ============================================================
+   CALENDLY SECTION
+   ============================================================ */
+.cal-section{
+  background:linear-gradient(135deg,var(--dark) 0%,#0e2744 100%);
+  padding:96px 0;overflow:hidden;position:relative;
+}
+.cal-section::before{
+  content:'';position:absolute;top:-120px;right:-120px;
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(10,111,212,.28) 0%,transparent 70%);
+  pointer-events:none;
+}
+.cal-section::after{
+  content:'';position:absolute;bottom:-80px;left:-80px;
+  width:360px;height:360px;
+  background:radial-gradient(circle,rgba(34,197,94,.18) 0%,transparent 70%);
+  pointer-events:none;
+}
+.cal-inner{position:relative;z-index:2}
+.cal-header{text-align:center;max-width:620px;margin:0 auto 48px}
+.cal-header .badge{background:rgba(255,255,255,.09);color:rgba(255,255,255,.82);border-color:rgba(255,255,255,.14)}
+.cal-header .section-title{color:var(--white);margin-top:14px}
+.cal-header .section-sub{color:rgba(255,255,255,.6)}
+
+.cal-perks{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:48px}
+.cal-perk{
+  display:flex;align-items:center;gap:9px;
+  color:rgba(255,255,255,.7);font-size:.9rem;font-weight:500;
+}
+.cal-perk-ico{
+  width:32px;height:32px;background:rgba(255,255,255,.09);
+  border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:.875rem;
 }
 
-.tab-bar {
-  display: inline-flex;
-  background: var(--blue-pale);
-  border-radius: 40px;
-  padding: 4px;
-  gap: 4px;
-  margin-bottom: 36px;
+.cal-widget{
+  background:var(--white);border-radius:var(--r-xl);overflow:hidden;
+  box-shadow:var(--sh-xl);max-width:920px;margin:0 auto;
 }
-.tab-btn {
-  padding: 11px 26px;
-  border-radius: 36px;
-  border: none;
-  background: transparent;
-  color: var(--mid);
-  font-family: 'DM Sans', sans-serif;
-  font-size: .92rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background .25s, color .25s, box-shadow .25s;
-}
-.tab-btn.active {
-  background: var(--blue);
-  color: white;
-  box-shadow: 0 4px 16px rgba(10,111,212,.3);
-}
-.tab-btn:hover:not(.active) { background: rgba(10,111,212,.08); color: var(--blue); }
+.calendly-inline-widget{min-width:320px;height:700px}
 
-.service-box { display: none; }
-.service-box.active { display: block; }
+/* ============================================================
+   FAQ
+   ============================================================ */
+.faq-list{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:11px}
+.faq-item{background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:var(--ease)}
+.faq-item.open{box-shadow:var(--sh);border-color:var(--p)}
+.faq-btn{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  width:100%;padding:19px 22px;text-align:left;
+  font-size:1rem;font-weight:600;color:var(--dark);transition:var(--ease);
+}
+.faq-btn:hover{color:var(--p)}
+.faq-ico{
+  width:26px;height:26px;background:var(--p-pale);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--p);font-size:1.2rem;flex-shrink:0;transition:var(--ease);
+}
+.faq-item.open .faq-ico{transform:rotate(45deg);background:var(--p);color:var(--white)}
+.faq-body{padding:0 22px;max-height:0;overflow:hidden;transition:max-height .32s ease,padding .32s ease}
+.faq-item.open .faq-body{max-height:320px;padding-bottom:18px}
+.faq-body p{font-size:.9375rem;color:var(--text);line-height:1.72}
 
-.service-illustration {
-  text-align: center;
-  margin-bottom: 30px;
+/* ============================================================
+   CONTACT
+   ============================================================ */
+.contact-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:60px;align-items:start}
+.contact-title{font-size:1.8rem;margin-top:14px;margin-bottom:10px}
+.contact-sub{color:var(--text);font-size:.9375rem;line-height:1.72;margin-bottom:32px}
+.contact-items{display:flex;flex-direction:column;gap:14px;margin-bottom:32px}
+.contact-item{display:flex;align-items:center;gap:13px}
+.contact-item-ico{
+  width:42px;height:42px;background:var(--p-pale);border-radius:var(--r-sm);
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;
 }
-.service-illustration img {
-  width: 100%;
-  max-width: 320px;
-  height: 240px;
-  object-fit: contain;
-}
-.illus-credit {
-  font-size: .72rem;
-  color: var(--mid);
-  margin-top: 8px;
-  opacity: .6;
-}
-.illus-credit a { color: var(--mid); }
+.contact-item-lbl{font-size:.8125rem;color:var(--muted);font-weight:500;display:block}
+.contact-item-val{font-size:.9375rem;font-weight:600;color:var(--dark)}
 
-.service-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 16px;
+.cf{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:var(--r-xl);padding:38px 36px;box-shadow:var(--sh);
 }
-.service-card {
-  background: var(--cream);
-  border: 1px solid rgba(10,111,212,.08);
-  border-radius: var(--radius-sm);
-  padding: 20px 18px;
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  transition: box-shadow .25s, transform .25s;
+.cf h3{font-family:'DM Sans',sans-serif;font-size:1.125rem;font-weight:700;margin-bottom:22px;color:var(--dark)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-g{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.form-lbl{font-size:.875rem;font-weight:600;color:var(--dark2)}
+.form-in,.form-ta{
+  padding:11px 15px;background:var(--bg);
+  border:1.5px solid var(--border);border-radius:var(--r-sm);
+  font-family:inherit;font-size:.9375rem;color:var(--dark);
+  transition:var(--ease);outline:none;width:100%;
 }
-.service-card:hover {
-  box-shadow: var(--shadow-sm);
-  transform: translateY(-2px);
+.form-in:focus,.form-ta:focus{border-color:var(--p);background:var(--white);box-shadow:0 0 0 3px rgba(10,111,212,.1)}
+.form-ta{resize:vertical;min-height:126px}
+.form-sub{
+  width:100%;padding:14px;background:var(--p);color:var(--white);
+  font-size:1rem;font-weight:600;border-radius:var(--r-f);
+  transition:var(--ease);box-shadow:0 4px 15px rgba(10,111,212,.25);
 }
-.service-card .sc-icon {
-  width: 40px; height: 40px;
-  background: var(--blue-pale);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  flex-shrink: 0;
+.form-sub:hover{background:var(--p-dark);transform:translateY(-2px);box-shadow:0 8px 25px rgba(10,111,212,.3)}
+.form-sub:disabled{opacity:.65;transform:none;cursor:not-allowed}
+.form-status{
+  text-align:center;padding:11px;border-radius:var(--r-sm);
+  font-size:.9rem;font-weight:500;margin-top:11px;display:none;
 }
-.service-card p {
-  font-size: .9rem;
-  font-weight: 500;
-  color: var(--dark);
-  line-height: 1.4;
-}
+.form-status.ok{background:var(--a-pale);color:var(--a-dark);display:block}
+.form-status.err{background:#fee2e2;color:#dc2626;display:block}
 
-/* ============================
-   ABOUT
-   ============================ */
-#about .inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
-  align-items: center;
-}
-.about-img-wrap {
-  position: relative;
-  border-radius: 20px;
-  overflow: hidden;
-}
-.about-img-wrap img {
-  width: 100%;
-  border-radius: 20px;
-  display: block;
-}
-
-.about-text p {
-  font-size: 1.05rem;
-  color: var(--mid);
-  line-height: 1.8;
-  margin-bottom: 24px;
-}
-.value-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.pill {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  background: var(--blue-pale);
-  color: var(--blue);
-  border-radius: 30px;
-  padding: 7px 14px;
-  font-size: .84rem;
-  font-weight: 600;
-}
-
-/* ============================
-   CONTACT FORM
-   ============================ */
-#devis {
-  background: linear-gradient(135deg, var(--blue) 0%, #0858b0 100%);
-  border-radius: 28px;
-  padding: 60px 40px;
-  max-width: 1100px;
-  margin: 0 auto 80px;
-  position: relative;
-  overflow: hidden;
-}
-#devis::before {
-  content: '';
-  position: absolute;
-  top: -100px; right: -100px;
-  width: 400px; height: 400px;
-  background: rgba(255,255,255,.06);
-  border-radius: 50%;
-}
-#devis::after {
-  content: '';
-  position: absolute;
-  bottom: -80px; left: -60px;
-  width: 280px; height: 280px;
-  background: rgba(255,255,255,.04);
-  border-radius: 50%;
-}
-
-.devis-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
-  align-items: center;
-  position: relative;
-  z-index: 1;
-}
-.devis-left .section-label { color: rgba(255,255,255,.6); }
-.devis-left .section-title { color: white; }
-.devis-left .section-sub { color: rgba(255,255,255,.7); margin-bottom: 28px; }
-
-.contact-info {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-.contact-item {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  color: rgba(255,255,255,.85);
-  font-size: .95rem;
-}
-.contact-item a { color: white; text-decoration: none; }
-.contact-item a:hover { text-decoration: underline; }
-.c-icon {
-  width: 38px; height: 38px;
-  background: rgba(255,255,255,.12);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  flex-shrink: 0;
-}
-
-form {
-  background: white;
-  border-radius: 18px;
-  padding: 36px 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  box-shadow: 0 20px 60px rgba(0,0,0,.2);
-}
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.field label {
-  font-size: .78rem;
-  font-weight: 600;
-  color: var(--mid);
-  letter-spacing: .04em;
-}
-input, textarea, select {
-  padding: 13px 16px;
-  border-radius: var(--radius-sm);
-  border: 1.5px solid #e5e7eb;
-  font-family: 'DM Sans', sans-serif;
-  font-size: .9rem;
-  color: var(--dark);
-  background: var(--cream);
-  transition: border-color .2s, box-shadow .2s;
-  outline: none;
-}
-input:focus, textarea:focus {
-  border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(10,111,212,.1);
-  background: white;
-}
-textarea { resize: vertical; min-height: 110px; }
-button.submit {
-  background: var(--blue);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  padding: 15px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: .95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background .25s, transform .2s, box-shadow .2s;
-  box-shadow: 0 4px 16px rgba(10,111,212,.3);
-}
-button.submit:hover {
-  background: #0858b0;
-  transform: translateY(-1px);
-  box-shadow: 0 8px 24px rgba(10,111,212,.35);
-}
-button.submit:active { transform: translateY(0); }
-
-/* ============================
+/* ============================================================
    FOOTER
-   ============================ */
-footer {
-  background: var(--dark);
-  color: rgba(255,255,255,.5);
-  text-align: center;
-  padding: 36px 20px 120px;
-  font-size: .88rem;
+   ============================================================ */
+.footer{background:var(--dark);color:rgba(255,255,255,.58);padding:80px 0 36px}
+.footer-grid{
+  display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:48px;
+  padding-bottom:60px;border-bottom:1px solid rgba(255,255,255,.07);
 }
-footer strong { color: rgba(255,255,255,.85); font-weight: 600; }
-footer a { color: rgba(255,255,255,.6); text-decoration: none; }
-footer a:hover { color: white; }
-.footer-inner {
-  max-width: 700px;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
+.footer-brand-logo{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.footer-brand-logo img{width:36px;height:36px;border-radius:var(--r-sm);object-fit:contain}
+.footer-brand-name{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--white)}
+.footer-desc{font-size:.875rem;line-height:1.72;margin-bottom:22px}
+.footer-socials{display:flex;gap:9px}
+.footer-soc{
+  width:35px;height:35px;background:rgba(255,255,255,.07);border-radius:var(--r-sm);
+  display:flex;align-items:center;justify-content:center;font-size:.875rem;
+  transition:var(--ease);color:rgba(255,255,255,.65);
 }
-.footer-links { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
-.footer-divider { width: 1px; height: 14px; background: rgba(255,255,255,.15); }
+.footer-soc:hover{background:var(--p);color:var(--white)}
+.footer-col-title{
+  font-size:.7875rem;font-weight:700;color:var(--white);
+  letter-spacing:.07em;text-transform:uppercase;margin-bottom:18px;
+}
+.footer-links{display:flex;flex-direction:column;gap:9px}
+.footer-link{font-size:.875rem;transition:var(--ease)}
+.footer-link:hover{color:var(--white)}
+.footer-bottom{
+  padding-top:28px;display:flex;align-items:center;justify-content:space-between;
+  gap:14px;flex-wrap:wrap;font-size:.8125rem;
+}
+.footer-bottom-links{display:flex;gap:22px;flex-wrap:wrap}
+.footer-bottom a:hover{color:var(--white)}
 
-/* ============================
-   ANIMATIONS
-   ============================ */
-@keyframes fadeDown {
-  from { opacity: 0; transform: translateY(-18px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* ============================================================
+   MOBILE STICKY CTA
+   ============================================================ */
+.m-cta{
+  display:none;position:fixed;bottom:0;left:0;right:0;z-index:150;
+  padding:10px 16px;background:var(--white);border-top:1px solid var(--border);
+  gap:9px;box-shadow:0 -4px 20px rgba(0,0,0,.1);
 }
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.animate {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity .75s ease, transform .75s ease;
-}
-.animate.show {
-  opacity: 1;
-  transform: translateY(0);
-}
+.m-cta a{flex:1;text-align:center;border-radius:var(--r-sm) !important}
 
-/* ============================
+/* ============================================================
    RESPONSIVE
-   ============================ */
-@media (max-width: 768px) {
-  nav { display: none; }
-  .header-mobile { display: flex; }
-
-  .hero { padding: 60px 20px 50px; }
-  .trust-strip { gap: 18px; padding: 22px 20px; }
-
-  #services .inner { padding: 32px 20px; border-radius: 18px; }
-  .tab-bar { width: 100%; justify-content: center; }
-  .service-grid { grid-template-columns: 1fr; }
-
-  #about .inner { grid-template-columns: 1fr; gap: 32px; }
-  .about-img-wrap img { height: 240px; object-fit: cover; }
-
-  #devis { padding: 40px 20px; border-radius: 20px; margin: 0 16px 60px; }
-  .devis-grid { grid-template-columns: 1fr; gap: 36px; }
-  .form-row { grid-template-columns: 1fr; }
-  form { padding: 28px 22px; }
-
-  .hero-actions { flex-direction: column; align-items: center; }
-  .btn-primary, .btn-secondary { width: 100%; justify-content: center; max-width: 300px; }
+   ============================================================ */
+@media(max-width:1024px){
+  .hero-content{grid-template-columns:1fr}
+  .hero-right{display:none}
+  .hero-sub{max-width:100%}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .why-grid{grid-template-columns:1fr;gap:40px}
+  .why-visual{display:none}
+  .contact-grid{grid-template-columns:1fr;gap:36px}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:40px}
+  .process-grid{grid-template-columns:1fr;gap:28px}
+  .process-line{display:none}
 }
 
-@media (max-width: 480px) {
-  .trust-strip { flex-direction: column; align-items: flex-start; padding: 20px; }
+@media(max-width:768px){
+  :root{--nav-h:64px}
+  .section{padding:72px 0}
+  .nav-links,.nav-tel,.nav-actions .btn{display:none}
+  .nav-burger{display:flex}
+  .hero{padding:calc(var(--nav-h)+32px) 0 96px}
+  .hero-actions{flex-direction:column}
+  .hero-actions .btn{width:100%;justify-content:center}
+  .form-row{grid-template-columns:1fr}
+  .cf{padding:26px 20px}
+  .footer-grid{grid-template-columns:1fr;gap:30px}
+  .footer-bottom{flex-direction:column;align-items:center;text-align:center}
+  .m-cta{display:flex}
+  body{padding-bottom:70px}
+  .stats-grid{grid-template-columns:repeat(2,1fr);gap:24px}
+  .srv-grid{grid-template-columns:1fr}
+  .sh{margin-bottom:40px}
+}
+
+@media(max-width:480px){
+  .trust-inner{gap:16px}
+  .trust-item span{display:none}
+  .cal-perks{gap:14px}
+  .container{padding:0 18px}
 }
 </style>
 </head>
-
 <body>
 
-<!-- LOADER -->
+<!-- ===================== LOADER ===================== -->
 <div id="loader">
-  <img src="https://i.imgur.com/D29UJPO.png" alt="Domi Clean">
-  <div class="loader-bar"></div>
+  <!-- bg dots -->
+  <div class="ld-dots" id="ldDots"></div>
+
+  <!-- logo + brand -->
+  <div class="ld-center">
+    <div class="ld-glow"></div>
+    <img src="https://i.imgur.com/D29UJPO.png" alt="Domi Clean" class="ld-logo"
+         onerror="this.style.display='none';document.getElementById('ldFb').style.display='flex'">
+    <div id="ldFb" style="display:none;width:92px;height:92px;background:var(--p);border-radius:20px;align-items:center;justify-content:center;font-size:2.25rem;position:relative;z-index:1">🏠</div>
+    <div class="ld-brand">Domi Clean</div>
+    <div class="ld-tagline">NETTOYAGE · AIDE À DOMICILE</div>
+  </div>
+
+  <!-- service icons, apparaissent un par un -->
+  <div class="ld-svcs">
+    <div class="ld-svc">
+      <div class="ld-svc-ico">🧹</div>
+      <div class="ld-svc-lbl">Nettoyage professionnel</div>
+    </div>
+    <div class="ld-svc">
+      <div class="ld-svc-ico">✨</div>
+      <div class="ld-svc-lbl">Résultat impeccable</div>
+    </div>
+    <div class="ld-svc">
+      <div class="ld-svc-ico">🤝</div>
+      <div class="ld-svc-lbl">Aide à domicile</div>
+    </div>
+  </div>
+
+  <!-- progress bar -->
+  <div class="ld-bar"><div class="ld-prog"></div></div>
+
+  <!-- broom sweep -->
+  <div class="ld-sweep-wrap">
+    <div class="ld-sweep">🧹</div>
+    <div class="ld-sweep-trail"></div>
+  </div>
 </div>
 
-<!-- NAV DESKTOP -->
-<nav>
-  <ul>
-    <li><a href="#"><img src="https://i.imgur.com/D29UJPO.png" class="logo-nav" alt="Domi Clean"></a></li>
-    <li><a href="#services">Services</a></li>
-    <li><a href="histoire.html">Notre histoire</a></li>
-    <li><a href="#about">À propos</a></li>
-    <li><a href="#devis" class="nav-cta">Devis gratuit</a></li>
-  </ul>
+<!-- ===================== MOBILE CTA ===================== -->
+<div class="m-cta" id="mCta">
+  <a href="tel:0628487217" class="btn btn-secondary">📞 Appeler</a>
+  <a href="#reservation" class="btn btn-primary" id="mCtaBook">📅 Réserver</a>
+</div>
+
+<!-- ===================== NAVIGATION ===================== -->
+<nav class="nav" id="nav">
+  <div class="container">
+    <div class="nav-inner">
+
+      <a href="index.html" class="nav-logo">
+        <img src="https://i.imgur.com/D29UJPO.png" alt="Logo Domi Clean" onerror="this.style.display='none'">
+        <div class="nav-logo-txt">
+          <span>Domi Clean</span>
+          <small>Île-de-France</small>
+        </div>
+      </a>
+
+      <div class="nav-links">
+        <a href="#services" class="nav-link">Services</a>
+        <a href="#comment-ca-marche" class="nav-link">Comment ça marche</a>
+        <a href="histoire.html" class="nav-link">Notre histoire</a>
+        <a href="#faq" class="nav-link">FAQ</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </div>
+
+      <div class="nav-actions">
+        <a href="tel:0628487217" class="nav-tel">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12.73a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.62 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          06 28 48 72 17
+        </a>
+        <a href="#reservation" class="btn btn-primary">📅 Prendre rendez-vous</a>
+      </div>
+
+      <button class="nav-burger" id="burger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
 </nav>
 
-<!-- HEADER MOBILE -->
-<header class="header-mobile">
-  <img src="https://i.imgur.com/D29UJPO.png" alt="Domi Clean" class="header-logo-mobile">
-  <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">
-    <span></span><span></span><span></span>
-  </button>
-</header>
-
-<!-- MENU MOBILE -->
-<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
-  <button class="close-btn" id="closeMenu" aria-label="Fermer">&times;</button>
-  <a href="#services" class="menu-link">Services</a>
-  <a href="histoire.html" class="menu-link">Notre histoire</a>
-  <a href="#about" class="menu-link">À propos</a>
-  <a href="#devis" class="menu-link">Contact</a>
+<!-- ===================== MOBILE DRAWER ===================== -->
+<div class="drawer" id="drawer" role="dialog" aria-label="Menu de navigation">
+  <div class="drawer-links">
+    <a href="#services" class="drawer-link" data-close>Services</a>
+    <a href="#comment-ca-marche" class="drawer-link" data-close>Comment ça marche</a>
+    <a href="histoire.html" class="drawer-link" data-close>Notre histoire</a>
+    <a href="#faq" class="drawer-link" data-close>FAQ</a>
+    <a href="#contact" class="drawer-link" data-close>Contact</a>
+  </div>
+  <div class="drawer-bottom">
+    <a href="#reservation" class="btn btn-primary btn-lg" data-close>📅 Prendre rendez-vous</a>
+    <p class="drawer-tel">📞 <a href="tel:0628487217">06 28 48 72 17</a></p>
+  </div>
 </div>
 
-<main>
-
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-badge">✦ Service professionnel & de confiance</div>
-    <h1>Nettoyage & Aide<br><em>à domicile</em></h1>
-    <p class="hero-sub">Un accompagnement humain et sur mesure, pour votre bien-être et votre quotidien.</p>
-    <div class="hero-actions">
-      <a href="#devis" class="btn-primary">
-        <span>Demander un devis</span>
-        <span>→</span>
-      </a>
-      <a href="#services" class="btn-secondary">
-        <span>Voir nos services</span>
-      </a>
-    </div>
-    <div class="hero-image-wrap">
-      <img src="https://i.imgur.com/XluH0ky.png" alt="Domi Clean illustration" width="180">
-    </div>
-  </section> 
-
-  <!-- TRUST STRIP -->
-  <div class="trust-strip animate">
-    <div class="trust-item"><div class="icon">🏠</div> <span>Aide à domicile</span></div>
-    <div class="trust-item"><div class="icon">✨</div> <span>Nettoyage professionnel</span></div>
-    <div class="trust-item"><div class="icon">⚡</div> <span>Devis gratuit & rapide</span></div>
-    <div class="trust-item"><div class="icon">🤝</div> <span>Service de confiance</span></div>
-    <div class="trust-item"><div class="icon">📍</div> <span>Région parisienne</span></div>
+<!-- ===================== HERO ===================== -->
+<section class="hero" id="accueil">
+  <div class="hero-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
   </div>
 
-  <!-- SERVICES -->
-  <div class="section animate" id="services">
-    <span class="section-label">Ce que nous faisons</span>
-    <h2 class="section-title">Nos services</h2>
-    <p class="section-sub">Des prestations professionnelles adaptées à vos besoins, pour particuliers et professionnels.</p>
+  <div class="container">
+    <div class="hero-content">
+      <!-- LEFT -->
+      <div class="hero-left">
+        <div class="hero-badge-wrap">
+          <div class="hero-dot"></div>
+          Service professionnel & de confiance en Île-de-France
+        </div>
 
-    <div id="services" class="inner">
-      <div class="tab-bar">
-        <button class="tab-btn active" onclick="showService('clean')" aria-controls="clean" aria-pressed="true">🧹 Nettoyage</button>
-        <button class="tab-btn" onclick="showService('home')" aria-controls="home" aria-pressed="false">❤️ Aide à domicile</button>
+        <h1 class="hero-title">
+          Nettoyage &<br>
+          <em>Aide à domicile</em><br>
+          sur mesure
+        </h1>
+
+        <p class="hero-sub">
+          Des services personnalisés de nettoyage professionnel et d'aide à domicile pour particuliers et professionnels. Disponible rapidement, partout en Île-de-France.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#reservation" class="btn btn-primary btn-lg">📅 Réserver un appel gratuit</a>
+          <a href="#services" class="btn btn-ghost btn-lg">Voir nos services</a>
+        </div>
+
       </div>
 
-      <div id="clean" class="service-box active">
-        <div class="service-illustration">
-          <img src="https://i.imgur.com/KPHBQZz.png" alt="Illustration nettoyage professionnel">
-          <p class="illus-credit">Illustration: <a href="https://storyset.com" target="_blank" rel="noopener">Storyset</a></p>
+      <!-- RIGHT (desktop only) -->
+      <div class="hero-right" aria-hidden="true">
+        <div class="hero-card">
+          <div class="hero-card-icon">🏠</div>
+          <div class="hero-card-title">Nos services</div>
+          <div class="hero-card-list">
+            <div class="hero-card-item">Nettoyage de locaux professionnels</div>
+            <div class="hero-card-item">Nettoyage fin de chantier & vitrerie</div>
+            <div class="hero-card-item">Aide aux courses & administratif</div>
+            <div class="hero-card-item">Accompagnement médical</div>
+            <div class="hero-card-item">Compagnie & activités</div>
+          </div>
         </div>
-        <div class="service-grid">
-          <div class="service-card"><div class="sc-icon">🏢</div><p>Nettoyage locaux professionnels</p></div>
-          <div class="service-card"><div class="sc-icon">🏗️</div><p>Nettoyage fin de chantier</p></div>
-          <div class="service-card"><div class="sc-icon">🪟</div><p>Nettoyage vitrerie</p></div>
-          <div class="service-card"><div class="sc-icon">📦</div><p>Nettoyage après déménagement</p></div>
-        </div>
-      </div>
 
-      <div id="home" class="service-box">
-        <div class="service-illustration">
-          <img src="https://i.imgur.com/LfACQva.png" alt="Illustration aide à domicile">
-          <p class="illus-credit">Illustration: <a href="https://storyset.com" target="_blank" rel="noopener">Storyset</a></p>
+        <div class="hero-fc hero-fc-1">
+          <div class="hero-fc-ico" style="background:var(--a-pale)">✅</div>
+          <div class="hero-fc-txt">
+            <strong>Devis gratuit</strong>
+            <span>Réponse sous 24h</span>
+          </div>
         </div>
-        <div class="service-grid">
-          <div class="service-card"><div class="sc-icon">🛒</div><p>Aide aux courses</p></div>
-          <div class="service-card"><div class="sc-icon">📄</div><p>Aide administrative</p></div>
-          <div class="service-card"><div class="sc-icon">💬</div><p>Compagnie et activités</p></div>
-          <div class="service-card"><div class="sc-icon">🏥</div><p>Accompagnement rendez-vous médicaux</p></div>
-          <div class="service-card"><div class="sc-icon">🌅</div><p>Aide au lever et au coucher</p></div>
-          <div class="service-card"><div class="sc-icon">💊</div><p>Aide à la prise de médicaments</p></div>
+
+        <div class="hero-fc hero-fc-2">
+          <div class="hero-fc-ico" style="background:var(--p-pale)">📍</div>
+          <div class="hero-fc-txt">
+            <strong>Région parisienne</strong>
+            <span>Intervention rapide</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- ABOUT -->
-  <div class="section animate" id="about">
-    <div class="inner">
-      <div class="about-img-wrap">
-        <img src="https://i.imgur.com/XluH0ky.png" alt="Domi Clean équipe" style="width:100%;height:300px;object-fit:contain;background:#eef7f0;border-radius:20px;">
+<!-- ===================== TRUST BAR ===================== -->
+<div class="trust-bar">
+  <div class="container">
+    <div class="trust-inner">
+      <div class="trust-item"><div class="trust-ico">🏠</div><span>Aide à domicile</span></div>
+      <div class="trust-item"><div class="trust-ico">✨</div><span>Nettoyage professionnel</span></div>
+      <div class="trust-item"><div class="trust-ico">⚡</div><span>Devis gratuit & rapide</span></div>
+      <div class="trust-item"><div class="trust-ico">🤝</div><span>Service de confiance</span></div>
+      <div class="trust-item"><div class="trust-ico">📍</div><span>Île-de-France</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SERVICES ===================== -->
+<section class="section" id="services">
+  <div class="container">
+    <div class="sh fu">
+      <div class="badge">✦ Nos services</div>
+      <h2 class="section-title">Ce que nous proposons</h2>
+      <p class="section-sub">Des services professionnels et bienveillants, entièrement adaptés à vos besoins.</p>
+    </div>
+
+    <div class="tabs fu">
+      <button class="tab-btn active" onclick="showTab('net')" id="tab-net">🧹 Nettoyage</button>
+      <button class="tab-btn" onclick="showTab('aide')" id="tab-aide">🤝 Aide à domicile</button>
+    </div>
+
+    <div id="panel-net" class="panel active">
+      <div class="srv-grid">
+        <div class="srv-card fu fu-d1">
+          <div class="srv-ico ico-b">🏢</div>
+          <h3>Locaux professionnels</h3>
+          <p>Bureaux, commerces, espaces professionnels. Nettoyage régulier ou ponctuel adapté à votre activité.</p>
+        </div>
+        <div class="srv-card fu fu-d2">
+          <div class="srv-ico ico-g">🏗️</div>
+          <h3>Fin de chantier</h3>
+          <p>Remise en état après travaux. Dépoussiérage complet et nettoyage des surfaces pour une finition impeccable.</p>
+        </div>
+        <div class="srv-card fu fu-d3">
+          <div class="srv-ico ico-c">🪟</div>
+          <h3>Vitrerie</h3>
+          <p>Fenêtres, baies vitrées, vitrines. Nettoyage professionnel pour des vitres parfaitement transparentes.</p>
+        </div>
+        <div class="srv-card fu fu-d4">
+          <div class="srv-ico ico-p">📦</div>
+          <h3>Après déménagement</h3>
+          <p>Remise en état complète d'un logement ou local après déménagement. État des lieux garanti.</p>
+        </div>
       </div>
-      <div class="about-text">
-        <span class="section-label">Qui sommes-nous</span>
-        <h2 class="section-title">Une entreprise jeune,<br>un engagement fort</h2>
-        <p>Domi Clean est une jeune entreprise dynamique spécialisée dans le nettoyage et l'aide à domicile. Animés par l'ambition de devenir un acteur de confiance, nous misons sur la qualité, la proximité et le sérieux.</p>
-        <div class="value-pills">
-          <span class="pill">✓ Qualité garantie</span>
-          <span class="pill">✓ Écoute & proximité</span>
-          <span class="pill">✓ Équipe sérieuse</span>
-          <span class="pill">✓ Sur mesure</span>
+    </div>
+
+    <div id="panel-aide" class="panel">
+      <div class="srv-grid">
+        <div class="srv-card fu fu-d1">
+          <div class="srv-ico ico-b">🛒</div>
+          <h3>Aide aux courses</h3>
+          <p>Nous effectuons vos courses selon votre liste, afin que vous n'ayez plus à vous déplacer.</p>
+        </div>
+        <div class="srv-card fu fu-d2">
+          <div class="srv-ico ico-g">📋</div>
+          <h3>Aide administrative</h3>
+          <p>Rédaction de courriers, démarches administratives, gestion des dossiers simples.</p>
+        </div>
+        <div class="srv-card fu fu-d3">
+          <div class="srv-ico ico-o">🎲</div>
+          <h3>Compagnie & activités</h3>
+          <p>Présence et activités de loisirs (jeux, lecture, promenades) pour rompre l'isolement.</p>
+        </div>
+        <div class="srv-card fu fu-d4">
+          <div class="srv-ico ico-c">🏥</div>
+          <h3>Accompagnement médical</h3>
+          <p>Accompagnement à vos rendez-vous médicaux : transport, présence et aide administrative.</p>
+        </div>
+        <div class="srv-card fu fu-d1">
+          <div class="srv-ico ico-p">🌅</div>
+          <h3>Lever & coucher</h3>
+          <p>Assistance bienveillante pour les moments de lever et de coucher, en préservant votre autonomie.</p>
+        </div>
+        <div class="srv-card fu fu-d2">
+          <div class="srv-ico ico-pk">💊</div>
+          <h3>Prise de médicaments</h3>
+          <p>Rappel et assistance pour la prise de médicaments selon les prescriptions médicales.</p>
         </div>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- CONTACT -->
-  <div class="animate" style="padding: 0 20px;">
-    <section id="devis">
-      <div class="devis-grid">
-        <div class="devis-left">
-          <span class="section-label">Contactez-nous</span>
-          <h2 class="section-title">Devis gratuit & sans engagement</h2>
-          <p class="section-sub">Décrivez votre besoin, nous vous répondons rapidement avec un devis personnalisé.</p>
-          <div class="contact-info">
-            <div class="contact-item">
-              <div class="c-icon">📧</div>
-              <span class="__cf_email__">domicleanidf@gmail.com</span></a>
+<!-- ===================== PROCESS ===================== -->
+<section class="section section--alt" id="comment-ca-marche">
+  <div class="container">
+    <div class="sh fu">
+      <div class="badge">✦ Comment ça marche</div>
+      <h2 class="section-title">Simple & rapide</h2>
+      <p class="section-sub">Trois étapes suffisent pour bénéficier de nos services professionnels.</p>
+    </div>
+
+    <div class="process-grid fu">
+      <div class="process-line" aria-hidden="true"></div>
+      <div class="process-step">
+        <div class="process-num">1</div>
+        <h3>Prenez rendez-vous</h3>
+        <p>Réservez un appel gratuit de 30 min via notre calendrier en ligne. Nous analysons votre besoin ensemble.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-num">2</div>
+        <h3>Recevez votre devis</h3>
+        <p>Devis personnalisé et transparent envoyé sous 24h, sans engagement de votre part.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-num">3</div>
+        <h3>Profitez du service</h3>
+        <p>Notre équipe intervient selon vos disponibilités, à l'heure et avec soin.</p>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:44px">
+      <a href="#reservation" class="btn btn-primary btn-lg fu">📅 Démarrer maintenant</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== STATS ===================== -->
+<section class="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat fu">
+        <div class="stat-n">Île-de<span>-France</span></div>
+        <div class="stat-l">Zone couverte</div>
+      </div>
+      <div class="stat fu fu-d1">
+        <div class="stat-n"><span class="counter" data-target="2">0</span></div>
+        <div class="stat-l">Experts fondateurs</div>
+      </div>
+      <div class="stat fu fu-d2">
+        <div class="stat-n"><span class="counter" data-target="10">0</span><span>+</span></div>
+        <div class="stat-l">Services proposés</div>
+      </div>
+      <div class="stat fu fu-d3">
+        <div class="stat-n"><span class="counter" data-target="24">0</span><span>h</span></div>
+        <div class="stat-l">Délai de réponse</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== WHY US ===================== -->
+<section class="section" id="about">
+  <div class="container">
+    <div class="why-grid">
+      <div class="why-visual fu">
+        <div class="why-img">
+          <img src="https://i.imgur.com/XluH0ky.png" alt="Équipe Domi Clean"
+               onerror="this.parentElement.style.background='linear-gradient(135deg,var(--p-pale),var(--a-pale))'">
+        </div>
+      </div>
+
+      <div class="fu fu-d1">
+        <div class="badge">✦ Pourquoi nous choisir</div>
+        <h2 class="section-title" style="margin-top:14px;text-align:left">L'humain avant tout</h2>
+        <p class="section-sub" style="text-align:left">
+          Fondée par deux passionnés de service aux personnes, Domi Clean s'engage à vous offrir un accompagnement personnalisé, fiable et bienveillant.
+        </p>
+
+        <div class="why-list">
+          <div class="why-item">
+            <div class="why-item-ico">🎯</div>
+            <div>
+              <h4>Service sur mesure</h4>
+              <p>Chaque intervention est adaptée à vos besoins. Pas de forfait standard, juste ce dont vous avez besoin.</p>
             </div>
-            <div class="contact-item">
-              <div class="c-icon">📞</div>
-              <a href="tel:0628487217">06 28 48 72 17</a>
+          </div>
+          <div class="why-item">
+            <div class="why-item-ico">🤝</div>
+            <div>
+              <h4>Équipe de confiance</h4>
+              <p>Professionnels sérieux, discrets et bienveillants. Vous pouvez nous faire confiance chez vous.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-item-ico">⚡</div>
+            <div>
+              <h4>Réactivité garantie</h4>
+              <p>Devis sous 24h et planification flexible. Nous nous adaptons à votre rythme de vie.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-item-ico">💰</div>
+            <div>
+              <h4>Tarifs transparents</h4>
+              <p>Aucune surprise. Devis clair et détaillé avant toute intervention. Crédit d'impôt possible.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== CALENDLY ===================== -->
+<section class="cal-section" id="reservation">
+  <div class="container">
+    <div class="cal-inner">
+      <div class="cal-header fu">
+        <div class="badge">📅 Prise de rendez-vous</div>
+        <h2 class="section-title">Réservez votre appel<br>gratuit de 30 minutes</h2>
+        <p class="section-sub">Choisissez le créneau qui vous convient. Nous analysons vos besoins et vous envoyons un devis personnalisé sous 24h.</p>
+      </div>
+
+      <div class="cal-perks fu fu-d1">
+        <div class="cal-perk"><div class="cal-perk-ico">🆓</div>Appel 100% gratuit</div>
+        <div class="cal-perk"><div class="cal-perk-ico">⏱️</div>30 minutes chrono</div>
+        <div class="cal-perk"><div class="cal-perk-ico">📋</div>Devis sous 24h</div>
+        <div class="cal-perk"><div class="cal-perk-ico">🔒</div>Sans engagement</div>
+      </div>
+
+      <div class="cal-widget fu fu-d2">
+        <!-- Calendly inline widget begin -->
+        <div class="calendly-inline-widget"
+             data-url="https://calendly.com/domicleanidf/30min?hide_gdpr_banner=1&primary_color=0a6fd4"
+             data-resize="true">
+        </div>
+        <!-- Calendly inline widget end -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section class="section section--alt" id="faq">
+  <div class="container">
+    <div class="sh fu">
+      <div class="badge">✦ FAQ</div>
+      <h2 class="section-title">Questions fréquentes</h2>
+      <p class="section-sub">Tout ce que vous devez savoir avant de faire appel à nos services.</p>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item fu">
+        <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
+          Dans quelle zone géographique intervenez-vous ?
+          <span class="faq-ico" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-body" role="region">
+          <p>Nous intervenons principalement en Île-de-France, couvrant Paris et ses alentours (Hauts-de-Seine, Val-de-Marne, Seine-Saint-Denis…). N'hésitez pas à nous contacter pour vérifier si nous couvrons votre secteur.</p>
+        </div>
+      </div>
+
+      <div class="faq-item fu fu-d1">
+        <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
+          Comment obtenir un devis ?
+          <span class="faq-ico" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-body" role="region">
+          <p>Réservez un appel gratuit de 30 minutes via notre calendrier en ligne. Après avoir échangé sur vos besoins, nous vous envoyons un devis personnalisé et transparent sous 24h. Aucun engagement requis.</p>
+        </div>
+      </div>
+
+      <div class="faq-item fu fu-d2">
+        <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
+          Les intervenants sont-ils vérifiés et formés ?
+          <span class="faq-ico" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-body" role="region">
+          <p>Absolument. Tous nos intervenants sont soigneusement sélectionnés, vérifiés et formés aux techniques professionnelles de nettoyage et d'aide à domicile. Votre sécurité et votre confort sont notre priorité.</p>
+        </div>
+      </div>
+
+      <div class="faq-item fu fu-d3">
+        <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
+          Quels sont vos horaires d'intervention ?
+          <span class="faq-ico" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-body" role="region">
+          <p>Nous nous adaptons à vos disponibilités. Interventions possibles en semaine et le week-end selon les créneaux disponibles. Vous choisissez l'horaire qui vous convient lors de la prise de rendez-vous.</p>
+        </div>
+      </div>
+
+      <div class="faq-item fu fu-d1">
+        <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
+          Puis-je bénéficier d'avantages fiscaux ?
+          <span class="faq-ico" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-body" role="region">
+          <p>Oui ! Les services à la personne peuvent bénéficier d'un crédit d'impôt de 50 % pour les particuliers. Nous pouvons vous accompagner dans ces démarches pour alléger votre reste à charge.</p>
+        </div>
+      </div>
+
+      <div class="faq-item fu fu-d2">
+        <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
+          Que se passe-t-il si je ne suis pas satisfait ?
+          <span class="faq-ico" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-body" role="region">
+          <p>Votre satisfaction est notre priorité absolue. Si vous n'êtes pas pleinement satisfait d'une intervention, contactez-nous et nous trouverons ensemble la meilleure solution.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section class="section" id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="fu">
+        <div class="badge">✦ Contact</div>
+        <h2 class="contact-title">Parlons de votre projet</h2>
+        <p class="contact-sub">Une question, un besoin spécifique ? Contactez-nous directement ou remplissez le formulaire. Réponse dans les plus brefs délais.</p>
+
+        <div class="contact-items">
+          <div class="contact-item">
+            <div class="contact-item-ico">📧</div>
+            <div>
+              <span class="contact-item-lbl">Email</span>
+              <a href="mailto:domicleanidf@gmail.com" class="contact-item-val">domicleanidf@gmail.com</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-ico">📞</div>
+            <div>
+              <span class="contact-item-lbl">Téléphone</span>
+              <a href="tel:0628487217" class="contact-item-val">06 28 48 72 17</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-ico">📍</div>
+            <div>
+              <span class="contact-item-lbl">Zone d'intervention</span>
+              <span class="contact-item-val">Île-de-France</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-ico">⏰</div>
+            <div>
+              <span class="contact-item-lbl">Délai de réponse</span>
+              <span class="contact-item-val">Sous 24 heures</span>
             </div>
           </div>
         </div>
 
-        <form id="devis-form">
+        <a href="#reservation" class="btn btn-primary">📅 Réserver directement</a>
+      </div>
+
+      <div class="cf fu fu-d1">
+        <h3>Envoyez-nous un message</h3>
+        <form id="contactForm" novalidate>
           <div class="form-row">
-            <div class="field">
-              <label for="from_name">Nom & prénom</label>
-              <input type="text" id="from_name" name="from_name" placeholder="Jean Dupont" required>
+            <div class="form-g">
+              <label class="form-lbl" for="from_name">Nom</label>
+              <input class="form-in" type="text" id="from_name" name="from_name" placeholder="Votre nom" required>
             </div>
-            <div class="field">
-              <label for="from_email">Email</label>
-              <input type="email" id="from_email" name="from_email" placeholder="jean@exemple.fr" required>
+            <div class="form-g">
+              <label class="form-lbl" for="from_prenom">Prénom</label>
+              <input class="form-in" type="text" id="from_prenom" name="from_prenom" placeholder="Votre prénom" required>
             </div>
           </div>
-          <div class="field">
-            <label for="from_tel">Téléphone</label>
-            <input type="tel" id="from_tel" name="from_tel" placeholder="06 XX XX XX XX" required>
+          <div class="form-g">
+            <label class="form-lbl" for="from_email">Email</label>
+            <input class="form-in" type="email" id="from_email" name="from_email" placeholder="votre@email.fr" required>
           </div>
-          <div class="field">
-            <label for="message">Votre message</label>
-            <textarea id="message" name="message" placeholder="Décrivez votre besoin..." required></textarea>
+          <div class="form-g">
+            <label class="form-lbl" for="from_tel">Téléphone</label>
+            <input class="form-in" type="tel" id="from_tel" name="from_tel" placeholder="06 XX XX XX XX">
           </div>
-          <button type="submit" class="submit">Envoyer ma demande →</button>
+          <div class="form-g">
+            <label class="form-lbl" for="message">Message</label>
+            <textarea class="form-ta" id="message" name="message" placeholder="Décrivez votre besoin…" required></textarea>
+          </div>
+          <button type="submit" class="form-sub" id="submitBtn">Envoyer le message</button>
+          <div class="form-status" id="formStatus" role="alert"></div>
         </form>
       </div>
-    </section>
-  </div>
-
-</main>
-
-<!-- Calendly -->
-<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
-
-<footer>
-  <div class="footer-inner">
-    <img src="https://i.imgur.com/D29UJPO.png" alt="Domi Clean" style="width:70px;opacity:.6;margin-bottom:4px;">
-    <strong>© 2025 Domi Clean</strong>
-    <div class="footer-links">
-   <span class="__cf_email__">domicleanidf@gmail.com</span></a>
-      <span class="footer-divider"></span>
-      <a href="tel:0628487217">06 28 48 72 17</a>
     </div>
-    <div class="footer-links" style="margin-top:4px;">
-      <a href="mentions-legales.html">Mentions légales</a>
-      <span class="footer-divider"></span>
-      <a href="politique-confidentialite.html">Politique de confidentialité</a>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-logo">
+          <img src="https://i.imgur.com/D29UJPO.png" alt="Domi Clean" onerror="this.style.display='none'">
+          <span class="footer-brand-name">Domi Clean</span>
+        </div>
+        <p class="footer-desc">Services professionnels de nettoyage et d'aide à domicile en Île-de-France. L'humain avant tout.</p>
+        <div class="footer-socials">
+          <a href="#" class="footer-soc" aria-label="Facebook">f</a>
+          <a href="#" class="footer-soc" aria-label="Instagram">📷</a>
+          <a href="mailto:domicleanidf@gmail.com" class="footer-soc" aria-label="Email">@</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Services</div>
+        <div class="footer-links">
+          <a href="#services" class="footer-link">Nettoyage professionnel</a>
+          <a href="#services" class="footer-link">Fin de chantier</a>
+          <a href="#services" class="footer-link">Vitrerie</a>
+          <a href="#services" class="footer-link">Aide à domicile</a>
+          <a href="#services" class="footer-link">Accompagnement médical</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Entreprise</div>
+        <div class="footer-links">
+          <a href="histoire.html" class="footer-link">Notre histoire</a>
+          <a href="#about" class="footer-link">Nos valeurs</a>
+          <a href="#faq" class="footer-link">FAQ</a>
+          <a href="#contact" class="footer-link">Contact</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Légal</div>
+        <div class="footer-links">
+          <a href="mentions-legales.html" class="footer-link">Mentions légales</a>
+          <a href="politique-confidentialite.html" class="footer-link">Confidentialité</a>
+          <a href="cgv.html" class="footer-link">CGV</a>
+        </div>
+        <div style="margin-top:22px">
+          <div class="footer-col-title">Contact</div>
+          <div class="footer-links">
+            <a href="tel:0628487217" class="footer-link">06 28 48 72 17</a>
+            <a href="mailto:domicleanidf@gmail.com" class="footer-link">domicleanidf@gmail.com</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2025 Domi Clean — Tous droits réservés.</span>
+      <div class="footer-bottom-links">
+        <a href="mentions-legales.html" class="footer-link">Mentions légales</a>
+        <a href="politique-confidentialite.html" class="footer-link">Confidentialité</a>
+        <a href="cgv.html" class="footer-link">CGV</a>
+      </div>
     </div>
   </div>
 </footer>
 
-<!-- EmailJS -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<!-- ===================== SCRIPTS ===================== -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
 
 <script>
-/* ── EmailJS init ── */
+/* ---- Init ---- */
 emailjs.init("ceAxgfHqfXrWzhops");
 
-/* ── Loader ── */
+/* ---- Loader ---- */
 window.addEventListener('load', () => {
-  setTimeout(() => {
-    document.getElementById('loader').classList.add('hidden');
-  }, 900);
-});
-
-/* ── Calendly ── */
-document.addEventListener('DOMContentLoaded', () => {
-  if (window.Calendly) {
-    Calendly.initBadgeWidget({
-      url: "https://calendly.com/domicleanidf/30min?hide_gdpr_banner=1",
-      text: "Planifier un appel",
-      color: "#0a6fd4",
-      textColor: "#ffffff"
-    });
+  // Generate background dots for loader
+  const ldDots = document.getElementById('ldDots');
+  if (ldDots) {
+    for (let i = 0; i < 18; i++) {
+      const d = document.createElement('div');
+      d.className = 'ld-dot';
+      const size = 3 + Math.random() * 5;
+      d.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--dur:${3+Math.random()*4}s;--del:${Math.random()*3}s`;
+      ldDots.appendChild(d);
+    }
   }
+  setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1600);
 });
 
-/* ── Menu mobile ── */
-const burger     = document.getElementById('burger');
-const mobileMenu = document.getElementById('mobileMenu');
-const closeBtn   = document.getElementById('closeMenu');
+/* ---- Nav scroll ---- */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 16);
+}, { passive: true });
 
-function openMenu() {
-  burger.classList.add('active');
-  burger.setAttribute('aria-expanded', 'true');
-  mobileMenu.classList.add('active');
-  mobileMenu.setAttribute('aria-hidden', 'false');
-  document.body.style.overflow = 'hidden';
-}
-function closeMenu() {
-  burger.classList.remove('active');
+/* ---- Mobile drawer ---- */
+const burger = document.getElementById('burger');
+const drawer = document.getElementById('drawer');
+
+function closeDrawer() {
+  drawer.classList.remove('open');
+  burger.classList.remove('open');
   burger.setAttribute('aria-expanded', 'false');
-  mobileMenu.classList.remove('active');
-  mobileMenu.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
 }
 
-burger.addEventListener('click', () =>
-  mobileMenu.classList.contains('active') ? closeMenu() : openMenu()
-);
-closeBtn.addEventListener('click', closeMenu);
-document.querySelectorAll('.menu-link').forEach(l => l.addEventListener('click', closeMenu));
+burger.addEventListener('click', () => {
+  const open = drawer.classList.toggle('open');
+  burger.classList.toggle('open', open);
+  burger.setAttribute('aria-expanded', String(open));
+  document.body.style.overflow = open ? 'hidden' : '';
+});
 
-/* ── Services tabs ── */
-function showService(id) {
-  document.querySelectorAll('.service-box').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => {
-    b.classList.remove('active');
-    b.setAttribute('aria-pressed', 'false');
+document.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', closeDrawer));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+/* ---- Service tabs ---- */
+function showTab(id) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  const panel = document.getElementById('panel-' + id);
+  panel.classList.add('active');
+  // re-trigger fade-up on newly visible cards
+  panel.querySelectorAll('.fu').forEach(el => {
+    el.classList.remove('vis');
+    requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('vis')));
   });
-  document.getElementById(id).classList.add('active');
-  const btn = document.querySelector(`[aria-controls="${id}"]`);
-  if (btn) { btn.classList.add('active'); btn.setAttribute('aria-pressed', 'true'); }
 }
 
-/* ── Scroll animations ── */
-const obs = new IntersectionObserver(entries =>
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); }),
-  { threshold: 0.1 }
-);
-document.querySelectorAll('.animate').forEach(el => obs.observe(el));
+/* ---- FAQ ---- */
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => {
+    i.classList.remove('open');
+    i.querySelector('.faq-btn').setAttribute('aria-expanded', 'false');
+  });
+  if (!wasOpen) {
+    item.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+  }
+}
 
-/* ── Form submit ── */
-document.getElementById('devis-form').addEventListener('submit', function(e) {
+/* ---- Scroll fade-up ---- */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); io.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fu').forEach(el => io.observe(el));
+
+/* ---- Counters ---- */
+const cio = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { runCounter(e.target); cio.unobserve(e.target); } });
+}, { threshold: 0.5 });
+document.querySelectorAll('.counter').forEach(el => cio.observe(el));
+
+function runCounter(el) {
+  const target = +el.dataset.target;
+  const dur = 1400;
+  const t0 = performance.now();
+  function tick(now) {
+    const p = Math.min((now - t0) / dur, 1);
+    el.textContent = Math.floor((1 - Math.pow(1 - p, 3)) * target);
+    if (p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+/* ---- Mobile CTA visibility ---- */
+const mCta = document.getElementById('mCta');
+window.addEventListener('scroll', () => {
+  mCta.style.opacity = window.scrollY > 80 ? '1' : '0';
+  mCta.style.pointerEvents = window.scrollY > 80 ? 'all' : 'none';
+}, { passive: true });
+mCta.style.opacity = '0';
+
+/* ---- Contact form ---- */
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
   e.preventDefault();
-  const btn = this.querySelector('button.submit');
-  btn.textContent = 'Envoi en cours…';
+  const btn = document.getElementById('submitBtn');
+  const status = document.getElementById('formStatus');
   btn.disabled = true;
+  btn.textContent = 'Envoi en cours…';
+  status.className = 'form-status';
 
-  emailjs.sendForm('service_hwm2hla', 'template_yayz1yf', this)
-    .then(() => {
-      btn.textContent = '✅ Message envoyé !';
-      btn.style.background = '#4abf6a';
-      this.reset();
-      setTimeout(() => {
-        btn.textContent = 'Envoyer ma demande →';
-        btn.style.background = '';
-        btn.disabled = false;
-      }, 4000);
-    })
-    .catch(err => {
-      console.error(err);
-      btn.textContent = '❌ Erreur – réessayez';
-      btn.style.background = '#e53e3e';
-      btn.disabled = false;
-      setTimeout(() => {
-        btn.textContent = 'Envoyer ma demande →';
-        btn.style.background = '';
-      }, 3000);
-    });
+  try {
+    await emailjs.sendForm('service_hwm2hla', 'template_yayz1yf', this);
+    status.className = 'form-status ok';
+    status.textContent = '✅ Message envoyé ! Nous vous répondrons sous 24h.';
+    this.reset();
+  } catch {
+    status.className = 'form-status err';
+    status.textContent = '❌ Erreur lors de l\'envoi. Contactez-nous directement par email ou téléphone.';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Envoyer le message';
+  }
 });
 </script>
-
 </body>
 </html>
-

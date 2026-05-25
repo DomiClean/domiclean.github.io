@@ -928,7 +928,7 @@ async function saveAndSend() {
     });
 
     // Send email via EmailJS
-    await emailjs.send("service_hwm2hla", "template_devis_domiclean", {
+    await emailjs.send("service_hwm2hla", "template_bkhdovi", {
       to_name:  clientNom,
       to_email: clientEmail,
       devis_num: num,
@@ -944,7 +944,7 @@ async function saveAndSend() {
   } catch(err) {
     console.error(err);
     // PDF may be saved even if email failed
-    toast("📄 PDF sauvegardé — vérifiez le template EmailJS (template_devis_domiclean)", "info");
+    toast("📄 PDF sauvegardé — vérifiez le template EmailJS (template_bkhdovi)", "info");
   }
 
   btn.disabled = false; btn.textContent = "📧 Envoyer au client";

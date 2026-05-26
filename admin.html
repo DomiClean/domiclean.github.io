@@ -746,22 +746,29 @@ async function getNextNum() {
   const year = new Date().getFullYear();
   let max = 0;
 
-  // Cherche dans la table devis (nouveaux)
-  const { data: d1 } = await sb.from("devis")
-    .select("numero").like("numero", `DC-${year}-%`)
-    .order("id", { ascending: false }).limit(1);
-  if (d1 && d1.length) {
-    const n = parseInt(d1[0].numero.split("-")[2]) || 0;
-    max = Math.max(max, n);
-  }
+  try {
+    const { data: d1 } = await sb.from("devis")
+      .select("numero").like("numero", `DC-${year}-%`)
+      .order("id", { ascending: false }).limit(1);
+    if (d1 && d1.length) max = Math.max(max, parseInt(d1[0].numero.split("-")[2]) || 0);
+  } catch(e) {}
 
-  // Cherche aussi dans fichiers_pdf (anciens devis)
-  const { data: d2 } = await sb.from("fichiers_pdf")
-    .select("nom").ilike("nom", `DEVIS DC-${year}-%`);
-  (d2 || []).forEach(f => {
-    const m = f.nom.match(/DC-\d{4}-(\d+)/);
-    if (m) max = Math.max(max, parseInt(m[1]));
-  });
+  try {
+    const { data: d2 } = await sb.from("fichiers_pdf")
+      .select("nom").ilike("nom", `DEVIS DC-${year}-%`);
+    (d2 || []).forEach(f => {
+      const m = f.nom.match(/DC-\d{4}-(\d+)/);
+      if (m) max = Math.max(max, parseInt(m[1]));
+    });
+  } catch(e) {}
+
+  try {
+    const { data: files } = await sb.storage.from("documents").list("devis", { limit: 200 });
+    (files || []).forEach(f => {
+      const m = (f.name || "").match(new RegExp(`DC-${year}-(\\d+)`));
+      if (m) max = Math.max(max, parseInt(m[1]));
+    });
+  } catch(e) {}
 
   return `DC-${year}-${String(max + 1).padStart(3, "0")}`;
 }
@@ -1002,27 +1009,59 @@ async function loadDevisHistory() {
   list.innerHTML = `<div class="skeleton" style="height:64px;border-radius:12px"></div>`.repeat(3);
 
   // Nouveaux devis (table devis)
-  const { data: newDevis } = await sb.from("devis").select("*").order("id", { ascending: false });
+  let newDevis = [];
+  try {
+    const { data, error } = await sb.from("devis").select("*").order("id", { ascending: false });
+    if (!error) newDevis = data || [];
+  } catch(e) {}
 
-  // Anciens devis (fichiers_pdf) — affichés en lecture seule
-  const { data: oldDevis } = await sb.from("fichiers_pdf")
-    .select("*").ilike("nom", "DEVIS%").order("id", { ascending: false });
+  // Anciens devis (fichiers_pdf table)
+  let oldDevis = [];
+  try {
+    const { data } = await sb.from("fichiers_pdf")
+      .select("*").ilike("nom", "DEVIS%").order("id", { ascending: false });
+    oldDevis = data || [];
+  } catch(e) {}
 
-  // Numéros déjà dans la table devis pour éviter doublons
-  const newNums = new Set((newDevis || []).map(d => d.numero));
-  const legacy = (oldDevis || []).filter(f => {
+  // Anciens devis (Storage bucket — récupère les PDFs orphelins)
+  let storageDevis = [];
+  try {
+    const { data: files } = await sb.storage.from("documents").list("devis", { limit: 200, sortBy: { column: "created_at", order: "desc" } });
+    if (files) {
+      storageDevis = files.filter(f => f.name && f.name.endsWith(".pdf")).map(f => {
+        const { data: urlData } = sb.storage.from("documents").getPublicUrl(`devis/${f.name}`);
+        const m = f.name.match(/(DC-\d{4}-\d+)/);
+        return { _legacy: true, _storage: true,
+          numero: m ? m[1] : f.name.replace(".pdf",""),
+          client_nom: "", client_email: "",
+          pdf_url: urlData.publicUrl, total: null, statut: "envoyé",
+          created_at: f.created_at || null };
+      });
+    }
+  } catch(e) {}
+
+  // Fusion sans doublons (DB > fichiers_pdf > storage)
+  const newNums = new Set(newDevis.map(d => d.numero));
+  const legacy = oldDevis.filter(f => {
     const m = f.nom.match(/DC-\d{4}-\d+/);
-    return m ? !newNums.has(m[0]) : true;
+    return m ? !newNums.has(m[0]) : !newNums.has(f.nom);
   }).map(f => {
     const m = f.nom.match(/(DC-\d{4}-\d+)/);
     const client = f.nom.includes("—") ? f.nom.split("—")[1].trim() : "";
-    return { _legacy: true, numero: m ? m[1] : f.nom, client_nom: client,
-             client_email: "", pdf_url: f.url, total: null, statut: "envoyé", created_at: f.created_at };
+    return { _legacy:true, numero: m ? m[1] : f.nom, client_nom: client,
+             client_email:"", pdf_url: f.url, total: null, statut:"envoyé", created_at: f.created_at };
   });
 
-  const items = [...(newDevis || []), ...legacy].sort((a,b) => new Date(b.created_at)-new Date(a.created_at));
+  const allKnownNums = new Set([...newDevis.map(d => d.numero), ...legacy.map(d => d.numero)]);
+  const storageLegacy = storageDevis.filter(f => !allKnownNums.has(f.numero));
 
-  const ca = (newDevis || []).reduce((s, d) => s + (parseFloat(d.total) || 0), 0);
+  const items = [...newDevis, ...legacy, ...storageLegacy].sort((a,b) => {
+    const da = a.created_at ? new Date(a.created_at) : 0;
+    const db = b.created_at ? new Date(b.created_at) : 0;
+    return db - da;
+  });
+
+  const ca = newDevis.reduce((s, d) => s + (parseFloat(d.total) || 0), 0);
   document.getElementById("statDevis").textContent = items.length;
   document.getElementById("statCA").textContent = ca > 0 ? ca.toFixed(0) + " €" : "—";
 

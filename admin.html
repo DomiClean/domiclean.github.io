@@ -691,8 +691,33 @@ let allFiles = [];
 async function loadFiles() {
   const grid = document.getElementById("fileList");
   grid.innerHTML = Array(3).fill(`<div class="file-card"><div class="skeleton" style="height:80px"></div></div>`).join("");
-  const { data } = await sb.from("fichiers_pdf").select("*").order("id", { ascending: false });
-  allFiles = data || [];
+
+  // 1. Fichiers enregistrés en base
+  let dbFiles = [];
+  try {
+    const { data } = await sb.from("fichiers_pdf").select("*").order("id", { ascending: false });
+    dbFiles = data || [];
+  } catch(e) {}
+
+  // 2. Fichiers dans le bucket Storage (racine) — récupère les orphelins
+  let storageFiles = [];
+  try {
+    const { data: files } = await sb.storage.from("documents").list("", { limit: 200, sortBy: { column: "created_at", order: "desc" } });
+    if (files) {
+      const dbPaths = new Set(dbFiles.map(f => f.chemin).filter(Boolean));
+      const dbNoms  = new Set(dbFiles.map(f => f.nom));
+      storageFiles = files
+        .filter(f => f.name && f.name !== ".emptyFolderPlaceholder" && !f.name.endsWith("/"))
+        .filter(f => !dbPaths.has(f.name) && !dbNoms.has(f.name))
+        .map(f => {
+          const { data: urlData } = sb.storage.from("documents").getPublicUrl(f.name);
+          return { id: "storage-" + f.name, nom: f.name.replace(/^\d+-/, ""),
+                   url: urlData.publicUrl, chemin: f.name, created_at: f.created_at || null, _storageOnly: true };
+        });
+    }
+  } catch(e) {}
+
+  allFiles = [...dbFiles, ...storageFiles];
   document.getElementById("statTotal").textContent = allFiles.length;
   document.getElementById("statLast").textContent = allFiles.length ? (allFiles[0].created_at ? fmtDate(allFiles[0].created_at) : "Récent") : "—";
   renderFiles(allFiles);
@@ -726,7 +751,9 @@ function renderFiles(files) {
       const ok = await showConfirm(this.dataset.nom);
       if (!ok) return;
       if (this.dataset.chemin) await sb.storage.from("documents").remove([this.dataset.chemin]);
-      await sb.from("fichiers_pdf").delete().eq("id", this.dataset.id);
+      if (!String(this.dataset.id).startsWith("storage-")) {
+        await sb.from("fichiers_pdf").delete().eq("id", this.dataset.id);
+      }
       toast("🗑️ Supprimé");
       loadFiles();
     };

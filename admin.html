@@ -707,7 +707,7 @@ async function loadFiles() {
       const dbPaths = new Set(dbFiles.map(f => f.chemin).filter(Boolean));
       const dbNoms  = new Set(dbFiles.map(f => f.nom));
       storageFiles = files
-        .filter(f => f.name && f.name !== ".emptyFolderPlaceholder" && !f.name.endsWith("/"))
+        .filter(f => f.name && f.name !== ".emptyFolderPlaceholder" && !f.name.endsWith("/") && f.name !== "devis" && f.name.includes("."))
         .filter(f => !dbPaths.has(f.name) && !dbNoms.has(f.name))
         .map(f => {
           const { data: urlData } = sb.storage.from("documents").getPublicUrl(f.name);
@@ -1118,13 +1118,33 @@ async function loadDevisHistory() {
       <div class="status-badge ${sc}">${sl}</div>
       <div class="dhi-actions">
         ${!isLegacy && f.statut !== "accepté" ? `<button class="act-btn cp" style="padding:5px 9px;font-size:.73rem;background:rgba(34,197,94,.1);color:#4ade80" onclick="setStatut(${f.id},'accepté')">✓</button>` : ""}
-        ${!isLegacy && f.statut !== "refusé"  ? `<button class="act-btn del" style="padding:5px 9px;font-size:.73rem" onclick="setStatut(${f.id},'refusé')">✗</button>` : ""}
+        ${!isLegacy && f.statut !== "refusé"  ? `<button class="act-btn" style="padding:5px 9px;font-size:.73rem;background:rgba(251,191,36,.1);color:#fbbf24" onclick="setStatut(${f.id},'refusé')">✗</button>` : ""}
         ${!isLegacy ? `<button class="act-btn pv" style="padding:5px 9px;font-size:.73rem" onclick='duplicateDevis(${JSON.stringify(f).replace(/'/g,"&#39;")})'>📋</button>` : ""}
         ${!isLegacy && f.client_email ? `<button class="act-btn dl" style="padding:5px 9px;font-size:.73rem" onclick='resendDevis(${JSON.stringify(f).replace(/'/g,"&#39;")})'>📧</button>` : ""}
         ${f.pdf_url ? `<a href="${f.pdf_url}" target="_blank" class="act-btn ghost" style="padding:5px 9px;font-size:.73rem;background:var(--surf2);color:var(--text)">⬇️</a>` : ""}
+        <button class="act-btn del" style="padding:5px 9px;font-size:.73rem" onclick='deleteDevis(${JSON.stringify({id:f.id,numero:f.numero,pdf_url:f.pdf_url,_legacy:f._legacy,_storage:f._storage}).replace(/'/g,"&#39;")})'>🗑️</button>
       </div>`;
     list.appendChild(div);
   });
+}
+
+async function deleteDevis(f) {
+  const ok = await showConfirm(`Supprimer le devis ${f.numero} ?`);
+  if (!ok) return;
+  // Supprimer le PDF du Storage
+  if (f.pdf_url) {
+    try {
+      const path = f._storage ? `devis/${f.numero}.pdf` : new URL(f.pdf_url).pathname.split("/documents/")[1];
+      if (path) await sb.storage.from("documents").remove([path]);
+    } catch(e) {}
+  }
+  // Supprimer de la table devis (si pas legacy)
+  if (!f._legacy && f.id) {
+    const { error } = await sb.from("devis").delete().eq("id", f.id);
+    if (error) { toast("❌ Erreur suppression", "error"); return; }
+  }
+  toast("🗑️ Devis supprimé");
+  loadDevisHistory();
 }
 
 async function setStatut(id, statut) {

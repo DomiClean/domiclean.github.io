@@ -882,15 +882,21 @@ function updatePreview() {
       </div>
     </div>
     ${notes?`<div style="background:#f8fafc;border-radius:6px;padding:10px 12px;font-size:10px;color:#475569;margin-bottom:12px"><strong>Notes :</strong> ${notes}</div>`:""}
-    <div style="margin-top:14px;padding-top:10px;border-top:1px solid #e2e8f0">
-      <div style="display:flex;justify-content:space-between;margin-top:24px">
+    <div style="margin-top:14px;padding-top:12px;border-top:1px solid #e2e8f0">
+      <div style="font-size:9px;color:#475569;background:#f8fafc;border-radius:6px;padding:10px 12px;margin-bottom:14px;line-height:1.7">
+        <strong style="color:#334155">Conditions :</strong>
+        Paiement à réception de facture. Règlement par virement bancaire ou espèces.
+        Devis valable 30 jours. Intervention soumise à la signature du présent devis.
+        Crédit d'impôt de 50 % applicable (services à la personne, art. 199 sexdecies du CGI).
+        TVA non applicable, art. 293 B du CGI.
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-end">
         <div style="font-size:9px;color:#94a3b8">
-          TVA non applicable, art. 293 B du CGI<br>
-          Devis valable 30 jours à compter de sa date d'émission
+          Bon pour accord — Date : _______________
         </div>
         <div style="font-size:9px;color:#94a3b8;text-align:right">
           Signature client :<br>
-          <div style="margin-top:24px;width:120px;border-bottom:1px solid #cbd5e1"></div>
+          <div style="margin-top:20px;width:130px;border-bottom:1px solid #cbd5e1"></div>
         </div>
       </div>
     </div>`;

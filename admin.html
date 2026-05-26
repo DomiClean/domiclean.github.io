@@ -218,7 +218,9 @@
     .dhi-date{font-size:.75rem;color:var(--muted);white-space:nowrap}
     .dhi-actions{display:flex;gap:6px;flex-shrink:0}
     .status-badge{font-size:.7rem;padding:3px 8px;border-radius:20px;font-weight:600;white-space:nowrap}
-    .status-badge.sent{background:rgba(34,197,94,.12);color:#4ade80}
+    .status-badge.sent{background:rgba(96,165,250,.12);color:#60a5fa}
+    .status-badge.accepted{background:rgba(34,197,94,.14);color:#4ade80}
+    .status-badge.refused{background:rgba(239,68,68,.12);color:#f87171}
     .status-badge.draft{background:rgba(148,163,184,.1);color:var(--muted)}
 
     /* ── SKELETON ── */
@@ -740,15 +742,26 @@ document.getElementById("searchInput").addEventListener("input", function() {
 /* ══ DEVIS ══ */
 let lignes = [{ desc: "Ménage domicile", heures: 2, prix: 20 }];
 
+async function getNextNum() {
+  const year = new Date().getFullYear();
+  const { data } = await sb.from("devis")
+    .select("numero")
+    .like("numero", `DC-${year}-%`)
+    .order("id", { ascending: false })
+    .limit(1);
+  if (data && data.length) {
+    const last = parseInt(data[0].numero.split("-")[2]) || 0;
+    return `DC-${year}-${String(last + 1).padStart(3, "0")}`;
+  }
+  return `DC-${year}-001`;
+}
+
 async function initDevis() {
   const today = new Date();
   const validite = new Date(today); validite.setDate(validite.getDate() + 30);
   document.getElementById("d-date").value = today.toISOString().split("T")[0];
   document.getElementById("d-valid").value = validite.toISOString().split("T")[0];
-  // Generate numero from Supabase count
-  const { count } = await sb.from("fichiers_pdf").select("*", { count:"exact", head:true }).ilike("nom", "DEVIS%");
-  const n = (count || 0) + 1;
-  document.getElementById("d-num").value = `DC-${today.getFullYear()}-${String(n).padStart(3,"0")}`;
+  document.getElementById("d-num").value = await getNextNum();
   renderLignes();
   updatePreview();
 }
@@ -892,9 +905,13 @@ async function downloadPDF() {
 }
 
 async function saveAndSend() {
-  const clientEmail = document.getElementById("d-email").value.trim();
-  const clientNom   = document.getElementById("d-nom").value.trim();
-  const num = document.getElementById("d-num").value;
+  const clientEmail  = document.getElementById("d-email").value.trim();
+  const clientNom    = document.getElementById("d-nom").value.trim();
+  const clientTel    = document.getElementById("d-tel").value.trim();
+  const clientAdresse= document.getElementById("d-adresse").value.trim();
+  const notes        = document.getElementById("d-notes").value.trim();
+  const num          = document.getElementById("d-num").value;
+  const dateValid    = document.getElementById("d-valid").value;
   if (!clientEmail) { toast("Ajoutez l'email du client", "error"); return; }
   if (!clientNom)   { toast("Ajoutez le nom du client", "error"); return; }
 
@@ -903,8 +920,11 @@ async function saveAndSend() {
   toast("Génération du PDF…", "info");
   updatePreview();
 
+  const total = lignes.reduce((a,l)=>a+(parseFloat(l.heures)||0)*(parseFloat(l.prix)||0), 0);
+
   try {
-    const el = document.getElementById("devisPreview");
+    // 1. Générer le blob PDF
+    const el  = document.getElementById("devisPreview");
     const opt = {
       margin:[12,12,12,12], filename:`${num}.pdf`,
       image:{type:"jpeg",quality:.97},
@@ -913,38 +933,48 @@ async function saveAndSend() {
     };
     const blob = await html2pdf().set(opt).from(el).outputPdf("blob");
 
-    // Upload Supabase
+    // 2. Upload Supabase Storage
     const path = `devis/${num}.pdf`;
-    await sb.storage.from("documents").upload(path, blob, { contentType:"application/pdf", upsert:true });
-    const { data } = sb.storage.from("documents").getPublicUrl(path);
-    const pdfUrl = data.publicUrl;
+    const { error: upErr } = await sb.storage.from("documents").upload(path, blob, { contentType:"application/pdf", upsert:true });
+    if (upErr) throw new Error("Erreur upload PDF : " + upErr.message);
+    const { data: urlData } = sb.storage.from("documents").getPublicUrl(path);
+    const pdfUrl = urlData.publicUrl;
 
-    // Save in fichiers_pdf
-    const total = lignes.reduce((a,l)=>a+(parseFloat(l.heures)||0)*(parseFloat(l.prix)||0),0);
-    await sb.from("fichiers_pdf").insert({
-      nom: `DEVIS ${num} — ${clientNom}`,
-      url: pdfUrl,
-      chemin: path
+    // 3. Sauvegarder dans la table devis
+    await sb.from("devis").insert({
+      numero: num,
+      client_nom: clientNom,
+      client_email: clientEmail,
+      client_tel: clientTel,
+      client_adresse: clientAdresse,
+      lignes: lignes,
+      total: parseFloat(total.toFixed(2)),
+      notes: notes,
+      date_validite: dateValid,
+      pdf_url: pdfUrl,
+      statut: "envoyé"
     });
 
-    // Send email via EmailJS
+    // 4. Envoyer l'email
     await emailjs.send("service_hwm2hla", "template_bkhdovi", {
-      to_name:  clientNom,
-      to_email: clientEmail,
-      devis_num: num,
-      devis_url: pdfUrl,
-      total:    total.toFixed(2) + " €",
-      date_valid: fmtDateFr(document.getElementById("d-valid").value),
+      to_name:    clientNom,
+      to_email:   clientEmail,
+      devis_num:  num,
+      devis_url:  pdfUrl,
+      total:      total.toFixed(2) + " €",
+      date_valid: fmtDateFr(dateValid),
     });
 
     toast(`✅ Devis ${num} envoyé à ${clientEmail}`);
-    // Increment counter for next devis
-    const curCount = parseInt(num.split("-")[2]);
-    // next call to initDevis will fetch from DB
+    resetDevis();
+
   } catch(err) {
     console.error(err);
-    // PDF may be saved even if email failed
-    toast("📄 PDF sauvegardé — vérifiez le template EmailJS (template_bkhdovi)", "info");
+    if (err.message && err.message.includes("upload")) {
+      toast("❌ Échec upload PDF — " + err.message, "error");
+    } else {
+      toast("📄 PDF sauvegardé — erreur envoi email (vérifiez template EmailJS)", "info");
+    }
   }
 
   btn.disabled = false; btn.textContent = "📧 Envoyer au client";
@@ -954,32 +984,87 @@ async function saveAndSend() {
 async function loadDevisHistory() {
   const list = document.getElementById("devisHistList");
   list.innerHTML = `<div class="skeleton" style="height:64px;border-radius:12px"></div>`.repeat(3);
-  const { data } = await sb.from("fichiers_pdf").select("*").ilike("nom","DEVIS%").order("id",{ascending:false});
-  const items = data || [];
 
+  const { data, error } = await sb.from("devis").select("*").order("id", { ascending: false });
+
+  if (error) {
+    list.innerHTML = `<div class="files-empty"><div class="empty-icon">⚠️</div><p>Table "devis" introuvable — exécutez le SQL de création dans Supabase.</p></div>`;
+    return;
+  }
+
+  const items = data || [];
+  const ca = items.reduce((s, d) => s + (parseFloat(d.total) || 0), 0);
   document.getElementById("statDevis").textContent = items.length;
-  // CA : on ne peut pas calculer sans la table devis, on affiche "—"
-  document.getElementById("statCA").textContent = items.length ? items.length + " devis" : "—";
+  document.getElementById("statCA").textContent = ca > 0 ? ca.toFixed(0) + " €" : "—";
 
   if (!items.length) {
     list.innerHTML = `<div class="files-empty"><div class="empty-icon">📭</div><p>Aucun devis créé</p></div>`;
     return;
   }
+
+  const statutClass = { "envoyé":"sent", "accepté":"accepted", "refusé":"refused" };
+  const statutLabel = { "envoyé":"Envoyé", "accepté":"Accepté ✓", "refusé":"Refusé ✗" };
+
   list.innerHTML = "";
   items.forEach(f => {
+    const sc = statutClass[f.statut] || "draft";
+    const sl = statutLabel[f.statut] || f.statut;
     const div = document.createElement("div");
     div.className = "devis-hist-item";
     div.innerHTML = `
-      <div class="dhi-num">${f.nom.split("—")[0].trim()}</div>
-      <div class="dhi-client">${f.nom.includes("—") ? f.nom.split("—")[1].trim() : "—"}</div>
+      <div class="dhi-num">${f.numero}</div>
+      <div class="dhi-client">${f.client_nom || "—"}<br><span style="font-size:.72rem;color:var(--muted)">${f.client_email || ""}</span></div>
+      <div class="dhi-total">${parseFloat(f.total||0).toFixed(2)} €</div>
       <div class="dhi-date">${fmtDate(f.created_at)}</div>
-      <div class="status-badge sent">Envoyé</div>
+      <div class="status-badge ${sc}">${sl}</div>
       <div class="dhi-actions">
-        <a href="${f.url}" target="_blank" class="act-btn dl" style="padding:5px 10px;font-size:.74rem">⬇️</a>
-        <button class="act-btn cp" style="padding:5px 10px;font-size:.74rem" data-url="${f.url}" onclick="navigator.clipboard.writeText(this.dataset.url).then(()=>toast('🔗 Lien copié','info'))">🔗</button>
+        ${f.statut !== "accepté" ? `<button class="act-btn cp" style="padding:5px 9px;font-size:.73rem;background:rgba(34,197,94,.1);color:#4ade80" onclick="setStatut(${f.id},'accepté')">✓</button>` : ""}
+        ${f.statut !== "refusé"  ? `<button class="act-btn del" style="padding:5px 9px;font-size:.73rem" onclick="setStatut(${f.id},'refusé')">✗</button>` : ""}
+        <button class="act-btn pv" style="padding:5px 9px;font-size:.73rem" onclick='duplicateDevis(${JSON.stringify(f).replace(/'/g,"&#39;")})'>📋</button>
+        <button class="act-btn dl" style="padding:5px 9px;font-size:.73rem" onclick='resendDevis(${JSON.stringify(f).replace(/'/g,"&#39;")})'>📧</button>
+        ${f.pdf_url ? `<a href="${f.pdf_url}" target="_blank" class="act-btn ghost" style="padding:5px 9px;font-size:.73rem;background:var(--surf2);color:var(--text)">⬇️</a>` : ""}
       </div>`;
     list.appendChild(div);
   });
+}
+
+async function setStatut(id, statut) {
+  const { error } = await sb.from("devis").update({ statut }).eq("id", id);
+  if (error) { toast("❌ Erreur mise à jour statut", "error"); return; }
+  const label = { "accepté":"Devis accepté ✓", "refusé":"Devis refusé ✗" };
+  toast(label[statut] || "Statut mis à jour");
+  loadDevisHistory();
+}
+
+async function duplicateDevis(f) {
+  try { lignes = typeof f.lignes === "string" ? JSON.parse(f.lignes) : f.lignes; } catch(e) { lignes = []; }
+  if (!lignes || !lignes.length) lignes = [{ desc: "", heures: 1, prix: 20 }];
+  document.getElementById("d-nom").value     = f.client_nom     || "";
+  document.getElementById("d-email").value   = f.client_email   || "";
+  document.getElementById("d-tel").value     = f.client_tel     || "";
+  document.getElementById("d-adresse").value = f.client_adresse || "";
+  document.getElementById("d-notes").value   = f.notes          || "";
+  await initDevis();
+  document.querySelector('[data-sec="devis"]').click();
+  toast("📋 Devis dupliqué — nouveau numéro généré", "info");
+}
+
+async function resendDevis(f) {
+  if (!f.client_email) { toast("Pas d'email pour ce client", "error"); return; }
+  if (!f.pdf_url)      { toast("Pas de PDF disponible", "error"); return; }
+  try {
+    await emailjs.send("service_hwm2hla", "template_bkhdovi", {
+      to_name:    f.client_nom   || "Client",
+      to_email:   f.client_email,
+      devis_num:  f.numero,
+      devis_url:  f.pdf_url,
+      total:      parseFloat(f.total || 0).toFixed(2) + " €",
+      date_valid: fmtDateFr(f.date_validite),
+    });
+    toast(`📧 Devis ${f.numero} renvoyé à ${f.client_email}`);
+  } catch(err) {
+    toast("❌ Erreur envoi email", "error");
+  }
 }
 </script>
 </body>

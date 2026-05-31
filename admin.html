@@ -1217,10 +1217,12 @@ async function saveAndSend() {
     await emailjs.send("service_hwm2hla", "template_bkhdovi", {
       to_name:    clientNom,
       to_email:   clientEmail,
-      devis_num:  num,
-      devis_url:  pdfUrl,
+      doc_type:   "Devis",
+      doc_num:    num,
+      doc_url:    pdfUrl,
       total:      total.toFixed(2) + " €",
-      date_valid: fmtDateFr(dateValid),
+      date_label: "Valable jusqu'au",
+      date_val:   fmtDateFr(dateValid),
     });
 
     toast(`✅ Devis ${num} envoyé à ${clientEmail}`);
@@ -1408,10 +1410,12 @@ async function resendDevis(f) {
     await emailjs.send("service_hwm2hla", "template_bkhdovi", {
       to_name:    f.client_nom   || "Client",
       to_email:   f.client_email,
-      devis_num:  f.numero,
-      devis_url:  f.pdf_url,
+      doc_type:   "Devis",
+      doc_num:    f.numero,
+      doc_url:    f.pdf_url,
       total:      parseFloat(f.total || 0).toFixed(2) + " €",
-      date_valid: fmtDateFr(f.date_validite),
+      date_label: "Valable jusqu'au",
+      date_val:   fmtDateFr(f.date_validite),
     });
     toast(`📧 Devis ${f.numero} renvoyé à ${f.client_email}`);
   } catch(err) {
@@ -1718,12 +1722,14 @@ async function saveFacture() {
     if (clientEmail) {
       try {
         await emailjs.send("service_hwm2hla", "template_bkhdovi", {
-          to_name:   clientNom,
-          to_email:  clientEmail,
-          devis_num: num,
-          devis_url: urlData.publicUrl,
-          total:     total.toFixed(2) + " €",
-          date_valid: fmtDateFr(echeance),
+          to_name:    clientNom,
+          to_email:   clientEmail,
+          doc_type:   "Facture",
+          doc_num:    num,
+          doc_url:    urlData.publicUrl,
+          total:      total.toFixed(2) + " €",
+          date_label: "Échéance paiement",
+          date_val:   fmtDateFr(echeance),
         });
         toast(`✅ Facture ${num} enregistrée et envoyée à ${clientEmail}`);
       } catch(emailErr) {

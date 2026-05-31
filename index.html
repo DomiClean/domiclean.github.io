@@ -1661,8 +1661,8 @@ document.getElementById('contactForm').addEventListener('submit', async function
     await emailjs.sendForm('service_hwm2hla', 'template_yayz1yf', this);
     // Sauvegarde dans Supabase (silencieuse si échoue)
     if (_sb) {
-      const nom    = document.getElementById('from_nom')?.value    || document.querySelector('[name="from_nom"]')?.value    || "";
-      const prenom = document.getElementById('from_prenom')?.value || document.querySelector('[name="from_prenom"]')?.value || "";
+      const nom    = document.getElementById('from_name')?.value   || "";
+      const prenom = document.getElementById('from_prenom')?.value || "";
       const email  = document.getElementById('from_email')?.value  || "";
       const tel    = document.getElementById('from_tel')?.value    || "";
       const msg    = document.getElementById('message')?.value     || "";

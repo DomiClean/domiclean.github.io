@@ -492,6 +492,32 @@
             <!-- Prestations -->
             <div class="form-card">
               <div class="form-card-title">🧹 Prestations</div>
+              <div style="margin-bottom:12px">
+                <select id="presetSelect" onchange="addPreset(this)" style="width:100%;padding:9px 12px;background:var(--dark);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:.84rem;outline:none;cursor:pointer">
+                  <option value="">➕ Ajouter depuis les tarifs…</option>
+                  <optgroup label="Nettoyage Locaux">
+                    <option value="Nettoyage locaux — Journée|1|30">Nettoyage locaux Journée — 30 €/h</option>
+                    <option value="Nettoyage locaux — Nuit|1|40">Nettoyage locaux Nuit — 40 €/h</option>
+                  </optgroup>
+                  <optgroup label="Vitres / Vitrines">
+                    <option value="Nettoyage vitrines|1|5">Nettoyage vitrines — 5 €/m²</option>
+                    <option value="Nettoyage vitres (sur devis)|1|0">Nettoyage vitres — tarif sur devis</option>
+                  </optgroup>
+                  <optgroup label="Nettoyage Spécifique">
+                    <option value="Nettoyage après déménagement|1|5">Après déménagement — 5 €/m²</option>
+                    <option value="Nettoyage après chantier (sur devis)|1|0">Après chantier — tarif sur devis</option>
+                  </optgroup>
+                  <optgroup label="Auxiliaires de Vie">
+                    <option value="Auxiliaire de vie — Journée|1|30">Auxiliaire de vie Journée — 30 €/h</option>
+                    <option value="Auxiliaire de vie — Nuit|1|40">Auxiliaire de vie Nuit — 40 €/h</option>
+                  </optgroup>
+                  <optgroup label="Tarifs Spécifiques">
+                    <option value="Intervention jour férié|1|40">Jour férié — 40 €/h</option>
+                    <option value="Intervention 1er Mai / Noël|1|60">1er Mai / Noël — 60 €/h</option>
+                    <option value="Intervention week-end|1|35">Week-end — 35 €/h</option>
+                  </optgroup>
+                </select>
+              </div>
               <div class="prest-wrap">
                 <table class="prest-table">
                   <thead>
@@ -506,7 +532,7 @@
                   <tbody id="prestBody"></tbody>
                 </table>
               </div>
-              <button class="btn-add-row" onclick="addLigne()">+ Ajouter une prestation</button>
+              <button class="btn-add-row" onclick="addLigne()">+ Ligne vierge</button>
             </div>
 
             <!-- Totaux -->
@@ -594,13 +620,39 @@
             </div>
             <div class="form-card">
               <div class="form-card-title">🧹 Prestations</div>
+              <div style="margin-bottom:12px">
+                <select id="factPresetSelect" onchange="addFactPreset(this)" style="width:100%;padding:9px 12px;background:var(--dark);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:.84rem;outline:none;cursor:pointer">
+                  <option value="">➕ Ajouter depuis les tarifs…</option>
+                  <optgroup label="Nettoyage Locaux">
+                    <option value="Nettoyage locaux — Journée|1|30">Nettoyage locaux Journée — 30 €/h</option>
+                    <option value="Nettoyage locaux — Nuit|1|40">Nettoyage locaux Nuit — 40 €/h</option>
+                  </optgroup>
+                  <optgroup label="Vitres / Vitrines">
+                    <option value="Nettoyage vitrines|1|5">Nettoyage vitrines — 5 €/m²</option>
+                    <option value="Nettoyage vitres (sur devis)|1|0">Nettoyage vitres — tarif sur devis</option>
+                  </optgroup>
+                  <optgroup label="Nettoyage Spécifique">
+                    <option value="Nettoyage après déménagement|1|5">Après déménagement — 5 €/m²</option>
+                    <option value="Nettoyage après chantier (sur devis)|1|0">Après chantier — tarif sur devis</option>
+                  </optgroup>
+                  <optgroup label="Auxiliaires de Vie">
+                    <option value="Auxiliaire de vie — Journée|1|30">Auxiliaire de vie Journée — 30 €/h</option>
+                    <option value="Auxiliaire de vie — Nuit|1|40">Auxiliaire de vie Nuit — 40 €/h</option>
+                  </optgroup>
+                  <optgroup label="Tarifs Spécifiques">
+                    <option value="Intervention jour férié|1|40">Jour férié — 40 €/h</option>
+                    <option value="Intervention 1er Mai / Noël|1|60">1er Mai / Noël — 60 €/h</option>
+                    <option value="Intervention week-end|1|35">Week-end — 35 €/h</option>
+                  </optgroup>
+                </select>
+              </div>
               <div class="prest-wrap">
                 <table class="prest-table">
                   <thead><tr><th style="width:45%">Description</th><th style="width:13%" class="r">Heures</th><th style="width:16%" class="r">Taux/h</th><th style="width:16%" class="r">Total</th><th style="width:10%"></th></tr></thead>
                   <tbody id="factLignes"></tbody>
                 </table>
               </div>
-              <button class="btn-add-row" onclick="addFactLigne()">+ Ajouter une ligne</button>
+              <button class="btn-add-row" onclick="addFactLigne()">+ Ligne vierge</button>
             </div>
             <div class="form-card">
               <div class="form-card-title">💰 Totaux</div>
@@ -885,10 +937,10 @@ function renderFiles(files) {
         </div>
       </div>
       <div class="file-actions">
-        <a href="${f.url}" target="_blank" class="act-btn dl">⬇️ Ouvrir</a>
-        <button class="act-btn cp" data-url="${f.url}">🔗 Copier</button>
-        <button class="act-btn pv" data-url="${f.url}" data-name="${f.nom}">👁️ Aperçu</button>
-        <button class="act-btn del" data-id="${f.id}" data-chemin="${f.chemin||''}" data-nom="${f.nom}">🗑️</button>
+        <a href="${f.url}" target="_blank" class="act-btn dl" title="Ouvrir le fichier">⬇️ Ouvrir</a>
+        <button class="act-btn cp" data-url="${f.url}" title="Copier le lien">🔗 Copier lien</button>
+        <button class="act-btn pv" data-url="${f.url}" data-name="${f.nom}" title="Aperçu dans l'admin">👁️ Aperçu</button>
+        <button class="act-btn del" data-id="${f.id}" data-chemin="${f.chemin||''}" data-nom="${f.nom}" title="Supprimer le fichier">🗑️ Supprimer</button>
       </div>`;
     card.querySelector(".cp").onclick = function() { navigator.clipboard.writeText(this.dataset.url).then(() => toast("🔗 Lien copié !", "info")); };
     card.querySelector(".pv").onclick = function() { openPv(this.dataset.url, this.dataset.name); };
@@ -978,6 +1030,14 @@ function renderLignes() {
 }
 
 function addLigne() { lignes.push({ desc: "", heures: 1, prix: 20 }); renderLignes(); calcTotals(); }
+
+function addPreset(sel) {
+  if (!sel.value) return;
+  const [desc, heures, prix] = sel.value.split("|");
+  lignes.push({ desc, heures: parseFloat(heures), prix: parseFloat(prix) });
+  renderLignes(); calcTotals();
+  sel.value = "";
+}
 function removeLigne(i) { if(lignes.length===1) return; lignes.splice(i,1); renderLignes(); calcTotals(); }
 function calcTotals() {
   const s = lignes.reduce((a,l) => a + (parseFloat(l.heures)||0)*(parseFloat(l.prix)||0), 0);
@@ -1267,13 +1327,13 @@ async function loadDevisHistory() {
       <div class="dhi-date">${fmtDate(f.created_at)}</div>
       <div class="status-badge ${sc}">${sl}</div>
       <div class="dhi-actions">
-        ${!isLegacy && f.statut !== "accepté" ? `<button class="act-btn cp" style="padding:5px 9px;font-size:.73rem;background:rgba(34,197,94,.1);color:#4ade80" onclick="setStatut(${f.id},'accepté')">✓</button>` : ""}
-        ${!isLegacy && f.statut !== "refusé"  ? `<button class="act-btn" style="padding:5px 9px;font-size:.73rem;background:rgba(251,191,36,.1);color:#fbbf24" onclick="setStatut(${f.id},'refusé')">✗</button>` : ""}
-        ${!isLegacy && f.statut === "accepté" ? `<button class="act-btn" style="padding:5px 9px;font-size:.73rem;background:rgba(168,85,247,.12);color:#c084fc" onclick='createFactureFromDevis(${JSON.stringify(f).replace(/'/g,"&#39;")})'>🧾 Facturer</button>` : ""}
-        ${!isLegacy ? `<button class="act-btn pv" style="padding:5px 9px;font-size:.73rem" onclick='duplicateDevis(${JSON.stringify(f).replace(/'/g,"&#39;")})'>📋</button>` : ""}
-        ${!isLegacy && f.client_email ? `<button class="act-btn dl" style="padding:5px 9px;font-size:.73rem" onclick='resendDevis(${JSON.stringify(f).replace(/'/g,"&#39;")})'>📧</button>` : ""}
-        ${f.pdf_url ? `<a href="${f.pdf_url}" target="_blank" class="act-btn ghost" style="padding:5px 9px;font-size:.73rem;background:var(--surf2);color:var(--text)">⬇️</a>` : ""}
-        <button class="act-btn del" style="padding:5px 9px;font-size:.73rem" onclick='deleteDevis(${JSON.stringify({id:f.id,numero:f.numero,pdf_url:f.pdf_url,_legacy:f._legacy,_storage:f._storage}).replace(/'/g,"&#39;")})'>🗑️</button>
+        ${!isLegacy && f.statut !== "accepté" ? `<button class="act-btn cp" title="Marquer comme accepté" style="padding:5px 9px;font-size:.73rem;background:rgba(34,197,94,.1);color:#4ade80" onclick="setStatut(${f.id},'accepté')">✓ Accepté</button>` : ""}
+        ${!isLegacy && f.statut !== "refusé"  ? `<button class="act-btn" title="Marquer comme refusé" style="padding:5px 9px;font-size:.73rem;background:rgba(251,191,36,.1);color:#fbbf24" onclick="setStatut(${f.id},'refusé')">✗ Refusé</button>` : ""}
+        ${!isLegacy && f.statut === "accepté" ? `<button class="act-btn" title="Générer la facture depuis ce devis" style="padding:5px 9px;font-size:.73rem;background:rgba(168,85,247,.12);color:#c084fc" onclick='createFactureFromDevis(${JSON.stringify(f).replace(/'/g,"&#39;")})'>🧾 Facturer</button>` : ""}
+        ${!isLegacy ? `<button class="act-btn pv" title="Dupliquer ce devis" style="padding:5px 9px;font-size:.73rem" onclick='duplicateDevis(${JSON.stringify(f).replace(/'/g,"&#39;")})'>📋 Dupliquer</button>` : ""}
+        ${!isLegacy && f.client_email ? `<button class="act-btn dl" title="Renvoyer le devis par email" style="padding:5px 9px;font-size:.73rem" onclick='resendDevis(${JSON.stringify(f).replace(/'/g,"&#39;")})'>📧 Renvoyer</button>` : ""}
+        ${f.pdf_url ? `<a href="${f.pdf_url}" target="_blank" class="act-btn ghost" title="Télécharger le PDF" style="padding:5px 9px;font-size:.73rem;background:var(--surf2);color:var(--text)">⬇️ PDF</a>` : ""}
+        <button class="act-btn del" title="Supprimer ce devis" style="padding:5px 9px;font-size:.73rem" onclick='deleteDevis(${JSON.stringify({id:f.id,numero:f.numero,pdf_url:f.pdf_url,_legacy:f._legacy,_storage:f._storage}).replace(/'/g,"&#39;")})'>🗑️</button>
       </div>`;
     return div;
   }
@@ -1509,7 +1569,7 @@ function renderClients(list) {
       <td style="color:var(--muted);font-size:.8rem">${c.adresse || "—"}</td>
       <td style="color:var(--muted);font-size:.78rem">${fmtDate(c.created_at)}</td>
       <td>
-        <button class="act-btn del" style="padding:4px 9px;font-size:.72rem" onclick="deleteClient(${c.id},'${(c.nom||"").replace(/'/g,"\\'")}')">🗑️</button>
+        <button class="act-btn del" title="Supprimer ce client" style="padding:4px 9px;font-size:.72rem" onclick="deleteClient(${c.id},'${(c.nom||"").replace(/'/g,"\\'")}')">🗑️ Supprimer</button>
       </td>`;
     tbody.appendChild(tr);
   });
@@ -1584,6 +1644,14 @@ function renderFactLignes() {
 }
 
 function addFactLigne() { factLignes.push({ desc: "", heures: 1, prix: 20 }); renderFactLignes(); }
+
+function addFactPreset(sel) {
+  if (!sel.value) return;
+  const [desc, heures, prix] = sel.value.split("|");
+  factLignes.push({ desc, heures: parseFloat(heures), prix: parseFloat(prix) });
+  renderFactLignes();
+  sel.value = "";
+}
 
 function updateFacturePreview() {
   const num      = document.getElementById("f-num").value;
@@ -1699,10 +1767,10 @@ async function loadFactureHistory() {
       <div class="dhi-date">${fmtDate(f.created_at)}</div>
       <div class="status-badge ${sc[f.statut]||"draft"}">${sl[f.statut]||f.statut}</div>
       <div class="dhi-actions">
-        ${f.statut !== "payée"    ? `<button class="act-btn cp" style="padding:5px 9px;font-size:.73rem;background:rgba(34,197,94,.1);color:#4ade80" onclick="setFactureStatut(${f.id},'payée')">✓ Payée</button>` : ""}
-        ${f.statut !== "en retard"? `<button class="act-btn" style="padding:5px 9px;font-size:.73rem;background:rgba(239,68,68,.1);color:#f87171" onclick="setFactureStatut(${f.id},'en retard')">⚠️</button>` : ""}
-        ${f.pdf_url ? `<a href="${f.pdf_url}" target="_blank" class="act-btn ghost" style="padding:5px 9px;font-size:.73rem;background:var(--surf2);color:var(--text)">⬇️</a>` : ""}
-        <button class="act-btn del" style="padding:5px 9px;font-size:.73rem" onclick="deleteFacture(${f.id},'${f.numero}','${f.pdf_url||""}')">🗑️</button>
+        ${f.statut !== "payée"    ? `<button class="act-btn cp" title="Marquer comme payée" style="padding:5px 9px;font-size:.73rem;background:rgba(34,197,94,.1);color:#4ade80" onclick="setFactureStatut(${f.id},'payée')">✓ Payée</button>` : ""}
+        ${f.statut !== "en retard"? `<button class="act-btn" title="Marquer en retard de paiement" style="padding:5px 9px;font-size:.73rem;background:rgba(239,68,68,.1);color:#f87171" onclick="setFactureStatut(${f.id},'en retard')">⚠️ Retard</button>` : ""}
+        ${f.pdf_url ? `<a href="${f.pdf_url}" target="_blank" class="act-btn ghost" title="Télécharger le PDF" style="padding:5px 9px;font-size:.73rem;background:var(--surf2);color:var(--text)">⬇️ PDF</a>` : ""}
+        <button class="act-btn del" title="Supprimer cette facture" style="padding:5px 9px;font-size:.73rem" onclick="deleteFacture(${f.id},'${f.numero}','${f.pdf_url||""}')">🗑️</button>
       </div>`;
     list.appendChild(div);
   });

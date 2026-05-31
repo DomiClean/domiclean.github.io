@@ -1534,6 +1534,7 @@ h1,h2,h3,h4{font-family:'DM Serif Display',serif;line-height:1.2;color:var(--dar
 </footer>
 
 <!-- ===================== SCRIPTS ===================== -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
 <script>
@@ -1644,6 +1645,10 @@ window.addEventListener('scroll', () => {
 mCta.style.opacity = '0';
 
 /* ---- Contact form ---- */
+const _sb = window.supabase
+  ? window.supabase.createClient("https://smgzffkjwokcfjdejsbd.supabase.co","sb_publishable_JzkhEKjWGzWGwN_310ukew_m5EW3HrW")
+  : null;
+
 document.getElementById('contactForm').addEventListener('submit', async function(e) {
   e.preventDefault();
   const btn = document.getElementById('submitBtn');
@@ -1654,6 +1659,15 @@ document.getElementById('contactForm').addEventListener('submit', async function
 
   try {
     await emailjs.sendForm('service_hwm2hla', 'template_yayz1yf', this);
+    // Sauvegarde dans Supabase (silencieuse si échoue)
+    if (_sb) {
+      const nom    = document.getElementById('from_nom')?.value    || document.querySelector('[name="from_nom"]')?.value    || "";
+      const prenom = document.getElementById('from_prenom')?.value || document.querySelector('[name="from_prenom"]')?.value || "";
+      const email  = document.getElementById('from_email')?.value  || "";
+      const tel    = document.getElementById('from_tel')?.value    || "";
+      const msg    = document.getElementById('message')?.value     || "";
+      _sb.from('messages').insert({ nom, prenom, email, tel, message: msg, lu: false }).then(() => {});
+    }
     status.className = 'form-status ok';
     status.textContent = '✅ Message envoyé ! Nous vous répondrons sous 24h.';
     this.reset();

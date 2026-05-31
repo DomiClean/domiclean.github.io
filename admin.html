@@ -496,25 +496,25 @@
                 <select id="presetSelect" onchange="addPreset(this)" style="width:100%;padding:9px 12px;background:var(--dark);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:.84rem;outline:none;cursor:pointer">
                   <option value="">➕ Ajouter depuis les tarifs…</option>
                   <optgroup label="Nettoyage Locaux">
-                    <option value="Nettoyage locaux — Journée|1|30">Nettoyage locaux Journée — 30 €/h</option>
-                    <option value="Nettoyage locaux — Nuit|1|40">Nettoyage locaux Nuit — 40 €/h</option>
+                    <option value="Nettoyage locaux — Journée|1|30|h">Nettoyage locaux Journée — 30 €/h</option>
+                    <option value="Nettoyage locaux — Nuit|1|40|h">Nettoyage locaux Nuit — 40 €/h</option>
                   </optgroup>
                   <optgroup label="Vitres / Vitrines">
-                    <option value="Nettoyage vitrines|1|5">Nettoyage vitrines — 5 €/m²</option>
-                    <option value="Nettoyage vitres (sur devis)|1|0">Nettoyage vitres — tarif sur devis</option>
+                    <option value="Nettoyage vitrines|1|5|m²">Nettoyage vitrines — 5 €/m²</option>
+                    <option value="Nettoyage vitres (sur devis)|1|0|m²">Nettoyage vitres — tarif sur devis</option>
                   </optgroup>
                   <optgroup label="Nettoyage Spécifique">
-                    <option value="Nettoyage après déménagement|1|5">Après déménagement — 5 €/m²</option>
-                    <option value="Nettoyage après chantier (sur devis)|1|0">Après chantier — tarif sur devis</option>
+                    <option value="Nettoyage après déménagement|1|5|m²">Après déménagement — 5 €/m²</option>
+                    <option value="Nettoyage après chantier (sur devis)|1|0|forfait">Après chantier — tarif sur devis</option>
                   </optgroup>
                   <optgroup label="Auxiliaires de Vie">
-                    <option value="Auxiliaire de vie — Journée|1|30">Auxiliaire de vie Journée — 30 €/h</option>
-                    <option value="Auxiliaire de vie — Nuit|1|40">Auxiliaire de vie Nuit — 40 €/h</option>
+                    <option value="Auxiliaire de vie — Journée|1|30|h">Auxiliaire de vie Journée — 30 €/h</option>
+                    <option value="Auxiliaire de vie — Nuit|1|40|h">Auxiliaire de vie Nuit — 40 €/h</option>
                   </optgroup>
                   <optgroup label="Tarifs Spécifiques">
-                    <option value="Intervention jour férié|1|40">Jour férié — 40 €/h</option>
-                    <option value="Intervention 1er Mai / Noël|1|60">1er Mai / Noël — 60 €/h</option>
-                    <option value="Intervention week-end|1|35">Week-end — 35 €/h</option>
+                    <option value="Intervention jour férié|1|40|h">Jour férié — 40 €/h</option>
+                    <option value="Intervention 1er Mai / Noël|1|60|h">1er Mai / Noël — 60 €/h</option>
+                    <option value="Intervention week-end|1|35|h">Week-end — 35 €/h</option>
                   </optgroup>
                 </select>
               </div>
@@ -522,11 +522,12 @@
                 <table class="prest-table">
                   <thead>
                     <tr>
-                      <th style="width:45%">Description</th>
-                      <th style="width:13%" class="r">Heures</th>
-                      <th style="width:15%" class="r">Prix/h (€)</th>
-                      <th style="width:16%" class="r">Total</th>
-                      <th style="width:11%"></th>
+                      <th style="width:40%">Description</th>
+                      <th style="width:10%" class="r">Qté</th>
+                      <th style="width:10%">Unité</th>
+                      <th style="width:14%" class="r">Prix unit. (€)</th>
+                      <th style="width:14%" class="r">Total</th>
+                      <th style="width:12%"></th>
                     </tr>
                   </thead>
                   <tbody id="prestBody"></tbody>
@@ -624,31 +625,31 @@
                 <select id="factPresetSelect" onchange="addFactPreset(this)" style="width:100%;padding:9px 12px;background:var(--dark);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:.84rem;outline:none;cursor:pointer">
                   <option value="">➕ Ajouter depuis les tarifs…</option>
                   <optgroup label="Nettoyage Locaux">
-                    <option value="Nettoyage locaux — Journée|1|30">Nettoyage locaux Journée — 30 €/h</option>
-                    <option value="Nettoyage locaux — Nuit|1|40">Nettoyage locaux Nuit — 40 €/h</option>
+                    <option value="Nettoyage locaux — Journée|1|30|h">Nettoyage locaux Journée — 30 €/h</option>
+                    <option value="Nettoyage locaux — Nuit|1|40|h">Nettoyage locaux Nuit — 40 €/h</option>
                   </optgroup>
                   <optgroup label="Vitres / Vitrines">
-                    <option value="Nettoyage vitrines|1|5">Nettoyage vitrines — 5 €/m²</option>
-                    <option value="Nettoyage vitres (sur devis)|1|0">Nettoyage vitres — tarif sur devis</option>
+                    <option value="Nettoyage vitrines|1|5|m²">Nettoyage vitrines — 5 €/m²</option>
+                    <option value="Nettoyage vitres (sur devis)|1|0|m²">Nettoyage vitres — tarif sur devis</option>
                   </optgroup>
                   <optgroup label="Nettoyage Spécifique">
-                    <option value="Nettoyage après déménagement|1|5">Après déménagement — 5 €/m²</option>
-                    <option value="Nettoyage après chantier (sur devis)|1|0">Après chantier — tarif sur devis</option>
+                    <option value="Nettoyage après déménagement|1|5|m²">Après déménagement — 5 €/m²</option>
+                    <option value="Nettoyage après chantier (sur devis)|1|0|forfait">Après chantier — tarif sur devis</option>
                   </optgroup>
                   <optgroup label="Auxiliaires de Vie">
-                    <option value="Auxiliaire de vie — Journée|1|30">Auxiliaire de vie Journée — 30 €/h</option>
-                    <option value="Auxiliaire de vie — Nuit|1|40">Auxiliaire de vie Nuit — 40 €/h</option>
+                    <option value="Auxiliaire de vie — Journée|1|30|h">Auxiliaire de vie Journée — 30 €/h</option>
+                    <option value="Auxiliaire de vie — Nuit|1|40|h">Auxiliaire de vie Nuit — 40 €/h</option>
                   </optgroup>
                   <optgroup label="Tarifs Spécifiques">
-                    <option value="Intervention jour férié|1|40">Jour férié — 40 €/h</option>
-                    <option value="Intervention 1er Mai / Noël|1|60">1er Mai / Noël — 60 €/h</option>
-                    <option value="Intervention week-end|1|35">Week-end — 35 €/h</option>
+                    <option value="Intervention jour férié|1|40|h">Jour férié — 40 €/h</option>
+                    <option value="Intervention 1er Mai / Noël|1|60|h">1er Mai / Noël — 60 €/h</option>
+                    <option value="Intervention week-end|1|35|h">Week-end — 35 €/h</option>
                   </optgroup>
                 </select>
               </div>
               <div class="prest-wrap">
                 <table class="prest-table">
-                  <thead><tr><th style="width:45%">Description</th><th style="width:13%" class="r">Heures</th><th style="width:16%" class="r">Taux/h</th><th style="width:16%" class="r">Total</th><th style="width:10%"></th></tr></thead>
+                  <thead><tr><th style="width:38%">Description</th><th style="width:9%" class="r">Qté</th><th style="width:10%">Unité</th><th style="width:15%" class="r">Prix unit. (€)</th><th style="width:14%" class="r">Total</th><th style="width:14%"></th></tr></thead>
                   <tbody id="factLignes"></tbody>
                 </table>
               </div>
@@ -964,7 +965,7 @@ document.getElementById("searchInput").addEventListener("input", function() {
 });
 
 /* ══ DEVIS ══ */
-let lignes = [{ desc: "Ménage domicile", heures: 2, prix: 20 }];
+let lignes = [{ desc: "Ménage domicile", heures: 2, prix: 20, unit: "h" }];
 
 async function getNextNum() {
   const year = new Date().getFullYear();
@@ -1013,28 +1014,35 @@ function resetDevis() {
   initDevis();
 }
 
+const UNITS = ["h","m²","forfait","j"];
+function unitSel(i, val, fn) {
+  return `<select style="background:var(--dark);border:1px solid var(--border);border-radius:5px;color:var(--text);font-size:.78rem;padding:4px 5px;cursor:pointer" onchange="${fn}[${i}].unit=this.value;updatePreview()">${UNITS.map(u=>`<option${u===val?" selected":""}>${u}</option>`).join("")}</select>`;
+}
+
 function renderLignes() {
   const tbody = document.getElementById("prestBody");
   tbody.innerHTML = "";
   lignes.forEach((l, i) => {
+    const u = l.unit || "h";
     const t = ((parseFloat(l.heures)||0) * (parseFloat(l.prix)||0)).toFixed(2);
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td><input value="${l.desc}" placeholder="Description de la prestation" oninput="lignes[${i}].desc=this.value;updatePreview()"></td>
-      <td><input class="num" type="number" value="${l.heures}" min="0" step="0.5" style="width:70px" oninput="lignes[${i}].heures=this.value;calcTotals()"></td>
-      <td><input class="num" type="number" value="${l.prix}" min="0" step="0.5" style="width:80px" oninput="lignes[${i}].prix=this.value;calcTotals()"></td>
+      <td><input class="num" type="number" value="${l.heures}" min="0" step="0.5" style="width:60px" oninput="lignes[${i}].heures=this.value;calcTotals()"></td>
+      <td>${unitSel(i, u, "lignes")}</td>
+      <td><input class="num" type="number" value="${l.prix}" min="0" step="0.5" style="width:72px" oninput="lignes[${i}].prix=this.value;calcTotals()"></td>
       <td class="td-total">${t} €</td>
       <td style="text-align:center"><button class="btn-del-row" ${lignes.length===1?"disabled":""} onclick="removeLigne(${i})">✕</button></td>`;
     tbody.appendChild(tr);
   });
 }
 
-function addLigne() { lignes.push({ desc: "", heures: 1, prix: 20 }); renderLignes(); calcTotals(); }
+function addLigne() { lignes.push({ desc: "", heures: 1, prix: 20, unit: "h" }); renderLignes(); calcTotals(); }
 
 function addPreset(sel) {
   if (!sel.value) return;
-  const [desc, heures, prix] = sel.value.split("|");
-  lignes.push({ desc, heures: parseFloat(heures), prix: parseFloat(prix) });
+  const [desc, heures, prix, unit] = sel.value.split("|");
+  lignes.push({ desc, heures: parseFloat(heures), prix: parseFloat(prix), unit: unit||"h" });
   renderLignes(); calcTotals();
   sel.value = "";
 }
@@ -1067,7 +1075,7 @@ function updatePreview() {
     const t = ((parseFloat(l.heures)||0)*(parseFloat(l.prix)||0)).toFixed(2);
     return `<tr>
       <td style="padding:8px 6px;border-bottom:1px solid #e2e8f0;font-size:11px">${l.desc||"—"}</td>
-      <td style="padding:8px 6px;border-bottom:1px solid #e2e8f0;text-align:center;font-size:11px">${parseFloat(l.heures)||0}h</td>
+      <td style="padding:8px 6px;border-bottom:1px solid #e2e8f0;text-align:center;font-size:11px">${parseFloat(l.heures)||0} ${l.unit||"h"}</td>
       <td style="padding:8px 6px;border-bottom:1px solid #e2e8f0;text-align:right;font-size:11px">${parseFloat(l.prix||0).toFixed(2)} €</td>
       <td style="padding:8px 6px;border-bottom:1px solid #e2e8f0;text-align:right;font-weight:700;font-size:11px">${t} €</td>
     </tr>`;
@@ -1597,7 +1605,7 @@ async function deleteClient(id, nom) {
 }
 
 /* ══ FACTURES ══ */
-let factLignes = [{ desc: "Ménage domicile", heures: 2, prix: 20 }];
+let factLignes = [{ desc: "Ménage domicile", heures: 2, prix: 20, unit: "h" }];
 
 async function getNextFactureNum() {
   const year = new Date().getFullYear();
@@ -1630,12 +1638,14 @@ function renderFactLignes() {
   const tbody = document.getElementById("factLignes");
   tbody.innerHTML = "";
   factLignes.forEach((l, i) => {
-    const total = (l.heures * l.prix).toFixed(2);
+    const u = l.unit || "h";
+    const total = ((parseFloat(l.heures)||0) * (parseFloat(l.prix)||0)).toFixed(2);
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td><input class="prest-desc" value="${l.desc}" oninput="factLignes[${i}].desc=this.value;updateFacturePreview()"></td>
-      <td><input type="number" class="num" value="${l.heures}" min="0.5" step="0.5" style="width:64px" oninput="factLignes[${i}].heures=parseFloat(this.value)||0;renderFactLignes()"></td>
-      <td><input type="number" class="num" value="${l.prix}" min="1" step="0.5" style="width:72px" oninput="factLignes[${i}].prix=parseFloat(this.value)||0;renderFactLignes()"></td>
+      <td><input type="number" class="num" value="${l.heures}" min="0" step="0.5" style="width:58px" oninput="factLignes[${i}].heures=parseFloat(this.value)||0;renderFactLignes()"></td>
+      <td>${unitSel(i, u, "factLignes")}</td>
+      <td><input type="number" class="num" value="${l.prix}" min="0" step="0.5" style="width:70px" oninput="factLignes[${i}].prix=parseFloat(this.value)||0;renderFactLignes()"></td>
       <td class="td-total">${total} €</td>
       <td><button class="btn-del-row" onclick="factLignes.splice(${i},1);renderFactLignes()" ${factLignes.length===1?"disabled":""}>✕</button></td>`;
     tbody.appendChild(tr);
@@ -1647,12 +1657,12 @@ function renderFactLignes() {
   updateFacturePreview();
 }
 
-function addFactLigne() { factLignes.push({ desc: "", heures: 1, prix: 20 }); renderFactLignes(); }
+function addFactLigne() { factLignes.push({ desc: "", heures: 1, prix: 20, unit: "h" }); renderFactLignes(); }
 
 function addFactPreset(sel) {
   if (!sel.value) return;
-  const [desc, heures, prix] = sel.value.split("|");
-  factLignes.push({ desc, heures: parseFloat(heures), prix: parseFloat(prix) });
+  const [desc, heures, prix, unit] = sel.value.split("|");
+  factLignes.push({ desc, heures: parseFloat(heures), prix: parseFloat(prix), unit: unit||"h" });
   renderFactLignes();
   sel.value = "";
 }
@@ -1667,7 +1677,7 @@ function updateFacturePreview() {
   const adresse  = document.getElementById("f-adresse").value;
   const notes    = document.getElementById("f-notes").value;
   const subtotal = factLignes.reduce((s,l) => s + l.heures*l.prix, 0);
-  const rows     = factLignes.map(l => `<tr><td style="padding:6px 8px">${l.desc}</td><td style="text-align:right;padding:6px 8px">${l.heures}h</td><td style="text-align:right;padding:6px 8px">${parseFloat(l.prix).toFixed(2)} €</td><td style="text-align:right;font-weight:600;padding:6px 8px">${(l.heures*l.prix).toFixed(2)} €</td></tr>`).join("");
+  const rows     = factLignes.map(l => `<tr><td style="padding:6px 8px">${l.desc}</td><td style="text-align:right;padding:6px 8px">${l.heures} ${l.unit||"h"}</td><td style="text-align:right;padding:6px 8px">${parseFloat(l.prix).toFixed(2)} €</td><td style="text-align:right;font-weight:600;padding:6px 8px">${((parseFloat(l.heures)||0)*(parseFloat(l.prix)||0)).toFixed(2)} €</td></tr>`).join("");
   document.getElementById("facturePreview").innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px">
       <div><div style="font-size:20px;font-weight:900;color:#0f172a;letter-spacing:-1px">FACTURE</div><div style="font-size:13px;font-weight:700;color:#0a6fd4">${num}</div></div>

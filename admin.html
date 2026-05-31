@@ -260,6 +260,37 @@
     .btn-close:hover{background:var(--dark);color:var(--text)}
     #previewFrame{flex:1;border:none;width:100%;background:#fff}
 
+    /* ── CLIENTS ── */
+    .client-table{width:100%;border-collapse:collapse}
+    .client-table th{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border)}
+    .client-table td{padding:12px 14px;border-bottom:1px solid var(--border);font-size:.88rem;vertical-align:middle}
+    .client-table tr:last-child td{border-bottom:none}
+    .client-table tr:hover td{background:rgba(255,255,255,.025)}
+    .client-tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:.68rem;font-weight:600;background:rgba(10,111,212,.12);color:#60a5fa;margin-right:4px}
+    .client-wrap{background:var(--surf);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+
+    /* ── MESSAGES ── */
+    .msg-item{background:var(--surf);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;display:flex;gap:16px;align-items:flex-start;transition:.2s;cursor:pointer}
+    .msg-item:hover{border-color:rgba(10,111,212,.3)}
+    .msg-item.unread{border-left:3px solid var(--p);background:rgba(10,111,212,.04)}
+    .msg-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--a));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.95rem;flex-shrink:0;color:#fff}
+    .msg-body{flex:1;min-width:0}
+    .msg-header{display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap}
+    .msg-name{font-weight:600;font-size:.9rem}
+    .msg-email{font-size:.76rem;color:var(--muted)}
+    .msg-date{font-size:.73rem;color:var(--muted);margin-left:auto}
+    .msg-text{font-size:.85rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .msg-tel{font-size:.75rem;color:#60a5fa;margin-top:3px}
+    .unread-dot{width:8px;height:8px;border-radius:50%;background:var(--p);flex-shrink:0;margin-top:6px}
+    .nav-badge{background:var(--p);color:#fff;font-size:.6rem;font-weight:700;padding:1px 5px;border-radius:20px;margin-left:auto}
+    .msg-full{display:none;font-size:.85rem;color:var(--text);margin-top:8px;white-space:pre-wrap;background:var(--dark);padding:10px 14px;border-radius:8px;line-height:1.55}
+    .msg-actions{display:flex;gap:8px;margin-top:10px}
+
+    /* ── FACTURES ── */
+    .status-badge.paid{background:rgba(34,197,94,.14);color:#4ade80}
+    .status-badge.pending{background:rgba(251,191,36,.12);color:#fbbf24}
+    .status-badge.late{background:rgba(239,68,68,.12);color:#f87171}
+
     /* ── RESPONSIVE ── */
     @media(max-width:1100px){.devis-layout{grid-template-columns:1fr}}
     @media(max-width:768px){
@@ -352,6 +383,16 @@
       </button>
       <button class="nav-item" data-sec="historique">
         <span class="nav-icon">🕓</span> Historique devis
+      </button>
+      <button class="nav-item" data-sec="factures">
+        <span class="nav-icon">🧾</span> Factures
+      </button>
+      <button class="nav-item" data-sec="clients">
+        <span class="nav-icon">👥</span> Clients
+      </button>
+      <button class="nav-item" data-sec="messages">
+        <span class="nav-icon">💬</span> Messages
+        <span class="nav-badge" id="msgBadge" style="display:none">0</span>
       </button>
       <div class="sidebar-spacer"></div>
       <div class="sidebar-user">
@@ -517,6 +558,106 @@
         <div id="devisHistList" style="display:flex;flex-direction:column;gap:10px"></div>
       </div>
 
+      <!-- ══ SECTION : FACTURES ══ -->
+      <div class="section" id="sec-factures">
+        <div class="page-header">
+          <div class="page-title"><h1>Factures</h1><p>Générez et suivez vos factures</p></div>
+          <div class="devis-actions">
+            <button class="btn-action ghost" onclick="resetFacture()">🔄 Nouvelle</button>
+            <button class="btn-action green" onclick="downloadFacturePDF()">⬇️ Télécharger PDF</button>
+            <button class="btn-action blue" id="btnSaveFacture" onclick="saveFacture()">💾 Enregistrer</button>
+          </div>
+        </div>
+        <div class="stats-row">
+          <div class="stat-card"><div class="stat-icon blue">🧾</div><div><div class="stat-val" id="statFactures">—</div><div class="stat-lbl">Factures</div></div></div>
+          <div class="stat-card"><div class="stat-icon green">✅</div><div><div class="stat-val" id="statFactPaid">—</div><div class="stat-lbl">Payées</div></div></div>
+          <div class="stat-card"><div class="stat-icon purple">⏳</div><div><div class="stat-val" id="statFactPending">—</div><div class="stat-lbl">En attente</div></div></div>
+        </div>
+        <div class="devis-layout">
+          <div class="devis-form">
+            <div class="form-card">
+              <div class="form-card-title">🧾 Informations de la facture</div>
+              <div class="form-row-3">
+                <div class="field"><label>N° Facture</label><input id="f-num" readonly></div>
+                <div class="field"><label>Date d'émission</label><input type="date" id="f-date" oninput="updateFacturePreview()"></div>
+                <div class="field"><label>Échéance paiement</label><input type="date" id="f-echeance" oninput="updateFacturePreview()"></div>
+              </div>
+            </div>
+            <div class="form-card">
+              <div class="form-card-title">👤 Client</div>
+              <div class="form-row">
+                <div class="field"><label>Nom complet *</label><input id="f-nom" placeholder="Marie Dupont" oninput="updateFacturePreview()"></div>
+                <div class="field"><label>Téléphone</label><input id="f-tel" placeholder="06 00 00 00 00" oninput="updateFacturePreview()"></div>
+              </div>
+              <div class="field"><label>Email</label><input type="email" id="f-email" placeholder="client@email.fr" oninput="updateFacturePreview()"></div>
+              <div class="field"><label>Adresse</label><input id="f-adresse" placeholder="12 rue de la Paix, 75001 Paris" oninput="updateFacturePreview()"></div>
+            </div>
+            <div class="form-card">
+              <div class="form-card-title">🧹 Prestations</div>
+              <div class="prest-wrap">
+                <table class="prest-table">
+                  <thead><tr><th style="width:45%">Description</th><th style="width:13%" class="r">Heures</th><th style="width:16%" class="r">Taux/h</th><th style="width:16%" class="r">Total</th><th style="width:10%"></th></tr></thead>
+                  <tbody id="factLignes"></tbody>
+                </table>
+              </div>
+              <button class="btn-add-row" onclick="addFactLigne()">+ Ajouter une ligne</button>
+            </div>
+            <div class="form-card">
+              <div class="form-card-title">💰 Totaux</div>
+              <div class="totals-box" id="factTotals"></div>
+              <div class="tva-badge">TVA non applicable · art. 293 B du CGI</div>
+            </div>
+            <div class="form-card">
+              <div class="form-card-title">📝 Notes</div>
+              <div class="field" style="margin-bottom:0"><textarea id="f-notes" placeholder="Notes ou conditions particulières…" oninput="updateFacturePreview()"></textarea></div>
+            </div>
+          </div>
+          <div class="preview-sticky">
+            <div class="section-title">👁️ Aperçu</div>
+            <div class="preview-paper" id="facturePreview"></div>
+          </div>
+        </div>
+        <div style="margin-top:32px">
+          <div class="section-title">📋 Historique factures</div>
+          <div id="factHistList" style="display:flex;flex-direction:column;gap:10px"></div>
+        </div>
+      </div>
+
+      <!-- ══ SECTION : CLIENTS ══ -->
+      <div class="section" id="sec-clients">
+        <div class="page-header">
+          <div class="page-title"><h1>Clients</h1><p>Base de données clients</p></div>
+        </div>
+        <div class="stats-row">
+          <div class="stat-card"><div class="stat-icon blue">👥</div><div><div class="stat-val" id="statClients">—</div><div class="stat-lbl">Clients</div></div></div>
+        </div>
+        <div style="margin-bottom:16px">
+          <div class="search-wrap" style="max-width:400px">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="clientSearch" placeholder="Rechercher un client…" oninput="filterClients()">
+          </div>
+        </div>
+        <div class="client-wrap">
+          <table class="client-table">
+            <thead><tr><th>Nom</th><th>Email</th><th>Téléphone</th><th>Adresse</th><th>Depuis</th><th></th></tr></thead>
+            <tbody id="clientList"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ══ SECTION : MESSAGES ══ -->
+      <div class="section" id="sec-messages">
+        <div class="page-header">
+          <div class="page-title"><h1>Messages</h1><p>Demandes de contact reçues</p></div>
+          <button class="btn-action ghost" onclick="markAllRead()">✓ Tout marquer lu</button>
+        </div>
+        <div class="stats-row">
+          <div class="stat-card"><div class="stat-icon blue">💬</div><div><div class="stat-val" id="statMsgs">—</div><div class="stat-lbl">Messages</div></div></div>
+          <div class="stat-card"><div class="stat-icon purple">🔵</div><div><div class="stat-val" id="statUnread">—</div><div class="stat-lbl">Non lus</div></div></div>
+        </div>
+        <div id="msgList" style="display:flex;flex-direction:column;gap:10px"></div>
+      </div>
+
     </main>
   </div>
 </div>
@@ -583,6 +724,7 @@ onAuthStateChanged(auth, async user => {
     document.getElementById("userInitial").textContent = (user.displayName || user.email)[0].toUpperCase();
     loadFiles();
     initDevis();
+    loadUnreadCount();
   } else {
     document.getElementById("loginBox").style.display = "flex";
     document.getElementById("adminPanel").style.display = "none";
@@ -609,6 +751,9 @@ document.querySelectorAll(".nav-item[data-sec]").forEach(btn => {
     document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
     document.getElementById("sec-" + sec).classList.add("active");
     if (sec === "historique") loadDevisHistory();
+    if (sec === "messages")   loadMessages();
+    if (sec === "clients")    loadClients();
+    if (sec === "factures")   { initFacture(); loadFactureHistory(); }
   });
 });
 
@@ -1005,7 +1150,10 @@ async function saveAndSend() {
       statut: "envoyé"
     });
 
-    // 4. Envoyer l'email
+    // 4. Upsert client
+    await upsertClient(clientNom, clientEmail, clientTel, clientAdresse);
+
+    // 5. Envoyer l'email
     await emailjs.send("service_hwm2hla", "template_bkhdovi", {
       to_name:    clientNom,
       to_email:   clientEmail,
@@ -1184,6 +1332,334 @@ async function resendDevis(f) {
   } catch(err) {
     toast("❌ Erreur envoi email", "error");
   }
+}
+
+/* ══ UPSERT CLIENT (appelé après envoi devis) ══ */
+async function upsertClient(nom, email, tel, adresse) {
+  if (!email && !nom) return;
+  try {
+    if (email) {
+      const { data: existing } = await sb.from("clients").select("id").eq("email", email).limit(1);
+      if (existing && existing.length) {
+        await sb.from("clients").update({ nom, tel, adresse }).eq("id", existing[0].id);
+        return;
+      }
+    }
+    await sb.from("clients").insert({ nom, email, tel, adresse });
+  } catch(e) {}
+}
+
+/* ══ MESSAGES ══ */
+async function loadUnreadCount() {
+  try {
+    const { count } = await sb.from("messages").select("*", { count: "exact", head: true }).eq("lu", false);
+    const badge = document.getElementById("msgBadge");
+    if (count > 0) { badge.textContent = count; badge.style.display = "inline"; }
+    else badge.style.display = "none";
+  } catch(e) {}
+}
+
+async function loadMessages() {
+  const list = document.getElementById("msgList");
+  list.innerHTML = `<div class="skeleton" style="height:80px;border-radius:12px"></div>`.repeat(3);
+  let items = [];
+  try {
+    const { data } = await sb.from("messages").select("*").order("created_at", { ascending: false });
+    items = data || [];
+  } catch(e) {}
+  const unread = items.filter(m => !m.lu).length;
+  document.getElementById("statMsgs").textContent   = items.length;
+  document.getElementById("statUnread").textContent = unread;
+  if (!items.length) {
+    list.innerHTML = `<div class="files-empty"><div class="empty-icon">📭</div><p>Aucun message reçu</p></div>`;
+    return;
+  }
+  list.innerHTML = "";
+  items.forEach(m => {
+    const div = document.createElement("div");
+    div.className = "msg-item" + (!m.lu ? " unread" : "");
+    div.innerHTML = `
+      ${!m.lu ? `<div class="unread-dot"></div>` : `<div style="width:8px;flex-shrink:0"></div>`}
+      <div class="msg-avatar">${(m.prenom || m.nom || "?")[0].toUpperCase()}</div>
+      <div class="msg-body">
+        <div class="msg-header">
+          <span class="msg-name">${m.prenom || ""} ${m.nom || "—"}</span>
+          <span class="msg-email">${m.email || ""}</span>
+          <span class="msg-date">${fmtDate(m.created_at)}</span>
+        </div>
+        ${m.tel ? `<div class="msg-tel">📞 ${m.tel}</div>` : ""}
+        <div class="msg-text" id="msg-preview-${m.id}">${(m.message||"").replace(/\n/g," ")}</div>
+        <div class="msg-full" id="msg-full-${m.id}">${m.message||""}</div>
+        <div class="msg-actions">
+          <button class="act-btn dl" style="padding:5px 10px;font-size:.73rem" onclick="toggleMsg(${m.id})">👁️ Lire</button>
+          ${!m.lu ? `<button class="act-btn cp" style="padding:5px 10px;font-size:.73rem" onclick="markRead(${m.id}, this)">✓ Marquer lu</button>` : ""}
+          ${m.email ? `<a href="mailto:${m.email}" class="act-btn pv" style="padding:5px 10px;font-size:.73rem">📧 Répondre</a>` : ""}
+          <button class="act-btn del" style="padding:5px 10px;font-size:.73rem" onclick="deleteMsg(${m.id})">🗑️</button>
+        </div>
+      </div>`;
+    list.appendChild(div);
+  });
+}
+
+function toggleMsg(id) {
+  const preview = document.getElementById("msg-preview-" + id);
+  const full    = document.getElementById("msg-full-" + id);
+  const hidden  = full.style.display === "none" || !full.style.display;
+  full.style.display    = hidden ? "block" : "none";
+  preview.style.display = hidden ? "none"  : "block";
+}
+
+async function markRead(id, btn) {
+  try { await sb.from("messages").update({ lu: true }).eq("id", id); } catch(e) {}
+  const item = btn.closest(".msg-item");
+  item.classList.remove("unread");
+  btn.remove();
+  const dot = item.querySelector(".unread-dot");
+  if (dot) { dot.style.width = "8px"; dot.classList.remove("unread-dot"); }
+  loadUnreadCount();
+}
+
+async function markAllRead() {
+  try { await sb.from("messages").update({ lu: true }).eq("lu", false); } catch(e) {}
+  toast("✓ Tous les messages marqués comme lus");
+  loadMessages();
+  loadUnreadCount();
+}
+
+async function deleteMsg(id) {
+  const ok = await showConfirm("Supprimer ce message ?");
+  if (!ok) return;
+  try { await sb.from("messages").delete().eq("id", id); } catch(e) {}
+  toast("🗑️ Message supprimé");
+  loadMessages();
+  loadUnreadCount();
+}
+
+/* ══ CLIENTS ══ */
+let allClients = [];
+async function loadClients() {
+  const tbody = document.getElementById("clientList");
+  tbody.innerHTML = `<tr><td colspan="6"><div class="skeleton" style="height:40px;border-radius:8px"></div></td></tr>`.repeat(4);
+  try {
+    const { data } = await sb.from("clients").select("*").order("created_at", { ascending: false });
+    allClients = data || [];
+  } catch(e) { allClients = []; }
+  document.getElementById("statClients").textContent = allClients.length;
+  renderClients(allClients);
+}
+
+function renderClients(list) {
+  const tbody = document.getElementById("clientList");
+  if (!list.length) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted)">Aucun client — ils apparaissent automatiquement après l'envoi d'un devis</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = "";
+  list.forEach(c => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td style="font-weight:600">${c.nom || "—"}</td>
+      <td><a href="mailto:${c.email||""}" style="color:#60a5fa;text-decoration:none">${c.email || "—"}</a></td>
+      <td>${c.tel || "—"}</td>
+      <td style="color:var(--muted);font-size:.8rem">${c.adresse || "—"}</td>
+      <td style="color:var(--muted);font-size:.78rem">${fmtDate(c.created_at)}</td>
+      <td>
+        <button class="act-btn del" style="padding:4px 9px;font-size:.72rem" onclick="deleteClient(${c.id},'${(c.nom||"").replace(/'/g,"\\'")}')">🗑️</button>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function filterClients() {
+  const q = document.getElementById("clientSearch").value.toLowerCase();
+  renderClients(q ? allClients.filter(c =>
+    (c.nom||"").toLowerCase().includes(q) ||
+    (c.email||"").toLowerCase().includes(q) ||
+    (c.tel||"").includes(q)
+  ) : allClients);
+}
+
+async function deleteClient(id, nom) {
+  const ok = await showConfirm(`Supprimer le client "${nom}" ?`);
+  if (!ok) return;
+  try { await sb.from("clients").delete().eq("id", id); } catch(e) {}
+  toast("🗑️ Client supprimé");
+  loadClients();
+}
+
+/* ══ FACTURES ══ */
+let factLignes = [{ desc: "Ménage domicile", heures: 2, prix: 20 }];
+
+async function getNextFactureNum() {
+  const year = new Date().getFullYear();
+  let max = 0;
+  try {
+    const { data } = await sb.from("factures").select("numero").like("numero", `FAC-${year}-%`).order("id", { ascending: false }).limit(1);
+    if (data && data.length) max = Math.max(max, parseInt(data[0].numero.split("-")[2]) || 0);
+  } catch(e) {}
+  return `FAC-${year}-${String(max + 1).padStart(3, "0")}`;
+}
+
+async function initFacture() {
+  const today = new Date();
+  const echeance = new Date(today); echeance.setDate(echeance.getDate() + 30);
+  const fmt = d => d.toISOString().split("T")[0];
+  document.getElementById("f-date").value     = fmt(today);
+  document.getElementById("f-echeance").value = fmt(echeance);
+  document.getElementById("f-num").value      = await getNextFactureNum();
+  renderFactLignes();
+  updateFacturePreview();
+}
+
+function resetFacture() {
+  factLignes = [{ desc: "Ménage domicile", heures: 2, prix: 20 }];
+  ["f-nom","f-email","f-tel","f-adresse","f-notes"].forEach(id => document.getElementById(id).value = "");
+  initFacture();
+}
+
+function renderFactLignes() {
+  const tbody = document.getElementById("factLignes");
+  tbody.innerHTML = "";
+  factLignes.forEach((l, i) => {
+    const total = (l.heures * l.prix).toFixed(2);
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><input class="prest-desc" value="${l.desc}" oninput="factLignes[${i}].desc=this.value;updateFacturePreview()"></td>
+      <td><input type="number" class="num" value="${l.heures}" min="0.5" step="0.5" style="width:64px" oninput="factLignes[${i}].heures=parseFloat(this.value)||0;renderFactLignes()"></td>
+      <td><input type="number" class="num" value="${l.prix}" min="1" step="0.5" style="width:72px" oninput="factLignes[${i}].prix=parseFloat(this.value)||0;renderFactLignes()"></td>
+      <td class="td-total">${total} €</td>
+      <td><button class="btn-del-row" onclick="factLignes.splice(${i},1);renderFactLignes()" ${factLignes.length===1?"disabled":""}>✕</button></td>`;
+    tbody.appendChild(tr);
+  });
+  const subtotal = factLignes.reduce((s,l) => s + l.heures*l.prix, 0);
+  document.getElementById("factTotals").innerHTML = `
+    <div class="total-line"><span>Sous-total HT</span><span>${subtotal.toFixed(2)} €</span></div>
+    <div class="total-line main"><span>Total TTC</span><span>${subtotal.toFixed(2)} €</span></div>`;
+  updateFacturePreview();
+}
+
+function addFactLigne() { factLignes.push({ desc: "", heures: 1, prix: 20 }); renderFactLignes(); }
+
+function updateFacturePreview() {
+  const num      = document.getElementById("f-num").value;
+  const date     = document.getElementById("f-date").value;
+  const echeance = document.getElementById("f-echeance").value;
+  const nom      = document.getElementById("f-nom").value || "—";
+  const email    = document.getElementById("f-email").value;
+  const tel      = document.getElementById("f-tel").value;
+  const adresse  = document.getElementById("f-adresse").value;
+  const notes    = document.getElementById("f-notes").value;
+  const subtotal = factLignes.reduce((s,l) => s + l.heures*l.prix, 0);
+  const rows     = factLignes.map(l => `<tr><td style="padding:6px 8px">${l.desc}</td><td style="text-align:right;padding:6px 8px">${l.heures}h</td><td style="text-align:right;padding:6px 8px">${parseFloat(l.prix).toFixed(2)} €</td><td style="text-align:right;font-weight:600;padding:6px 8px">${(l.heures*l.prix).toFixed(2)} €</td></tr>`).join("");
+  document.getElementById("facturePreview").innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px">
+      <div><div style="font-size:20px;font-weight:900;color:#0f172a;letter-spacing:-1px">FACTURE</div><div style="font-size:13px;font-weight:700;color:#0a6fd4">${num}</div></div>
+      <div style="text-align:right;font-size:9px;color:#475569"><div style="font-weight:700;font-size:11px;color:#0f172a">Domi Clean</div><div>Île-de-France</div><div>domicleanidf@gmail.com</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;font-size:9px">
+      <div style="background:#f8fafc;border-radius:6px;padding:10px"><div style="font-weight:700;margin-bottom:4px;color:#0f172a">FACTURÉ À</div><div>${nom}</div>${adresse?`<div>${adresse}</div>`:""}${email?`<div>${email}</div>`:""}${tel?`<div>${tel}</div>`:""}</div>
+      <div style="background:#f8fafc;border-radius:6px;padding:10px;text-align:right"><div style="font-weight:700;margin-bottom:4px;color:#0f172a">DATES</div><div>Émission : ${fmtDateFr(date)}</div><div>Échéance : ${fmtDateFr(echeance)}</div></div>
+    </div>
+    <table style="width:100%;border-collapse:collapse;font-size:9px;margin-bottom:12px">
+      <thead><tr style="background:#0a6fd4;color:#fff"><th style="padding:7px 8px;text-align:left">Prestation</th><th style="padding:7px 8px;text-align:right">Durée</th><th style="padding:7px 8px;text-align:right">Taux/h</th><th style="padding:7px 8px;text-align:right">Montant</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+      <div style="background:#0f172a;color:#fff;padding:10px 18px;border-radius:7px;font-size:11px"><span style="color:#94a3b8">TOTAL TTC : </span><strong style="font-size:15px">${subtotal.toFixed(2)} €</strong></div>
+    </div>
+    ${notes?`<div style="font-size:8px;color:#475569;margin-bottom:10px;padding:8px;background:#f1f5f9;border-radius:5px">${notes}</div>`:""}
+    <div style="font-size:7.5px;color:#64748b;border-top:1px solid #e2e8f0;padding-top:8px">Paiement à réception de facture. Règlement par virement bancaire ou espèces. TVA non applicable, art. 293 B du CGI.</div>`;
+}
+
+async function downloadFacturePDF() {
+  const el = document.getElementById("facturePreview");
+  const num = document.getElementById("f-num").value;
+  const opt = { margin:[12,12,12,12], filename:`${num}.pdf`, image:{type:"jpeg",quality:.97}, html2canvas:{scale:2,useCORS:true,backgroundColor:"#ffffff"}, jsPDF:{unit:"mm",format:"a4",orientation:"portrait"} };
+  await html2pdf().set(opt).from(el).save();
+}
+
+async function saveFacture() {
+  const btn = document.getElementById("btnSaveFacture");
+  btn.disabled = true; btn.textContent = "Enregistrement…";
+  const num      = document.getElementById("f-num").value;
+  const clientNom     = document.getElementById("f-nom").value;
+  const clientEmail   = document.getElementById("f-email").value;
+  const clientTel     = document.getElementById("f-tel").value;
+  const clientAdresse = document.getElementById("f-adresse").value;
+  const notes    = document.getElementById("f-notes").value;
+  const echeance = document.getElementById("f-echeance").value;
+  const total    = factLignes.reduce((s,l) => s + l.heures*l.prix, 0);
+  if (!clientNom) { toast("Nom du client requis", "error"); btn.disabled=false; btn.textContent="💾 Enregistrer"; return; }
+  try {
+    const el  = document.getElementById("facturePreview");
+    const opt = { margin:[12,12,12,12], filename:`${num}.pdf`, image:{type:"jpeg",quality:.97}, html2canvas:{scale:2,useCORS:true,backgroundColor:"#ffffff"}, jsPDF:{unit:"mm",format:"a4",orientation:"portrait"} };
+    const blob = await html2pdf().set(opt).from(el).outputPdf("blob");
+    const path = `factures/${num}.pdf`;
+    const { error: upErr } = await sb.storage.from("documents").upload(path, blob, { contentType:"application/pdf", upsert:true });
+    if (upErr) throw upErr;
+    const { data: urlData } = sb.storage.from("documents").getPublicUrl(path);
+    await sb.from("factures").insert({ numero:num, client_nom:clientNom, client_email:clientEmail, client_tel:clientTel, client_adresse:clientAdresse, lignes:factLignes, total:parseFloat(total.toFixed(2)), notes, date_echeance:echeance, pdf_url:urlData.publicUrl, statut:"envoyée" });
+    await upsertClient(clientNom, clientEmail, clientTel, clientAdresse);
+    toast(`✅ Facture ${num} enregistrée`);
+    loadFactureHistory();
+    resetFacture();
+  } catch(err) {
+    toast("❌ Erreur : " + err.message, "error");
+  }
+  btn.disabled = false; btn.textContent = "💾 Enregistrer";
+}
+
+async function loadFactureHistory() {
+  const list = document.getElementById("factHistList");
+  if (!list) return;
+  let items = [];
+  try {
+    const { data } = await sb.from("factures").select("*").order("id", { ascending: false });
+    items = data || [];
+  } catch(e) {}
+  const paid    = items.filter(f => f.statut === "payée").length;
+  const pending = items.filter(f => f.statut !== "payée").length;
+  document.getElementById("statFactures").textContent = items.length;
+  document.getElementById("statFactPaid").textContent = paid;
+  document.getElementById("statFactPending").textContent = pending;
+  if (!items.length) { list.innerHTML = `<div class="files-empty"><div class="empty-icon">📭</div><p>Aucune facture</p></div>`; return; }
+  const sc = { "envoyée":"sent", "payée":"paid", "en retard":"late" };
+  const sl = { "envoyée":"Envoyée", "payée":"Payée ✓", "en retard":"En retard ⚠️" };
+  list.innerHTML = "";
+  items.forEach(f => {
+    const div = document.createElement("div");
+    div.className = "devis-hist-item";
+    div.innerHTML = `
+      <div class="dhi-num" style="color:#a78bfa">${f.numero}</div>
+      <div class="dhi-client">${f.client_nom||"—"}<br><span style="font-size:.72rem;color:var(--muted)">${f.client_email||""}</span></div>
+      <div class="dhi-total">${f.total!=null?parseFloat(f.total).toFixed(2)+" €":"—"}</div>
+      <div class="dhi-date">${fmtDate(f.created_at)}</div>
+      <div class="status-badge ${sc[f.statut]||"draft"}">${sl[f.statut]||f.statut}</div>
+      <div class="dhi-actions">
+        ${f.statut !== "payée"    ? `<button class="act-btn cp" style="padding:5px 9px;font-size:.73rem;background:rgba(34,197,94,.1);color:#4ade80" onclick="setFactureStatut(${f.id},'payée')">✓ Payée</button>` : ""}
+        ${f.statut !== "en retard"? `<button class="act-btn" style="padding:5px 9px;font-size:.73rem;background:rgba(239,68,68,.1);color:#f87171" onclick="setFactureStatut(${f.id},'en retard')">⚠️</button>` : ""}
+        ${f.pdf_url ? `<a href="${f.pdf_url}" target="_blank" class="act-btn ghost" style="padding:5px 9px;font-size:.73rem;background:var(--surf2);color:var(--text)">⬇️</a>` : ""}
+        <button class="act-btn del" style="padding:5px 9px;font-size:.73rem" onclick="deleteFacture(${f.id},'${f.numero}','${f.pdf_url||""}')">🗑️</button>
+      </div>`;
+    list.appendChild(div);
+  });
+}
+
+async function setFactureStatut(id, statut) {
+  try { await sb.from("factures").update({ statut }).eq("id", id); } catch(e) { toast("❌ Erreur", "error"); return; }
+  toast(statut === "payée" ? "✅ Facture marquée payée" : "⚠️ Facture marquée en retard");
+  loadFactureHistory();
+}
+
+async function deleteFacture(id, num, pdfUrl) {
+  const ok = await showConfirm(`Supprimer la facture ${num} ?`);
+  if (!ok) return;
+  if (pdfUrl) {
+    try { await sb.storage.from("documents").remove([`factures/${num}.pdf`]); } catch(e) {}
+  }
+  try { await sb.from("factures").delete().eq("id", id); } catch(e) {}
+  toast("🗑️ Facture supprimée");
+  loadFactureHistory();
 }
 </script>
 </body>

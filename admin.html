@@ -565,7 +565,7 @@
           <div class="devis-actions">
             <button class="btn-action ghost" onclick="resetFacture()">🔄 Nouvelle</button>
             <button class="btn-action green" onclick="downloadFacturePDF()">⬇️ Télécharger PDF</button>
-            <button class="btn-action blue" id="btnSaveFacture" onclick="saveFacture()">💾 Enregistrer</button>
+            <button class="btn-action blue" id="btnSaveFacture" onclick="saveFacture()">📧 Enregistrer & Envoyer</button>
           </div>
         </div>
         <div class="stats-row">
@@ -1240,7 +1240,10 @@ async function loadDevisHistory() {
   document.getElementById("statDevis").textContent = items.length;
   document.getElementById("statCA").textContent = ca > 0 ? ca.toFixed(0) + " €" : "—";
 
-  if (!items.length) {
+  const actifs  = items.filter(f => f.statut !== "refusé");
+  const refuses = items.filter(f => f.statut === "refusé");
+
+  if (!actifs.length && !refuses.length) {
     list.innerHTML = `<div class="files-empty"><div class="empty-icon">📭</div><p>Aucun devis créé</p></div>`;
     return;
   }
@@ -1248,8 +1251,7 @@ async function loadDevisHistory() {
   const statutClass = { "envoyé":"sent", "accepté":"accepted", "refusé":"refused" };
   const statutLabel = { "envoyé":"Envoyé", "accepté":"Accepté ✓", "refusé":"Refusé ✗" };
 
-  list.innerHTML = "";
-  items.forEach(f => {
+  function buildCard(f) {
     const sc = statutClass[f.statut] || "draft";
     const sl = statutLabel[f.statut] || f.statut;
     const isLegacy = !!f._legacy;
@@ -1273,8 +1275,30 @@ async function loadDevisHistory() {
         ${f.pdf_url ? `<a href="${f.pdf_url}" target="_blank" class="act-btn ghost" style="padding:5px 9px;font-size:.73rem;background:var(--surf2);color:var(--text)">⬇️</a>` : ""}
         <button class="act-btn del" style="padding:5px 9px;font-size:.73rem" onclick='deleteDevis(${JSON.stringify({id:f.id,numero:f.numero,pdf_url:f.pdf_url,_legacy:f._legacy,_storage:f._storage}).replace(/'/g,"&#39;")})'>🗑️</button>
       </div>`;
-    list.appendChild(div);
-  });
+    return div;
+  }
+
+  list.innerHTML = "";
+
+  if (!actifs.length) {
+    list.innerHTML = `<div class="files-empty"><div class="empty-icon">📭</div><p>Aucun devis actif</p></div>`;
+  } else {
+    actifs.forEach(f => list.appendChild(buildCard(f)));
+  }
+
+  if (refuses.length) {
+    const archiveWrap = document.createElement("div");
+    archiveWrap.style.marginTop = "24px";
+    archiveWrap.innerHTML = `
+      <button onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'flex':'none';this.textContent=this.textContent.includes('▶')?'▼ Archive refusés (${refuses.length})':'▶ Archive refusés (${refuses.length})';"
+        style="display:flex;align-items:center;gap:8px;background:none;border:1px solid var(--border);color:var(--muted);padding:9px 16px;border-radius:8px;cursor:pointer;font-size:.84rem;margin-bottom:10px">
+        ▶ Archive refusés (${refuses.length})
+      </button>
+      <div style="display:none;flex-direction:column;gap:10px"></div>`;
+    const archiveList = archiveWrap.querySelector("div");
+    refuses.forEach(f => archiveList.appendChild(buildCard(f)));
+    list.appendChild(archiveWrap);
+  }
 }
 
 async function deleteDevis(f) {
@@ -1621,13 +1645,31 @@ async function saveFacture() {
     const { data: urlData } = sb.storage.from("documents").getPublicUrl(path);
     await sb.from("factures").insert({ numero:num, client_nom:clientNom, client_email:clientEmail, client_tel:clientTel, client_adresse:clientAdresse, lignes:factLignes, total:parseFloat(total.toFixed(2)), notes, date_echeance:echeance, pdf_url:urlData.publicUrl, statut:"envoyée" });
     await upsertClient(clientNom, clientEmail, clientTel, clientAdresse);
-    toast(`✅ Facture ${num} enregistrée`);
+
+    // Envoyer la facture par email si un email est renseigné
+    if (clientEmail) {
+      try {
+        await emailjs.send("service_hwm2hla", "template_bkhdovi", {
+          to_name:   clientNom,
+          to_email:  clientEmail,
+          devis_num: num,
+          devis_url: urlData.publicUrl,
+          total:     total.toFixed(2) + " €",
+          date_valid: fmtDateFr(echeance),
+        });
+        toast(`✅ Facture ${num} enregistrée et envoyée à ${clientEmail}`);
+      } catch(emailErr) {
+        toast(`📄 Facture ${num} enregistrée — échec envoi email`, "info");
+      }
+    } else {
+      toast(`✅ Facture ${num} enregistrée`);
+    }
     loadFactureHistory();
     resetFacture();
   } catch(err) {
     toast("❌ Erreur : " + err.message, "error");
   }
-  btn.disabled = false; btn.textContent = "💾 Enregistrer";
+  btn.disabled = false; btn.textContent = "📧 Enregistrer & Envoyer";
 }
 
 async function loadFactureHistory() {

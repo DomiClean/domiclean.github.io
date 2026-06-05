@@ -291,6 +291,28 @@
     .status-badge.pending{background:rgba(251,191,36,.12);color:#fbbf24}
     .status-badge.late{background:rgba(239,68,68,.12);color:#f87171}
 
+    /* ── HELP MODAL ── */
+    #helpModal{display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);align-items:center;justify-content:center}
+    #helpModal.show{display:flex}
+    .help-card{background:var(--surf);border:1px solid var(--border);border-radius:20px;width:94%;max-width:720px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden}
+    .help-header{display:flex;align-items:center;justify-content:space-between;padding:20px 26px;border-bottom:1px solid var(--border);flex-shrink:0}
+    .help-header h2{font-size:1.1rem;margin:0;display:flex;align-items:center;gap:10px}
+    .help-tabs{display:flex;gap:4px;padding:14px 26px 0;flex-shrink:0;flex-wrap:wrap}
+    .help-tab{padding:7px 14px;border-radius:8px 8px 0 0;font-size:.8rem;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--muted);transition:.15s;border-bottom:2px solid transparent}
+    .help-tab.active{background:rgba(10,111,212,.1);color:#60a5fa;border-bottom-color:var(--p)}
+    .help-body{overflow-y:auto;padding:22px 26px 28px;flex:1}
+    .help-section{display:none}
+    .help-section.active{display:block}
+    .help-block{background:var(--dark);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+    .help-block h3{font-size:.88rem;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px;color:var(--text)}
+    .help-block ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:7px}
+    .help-block li{font-size:.83rem;color:var(--muted);padding-left:16px;position:relative;line-height:1.5}
+    .help-block li::before{content:"›";position:absolute;left:0;color:var(--p);font-weight:700}
+    .help-block li strong{color:var(--text)}
+    .help-tip{background:rgba(10,111,212,.08);border:1px solid rgba(10,111,212,.2);border-radius:8px;padding:10px 14px;font-size:.8rem;color:#93c5fd;margin-top:12px;line-height:1.5}
+    .btn-help{display:flex;align-items:center;gap:6px;padding:9px 14px;background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--muted);border-radius:8px;cursor:pointer;font-size:.84rem;transition:.15s}
+    .btn-help:hover{background:rgba(10,111,212,.1);color:#60a5fa;border-color:rgba(10,111,212,.3)}
+
     /* ── RESPONSIVE ── */
     @media(max-width:1100px){.devis-layout{grid-template-columns:1fr}}
     @media(max-width:768px){
@@ -332,6 +354,122 @@
       </div>
     </div>
     <iframe id="previewFrame" src=""></iframe>
+  </div>
+</div>
+
+<!-- HELP MODAL -->
+<div id="helpModal">
+  <div class="help-card">
+    <div class="help-header">
+      <h2>❓ Guide d'utilisation — Admin Domi Clean</h2>
+      <button class="btn-close" onclick="closeHelp()">✕</button>
+    </div>
+    <div class="help-tabs">
+      <button class="help-tab active" onclick="showHelp('docs',this)">📁 Documents</button>
+      <button class="help-tab" onclick="showHelp('devis',this)">📝 Devis</button>
+      <button class="help-tab" onclick="showHelp('factures',this)">🧾 Factures</button>
+      <button class="help-tab" onclick="showHelp('clients',this)">👥 Clients</button>
+      <button class="help-tab" onclick="showHelp('messages',this)">💬 Messages</button>
+    </div>
+    <div class="help-body">
+
+      <!-- DOCUMENTS -->
+      <div class="help-section active" id="help-docs">
+        <div class="help-block">
+          <h3>📁 Gestion des documents PDF</h3>
+          <ul>
+            <li><strong>Uploader un fichier</strong> — glissez un PDF dans la zone d'upload ou cliquez pour parcourir. Taille max : 10 MB.</li>
+            <li><strong>⬇️ Ouvrir</strong> — ouvre le PDF dans un nouvel onglet.</li>
+            <li><strong>🔗 Copier lien</strong> — copie l'URL publique du fichier dans le presse-papier, à partager avec un client.</li>
+            <li><strong>👁️ Aperçu</strong> — affiche le PDF directement dans l'admin sans quitter la page.</li>
+            <li><strong>🗑️ Supprimer</strong> — supprime le fichier du stockage et de la base. Action irréversible.</li>
+            <li><strong>Recherche</strong> — filtrez vos fichiers par nom en temps réel.</li>
+          </ul>
+        </div>
+        <div class="help-tip">💡 Les fichiers sont stockés sur Supabase Storage (bucket "documents"). Les liens sont publics et permanents.</div>
+      </div>
+
+      <!-- DEVIS -->
+      <div class="help-section" id="help-devis">
+        <div class="help-block">
+          <h3>📝 Créer un devis</h3>
+          <ul>
+            <li><strong>N° Devis</strong> — généré automatiquement (DC-2025-001). Ne pas modifier.</li>
+            <li><strong>Sélecteur de prestations</strong> — choisissez une prestation dans la liste pour l'ajouter avec le bon tarif et la bonne unité (h, m², forfait).</li>
+            <li><strong>Qté & Unité</strong> — ajustez la quantité et l'unité (h = heure, m² = mètre carré, forfait, j = journée).</li>
+            <li><strong>⬇️ Télécharger PDF</strong> — génère et télécharge le PDF sans l'envoyer.</li>
+            <li><strong>📧 Envoyer au client</strong> — génère le PDF, l'enregistre et envoie automatiquement un email au client.</li>
+            <li><strong>🔄 Nouveau</strong> — réinitialise le formulaire avec un nouveau numéro.</li>
+          </ul>
+        </div>
+        <div class="help-block">
+          <h3>🕓 Historique des devis</h3>
+          <ul>
+            <li><strong>✓ Accepté</strong> — marque le devis comme accepté par le client. Le bouton 🧾 Facturer apparaît.</li>
+            <li><strong>✗ Refusé</strong> — archive le devis dans la section "Archive refusés".</li>
+            <li><strong>🧾 Facturer</strong> — pré-remplit automatiquement le formulaire Facture avec les données du devis.</li>
+            <li><strong>📋 Dupliquer</strong> — ouvre un nouveau devis avec les mêmes infos client et prestations.</li>
+            <li><strong>📧 Renvoyer</strong> — renvoie le PDF par email au client.</li>
+            <li><strong>▶ Archive refusés</strong> — section dépliable en bas, contient les devis refusés.</li>
+          </ul>
+        </div>
+        <div class="help-tip">💡 Ne supprimez pas les devis — préférez les marquer "Refusé" pour conserver une numérotation sans trous, obligatoire pour la comptabilité.</div>
+      </div>
+
+      <!-- FACTURES -->
+      <div class="help-section" id="help-factures">
+        <div class="help-block">
+          <h3>🧾 Créer une facture</h3>
+          <ul>
+            <li><strong>Depuis un devis</strong> — dans l'historique, cliquez sur 🧾 Facturer sur un devis accepté. Le formulaire se pré-remplit.</li>
+            <li><strong>Manuellement</strong> — remplissez le formulaire comme un devis. Numérotation FAC-2025-001.</li>
+            <li><strong>Échéance</strong> — date limite de paiement (30 jours par défaut).</li>
+            <li><strong>📧 Enregistrer & Envoyer</strong> — sauvegarde en base, génère le PDF et envoie l'email au client.</li>
+          </ul>
+        </div>
+        <div class="help-block">
+          <h3>📋 Suivi des factures</h3>
+          <ul>
+            <li><strong>✓ Payée</strong> — marque la facture comme réglée.</li>
+            <li><strong>⚠️ Retard</strong> — signale un retard de paiement.</li>
+            <li><strong>⬇️ PDF</strong> — télécharge ou ouvre la facture.</li>
+          </ul>
+        </div>
+        <div class="help-tip">💡 En France, les factures doivent être conservées 10 ans. Ne les supprimez pas.</div>
+      </div>
+
+      <!-- CLIENTS -->
+      <div class="help-section" id="help-clients">
+        <div class="help-block">
+          <h3>👥 Base de données clients</h3>
+          <ul>
+            <li><strong>Création automatique</strong> — un client est ajouté automatiquement à chaque devis envoyé ou facture créée.</li>
+            <li><strong>Mise à jour automatique</strong> — si le même email est utilisé, les infos sont mises à jour sans doublon.</li>
+            <li><strong>Recherche</strong> — filtrez par nom, email ou téléphone.</li>
+            <li><strong>🗑️ Supprimer</strong> — supprime uniquement la fiche client, pas ses devis ni factures.</li>
+          </ul>
+        </div>
+        <div class="help-tip">💡 Les clients sans email peuvent générer des doublons. Pensez à toujours renseigner l'email dans les devis/factures.</div>
+      </div>
+
+      <!-- MESSAGES -->
+      <div class="help-section" id="help-messages">
+        <div class="help-block">
+          <h3>💬 Messages de contact</h3>
+          <ul>
+            <li><strong>Réception automatique</strong> — chaque soumission du formulaire de contact du site est sauvegardée ici.</li>
+            <li><strong>Badge rouge</strong> — indique le nombre de messages non lus sur l'icône dans le menu.</li>
+            <li><strong>Bordure bleue</strong> — un message avec une bordure bleue à gauche est non lu.</li>
+            <li><strong>👁️ Lire</strong> — affiche le message complet.</li>
+            <li><strong>✓ Marquer lu</strong> — retire l'indicateur non lu.</li>
+            <li><strong>📧 Répondre</strong> — ouvre votre client email avec l'adresse du contact pré-remplie.</li>
+            <li><strong>✓ Tout marquer lu</strong> — passe tous les messages en "lu" en un clic.</li>
+          </ul>
+        </div>
+        <div class="help-tip">💡 Les messages sont aussi envoyés par email à domicleanidf@gmail.com via EmailJS. Supabase sert de sauvegarde et d'historique.</div>
+      </div>
+
+    </div>
   </div>
 </div>
 
@@ -408,7 +546,8 @@
     <main class="main">
 
       <!-- Top bar -->
-      <div style="display:flex;justify-content:flex-end;margin-bottom:24px">
+      <div style="display:flex;justify-content:flex-end;gap:10px;margin-bottom:24px">
+        <button class="btn-help" onclick="openHelp()">❓ Guide d'utilisation</button>
         <button class="btn-logout" id="logoutBtn">⎋ Déconnexion</button>
       </div>
 
@@ -795,6 +934,19 @@ const sb = window.supabase.createClient(
   "sb_publishable_JzkhEKjWGzWGwN_310ukew_m5EW3HrW"
 );
 
+/* ══ HELP MODAL ══ */
+function openHelp()  { document.getElementById("helpModal").classList.add("show"); }
+function closeHelp() { document.getElementById("helpModal").classList.remove("show"); }
+function showHelp(sec, btn) {
+  document.querySelectorAll(".help-section").forEach(s => s.classList.remove("active"));
+  document.querySelectorAll(".help-tab").forEach(b => b.classList.remove("active"));
+  document.getElementById("help-" + sec).classList.add("active");
+  btn.classList.add("active");
+}
+document.getElementById("helpModal").addEventListener("click", function(e) {
+  if (e.target === this) closeHelp();
+});
+
 /* ══ NAVIGATION ══ */
 document.querySelectorAll(".nav-item[data-sec]").forEach(btn => {
   btn.addEventListener("click", () => {
@@ -965,7 +1117,7 @@ document.getElementById("searchInput").addEventListener("input", function() {
 });
 
 /* ══ DEVIS ══ */
-let lignes = [{ desc: "Ménage domicile", heures: 2, prix: 20, unit: "h" }];
+let lignes = [];
 
 async function getNextNum() {
   const year = new Date().getFullYear();
@@ -1009,7 +1161,7 @@ async function initDevis() {
 }
 
 function resetDevis() {
-  lignes = [{ desc: "", heures: 1, prix: 20 }];
+  lignes = [];
   ["d-nom","d-email","d-tel","d-adresse","d-notes"].forEach(id => document.getElementById(id).value = "");
   initDevis();
 }
@@ -1400,7 +1552,7 @@ async function setStatut(id, statut) {
 
 async function duplicateDevis(f) {
   try { lignes = typeof f.lignes === "string" ? JSON.parse(f.lignes) : f.lignes; } catch(e) { lignes = []; }
-  if (!lignes || !lignes.length) lignes = [{ desc: "", heures: 1, prix: 20 }];
+  if (!lignes || !lignes.length) lignes = [];
   document.getElementById("d-nom").value     = f.client_nom     || "";
   document.getElementById("d-email").value   = f.client_email   || "";
   document.getElementById("d-tel").value     = f.client_tel     || "";
@@ -1435,7 +1587,7 @@ async function resendDevis(f) {
 async function createFactureFromDevis(f) {
   // Pré-remplir le formulaire facture avec les données du devis
   try { factLignes = typeof f.lignes === "string" ? JSON.parse(f.lignes) : f.lignes; } catch(e) { factLignes = []; }
-  if (!factLignes || !factLignes.length) factLignes = [{ desc: "Ménage domicile", heures: 2, prix: 20 }];
+  if (!factLignes || !factLignes.length) factLignes = [];
 
   document.getElementById("f-nom").value     = f.client_nom     || "";
   document.getElementById("f-email").value   = f.client_email   || "";
@@ -1605,7 +1757,7 @@ async function deleteClient(id, nom) {
 }
 
 /* ══ FACTURES ══ */
-let factLignes = [{ desc: "Ménage domicile", heures: 2, prix: 20, unit: "h" }];
+let factLignes = [];
 
 async function getNextFactureNum() {
   const year = new Date().getFullYear();
@@ -1629,7 +1781,7 @@ async function initFacture() {
 }
 
 function resetFacture() {
-  factLignes = [{ desc: "Ménage domicile", heures: 2, prix: 20 }];
+  factLignes = [];
   ["f-nom","f-email","f-tel","f-adresse","f-notes"].forEach(id => document.getElementById(id).value = "");
   initFacture();
 }

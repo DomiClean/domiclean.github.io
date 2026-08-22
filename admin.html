@@ -331,10 +331,10 @@
 <div id="toastContainer"></div>
 
 <!-- CONFIRM MODAL -->
-<div id="confirmModal">
+<div id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmModalTitle" aria-describedby="confirmFileName">
   <div class="confirm-card">
     <div class="confirm-icon">🗑️</div>
-    <h3>Supprimer ce fichier ?</h3>
+    <h3 id="confirmModalTitle">Supprimer ce fichier ?</h3>
     <p id="confirmFileName">Cette action est irréversible.</p>
     <div class="confirm-actions">
       <button class="btn-cancel" id="confirmCancel">Annuler</button>
@@ -344,7 +344,7 @@
 </div>
 
 <!-- PREVIEW MODAL -->
-<div id="previewModal">
+<div id="previewModal" role="dialog" aria-modal="true" aria-labelledby="previewTitle">
   <div class="preview-card">
     <div class="preview-header">
       <span id="previewTitle">Aperçu</span>
@@ -358,10 +358,10 @@
 </div>
 
 <!-- HELP MODAL -->
-<div id="helpModal">
+<div id="helpModal" role="dialog" aria-modal="true" aria-labelledby="helpModalTitle">
   <div class="help-card">
     <div class="help-header">
-      <h2>❓ Guide d'utilisation — Admin Domi Clean</h2>
+      <h2 id="helpModalTitle">❓ Guide d'utilisation — Admin Domi Clean</h2>
       <button class="btn-close" onclick="closeHelp()">✕</button>
     </div>
     <div class="help-tabs">
@@ -854,66 +854,55 @@
   </div>
 </div>
 
-<!-- FIREBASE AUTH -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, signInWithPopup,
-         GoogleAuthProvider, onAuthStateChanged, signOut }
-  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
+<!-- SUPABASE AUTH (RLS-aware: this session's JWT is what RLS policies check) -->
+<script>
 const ALLOWED = "domicleanidf@gmail.com";
-const app = initializeApp({
-  apiKey:"AIzaSyDYW9O1fV-yxqxENcGe0L1-0hZIQXlWV88",
-  authDomain:"domiclean01.firebaseapp.com",
-  projectId:"domiclean01",
-  storageBucket:"domiclean01.firebasestorage.app",
-  messagingSenderId:"1412105890",
-  appId:"1:1412105890:web:3716be5c2af93a6eb8b9fb"
-});
-const auth = getAuth(app);
+const sb = window.supabase.createClient(
+  "https://smgzffkjwokcfjdejsbd.supabase.co",
+  "sb_publishable_JzkhEKjWGzWGwN_310ukew_m5EW3HrW"
+);
 
 // Google
 const googleBtn = document.getElementById("googleBtn");
 googleBtn.addEventListener("click", async () => {
   googleBtn.disabled = true;
   googleBtn.childNodes[2].textContent = " Connexion…";
-  try {
-    const r = await signInWithPopup(auth, new GoogleAuthProvider());
-    if (r.user.email !== ALLOWED) {
-      await signOut(auth);
-      document.getElementById("loginMsg").textContent = "❌ Compte non autorisé";
-      googleBtn.disabled = false;
-      googleBtn.childNodes[2].textContent = " Continuer avec Google";
-    }
-  } catch(e) {
-    document.getElementById("loginMsg").textContent = "❌ Connexion Google annulée";
+  const { error } = await sb.auth.signInWithOAuth({
+    provider: "google",
+    options: { redirectTo: window.location.href.split("#")[0].split("?")[0] }
+  });
+  if (error) {
+    document.getElementById("loginMsg").textContent = "❌ Connexion Google impossible";
     googleBtn.disabled = false;
     googleBtn.childNodes[2].textContent = " Continuer avec Google";
   }
+  // on success the page redirects to Google then back here; onAuthStateChange below handles the rest
 });
 
 // Email/pass
 const loginBtn = document.getElementById("loginBtn");
 loginBtn.addEventListener("click", async () => {
   loginBtn.disabled = true; loginBtn.textContent = "Connexion…";
-  try {
-    await signInWithEmailAndPassword(auth,
-      document.getElementById("email").value,
-      document.getElementById("pass").value);
-  } catch(e) {
+  const { error } = await sb.auth.signInWithPassword({
+    email: document.getElementById("email").value,
+    password: document.getElementById("pass").value
+  });
+  if (error) {
     document.getElementById("loginMsg").textContent = "❌ Email ou mot de passe incorrect";
     loginBtn.disabled = false; loginBtn.textContent = "Se connecter";
   }
 });
 document.getElementById("pass").addEventListener("keydown", e => { if(e.key==="Enter") loginBtn.click(); });
 
-onAuthStateChanged(auth, async user => {
+sb.auth.onAuthStateChange(async (event, session) => {
+  const user = session && session.user;
   if (user) {
-    if (user.email !== ALLOWED) { await signOut(auth); return; }
+    if (user.email !== ALLOWED) { await sb.auth.signOut(); return; }
     document.getElementById("loginBox").style.display = "none";
     document.getElementById("adminPanel").style.display = "block";
-    document.getElementById("userEmailDisplay").textContent = user.displayName || user.email;
-    document.getElementById("userInitial").textContent = (user.displayName || user.email)[0].toUpperCase();
+    const label = user.user_metadata?.full_name || user.email;
+    document.getElementById("userEmailDisplay").textContent = label;
+    document.getElementById("userInitial").textContent = label[0].toUpperCase();
     loadFiles();
     initDevis();
     loadUnreadCount();
@@ -922,21 +911,57 @@ onAuthStateChanged(auth, async user => {
     document.getElementById("adminPanel").style.display = "none";
   }
 });
-document.getElementById("logoutBtn").addEventListener("click", () => signOut(auth));
+document.getElementById("logoutBtn").addEventListener("click", () => sb.auth.signOut());
 </script>
 
 <!-- APP LOGIC -->
 <script>
 emailjs.init("ceAxgfHqfXrWzhops");
 
-const sb = window.supabase.createClient(
-  "https://smgzffkjwokcfjdejsbd.supabase.co",
-  "sb_publishable_JzkhEKjWGzWGwN_310ukew_m5EW3HrW"
-);
+/* ══ HTML ESCAPING (prevents stored/DOM XSS from untrusted data) ══ */
+function escapeHtml(str) {
+  return String(str ?? "").replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[c]));
+}
+
+/* ══ MODAL ACCESSIBILITY (focus trap + Escape + focus restore) ══ */
+let lastFocusedEl = null;
+function trapModalFocus(e, modalEl) {
+  const focusables = modalEl.querySelectorAll('button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+  if (!focusables.length) return;
+  const first = focusables[0], last = focusables[focusables.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+}
+function closeModalA11y() {
+  if (lastFocusedEl && typeof lastFocusedEl.focus === "function") lastFocusedEl.focus();
+  lastFocusedEl = null;
+}
+document.addEventListener("keydown", e => {
+  const openModal = document.querySelector("#confirmModal.show, #previewModal.show, #helpModal.show");
+  if (!openModal) return;
+  if (e.key === "Escape") {
+    e.preventDefault();
+    if (openModal.id === "confirmModal") settle(false);
+    else if (openModal.id === "previewModal") closePv();
+    else if (openModal.id === "helpModal") closeHelp();
+  } else if (e.key === "Tab") {
+    trapModalFocus(e, openModal);
+  }
+});
 
 /* ══ HELP MODAL ══ */
-function openHelp()  { document.getElementById("helpModal").classList.add("show"); }
-function closeHelp() { document.getElementById("helpModal").classList.remove("show"); }
+function openHelp()  {
+  lastFocusedEl = document.activeElement;
+  document.getElementById("helpModal").classList.add("show");
+  const closeBtn = document.querySelector("#helpModal .btn-close");
+  if (closeBtn) closeBtn.focus();
+}
+function closeHelp() {
+  document.getElementById("helpModal").classList.remove("show");
+  closeModalA11y();
+}
 function showHelp(sec, btn) {
   document.querySelectorAll(".help-section").forEach(s => s.classList.remove("active"));
   document.querySelectorAll(".help-tab").forEach(b => b.classList.remove("active"));
@@ -977,7 +1002,9 @@ function showConfirm(fname) {
   return new Promise(r => {
     confirmResolve = r;
     document.getElementById("confirmFileName").textContent = `"${fname}" sera définitivement supprimé.`;
+    lastFocusedEl = document.activeElement;
     document.getElementById("confirmModal").classList.add("show");
+    document.getElementById("confirmCancel").focus();
   });
 }
 document.getElementById("confirmCancel").onclick = () => settle(false);
@@ -985,18 +1012,25 @@ document.getElementById("confirmOk").onclick = () => settle(true);
 document.getElementById("confirmModal").addEventListener("click", e => { if(e.target===e.currentTarget) settle(false); });
 function settle(v) {
   document.getElementById("confirmModal").classList.remove("show");
+  closeModalA11y();
   if (confirmResolve) { confirmResolve(v); confirmResolve = null; }
 }
 
 /* ══ PREVIEW MODAL ══ */
 document.getElementById("closePreview").onclick = closePv;
 document.getElementById("previewModal").addEventListener("click", e => { if(e.target===e.currentTarget) closePv(); });
-function closePv() { document.getElementById("previewModal").classList.remove("show"); document.getElementById("previewFrame").src = ""; }
+function closePv() {
+  document.getElementById("previewModal").classList.remove("show");
+  document.getElementById("previewFrame").src = "";
+  closeModalA11y();
+}
 function openPv(url, name) {
+  lastFocusedEl = document.activeElement;
   document.getElementById("previewTitle").textContent = name;
   document.getElementById("previewDlBtn").href = url;
   document.getElementById("previewFrame").src = url;
   document.getElementById("previewModal").classList.add("show");
+  document.getElementById("closePreview").focus();
 }
 
 /* ══ FILES (DOCUMENTS) ══ */
@@ -1085,15 +1119,15 @@ function renderFiles(files) {
       <div class="file-card-top">
         <div class="pdf-icon">📄</div>
         <div class="file-info">
-          <div class="file-name" title="${f.nom}">${f.nom}</div>
+          <div class="file-name" title="${escapeHtml(f.nom)}">${escapeHtml(f.nom)}</div>
           <div class="file-meta">Ajouté le ${fmtDate(f.created_at)}</div>
         </div>
       </div>
       <div class="file-actions">
-        <a href="${f.url}" target="_blank" class="act-btn dl" title="Ouvrir le fichier">⬇️ Ouvrir</a>
-        <button class="act-btn cp" data-url="${f.url}" title="Copier le lien">🔗 Copier lien</button>
-        <button class="act-btn pv" data-url="${f.url}" data-name="${f.nom}" title="Aperçu dans l'admin">👁️ Aperçu</button>
-        <button class="act-btn del" data-id="${f.id}" data-chemin="${f.chemin||''}" data-nom="${f.nom}" title="Supprimer le fichier">🗑️ Supprimer</button>
+        <a href="${escapeHtml(f.url)}" target="_blank" class="act-btn dl" title="Ouvrir le fichier">⬇️ Ouvrir</a>
+        <button class="act-btn cp" data-url="${escapeHtml(f.url)}" title="Copier le lien">🔗 Copier lien</button>
+        <button class="act-btn pv" data-url="${escapeHtml(f.url)}" data-name="${escapeHtml(f.nom)}" title="Aperçu dans l'admin">👁️ Aperçu</button>
+        <button class="act-btn del" data-id="${escapeHtml(f.id)}" data-chemin="${escapeHtml(f.chemin||'')}" data-nom="${escapeHtml(f.nom)}" title="Supprimer le fichier">🗑️ Supprimer</button>
       </div>`;
     card.querySelector(".cp").onclick = function() { navigator.clipboard.writeText(this.dataset.url).then(() => toast("🔗 Lien copié !", "info")); };
     card.querySelector(".pv").onclick = function() { openPv(this.dataset.url, this.dataset.name); };
@@ -1167,8 +1201,8 @@ function resetDevis() {
 }
 
 const UNITS = ["h","m²","forfait","j"];
-function unitSel(i, val, fn) {
-  return `<select style="background:var(--dark);border:1px solid var(--border);border-radius:5px;color:var(--text);font-size:.78rem;padding:4px 5px;cursor:pointer" onchange="${fn}[${i}].unit=this.value;updatePreview()">${UNITS.map(u=>`<option${u===val?" selected":""}>${u}</option>`).join("")}</select>`;
+function unitSel(i, val, fn, refreshFn) {
+  return `<select style="background:var(--dark);border:1px solid var(--border);border-radius:5px;color:var(--text);font-size:.78rem;padding:4px 5px;cursor:pointer" onchange="${fn}[${i}].unit=this.value;${refreshFn}()">${UNITS.map(u=>`<option${u===val?" selected":""}>${u}</option>`).join("")}</select>`;
 }
 
 function renderLignes() {
@@ -1179,9 +1213,9 @@ function renderLignes() {
     const t = ((parseFloat(l.heures)||0) * (parseFloat(l.prix)||0)).toFixed(2);
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td><input value="${l.desc}" placeholder="Description de la prestation" oninput="lignes[${i}].desc=this.value;updatePreview()"></td>
+      <td><input value="${escapeHtml(l.desc)}" placeholder="Description de la prestation" oninput="lignes[${i}].desc=this.value;updatePreview()"></td>
       <td><input class="num" type="number" value="${l.heures}" min="0" step="0.5" style="width:60px" oninput="lignes[${i}].heures=this.value;calcTotals()"></td>
-      <td>${unitSel(i, u, "lignes")}</td>
+      <td>${unitSel(i, u, "lignes", "updatePreview")}</td>
       <td><input class="num" type="number" value="${l.prix}" min="0" step="0.5" style="width:72px" oninput="lignes[${i}].prix=this.value;calcTotals()"></td>
       <td class="td-total">${t} €</td>
       <td style="text-align:center"><button class="btn-del-row" ${lignes.length===1?"disabled":""} onclick="removeLigne(${i})">✕</button></td>`;
@@ -1226,8 +1260,8 @@ function updatePreview() {
   const rowsHTML = lignes.map(l => {
     const t = ((parseFloat(l.heures)||0)*(parseFloat(l.prix)||0)).toFixed(2);
     return `<tr>
-      <td style="padding:8px 6px;border-bottom:1px solid #e2e8f0;font-size:11px">${l.desc||"—"}</td>
-      <td style="padding:8px 6px;border-bottom:1px solid #e2e8f0;text-align:center;font-size:11px">${parseFloat(l.heures)||0} ${l.unit||"h"}</td>
+      <td style="padding:8px 6px;border-bottom:1px solid #e2e8f0;font-size:11px">${escapeHtml(l.desc)||"—"}</td>
+      <td style="padding:8px 6px;border-bottom:1px solid #e2e8f0;text-align:center;font-size:11px">${parseFloat(l.heures)||0} ${escapeHtml(l.unit||"h")}</td>
       <td style="padding:8px 6px;border-bottom:1px solid #e2e8f0;text-align:right;font-size:11px">${parseFloat(l.prix||0).toFixed(2)} €</td>
       <td style="padding:8px 6px;border-bottom:1px solid #e2e8f0;text-align:right;font-weight:700;font-size:11px">${t} €</td>
     </tr>`;
@@ -1246,18 +1280,18 @@ function updatePreview() {
       <div style="text-align:right">
         <div style="font-size:20px;font-weight:900;color:#0f172a;letter-spacing:-1px">DEVIS</div>
         <div style="color:#64748b;font-size:10px;margin-top:5px;line-height:1.8">
-          <strong style="color:#0f172a">N° ${num}</strong><br>
-          Date : ${date}<br>
-          Valable jusqu'au ${valid}
+          <strong style="color:#0f172a">N° ${escapeHtml(num)}</strong><br>
+          Date : ${escapeHtml(date)}<br>
+          Valable jusqu'au ${escapeHtml(valid)}
         </div>
       </div>
     </div>
     <div style="height:1px;background:linear-gradient(90deg,#0a6fd4,#22c55e);margin-bottom:16px;border-radius:2px"></div>
     <div style="background:#f8fafc;border-radius:8px;padding:12px 14px;margin-bottom:18px">
       <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#94a3b8;margin-bottom:6px">Client</div>
-      <div style="font-weight:700;font-size:12px">${nom}</div>
-      ${adr?`<div style="color:#555;font-size:10px;margin-top:2px">${adr}</div>`:""}
-      ${email||tel?`<div style="color:#64748b;font-size:10px;margin-top:2px">${[email,tel].filter(Boolean).join(" · ")}</div>`:""}
+      <div style="font-weight:700;font-size:12px">${escapeHtml(nom)}</div>
+      ${adr?`<div style="color:#555;font-size:10px;margin-top:2px">${escapeHtml(adr)}</div>`:""}
+      ${email||tel?`<div style="color:#64748b;font-size:10px;margin-top:2px">${escapeHtml([email,tel].filter(Boolean).join(" · "))}</div>`:""}
     </div>
     <table style="width:100%;border-collapse:collapse;margin-bottom:14px">
       <thead>
@@ -1280,7 +1314,7 @@ function updatePreview() {
         </div>
       </div>
     </div>
-    ${notes?`<div style="background:#f8fafc;border-radius:6px;padding:10px 12px;font-size:10px;color:#475569;margin-bottom:12px"><strong>Notes :</strong> ${notes}</div>`:""}
+    ${notes?`<div style="background:#f8fafc;border-radius:6px;padding:10px 12px;font-size:10px;color:#475569;margin-bottom:12px"><strong>Notes :</strong> ${escapeHtml(notes)}</div>`:""}
     <div style="margin-top:14px;padding-top:12px;border-top:1px solid #e2e8f0">
       <div style="font-size:9px;color:#475569;background:#f8fafc;border-radius:6px;padding:10px 12px;margin-bottom:14px;line-height:1.7">
         <strong style="color:#334155">Conditions :</strong>
@@ -1480,10 +1514,10 @@ async function loadDevisHistory() {
     const div = document.createElement("div");
     div.className = "devis-hist-item";
     div.innerHTML = `
-      <div class="dhi-num">${f.numero}</div>
+      <div class="dhi-num">${escapeHtml(f.numero)}</div>
       <div class="dhi-client">
-        ${f.client_nom || "—"}
-        <br><span style="font-size:.72rem;color:var(--muted)">${f.client_email || (isLegacy ? "Ancien devis" : "")}</span>
+        ${escapeHtml(f.client_nom) || "—"}
+        <br><span style="font-size:.72rem;color:var(--muted)">${escapeHtml(f.client_email) || (isLegacy ? "Ancien devis" : "")}</span>
       </div>
       <div class="dhi-total">${f.total != null ? parseFloat(f.total).toFixed(2) + " €" : "—"}</div>
       <div class="dhi-date">${fmtDate(f.created_at)}</div>
@@ -1649,20 +1683,20 @@ async function loadMessages() {
     div.className = "msg-item" + (!m.lu ? " unread" : "");
     div.innerHTML = `
       ${!m.lu ? `<div class="unread-dot"></div>` : `<div style="width:8px;flex-shrink:0"></div>`}
-      <div class="msg-avatar">${(m.prenom || m.nom || "?")[0].toUpperCase()}</div>
+      <div class="msg-avatar">${escapeHtml(((m.prenom || m.nom || "?")[0] || "?").toUpperCase())}</div>
       <div class="msg-body">
         <div class="msg-header">
-          <span class="msg-name">${m.prenom || ""} ${m.nom || "—"}</span>
-          <span class="msg-email">${m.email || ""}</span>
+          <span class="msg-name">${escapeHtml(m.prenom || "")} ${escapeHtml(m.nom) || "—"}</span>
+          <span class="msg-email">${escapeHtml(m.email || "")}</span>
           <span class="msg-date">${fmtDate(m.created_at)}</span>
         </div>
-        ${m.tel ? `<div class="msg-tel">📞 ${m.tel}</div>` : ""}
-        <div class="msg-text" id="msg-preview-${m.id}">${(m.message||"").replace(/\n/g," ")}</div>
-        <div class="msg-full" id="msg-full-${m.id}">${m.message||""}</div>
+        ${m.tel ? `<div class="msg-tel">📞 ${escapeHtml(m.tel)}</div>` : ""}
+        <div class="msg-text" id="msg-preview-${m.id}">${escapeHtml((m.message||"").replace(/\n/g," "))}</div>
+        <div class="msg-full" id="msg-full-${m.id}">${escapeHtml(m.message||"")}</div>
         <div class="msg-actions">
           <button class="act-btn dl" style="padding:5px 10px;font-size:.73rem" onclick="toggleMsg(${m.id})">👁️ Lire</button>
           ${!m.lu ? `<button class="act-btn cp" style="padding:5px 10px;font-size:.73rem" onclick="markRead(${m.id}, this)">✓ Marquer lu</button>` : ""}
-          ${m.email ? `<a href="mailto:${m.email}" class="act-btn pv" style="padding:5px 10px;font-size:.73rem">📧 Répondre</a>` : ""}
+          ${m.email ? `<a href="mailto:${encodeURIComponent(m.email)}" class="act-btn pv" style="padding:5px 10px;font-size:.73rem">📧 Répondre</a>` : ""}
           <button class="act-btn del" style="padding:5px 10px;font-size:.73rem" onclick="deleteMsg(${m.id})">🗑️</button>
         </div>
       </div>`;
@@ -1727,13 +1761,13 @@ function renderClients(list) {
   list.forEach(c => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td style="font-weight:600">${c.nom || "—"}</td>
-      <td><a href="mailto:${c.email||""}" style="color:#60a5fa;text-decoration:none">${c.email || "—"}</a></td>
-      <td>${c.tel || "—"}</td>
-      <td style="color:var(--muted);font-size:.8rem">${c.adresse || "—"}</td>
+      <td style="font-weight:600">${escapeHtml(c.nom) || "—"}</td>
+      <td><a href="mailto:${encodeURIComponent(c.email||"")}" style="color:#60a5fa;text-decoration:none">${escapeHtml(c.email) || "—"}</a></td>
+      <td>${escapeHtml(c.tel) || "—"}</td>
+      <td style="color:var(--muted);font-size:.8rem">${escapeHtml(c.adresse) || "—"}</td>
       <td style="color:var(--muted);font-size:.78rem">${fmtDate(c.created_at)}</td>
       <td>
-        <button class="act-btn del" title="Supprimer ce client" style="padding:4px 9px;font-size:.72rem" onclick="deleteClient(${c.id},'${(c.nom||"").replace(/'/g,"\\'")}')">🗑️ Supprimer</button>
+        <button class="act-btn del" title="Supprimer ce client" style="padding:4px 9px;font-size:.72rem" onclick="deleteClient(${c.id})">🗑️ Supprimer</button>
       </td>`;
     tbody.appendChild(tr);
   });
@@ -1748,7 +1782,9 @@ function filterClients() {
   ) : allClients);
 }
 
-async function deleteClient(id, nom) {
+async function deleteClient(id) {
+  const c = allClients.find(x => x.id === id);
+  const nom = c ? c.nom : "";
   const ok = await showConfirm(`Supprimer le client "${nom}" ?`);
   if (!ok) return;
   try { await sb.from("clients").delete().eq("id", id); } catch(e) {}
@@ -1794,9 +1830,9 @@ function renderFactLignes() {
     const total = ((parseFloat(l.heures)||0) * (parseFloat(l.prix)||0)).toFixed(2);
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td><input class="prest-desc" value="${l.desc}" oninput="factLignes[${i}].desc=this.value;updateFacturePreview()"></td>
+      <td><input class="prest-desc" value="${escapeHtml(l.desc)}" oninput="factLignes[${i}].desc=this.value;updateFacturePreview()"></td>
       <td><input type="number" class="num" value="${l.heures}" min="0" step="0.5" style="width:58px" oninput="factLignes[${i}].heures=parseFloat(this.value)||0;renderFactLignes()"></td>
-      <td>${unitSel(i, u, "factLignes")}</td>
+      <td>${unitSel(i, u, "factLignes", "updateFacturePreview")}</td>
       <td><input type="number" class="num" value="${l.prix}" min="0" step="0.5" style="width:70px" oninput="factLignes[${i}].prix=parseFloat(this.value)||0;renderFactLignes()"></td>
       <td class="td-total">${total} €</td>
       <td><button class="btn-del-row" onclick="factLignes.splice(${i},1);renderFactLignes()" ${factLignes.length===1?"disabled":""}>✕</button></td>`;
@@ -1829,14 +1865,14 @@ function updateFacturePreview() {
   const adresse  = document.getElementById("f-adresse").value;
   const notes    = document.getElementById("f-notes").value;
   const subtotal = factLignes.reduce((s,l) => s + l.heures*l.prix, 0);
-  const rows     = factLignes.map(l => `<tr><td style="padding:6px 8px">${l.desc}</td><td style="text-align:right;padding:6px 8px">${l.heures} ${l.unit||"h"}</td><td style="text-align:right;padding:6px 8px">${parseFloat(l.prix).toFixed(2)} €</td><td style="text-align:right;font-weight:600;padding:6px 8px">${((parseFloat(l.heures)||0)*(parseFloat(l.prix)||0)).toFixed(2)} €</td></tr>`).join("");
+  const rows     = factLignes.map(l => `<tr><td style="padding:6px 8px">${escapeHtml(l.desc)}</td><td style="text-align:right;padding:6px 8px">${l.heures} ${escapeHtml(l.unit||"h")}</td><td style="text-align:right;padding:6px 8px">${parseFloat(l.prix).toFixed(2)} €</td><td style="text-align:right;font-weight:600;padding:6px 8px">${((parseFloat(l.heures)||0)*(parseFloat(l.prix)||0)).toFixed(2)} €</td></tr>`).join("");
   document.getElementById("facturePreview").innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px">
-      <div><div style="font-size:20px;font-weight:900;color:#0f172a;letter-spacing:-1px">FACTURE</div><div style="font-size:13px;font-weight:700;color:#0a6fd4">${num}</div></div>
+      <div><div style="font-size:20px;font-weight:900;color:#0f172a;letter-spacing:-1px">FACTURE</div><div style="font-size:13px;font-weight:700;color:#0a6fd4">${escapeHtml(num)}</div></div>
       <div style="text-align:right;font-size:9px;color:#475569"><div style="font-weight:700;font-size:11px;color:#0f172a">Domi Clean</div><div>Île-de-France</div><div>domicleanidf@gmail.com</div></div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;font-size:9px">
-      <div style="background:#f8fafc;border-radius:6px;padding:10px"><div style="font-weight:700;margin-bottom:4px;color:#0f172a">FACTURÉ À</div><div>${nom}</div>${adresse?`<div>${adresse}</div>`:""}${email?`<div>${email}</div>`:""}${tel?`<div>${tel}</div>`:""}</div>
+      <div style="background:#f8fafc;border-radius:6px;padding:10px"><div style="font-weight:700;margin-bottom:4px;color:#0f172a">FACTURÉ À</div><div>${escapeHtml(nom)}</div>${adresse?`<div>${escapeHtml(adresse)}</div>`:""}${email?`<div>${escapeHtml(email)}</div>`:""}${tel?`<div>${escapeHtml(tel)}</div>`:""}</div>
       <div style="background:#f8fafc;border-radius:6px;padding:10px;text-align:right"><div style="font-weight:700;margin-bottom:4px;color:#0f172a">DATES</div><div>Émission : ${fmtDateFr(date)}</div><div>Échéance : ${fmtDateFr(echeance)}</div></div>
     </div>
     <table style="width:100%;border-collapse:collapse;font-size:9px;margin-bottom:12px">
@@ -1846,7 +1882,7 @@ function updateFacturePreview() {
     <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
       <div style="background:#0f172a;color:#fff;padding:10px 18px;border-radius:7px;font-size:11px"><span style="color:#94a3b8">TOTAL TTC : </span><strong style="font-size:15px">${subtotal.toFixed(2)} €</strong></div>
     </div>
-    ${notes?`<div style="font-size:8px;color:#475569;margin-bottom:10px;padding:8px;background:#f1f5f9;border-radius:5px">${notes}</div>`:""}
+    ${notes?`<div style="font-size:8px;color:#475569;margin-bottom:10px;padding:8px;background:#f1f5f9;border-radius:5px">${escapeHtml(notes)}</div>`:""}
     <div style="font-size:7.5px;color:#64748b;border-top:1px solid #e2e8f0;padding-top:8px">Paiement à réception de facture. Règlement par virement bancaire ou espèces. TVA non applicable, art. 293 B du CGI.</div>`;
 }
 
@@ -1929,8 +1965,8 @@ async function loadFactureHistory() {
     const div = document.createElement("div");
     div.className = "devis-hist-item";
     div.innerHTML = `
-      <div class="dhi-num" style="color:#a78bfa">${f.numero}</div>
-      <div class="dhi-client">${f.client_nom||"—"}<br><span style="font-size:.72rem;color:var(--muted)">${f.client_email||""}</span></div>
+      <div class="dhi-num" style="color:#a78bfa">${escapeHtml(f.numero)}</div>
+      <div class="dhi-client">${escapeHtml(f.client_nom)||"—"}<br><span style="font-size:.72rem;color:var(--muted)">${escapeHtml(f.client_email)||""}</span></div>
       <div class="dhi-total">${f.total!=null?parseFloat(f.total).toFixed(2)+" €":"—"}</div>
       <div class="dhi-date">${fmtDate(f.created_at)}</div>
       <div class="status-badge ${sc[f.statut]||"draft"}">${sl[f.statut]||f.statut}</div>

@@ -328,7 +328,7 @@
     .a4{width:180mm;background:#fff;color:#1f2937;font-family:'Segoe UI',Arial,Helvetica,sans-serif;font-size:10.5pt;line-height:1.5;transform-origin:top left}
     .a4 *{box-sizing:border-box}
     .a4 .hd{display:flex;justify-content:space-between;align-items:flex-start;gap:14mm}
-    .a4 .brand{font-size:19pt;font-weight:800;color:#0a6fd4;letter-spacing:-.5px;line-height:1}
+    .a4 .brand{font-size:19pt;font-weight:800;color:#0a6fd4;letter-spacing:-.5px;line-height:1.1;text-transform:uppercase}
     .a4 .brand small{display:block;font-size:8pt;font-weight:600;color:#64748b;letter-spacing:.18em;text-transform:uppercase;margin-top:3pt}
     .a4 .em{font-size:8.5pt;color:#475569;line-height:1.65;margin-top:6pt}
     .a4 .doctype{font-size:23pt;font-weight:900;color:#0f172a;letter-spacing:-1px;line-height:1;text-align:right}
@@ -1970,7 +1970,7 @@ function docHTML(o) {
     <div class="hd">
       <div>
         ${E.logoDataUri ? `<img src="${e(E.logoDataUri)}" alt="" style="height:16mm;margin-bottom:3mm">` : ""}
-        <div class="brand">DOMI CLEAN<small>${e(E.baseline)}</small></div>
+        <div class="brand">${e(String(E.nom || "").trim() || "Domi Clean")}${E.baseline ? `<small>${e(E.baseline)}</small>` : ""}</div>
         <div class="em">${emetteur}</div>
       </div>
       <div>

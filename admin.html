@@ -201,11 +201,6 @@
     .btn-action:disabled{opacity:.5;cursor:default}
     /* preview */
     .preview-sticky{position:sticky;top:24px}
-    .preview-paper{
-      background:#fff;color:#1a202c;border-radius:10px;padding:28px;
-      font-family:'Segoe UI',Arial,sans-serif;font-size:11px;line-height:1.55;
-      box-shadow:0 8px 32px rgba(0,0,0,.4);
-    }
     /* devis history */
     .devis-hist-item{
       background:var(--surf);border:1px solid var(--border);border-radius:var(--radius);
@@ -313,22 +308,158 @@
     .btn-help{display:flex;align-items:center;gap:6px;padding:9px 14px;background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--muted);border-radius:8px;cursor:pointer;font-size:.84rem;transition:.15s}
     .btn-help:hover{background:rgba(10,111,212,.1);color:#60a5fa;border-color:rgba(10,111,212,.3)}
 
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+    /* ── LIGNES DE PRESTATION (enrichies) ── */
+    .prest-table td input.desc-main{font-weight:500}
+    .prest-table td input.desc-sub{margin-top:4px;font-size:.76rem;color:var(--muted);padding:5px 10px}
+    .prest-table select.mini{background:var(--dark);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.78rem;padding:7px 5px;cursor:pointer;outline:none;width:100%}
+    .prest-table select.mini:focus{border-color:var(--p)}
+    .prest-table td.ci-cell{text-align:center}
+    .prest-table input[type=checkbox]{width:16px;height:16px;accent-color:var(--a);cursor:pointer}
+    .prest-table tr.to-price td{background:rgba(251,191,36,.06)}
+    .prest-empty td{text-align:center;color:var(--muted);font-size:.83rem;padding:22px 8px}
+    .cat-hint{font-size:.72rem;color:var(--muted);margin-top:8px;line-height:1.5}
+    .totals-box .total-line.ci{color:#4ade80}
+    .totals-box .total-line.sub{font-size:.8rem;opacity:.85}
+
+    /* ── DOCUMENT A4 (aperçu + source PDF) ── */
+    .a4-page{background:#fff;padding:15mm;width:210mm;border-radius:6px}
+    .a4{width:180mm;background:#fff;color:#1f2937;font-family:'Segoe UI',Arial,Helvetica,sans-serif;font-size:10.5pt;line-height:1.5;transform-origin:top left}
+    .a4 *{box-sizing:border-box}
+    .a4 .hd{display:flex;justify-content:space-between;align-items:flex-start;gap:14mm}
+    .a4 .brand{font-size:19pt;font-weight:800;color:#0a6fd4;letter-spacing:-.5px;line-height:1}
+    .a4 .brand small{display:block;font-size:8pt;font-weight:600;color:#64748b;letter-spacing:.18em;text-transform:uppercase;margin-top:3pt}
+    .a4 .em{font-size:8.5pt;color:#475569;line-height:1.65;margin-top:6pt}
+    .a4 .doctype{font-size:23pt;font-weight:900;color:#0f172a;letter-spacing:-1px;line-height:1;text-align:right}
+    .a4 .docmeta{font-size:9pt;color:#475569;text-align:right;line-height:1.7;margin-top:6pt}
+    .a4 .docmeta b{color:#0f172a}
+    .a4 .rule{height:2.5pt;background:linear-gradient(90deg,#0a6fd4,#22c55e);border-radius:2pt;margin:7mm 0 6mm}
+    .a4 .parties{display:flex;gap:5mm;margin-bottom:6mm}
+    .a4 .party{flex:1;background:#f8fafc;border:1px solid #e8edf3;border-radius:3mm;padding:4mm 4.5mm}
+    .a4 .party h4{font-size:7.5pt;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#94a3b8;margin:0 0 2mm}
+    .a4 .party .nm{font-weight:700;font-size:11pt;color:#0f172a}
+    .a4 .party div{font-size:9pt;color:#475569}
+    .a4 table.it{width:100%;border-collapse:collapse;margin-bottom:5mm}
+    .a4 table.it th{background:#0f172a;color:#fff;font-size:7.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:2.6mm 3mm;text-align:left}
+    .a4 table.it th.c{text-align:center}
+    .a4 table.it th.r{text-align:right}
+    .a4 table.it td{padding:2.8mm 3mm;border-bottom:1px solid #e8edf3;font-size:9.5pt;vertical-align:top}
+    .a4 table.it td.c{text-align:center;white-space:nowrap}
+    .a4 table.it td.r{text-align:right;white-space:nowrap}
+    .a4 table.it td.b{font-weight:700;color:#0f172a}
+    .a4 table.it tr:nth-child(even) td{background:#fbfcfe}
+    .a4 .lib{font-weight:600;color:#0f172a;display:block}
+    .a4 .sub{display:block;font-size:8pt;color:#64748b;margin-top:1mm;line-height:1.4}
+    .a4 .tag{display:inline-block;margin-top:1.2mm;font-size:7pt;font-weight:700;padding:.6mm 2mm;border-radius:6pt;background:#dcfce7;color:#15803d}
+    .a4 .tag.maj{background:#fef3c7;color:#92400e}
+    .a4 .totwrap{display:flex;justify-content:flex-end;margin-bottom:5mm}
+    .a4 .tot{width:88mm}
+    .a4 .tl{display:flex;justify-content:space-between;gap:4mm;padding:1.6mm 0;font-size:9.5pt;color:#475569}
+    .a4 .tl.big{border-top:1.5pt solid #0f172a;margin-top:1.5mm;padding-top:2.5mm;font-size:13pt;font-weight:800;color:#0f172a}
+    .a4 .tva{font-size:8pt;color:#64748b;text-align:right;margin-top:1.5mm}
+    .a4 .cibox{margin-top:3.5mm;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:3mm;padding:3.5mm 4mm}
+    .a4 .cibox .tl{color:#166534;padding:1mm 0;font-size:9pt}
+    .a4 .cibox .tl.big{border-top:1px solid #86efac;color:#14532d;font-size:11.5pt;margin-top:1.5mm;padding-top:2mm}
+    .a4 .note{background:#f8fafc;border-left:2.5pt solid #0a6fd4;border-radius:0 2mm 2mm 0;padding:3mm 4mm;font-size:9pt;color:#334155;margin-bottom:5mm;white-space:pre-wrap}
+    .a4 .legal{border-top:1px solid #e8edf3;padding-top:3.5mm;font-size:7.8pt;color:#64748b;line-height:1.65}
+    .a4 .legal p{margin:0 0 1.6mm}
+    .a4 .legal b{color:#334155}
+    .a4 .sign{display:flex;justify-content:space-between;gap:10mm;margin-top:7mm;font-size:8.5pt;color:#64748b}
+    .a4 .sign .box{border:1px dashed #cbd5e1;border-radius:2mm;padding:3mm 4mm;min-width:70mm}
+    .a4 .sign .line{margin-top:14mm;border-bottom:1px solid #cbd5e1}
+    .a4 .foot{margin-top:6mm;border-top:1px solid #e8edf3;padding-top:2.5mm;text-align:center;font-size:7.5pt;color:#94a3b8}
+    .a4 tr,.a4 .party,.a4 .cibox,.a4 .sign{page-break-inside:avoid}
+    .doc-scroll{overflow:hidden;border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,.4);background:#fff}
+    #pdfStage{position:fixed;left:-12000px;top:0;width:180mm;background:#fff;z-index:-1;opacity:1;pointer-events:none}
+
+    /* ── BARRE D'OUTILS HISTORIQUE ── */
+    .hist-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+    .chip{padding:7px 14px;border-radius:20px;border:1px solid var(--border);background:var(--surf);color:var(--muted);font-size:.8rem;font-weight:600;cursor:pointer;transition:.15s;white-space:nowrap}
+    .chip:hover{border-color:rgba(10,111,212,.4);color:var(--text)}
+    .chip.on{background:rgba(10,111,212,.15);border-color:rgba(10,111,212,.45);color:#60a5fa}
+
+    /* ── BROUILLON / ERREUR ── */
+    .draft-bar{display:none;align-items:center;gap:12px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);color:#fbbf24;border-radius:10px;padding:10px 16px;font-size:.83rem;margin-bottom:16px;flex-wrap:wrap}
+    .draft-bar.show{display:flex}
+    .draft-bar button{background:rgba(251,191,36,.15);border:none;color:#fbbf24;padding:5px 12px;border-radius:6px;font-size:.78rem;font-weight:600;cursor:pointer}
+    .draft-bar button:hover{background:rgba(251,191,36,.28)}
+    .err-box{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.22);color:#fca5a5;border-radius:10px;padding:14px 18px;font-size:.84rem;line-height:1.55}
+    .err-box b{color:#f87171}
+
+    /* ── SECTION TARIFS ── */
+    .tarif-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:16px}
+    .tarif-cat{background:var(--surf);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+    .tarif-cat h3{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:13px 18px;background:rgba(34,197,94,.1);color:#4ade80;margin:0}
+    .tarif-row{padding:13px 18px;border-bottom:1px solid var(--border);display:flex;gap:14px;align-items:flex-start}
+    .tarif-cat .tarif-row:last-child{border-bottom:none}
+    .tarif-row .tr-l{flex:1;min-width:0}
+    .tarif-row .tr-t{font-size:.88rem;font-weight:600}
+    .tarif-row .tr-d{font-size:.76rem;color:var(--muted);margin-top:3px;line-height:1.45}
+    .tarif-row .tr-ci{font-size:.74rem;color:#4ade80;margin-top:4px;font-weight:600}
+    .tarif-row .tr-p{font-size:.98rem;font-weight:700;white-space:nowrap;text-align:right}
+    .tarif-row .tr-p small{display:block;font-size:.7rem;color:var(--muted);font-weight:500}
+    .tarif-notes{margin-top:18px;background:var(--surf);border:1px solid var(--border);border-radius:var(--radius);padding:18px 22px;font-size:.83rem;color:var(--muted);line-height:1.75}
+    .tarif-notes b{color:var(--text)}
+
+    /* ── PARAMÈTRES ── */
+    .param-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;align-items:start}
+    .param-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px}
+    .param-card h3{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:0 0 16px;display:flex;align-items:center;gap:8px}
+    .param-card .field label .req{color:#f87171;margin-left:3px}
+    .param-hint{font-size:.72rem;color:var(--muted);margin-top:5px;line-height:1.45}
+    .param-status{display:flex;align-items:center;gap:12px;flex-wrap:wrap;border-radius:10px;padding:13px 18px;font-size:.85rem;margin-bottom:20px;line-height:1.55}
+    .param-status.ko{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .param-status.ok{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .param-status b{color:inherit}
+    .param-sync{font-size:.75rem;color:var(--muted);margin-left:auto;white-space:nowrap}
+    .param-bar{position:sticky;bottom:0;background:linear-gradient(transparent,var(--dark) 40%);padding:20px 0 4px;margin-top:20px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .logo-drop{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+    .logo-prev{width:74px;height:74px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--border);overflow:hidden}
+    .logo-prev img{max-width:100%;max-height:100%;object-fit:contain}
+    .logo-prev span{font-size:1.6rem;opacity:.3}
+    .sql-block{margin-top:20px;background:var(--surf);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+    .sql-block > summary{padding:14px 20px;cursor:pointer;font-size:.85rem;font-weight:600;color:var(--muted);list-style:none}
+    .sql-block > summary::-webkit-details-marker{display:none}
+    .sql-block > summary:hover{color:var(--text)}
+    .sql-block pre{margin:0;padding:0 20px 18px;overflow-x:auto;font-family:ui-monospace,Consolas,monospace;font-size:.75rem;line-height:1.65;color:#93c5fd;white-space:pre}
+    .nav-badge.warn{background:#f59e0b;color:#1f1300}
+
+    /* ── NAV MOBILE ── */
+    .topbar{display:none;position:sticky;top:0;z-index:900;background:var(--surf);border-bottom:1px solid var(--border);padding:11px 14px;align-items:center;gap:12px}
+    .topbar .burger{background:none;border:1px solid var(--border);color:var(--text);width:38px;height:38px;border-radius:9px;font-size:1.1rem;cursor:pointer;flex-shrink:0}
+    .topbar .tb-title{font-size:.95rem;font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .scrim{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:950}
+    .scrim.show{display:block}
+
     /* ── RESPONSIVE ── */
     @media(max-width:1100px){.devis-layout{grid-template-columns:1fr}}
-    @media(max-width:768px){
+    @media(max-width:980px){
       .admin-layout{grid-template-columns:1fr}
-      .sidebar{display:none}
-      .main{padding:18px 14px}
+      .topbar{display:flex}
+      .sidebar{position:fixed;top:0;left:0;bottom:0;width:252px;z-index:960;transform:translateX(-100%);transition:transform .22s ease;box-shadow:0 0 40px rgba(0,0,0,.5)}
+      .sidebar.open{transform:none}
+      .main{padding:20px 16px}
+    }
+    @media(max-width:768px){
+      .main{padding:16px 12px}
       .stats-row{grid-template-columns:1fr 1fr}
       .files-grid{grid-template-columns:1fr}
       .login-card{padding:32px 24px}
       .form-row,.form-row-3{grid-template-columns:1fr}
+      .page-header{align-items:flex-start;flex-direction:column}
+      .devis-actions{width:100%}
+      .devis-actions .btn-action{flex:1;justify-content:center}
+      .devis-hist-item{flex-wrap:wrap;gap:8px 14px}
+      .dhi-client{flex-basis:100%;order:-1}
+      .tarif-grid{grid-template-columns:1fr}
     }
+    @media print{body{background:#fff}#adminPanel,.sidebar,.topbar{display:none!important}}
   </style>
 </head>
 <body>
 
-<div id="toastContainer"></div>
+<div id="toastContainer" role="status" aria-live="polite" aria-atomic="false"></div>
 
 <!-- CONFIRM MODAL -->
 <div id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmModalTitle" aria-describedby="confirmFileName">
@@ -368,6 +499,7 @@
       <button class="help-tab active" onclick="showHelp('docs',this)">📁 Documents</button>
       <button class="help-tab" onclick="showHelp('devis',this)">📝 Devis</button>
       <button class="help-tab" onclick="showHelp('factures',this)">🧾 Factures</button>
+      <button class="help-tab" onclick="showHelp('tarifs',this)">💶 Tarifs</button>
       <button class="help-tab" onclick="showHelp('clients',this)">👥 Clients</button>
       <button class="help-tab" onclick="showHelp('messages',this)">💬 Messages</button>
     </div>
@@ -394,12 +526,15 @@
         <div class="help-block">
           <h3>📝 Créer un devis</h3>
           <ul>
-            <li><strong>N° Devis</strong> — généré automatiquement (DC-2025-001). Ne pas modifier.</li>
-            <li><strong>Sélecteur de prestations</strong> — choisissez une prestation dans la liste pour l'ajouter avec le bon tarif et la bonne unité (h, m², forfait).</li>
-            <li><strong>Qté & Unité</strong> — ajustez la quantité et l'unité (h = heure, m² = mètre carré, forfait, j = journée).</li>
-            <li><strong>⬇️ Télécharger PDF</strong> — génère et télécharge le PDF sans l'envoyer.</li>
-            <li><strong>📧 Envoyer au client</strong> — génère le PDF, l'enregistre et envoie automatiquement un email au client.</li>
-            <li><strong>🔄 Nouveau</strong> — réinitialise le formulaire avec un nouveau numéro.</li>
+            <li><strong>N° Devis</strong> — généré automatiquement (DC-2026-001). Ne pas modifier.</li>
+            <li><strong>Sélecteur de prestations</strong> — reprend la grille tarifaire officielle : libellé, description, tarif, unité et éligibilité au crédit d'impôt sont remplis automatiquement.</li>
+            <li><strong>Colonne « Major. »</strong> — applique la majoration de la grille : +25 % le dimanche et les jours fériés, +100 % le 1er mai et le 25 décembre. Le prix unitaire saisi reste le tarif de base.</li>
+            <li><strong>Colonne « CI »</strong> — prestation de service à la personne ouvrant droit au crédit d'impôt de 50 %. Cochée d'office pour les prestations aux particuliers, à décocher pour un client professionnel.</li>
+            <li><strong>Prestations « sur devis »</strong> — jardinage et fin de chantier arrivent à 0 € et la ligne est surlignée : saisissez le prix négocié avant d'envoyer.</li>
+            <li><strong>Période / lieu</strong> — apparaît sur le document ; utile pour justifier le crédit d'impôt.</li>
+            <li><strong>⬇️ Télécharger PDF</strong> — génère et télécharge le PDF sans l'envoyer ni l'enregistrer.</li>
+            <li><strong>📧 Envoyer au client</strong> — génère le PDF, le dépose, l'enregistre en base et envoie l'email.</li>
+            <li><strong>Brouillon</strong> — le formulaire en cours est sauvegardé dans le navigateur : fermer l'onglet par erreur ne fait plus perdre la saisie.</li>
           </ul>
         </div>
         <div class="help-block">
@@ -435,7 +570,32 @@
             <li><strong>⬇️ PDF</strong> — télécharge ou ouvre la facture.</li>
           </ul>
         </div>
-        <div class="help-tip">💡 En France, les factures doivent être conservées 10 ans. Ne les supprimez pas.</div>
+        <div class="help-tip">💡 En France, les factures doivent être conservées 10 ans. Ne les supprimez pas : émettez un avoir si besoin.</div>
+      </div>
+
+      <!-- TARIFS -->
+      <div class="help-section" id="help-tarifs">
+        <div class="help-block">
+          <h3>💶 Une seule grille tarifaire</h3>
+          <ul>
+            <li><strong>Source unique</strong> — la constante <strong>TARIFS</strong>, en haut du fichier admin.html, contient toute la grille. Devis et factures s'y alimentent : plus de tarifs recopiés à deux endroits.</li>
+            <li><strong>Modifier un prix</strong> — changez la valeur <code>pu</code> de la prestation dans TARIFS. Les documents déjà enregistrés gardent le prix pratiqué le jour de leur émission.</li>
+            <li><strong>Ajouter une prestation</strong> — ajoutez un objet <code>{ id, label, detail, pu, unit, sap }</code> dans la bonne catégorie.</li>
+            <li><strong>Section « Grille tarifaire »</strong> — affiche la grille telle qu'elle est appliquée, avec le reste à charge après crédit d'impôt.</li>
+          </ul>
+        </div>
+        <div class="help-block">
+          <h3>⚙️ Paramètres — à compléter une seule fois</h3>
+          <ul>
+            <li><strong>Où</strong> — menu « ⚙️ Paramètres ». Une pastille orange apparaît dans le menu tant qu'il manque une mention obligatoire.</li>
+            <li><strong>Obligatoire</strong> — SIRET, adresse complète, forme juridique et n° de déclaration SAP. Sans SIRET, un bandeau rouge signale sur l'aperçu que la facture n'est pas conforme.</li>
+            <li><strong>Enregistrement</strong> — les paramètres sont conservés pour les fois suivantes : dans Supabase s'ils peuvent y être écrits (vous les retrouvez sur tous vos appareils), sinon dans ce navigateur.</li>
+            <li><strong>Synchroniser</strong> — dépliez le bloc SQL en bas de l'écran Paramètres et exécutez-le une fois dans Supabase → SQL Editor pour créer la table <code>parametres</code>.</li>
+            <li><strong>Logo</strong> — une image PNG/JPEG de 200 Ko max s'ajoute en haut des devis et factures.</li>
+            <li>Les champs laissés vides ne sont simplement pas imprimés : rien n'est inventé à votre place.</li>
+          </ul>
+        </div>
+        <div class="help-tip">💡 Le crédit d'impôt affiché est une <strong>estimation</strong> indicative, sous réserve de la situation fiscale du client et des plafonds annuels. Faites valider vos mentions par votre comptable.</div>
       </div>
 
       <!-- CLIENTS -->
@@ -502,10 +662,16 @@
 
 <!-- ADMIN PANEL -->
 <div id="adminPanel">
+  <div class="topbar">
+    <button class="burger" id="burgerBtn" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="sidebar">☰</button>
+    <span class="tb-title" id="tbTitle">Documents PDF</span>
+    <button class="btn-help" onclick="openHelp()" aria-label="Guide d'utilisation" style="padding:8px 11px">❓</button>
+  </div>
+  <div class="scrim" id="navScrim"></div>
   <div class="admin-layout">
 
     <!-- Sidebar -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
       <div class="sidebar-logo">
         <img src="favicon-32x32.png" alt="">
         <span>Admin Panel</span>
@@ -527,6 +693,13 @@
       </button>
       <button class="nav-item" data-sec="clients">
         <span class="nav-icon">👥</span> Clients
+      </button>
+      <button class="nav-item" data-sec="tarifs">
+        <span class="nav-icon">💶</span> Grille tarifaire
+      </button>
+      <button class="nav-item" data-sec="parametres">
+        <span class="nav-icon">⚙️</span> Paramètres
+        <span class="nav-badge warn" id="paramBadge" style="display:none">!</span>
       </button>
       <button class="nav-item" data-sec="messages">
         <span class="nav-icon">💬</span> Messages
@@ -615,6 +788,15 @@
                 <div class="field"><label>Date d'émission</label><input type="date" id="d-date" oninput="updatePreview()"></div>
                 <div class="field"><label>Valable jusqu'au</label><input type="date" id="d-valid" oninput="updatePreview()"></div>
               </div>
+              <div class="field" style="margin-bottom:0;margin-top:12px">
+                <label for="d-periode">Période / lieu d'intervention prévu</label>
+                <input id="d-periode" placeholder="Ex. : tous les mardis, à partir du 15 octobre 2026" oninput="updatePreview()">
+              </div>
+            </div>
+
+            <div class="draft-bar" id="devisDraftBar">
+              <span>💾 Un brouillon non envoyé a été restauré.</span>
+              <button type="button" id="devisDraftClear">Repartir de zéro</button>
             </div>
 
             <!-- Client -->
@@ -632,56 +814,34 @@
             <div class="form-card">
               <div class="form-card-title">🧹 Prestations</div>
               <div style="margin-bottom:12px">
-                <select id="presetSelect" onchange="addPreset(this)" style="width:100%;padding:9px 12px;background:var(--dark);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:.84rem;outline:none;cursor:pointer">
-                  <option value="">➕ Ajouter depuis les tarifs…</option>
-                  <optgroup label="Nettoyage Locaux">
-                    <option value="Nettoyage locaux — Journée|1|30|h">Nettoyage locaux Journée — 30 €/h</option>
-                    <option value="Nettoyage locaux — Nuit|1|40|h">Nettoyage locaux Nuit — 40 €/h</option>
-                  </optgroup>
-                  <optgroup label="Vitres / Vitrines">
-                    <option value="Nettoyage vitrines|1|5|m²">Nettoyage vitrines — 5 €/m²</option>
-                    <option value="Nettoyage vitres (sur devis)|1|0|m²">Nettoyage vitres — tarif sur devis</option>
-                  </optgroup>
-                  <optgroup label="Nettoyage Spécifique">
-                    <option value="Nettoyage après déménagement|1|5|m²">Après déménagement — 5 €/m²</option>
-                    <option value="Nettoyage après chantier (sur devis)|1|0|forfait">Après chantier — tarif sur devis</option>
-                  </optgroup>
-                  <optgroup label="Auxiliaires de Vie">
-                    <option value="Auxiliaire de vie — Journée|1|30|h">Auxiliaire de vie Journée — 30 €/h</option>
-                    <option value="Auxiliaire de vie — Nuit|1|40|h">Auxiliaire de vie Nuit — 40 €/h</option>
-                  </optgroup>
-                  <optgroup label="Tarifs Spécifiques">
-                    <option value="Intervention jour férié|1|40|h">Jour férié — 40 €/h</option>
-                    <option value="Intervention 1er Mai / Noël|1|60|h">1er Mai / Noël — 60 €/h</option>
-                    <option value="Intervention week-end|1|35|h">Week-end — 35 €/h</option>
-                  </optgroup>
-                </select>
+                <label class="sr-only" for="presetSelect">Ajouter une prestation depuis la grille tarifaire</label>
+                <select id="presetSelect" style="width:100%;padding:9px 12px;background:var(--dark);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:.84rem;outline:none;cursor:pointer"></select>
               </div>
               <div class="prest-wrap">
                 <table class="prest-table">
                   <thead>
                     <tr>
-                      <th style="width:40%">Description</th>
-                      <th style="width:10%" class="r">Qté</th>
-                      <th style="width:10%">Unité</th>
-                      <th style="width:14%" class="r">Prix unit. (€)</th>
-                      <th style="width:14%" class="r">Total</th>
-                      <th style="width:12%"></th>
+                      <th style="min-width:190px">Prestation</th>
+                      <th style="width:64px" class="r">Qté</th>
+                      <th style="width:76px">Unité</th>
+                      <th style="width:82px" class="r">P.U. (€)</th>
+                      <th style="width:96px" title="Majoration dimanche / jour férié">Major.</th>
+                      <th style="width:40px" class="ci-cell" title="Éligible au crédit d'impôt 50 % (services à la personne)">CI</th>
+                      <th style="width:92px" class="r">Total</th>
+                      <th style="width:38px"></th>
                     </tr>
                   </thead>
                   <tbody id="prestBody"></tbody>
                 </table>
               </div>
-              <button class="btn-add-row" onclick="addLigne()">+ Ligne vierge</button>
+              <button class="btn-add-row" id="devisAddRow">+ Ligne libre</button>
+              <div class="cat-hint">💡 <b>CI</b> = prestation de service à la personne ouvrant droit au crédit d'impôt de 50 % pour un particulier. Décochez-la pour un client professionnel.</div>
             </div>
 
             <!-- Totaux -->
             <div class="form-card">
               <div class="form-card-title">💰 Récapitulatif</div>
-              <div class="totals-box">
-                <div class="total-line"><span>Sous-total HT</span><span id="d-sous-total">0,00 €</span></div>
-                <div class="total-line main"><span>TOTAL TTC</span><span id="d-total">0,00 €</span></div>
-              </div>
+              <div class="totals-box" id="devisTotals"></div>
               <div class="tva-badge">TVA non applicable, art. 293 B du CGI</div>
             </div>
 
@@ -697,10 +857,8 @@
 
           <!-- PREVIEW -->
           <div class="preview-sticky">
-            <div class="section-title">👁️ Aperçu en temps réel</div>
-            <div class="preview-paper" id="devisPreview">
-              <!-- rendered by updatePreview() -->
-            </div>
+            <div class="section-title">👁️ Aperçu du document (A4)</div>
+            <div class="doc-scroll" id="devisPreview"></div>
           </div>
 
         </div><!-- /devis-layout -->
@@ -720,6 +878,18 @@
             <div class="stat-icon green">💶</div>
             <div><div class="stat-val" id="statCA">—</div><div class="stat-lbl">CA potentiel</div></div>
           </div>
+        </div>
+        <div class="hist-toolbar">
+          <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <label class="sr-only" for="devisSearch">Rechercher un devis</label>
+            <input type="text" id="devisSearch" placeholder="N°, client, email…">
+          </div>
+          <button class="chip on" data-dfilter="tous">Tous</button>
+          <button class="chip" data-dfilter="envoyé">Envoyés</button>
+          <button class="chip" data-dfilter="accepté">Acceptés</button>
+          <button class="chip" data-dfilter="refusé">Refusés</button>
+          <span class="file-count" id="devisCount"></span>
         </div>
         <div id="devisHistList" style="display:flex;flex-direction:column;gap:10px"></div>
       </div>
@@ -748,6 +918,21 @@
                 <div class="field"><label>Date d'émission</label><input type="date" id="f-date" oninput="updateFacturePreview()"></div>
                 <div class="field"><label>Échéance paiement</label><input type="date" id="f-echeance" oninput="updateFacturePreview()"></div>
               </div>
+              <div class="form-row" style="margin-top:12px">
+                <div class="field" style="margin-bottom:0">
+                  <label for="f-periode">Période d'exécution des prestations</label>
+                  <input id="f-periode" placeholder="Ex. : du 1er au 30 septembre 2026" oninput="updateFacturePreview()">
+                </div>
+                <div class="field" style="margin-bottom:0">
+                  <label for="f-ref">Réf. devis d'origine</label>
+                  <input id="f-ref" placeholder="DC-2026-001" oninput="updateFacturePreview()">
+                </div>
+              </div>
+            </div>
+
+            <div class="draft-bar" id="factDraftBar">
+              <span>💾 Une facture non enregistrée a été restaurée.</span>
+              <button type="button" id="factDraftClear">Repartir de zéro</button>
             </div>
             <div class="form-card">
               <div class="form-card-title">👤 Client</div>
@@ -761,38 +946,27 @@
             <div class="form-card">
               <div class="form-card-title">🧹 Prestations</div>
               <div style="margin-bottom:12px">
-                <select id="factPresetSelect" onchange="addFactPreset(this)" style="width:100%;padding:9px 12px;background:var(--dark);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:.84rem;outline:none;cursor:pointer">
-                  <option value="">➕ Ajouter depuis les tarifs…</option>
-                  <optgroup label="Nettoyage Locaux">
-                    <option value="Nettoyage locaux — Journée|1|30|h">Nettoyage locaux Journée — 30 €/h</option>
-                    <option value="Nettoyage locaux — Nuit|1|40|h">Nettoyage locaux Nuit — 40 €/h</option>
-                  </optgroup>
-                  <optgroup label="Vitres / Vitrines">
-                    <option value="Nettoyage vitrines|1|5|m²">Nettoyage vitrines — 5 €/m²</option>
-                    <option value="Nettoyage vitres (sur devis)|1|0|m²">Nettoyage vitres — tarif sur devis</option>
-                  </optgroup>
-                  <optgroup label="Nettoyage Spécifique">
-                    <option value="Nettoyage après déménagement|1|5|m²">Après déménagement — 5 €/m²</option>
-                    <option value="Nettoyage après chantier (sur devis)|1|0|forfait">Après chantier — tarif sur devis</option>
-                  </optgroup>
-                  <optgroup label="Auxiliaires de Vie">
-                    <option value="Auxiliaire de vie — Journée|1|30|h">Auxiliaire de vie Journée — 30 €/h</option>
-                    <option value="Auxiliaire de vie — Nuit|1|40|h">Auxiliaire de vie Nuit — 40 €/h</option>
-                  </optgroup>
-                  <optgroup label="Tarifs Spécifiques">
-                    <option value="Intervention jour férié|1|40|h">Jour férié — 40 €/h</option>
-                    <option value="Intervention 1er Mai / Noël|1|60|h">1er Mai / Noël — 60 €/h</option>
-                    <option value="Intervention week-end|1|35|h">Week-end — 35 €/h</option>
-                  </optgroup>
-                </select>
+                <label class="sr-only" for="factPresetSelect">Ajouter une prestation depuis la grille tarifaire</label>
+                <select id="factPresetSelect" style="width:100%;padding:9px 12px;background:var(--dark);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:.84rem;outline:none;cursor:pointer"></select>
               </div>
               <div class="prest-wrap">
                 <table class="prest-table">
-                  <thead><tr><th style="width:38%">Description</th><th style="width:9%" class="r">Qté</th><th style="width:10%">Unité</th><th style="width:15%" class="r">Prix unit. (€)</th><th style="width:14%" class="r">Total</th><th style="width:14%"></th></tr></thead>
+                  <thead>
+                    <tr>
+                      <th style="min-width:190px">Prestation</th>
+                      <th style="width:64px" class="r">Qté</th>
+                      <th style="width:76px">Unité</th>
+                      <th style="width:82px" class="r">P.U. (€)</th>
+                      <th style="width:96px" title="Majoration dimanche / jour férié">Major.</th>
+                      <th style="width:40px" class="ci-cell" title="Éligible au crédit d'impôt 50 % (services à la personne)">CI</th>
+                      <th style="width:92px" class="r">Total</th>
+                      <th style="width:38px"></th>
+                    </tr>
+                  </thead>
                   <tbody id="factLignes"></tbody>
                 </table>
               </div>
-              <button class="btn-add-row" onclick="addFactLigne()">+ Ligne vierge</button>
+              <button class="btn-add-row" id="factAddRow">+ Ligne libre</button>
             </div>
             <div class="form-card">
               <div class="form-card-title">💰 Totaux</div>
@@ -805,12 +979,24 @@
             </div>
           </div>
           <div class="preview-sticky">
-            <div class="section-title">👁️ Aperçu</div>
-            <div class="preview-paper" id="facturePreview"></div>
+            <div class="section-title">👁️ Aperçu du document (A4)</div>
+            <div class="doc-scroll" id="facturePreview"></div>
           </div>
         </div>
         <div style="margin-top:32px">
           <div class="section-title">📋 Historique factures</div>
+          <div class="hist-toolbar">
+            <div class="search-wrap">
+              <span class="search-icon">🔍</span>
+              <label class="sr-only" for="factSearch">Rechercher une facture</label>
+              <input type="text" id="factSearch" placeholder="N°, client, email…">
+            </div>
+            <button class="chip on" data-ffilter="tous">Toutes</button>
+            <button class="chip" data-ffilter="envoyée">Envoyées</button>
+            <button class="chip" data-ffilter="payée">Payées</button>
+            <button class="chip" data-ffilter="en retard">En retard</button>
+            <span class="file-count" id="factCount"></span>
+          </div>
           <div id="factHistList" style="display:flex;flex-direction:column;gap:10px"></div>
         </div>
       </div>
@@ -837,6 +1023,39 @@
         </div>
       </div>
 
+      <!-- ══ SECTION : TARIFS ══ -->
+      <div class="section" id="sec-tarifs">
+        <div class="page-header">
+          <div class="page-title"><h1>Grille tarifaire</h1><p>Source unique utilisée par les devis et les factures</p></div>
+        </div>
+        <div class="tarif-grid" id="tarifGrid"></div>
+        <div class="tarif-notes" id="tarifNotes"></div>
+      </div>
+
+      <!-- ══ SECTION : PARAMÈTRES ══ -->
+      <div class="section" id="sec-parametres">
+        <div class="page-header">
+          <div class="page-title"><h1>Paramètres</h1><p>Coordonnées et mentions légales imprimées sur vos devis et factures</p></div>
+          <div class="devis-actions">
+            <button class="btn-action ghost" id="paramReload">↺ Recharger</button>
+            <button class="btn-action blue" id="paramSave">💾 Enregistrer</button>
+          </div>
+        </div>
+
+        <div class="param-status" id="paramStatus"></div>
+        <div class="param-grid" id="paramGrid"></div>
+
+        <div class="param-bar">
+          <button class="btn-action blue" id="paramSave2">💾 Enregistrer les paramètres</button>
+          <span class="param-hint" style="margin:0">Ces informations sont réutilisées sur tous les documents suivants.</span>
+        </div>
+
+        <details class="sql-block">
+          <summary>🗄️ Synchroniser entre plusieurs appareils — SQL à exécuter une fois dans Supabase</summary>
+          <pre id="paramSql"></pre>
+        </details>
+      </div>
+
       <!-- ══ SECTION : MESSAGES ══ -->
       <div class="section" id="sec-messages">
         <div class="page-header">
@@ -853,6 +1072,9 @@
     </main>
   </div>
 </div>
+
+<!-- Conteneur hors écran servant de source au rendu PDF (largeur A4 utile = 180 mm) -->
+<div id="pdfStage" aria-hidden="true"></div>
 
 <!-- SUPABASE AUTH (RLS-aware: this session's JWT is what RLS policies check) -->
 <script>
@@ -903,6 +1125,8 @@ sb.auth.onAuthStateChange(async (event, session) => {
     const label = user.user_metadata?.full_name || user.email;
     document.getElementById("userEmailDisplay").textContent = label;
     document.getElementById("userInitial").textContent = label[0].toUpperCase();
+    // Les paramètres d'abord : devis et factures s'affichent déjà avec les bonnes mentions.
+    await loadParametres();
     loadFiles();
     initDevis();
     loadUnreadCount();
@@ -923,6 +1147,159 @@ function escapeHtml(str) {
   return String(str ?? "").replace(/[&<>"']/g, c => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
   }[c]));
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   CONFIGURATION ENTREPRISE
+   ⚠️ À COMPLÉTER PAR DOMI CLEAN. Toute valeur laissée vide n'est simplement
+   pas imprimée sur les documents. Le SIRET, l'adresse et le n° de déclaration
+   SAP sont des mentions obligatoires : une facture sans SIRET n'est pas
+   conforme, et le crédit d'impôt du client n'est justifiable que si le n° de
+   déclaration SAP figure sur la facture.
+   ══════════════════════════════════════════════════════════════════════════ */
+const ENTREPRISE = {
+  nom:            "Domi Clean",
+  baseline:       "Services à la personne & nettoyage professionnel",
+  formeJuridique: "",                          // ex. "Entreprise individuelle (micro-entreprise)"
+  adresse:        "",                          // ex. "12 rue des Lilas, 91000 Évry-Courcouronnes"
+  zone:           "Île-de-France",
+  tel:            "06 28 48 72 17",
+  email:          "domicleanidf@gmail.com",
+  siret:          "",                          // ⚠️ OBLIGATOIRE sur les factures
+  numeroSAP:      "",                          // ⚠️ n° de déclaration SAP (DDETS / NOVA)
+  iban:           "",                          // affiché sur la facture si renseigné
+  bic:            "",
+  assurance:      "",                          // ex. "RC Pro AXA n° 0000000"
+  facebook:       "DomiClean Essonne",
+  tiktok:         "domi.clean",
+  delaiPaiement:  30,                          // jours
+  penalites:      "trois fois le taux d'intérêt légal en vigueur",
+  indemnite:      40,                          // € — indemnité forfaitaire de recouvrement (B2B)
+  fraisDeplacement: "Frais de déplacement inclus dans les tarifs indiqués.",
+  logoDataUri:    ""                           // optionnel : "data:image/png;base64,…"
+};
+
+/* ══════════════════════════════════════════════════════════════════════════
+   GRILLE TARIFAIRE — SOURCE DE VÉRITÉ UNIQUE
+   Reprise exacte de la grille tarifaire Domi Clean. Devis et factures
+   s'alimentent tous les deux ici : modifier un tarif ici le met à jour partout.
+   sap:true  → prestation de service à la personne ouvrant droit, pour un
+               particulier, au crédit d'impôt de 50 % (art. 199 sexdecies du CGI)
+   surDevis  → pas de tarif public, le prix doit être saisi à la main
+   ══════════════════════════════════════════════════════════════════════════ */
+const TARIFS = [
+  {
+    cat: "Services à la personne (particuliers)",
+    items: [
+      { id:"menage",   label:"Ménage & entretien du domicile",       detail:"Nettoyage complet, dépoussiérage, désinfection des sanitaires & sols (entretien courant)",                                   pu:30, unit:"h",       sap:true  },
+      { id:"courses",  label:"Aide aux courses, RDV & administratif", detail:"Accompagnement extérieur, courses, rendez-vous médicaux, tri du courrier, envois postaux & papiers courants",               pu:30, unit:"h",       sap:true  },
+      { id:"nuit",     label:"Présence & assistance de nuit",         detail:"Présence bienveillante, surveillance nocturne, rassurance & sécurité au domicile (personnes autonomes ou en perte d'autonomie légère)", pu:40, unit:"h", sap:true  },
+      { id:"jardin",   label:"Espaces verts & jardinage",             detail:"Tonte de pelouse, débroussaillage, taille de haies",                                                                        pu:0,  unit:"forfait", sap:true,  surDevis:true }
+    ]
+  },
+  {
+    cat: "Nettoyage professionnel (bureaux & commerces)",
+    items: [
+      { id:"locaux-jour", label:"Entretien de locaux — journée", detail:"Bureaux, commerces, cabinets, copropriétés",       pu:30, unit:"h", sap:false },
+      { id:"locaux-nuit", label:"Entretien de locaux — nuit",    detail:"Interventions professionnelles en horaires décalés", pu:40, unit:"h", sap:false }
+    ]
+  },
+  {
+    cat: "Prestations spécifiques",
+    items: [
+      { id:"chantier",     label:"Fin de chantier & nettoyage vitres", detail:"Remise en état après travaux, vitrerie",              pu:0, unit:"forfait", sap:false, surDevis:true },
+      { id:"demenagement", label:"Après déménagement / vitrines",      detail:"Remise en état fin de bail ou entretien vitrines",    pu:5, unit:"m²",      sap:false }
+    ]
+  }
+];
+
+const TARIF_INDEX = {};
+TARIFS.forEach(g => g.items.forEach(it => { TARIF_INDEX[it.id] = Object.assign({ cat: g.cat }, it); }));
+
+const UNITS = ["h", "m²", "j", "forfait", "mois"];
+
+/* Majorations issues de la grille : dimanches & jours fériés +25 %,
+   1er mai & 25 décembre +100 %. Appliquées au prix unitaire de base. */
+const MAJORATIONS = [
+  { v: 0,   court: "—",      label: "Tarif normal" },
+  { v: 25,  court: "+25 %",  label: "Dimanche / jour férié (+25 %)" },
+  { v: 100, court: "+100 %", label: "1er mai / 25 décembre (+100 %)" }
+];
+const MAJ_LABEL = { 0: "", 25: "Dimanche / jour férié (+25 %)", 100: "1er mai / 25 décembre (+100 %)" };
+
+/* ══ FORMATAGE (une seule façon d'écrire un montant, une quantité, une date) ══ */
+const _EUR = new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" });
+const _QTE = new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 2 });
+function num(v, def) { const n = parseFloat(v); return Number.isFinite(n) ? n : (def || 0); }
+function fmtEUR(v) { return _EUR.format(num(v)); }
+function fmtQte(v) { return _QTE.format(num(v)); }
+
+/* ══ MODÈLE DE LIGNE ══════════════════════════════════════════════════════
+   { desc, detail, heures, prix, unit, maj, sap, ref }
+   `heures` (quantité) et `prix` (P.U. de base HORS majoration) conservent leur
+   nom d'origine : les devis déjà enregistrés au format {desc,heures,prix,unit}
+   restent lisibles, les clés ajoutées vivent dans la même colonne JSON.
+   ═══════════════════════════════════════════════════════════════════════════ */
+function normLigne(l) {
+  l = l || {};
+  const maj = Number(l.maj);
+  return {
+    desc:   String(l.desc == null ? "" : l.desc),
+    detail: String(l.detail == null ? "" : l.detail),
+    heures: num(l.heures, 0),
+    prix:   num(l.prix, 0),
+    unit:   UNITS.indexOf(l.unit) >= 0 ? l.unit : "h",
+    maj:    (maj === 25 || maj === 100) ? maj : 0,
+    sap:    l.sap === true,
+    ref:    String(l.ref == null ? "" : l.ref)
+  };
+}
+function normLignes(arr) {
+  let a = arr;
+  if (typeof a === "string") { try { a = JSON.parse(a); } catch (e) { a = []; } }
+  return Array.isArray(a) ? a.map(normLigne) : [];
+}
+function ligneFromTarif(id) {
+  const t = TARIF_INDEX[id];
+  if (!t) return null;
+  return normLigne({ desc: t.label, detail: t.detail, heures: 1, prix: t.pu, unit: t.unit, sap: t.sap, ref: t.id });
+}
+function puEff(l)      { return num(l.prix) * (1 + num(l.maj) / 100); }
+function ligneTotal(l) { return num(l.heures) * puEff(l); }
+
+function computeTotals(lignes) {
+  let base = 0, total = 0, assiette = 0;
+  lignes.forEach(l => {
+    base  += num(l.heures) * num(l.prix);
+    const t = ligneTotal(l);
+    total += t;
+    if (l.sap) assiette += t;
+  });
+  const credit = assiette / 2;
+  return { base, majorations: total - base, total, assiette, credit, reste: total - credit };
+}
+
+/* ══ MÉTADONNÉES ENCODÉES DANS `notes` ════════════════════════════════════
+   Le schéma Supabase n'est pas modifiable ici : la période d'intervention et
+   la référence du devis d'origine sont donc sérialisées en tête du champ
+   `notes` sous forme de lignes `@clé=valeur`, puis retirées à l'affichage.
+   ═══════════════════════════════════════════════════════════════════════════ */
+function parseNotes(raw) {
+  const meta = {}; const lines = String(raw == null ? "" : raw).split("\n"); let i = 0;
+  while (i < lines.length) {
+    const m = lines[i].match(/^@([a-z]+)=(.*)$/);
+    if (!m) break;
+    meta[m[1]] = m[2].trim(); i++;
+  }
+  while (i < lines.length && lines[i].trim() === "") i++;
+  return { meta, texte: lines.slice(i).join("\n").trim() };
+}
+function buildNotes(meta, texte) {
+  const head = Object.keys(meta || {})
+    .filter(k => meta[k] && String(meta[k]).trim())
+    .map(k => "@" + k + "=" + String(meta[k]).trim().replace(/\n/g, " "));
+  const body = String(texte || "").trim();
+  return head.length ? head.join("\n") + (body ? "\n\n" + body : "") : body;
 }
 
 /* ══ MODAL ACCESSIBILITY (focus trap + Escape + focus restore) ══ */
@@ -973,6 +1350,18 @@ document.getElementById("helpModal").addEventListener("click", function(e) {
 });
 
 /* ══ NAVIGATION ══ */
+function closeNav() {
+  document.getElementById("sidebar").classList.remove("open");
+  document.getElementById("navScrim").classList.remove("show");
+  document.getElementById("burgerBtn").setAttribute("aria-expanded", "false");
+}
+document.getElementById("burgerBtn").addEventListener("click", () => {
+  const open = document.getElementById("sidebar").classList.toggle("open");
+  document.getElementById("navScrim").classList.toggle("show", open);
+  document.getElementById("burgerBtn").setAttribute("aria-expanded", String(open));
+});
+document.getElementById("navScrim").addEventListener("click", closeNav);
+
 document.querySelectorAll(".nav-item[data-sec]").forEach(btn => {
   btn.addEventListener("click", () => {
     const sec = btn.dataset.sec;
@@ -980,32 +1369,319 @@ document.querySelectorAll(".nav-item[data-sec]").forEach(btn => {
     btn.classList.add("active");
     document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
     document.getElementById("sec-" + sec).classList.add("active");
+    document.getElementById("tbTitle").textContent = btn.textContent.trim();
+    closeNav();
     if (sec === "historique") loadDevisHistory();
     if (sec === "messages")   loadMessages();
     if (sec === "clients")    loadClients();
+    if (sec === "tarifs")     renderTarifs();
+    if (sec === "parametres") renderParametres();
     if (sec === "factures")   { initFacture(); loadFactureHistory(); }
+    // Les aperçus A4 sont dimensionnés à l'affichage : une section masquée a une largeur nulle.
+    if (sec === "devis")    fitDoc("devisPreview");
+    if (sec === "factures") fitDoc("facturePreview");
   });
 });
 
+/* ══ SECTION GRILLE TARIFAIRE (rendue depuis la constante TARIFS) ══ */
+function renderTarifs() {
+  document.getElementById("tarifGrid").innerHTML = TARIFS.map(g => `
+    <div class="tarif-cat">
+      <h3>${escapeHtml(g.cat)}</h3>
+      ${g.items.map(it => `
+        <div class="tarif-row">
+          <div class="tr-l">
+            <div class="tr-t">${escapeHtml(it.label)}</div>
+            <div class="tr-d">${escapeHtml(it.detail)}</div>
+            ${it.sap ? `<div class="tr-ci">✓ Éligible crédit d'impôt 50 %${it.surDevis ? "" : " → " + fmtEUR(it.pu / 2) + " / " + escapeHtml(it.unit) + " après crédit"}</div>` : ""}
+          </div>
+          <div class="tr-p">${it.surDevis ? "Sur devis" : fmtEUR(it.pu)}${it.surDevis ? "" : `<small>par ${escapeHtml(it.unit)}</small>`}</div>
+        </div>`).join("")}
+    </div>`).join("");
+
+  document.getElementById("tarifNotes").innerHTML = `
+    <b>Majorations</b> — dimanches et jours fériés : +25 %. 1er mai et 25 décembre : +100 %.
+    Elles s'appliquent ligne par ligne dans les devis et factures, via la colonne « Major. ».<br>
+    <b>Crédit d'impôt</b> — 50 % des sommes versées pour les prestations de services à la personne
+    facturées à un particulier (art. 199 sexdecies du CGI), selon la réglementation SAP et dans la
+    limite des plafonds annuels. Le nettoyage de bureaux et commerces n'y ouvre pas droit.<br>
+    <b>Formules sur-mesure</b> — plusieurs prestations peuvent être combinées ; les packs se chiffrent sur devis.<br>
+    <b>Contact</b> — Facebook : ${escapeHtml(ENTREPRISE.facebook)} · TikTok : ${escapeHtml(ENTREPRISE.tiktok)} · ${escapeHtml(ENTREPRISE.email)}<br>
+    <span style="color:#fbbf24">✏️ Pour modifier un tarif, éditez la constante <b>TARIFS</b> en haut de admin.html : devis et factures suivent automatiquement.</span>`;
+}
+
+/* ══ PARAMÈTRES ENTREPRISE ═══════════════════════════════════════════════
+   Les coordonnées et mentions légales ne vivent plus dans le code : elles se
+   saisissent dans l'écran « Paramètres » et sont conservées d'une session à
+   l'autre. Deux niveaux de persistance, dans cet ordre :
+     1. table Supabase `parametres` → suit le compte, tous appareils
+     2. localStorage                → replis immédiat, propre à ce navigateur
+   Tant que la table n'existe pas, tout fonctionne en local ; le SQL de
+   création est affiché dans l'écran, à exécuter une fois.
+   ═══════════════════════════════════════════════════════════════════════════ */
+const PARAM_CLE = "domiclean.entreprise";
+let paramSource = "defaut";   // "supabase" | "local" | "defaut"
+let paramCharges = false;
+
+const PARAM_GROUPES = [
+  { titre: "🏢 Identité", champs: [
+    { k: "nom",            l: "Nom commercial",              ph: "Domi Clean" },
+    { k: "baseline",       l: "Accroche",                    ph: "Services à la personne & nettoyage professionnel" },
+    { k: "formeJuridique", l: "Forme juridique",             ph: "Entreprise individuelle (micro-entreprise)", req: true,
+      aide: "Telle qu'elle figure sur votre avis de situation SIRENE." },
+    { k: "siret",          l: "SIRET",                       ph: "123 456 789 00012", req: true,
+      aide: "Mention obligatoire sur toute facture." },
+    { k: "numeroSAP",      l: "N° de déclaration SAP",       ph: "SAP123456789", req: true,
+      aide: "Délivré par la DDETS (NOVA). Sans lui, votre client ne peut pas justifier son crédit d'impôt." },
+    { k: "assurance",      l: "Assurance responsabilité civile pro", ph: "AXA — contrat n° 0000000" }
+  ]},
+  { titre: "📍 Coordonnées", champs: [
+    { k: "adresse",  l: "Adresse complète",    ph: "12 rue des Lilas, 91000 Évry-Courcouronnes", req: true,
+      aide: "Obligatoire sur les factures." },
+    { k: "zone",     l: "Zone d'intervention", ph: "Île-de-France" },
+    { k: "tel",      l: "Téléphone",           ph: "06 28 48 72 17" },
+    { k: "email",    l: "Email",               ph: "domicleanidf@gmail.com", type: "email" },
+    { k: "facebook", l: "Facebook",            ph: "DomiClean Essonne" },
+    { k: "tiktok",   l: "TikTok",              ph: "domi.clean" }
+  ]},
+  { titre: "💳 Paiement & mentions", champs: [
+    { k: "iban",             l: "IBAN", ph: "FR76 0000 0000 0000 0000 0000 000",
+      aide: "Imprimé sur les factures uniquement s'il est renseigné." },
+    { k: "bic",              l: "BIC",  ph: "AGRIFRPP" },
+    { k: "delaiPaiement",    l: "Délai de paiement (jours)", type: "number", ph: "30",
+      aide: "Sert à pré-remplir l'échéance des factures." },
+    { k: "penalites",        l: "Taux des pénalités de retard", ph: "trois fois le taux d'intérêt légal en vigueur" },
+    { k: "indemnite",        l: "Indemnité de recouvrement (€)", type: "number", ph: "40",
+      aide: "40 € est le minimum légal entre professionnels." },
+    { k: "fraisDeplacement", l: "Frais de déplacement", type: "textarea",
+      ph: "Frais de déplacement inclus dans les tarifs indiqués.",
+      aide: "Mention obligatoire sur un devis — corrigez-la si vous les facturez en plus." }
+  ]}
+];
+const PARAM_CHAMPS = PARAM_GROUPES.reduce((a, g) => a.concat(g.champs), []);
+
+const PARAM_SQL = `-- À exécuter UNE SEULE FOIS dans Supabase → SQL Editor.
+-- Sans cette table, les paramètres restent enregistrés dans ce navigateur uniquement.
+
+create table if not exists public.parametres (
+  cle        text primary key,
+  valeur     jsonb       not null,
+  updated_at timestamptz not null default now()
+);
+
+alter table public.parametres enable row level security;
+
+drop policy if exists "admin lecture"  on public.parametres;
+drop policy if exists "admin ecriture" on public.parametres;
+
+create policy "admin lecture" on public.parametres
+  for select using (auth.jwt() ->> 'email' = 'domicleanidf@gmail.com');
+
+create policy "admin ecriture" on public.parametres
+  for all
+  using      (auth.jwt() ->> 'email' = 'domicleanidf@gmail.com')
+  with check (auth.jwt() ->> 'email' = 'domicleanidf@gmail.com');`;
+
+let paramModifie = false;
+
+/* Le formulaire n'est construit qu'une fois : revenir sur l'écran ne doit pas
+   effacer une saisie en cours. `force` (bouton Recharger) le reconstruit. */
+function renderParametres(force) {
+  const grid = document.getElementById("paramGrid");
+  if (!force && grid.children.length) { majParamStatut(); return; }
+  paramModifie = false;
+  document.getElementById("paramSql").textContent = PARAM_SQL;
+  grid.innerHTML =
+    PARAM_GROUPES.map(g => `
+      <div class="param-card">
+        <h3>${escapeHtml(g.titre)}</h3>
+        ${g.champs.map(c => {
+          const v = ENTREPRISE[c.k] == null ? "" : String(ENTREPRISE[c.k]);
+          const lab = `<label for="p-${c.k}">${escapeHtml(c.l)}${c.req ? '<span class="req" title="Mention obligatoire">*</span>' : ""}</label>`;
+          const ctrl = c.type === "textarea"
+            ? `<textarea id="p-${c.k}" rows="2" placeholder="${escapeHtml(c.ph || "")}">${escapeHtml(v)}</textarea>`
+            : `<input id="p-${c.k}" type="${c.type === "number" ? "number" : c.type === "email" ? "email" : "text"}"${c.type === "number" ? ' min="0" step="1"' : ""} value="${escapeHtml(v)}" placeholder="${escapeHtml(c.ph || "")}">`;
+          return `<div class="field">${lab}${ctrl}${c.aide ? `<div class="param-hint">${escapeHtml(c.aide)}</div>` : ""}</div>`;
+        }).join("")}
+      </div>`).join("") + `
+      <div class="param-card">
+        <h3>🖼️ Logo du document</h3>
+        <div class="logo-drop">
+          <div class="logo-prev" id="logoPrev"></div>
+          <div style="flex:1;min-width:170px">
+            <input type="file" id="logoInput" accept="image/png,image/jpeg,image/webp" style="font-size:.8rem;color:var(--muted);max-width:100%">
+            <div class="param-hint">PNG ou JPEG, 200 Ko maximum. L'image est intégrée au fichier (aucun lien externe) et apparaît en haut des devis et factures.</div>
+            <button class="btn-action ghost" id="logoClear" style="margin-top:10px;padding:6px 12px;font-size:.78rem">Retirer le logo</button>
+          </div>
+        </div>
+      </div>`;
+
+  renderLogoPreview();
+  grid.addEventListener("input", () => { if (!paramModifie) { paramModifie = true; majParamStatut(); } });
+  document.getElementById("logoInput").addEventListener("change", onLogoChoisi);
+  document.getElementById("logoClear").addEventListener("click", () => {
+    ENTREPRISE.logoDataUri = "";
+    renderLogoPreview();
+    toast("Logo retiré — pensez à enregistrer", "info");
+  });
+  majParamStatut();
+}
+
+function renderLogoPreview() {
+  const box = document.getElementById("logoPrev");
+  if (!box) return;
+  box.innerHTML = ENTREPRISE.logoDataUri
+    ? `<img src="${escapeHtml(ENTREPRISE.logoDataUri)}" alt="Logo">`
+    : `<span>🖼️</span>`;
+}
+
+function onLogoChoisi(e) {
+  const f = e.target.files && e.target.files[0];
+  if (!f) return;
+  if (f.size > 200 * 1024) {
+    toast("Logo trop lourd (" + Math.round(f.size / 1024) + " Ko) — 200 Ko maximum", "error");
+    e.target.value = "";
+    return;
+  }
+  const r = new FileReader();
+  r.onload = () => {
+    ENTREPRISE.logoDataUri = r.result;
+    renderLogoPreview();
+    rafraichirDocuments();
+    toast("Logo chargé — pensez à enregistrer", "info");
+  };
+  r.onerror = () => toast("Lecture du fichier impossible", "error");
+  r.readAsDataURL(f);
+}
+
+/* Champs obligatoires manquants, pour le bandeau et la pastille du menu. */
+function paramManquants() {
+  return PARAM_CHAMPS.filter(c => c.req && !String(ENTREPRISE[c.k] || "").trim());
+}
+function majParamStatut() {
+  const manque = paramManquants();
+  const badge = document.getElementById("paramBadge");
+  if (badge) badge.style.display = manque.length ? "inline" : "none";
+
+  const box = document.getElementById("paramStatus");
+  if (!box) return;
+  const sync = { supabase: "☁️ Synchronisé avec Supabase", local: "💻 Enregistré dans ce navigateur uniquement", defaut: "Aucun paramètre enregistré" }[paramSource];
+  box.className = "param-status " + (manque.length ? "ko" : "ok");
+  box.innerHTML = (manque.length
+      ? `<span><b>${manque.length} mention${manque.length > 1 ? "s" : ""} obligatoire${manque.length > 1 ? "s" : ""} manquante${manque.length > 1 ? "s" : ""}</b> : ${escapeHtml(manque.map(c => c.l).join(", "))}. Vos factures ne sont pas conformes tant qu'elles ne sont pas renseignées.</span>`
+      : `<span><b>Toutes les mentions obligatoires sont renseignées.</b> Vos devis et factures les reprennent automatiquement.</span>`)
+    + (paramModifie ? `<span class="param-sync" style="color:#fbbf24">✳️ Modifications non enregistrées</span>` : "")
+    + `<span class="param-sync">${escapeHtml(sync)}</span>`;
+}
+
+function lireParametres() {
+  const obj = {};
+  PARAM_CHAMPS.forEach(c => {
+    const el = document.getElementById("p-" + c.k);
+    if (!el) return;
+    obj[c.k] = c.type === "number" ? num(el.value, 0) : el.value.trim();
+  });
+  obj.logoDataUri = ENTREPRISE.logoDataUri || "";
+  return obj;
+}
+
+/* Recalcule tout ce qui dépend des paramètres. */
+function rafraichirDocuments() {
+  if (document.getElementById("devisPreview"))    updatePreview();
+  if (document.getElementById("facturePreview"))  updateFacturePreview();
+  if (document.getElementById("tarifNotes") && document.getElementById("tarifNotes").innerHTML) renderTarifs();
+  majParamStatut();
+}
+
+async function loadParametres() {
+  let obj = null;
+  try {
+    const { data, error } = await sb.from("parametres").select("valeur").eq("cle", "entreprise").maybeSingle();
+    if (!error && data && data.valeur) { obj = data.valeur; paramSource = "supabase"; }
+  } catch (e) {}
+  if (!obj) {
+    try {
+      const s = localStorage.getItem(PARAM_CLE);
+      if (s) { obj = JSON.parse(s); paramSource = "local"; }
+    } catch (e) {}
+  }
+  if (obj && typeof obj === "object") {
+    // On ne recopie que les clés connues : une valeur parasite en base ne peut pas polluer la config.
+    PARAM_CHAMPS.forEach(c => { if (obj[c.k] != null) ENTREPRISE[c.k] = c.type === "number" ? num(obj[c.k], ENTREPRISE[c.k]) : String(obj[c.k]); });
+    if (typeof obj.logoDataUri === "string" && /^data:image\//.test(obj.logoDataUri)) ENTREPRISE.logoDataUri = obj.logoDataUri;
+  }
+  paramCharges = true;
+  majParamStatut();
+}
+
+async function saveParametres() {
+  const btns = [document.getElementById("paramSave"), document.getElementById("paramSave2")].filter(Boolean);
+  btns.forEach(b => { b.disabled = true; });
+  const obj = lireParametres();
+  PARAM_CHAMPS.forEach(c => { ENTREPRISE[c.k] = obj[c.k]; });
+  ENTREPRISE.logoDataUri = obj.logoDataUri;
+
+  let local = false, cloud = false, msgErreur = "";
+  try { localStorage.setItem(PARAM_CLE, JSON.stringify(obj)); local = true; } catch (e) { msgErreur = e.message; }
+  try {
+    const { error } = await sb.from("parametres").upsert({ cle: "entreprise", valeur: obj }, { onConflict: "cle" });
+    if (error) msgErreur = error.message; else cloud = true;
+  } catch (e) { msgErreur = e.message; }
+
+  paramSource = cloud ? "supabase" : (local ? "local" : "defaut");
+  paramModifie = false;
+  rafraichirDocuments();
+
+  if (cloud)      toast("✅ Paramètres enregistrés et synchronisés");
+  else if (local) toast("💾 Enregistré dans ce navigateur. Pour synchroniser, créez la table `parametres` (SQL en bas de page).", "info");
+  else            toast("❌ Enregistrement impossible — " + msgErreur, "error");
+
+  btns.forEach(b => { b.disabled = false; });
+}
+
+document.getElementById("paramSave").addEventListener("click", saveParametres);
+document.getElementById("paramSave2").addEventListener("click", saveParametres);
+document.getElementById("paramReload").addEventListener("click", async () => {
+  if (paramModifie && !await showConfirm("Abandonner les modifications ?",
+      "Le formulaire sera rechargé depuis les paramètres enregistrés.", "Recharger")) return;
+  await loadParametres();
+  renderParametres(true);
+  rafraichirDocuments();
+  toast("Paramètres rechargés", "info");
+});
+
 /* ══ TOAST ══ */
+/* Une erreur reste affichée deux fois plus longtemps qu'un succès et se ferme
+   au clic : les messages d'échec d'envoi n'étaient plus lisibles en 3,5 s. */
 function toast(msg, type = "success") {
   const el = document.createElement("div");
   el.className = `toast ${type}`;
   el.textContent = msg;
+  el.title = "Cliquer pour fermer";
+  const close = () => { el.style.animation = "toastOut .25s ease forwards"; setTimeout(() => el.remove(), 280); };
+  el.addEventListener("click", close);
   document.getElementById("toastContainer").appendChild(el);
-  setTimeout(() => { el.style.animation = "toastOut .25s ease forwards"; setTimeout(() => el.remove(), 280); }, 3500);
+  setTimeout(close, type === "error" ? 9000 : 4000);
 }
 
 /* ══ CONFIRM ══ */
+/* Générique : la modale ne parle plus systématiquement de « fichier ».
+   showConfirm(titre, message, libelléBouton) */
 let confirmResolve = null;
-function showConfirm(fname) {
+function showConfirm(titre, message, okLabel) {
   return new Promise(r => {
     confirmResolve = r;
-    document.getElementById("confirmFileName").textContent = `"${fname}" sera définitivement supprimé.`;
+    document.getElementById("confirmModalTitle").textContent = titre || "Confirmer l'action ?";
+    document.getElementById("confirmFileName").textContent   = message || "Cette action est irréversible.";
+    document.getElementById("confirmOk").textContent         = okLabel || "Supprimer";
     lastFocusedEl = document.activeElement;
     document.getElementById("confirmModal").classList.add("show");
     document.getElementById("confirmCancel").focus();
   });
+}
+/* Raccourci pour les suppressions, qui restent le cas le plus fréquent. */
+function confirmDelete(quoi) {
+  return showConfirm("Supprimer " + quoi + " ?", "Cette action est irréversible.", "Supprimer");
 }
 document.getElementById("confirmCancel").onclick = () => settle(false);
 document.getElementById("confirmOk").onclick = () => settle(true);
@@ -1132,7 +1808,7 @@ function renderFiles(files) {
     card.querySelector(".cp").onclick = function() { navigator.clipboard.writeText(this.dataset.url).then(() => toast("🔗 Lien copié !", "info")); };
     card.querySelector(".pv").onclick = function() { openPv(this.dataset.url, this.dataset.name); };
     card.querySelector(".del").onclick = async function() {
-      const ok = await showConfirm(this.dataset.nom);
+      const ok = await confirmDelete('le fichier « ' + this.dataset.nom + ' »');
       if (!ok) return;
       if (this.dataset.chemin) await sb.storage.from("documents").remove([this.dataset.chemin]);
       if (!String(this.dataset.id).startsWith("storage-")) {
@@ -1150,18 +1826,295 @@ document.getElementById("searchInput").addEventListener("input", function() {
   renderFiles(q ? allFiles.filter(f => f.nom.toLowerCase().includes(q)) : allFiles);
 });
 
+/* ══════════════════════════════════════════════════════════════════════════
+   MOTEUR DE DOCUMENT A4 — un seul gabarit pour le devis et la facture,
+   utilisé à la fois pour l'aperçu écran et pour le PDF (WYSIWYG réel).
+   Largeur utile 180 mm ; les 15 mm de marge sont ajoutés par html2pdf, ce qui
+   garantit des marges identiques sur TOUTES les pages d'un document long.
+   ══════════════════════════════════════════════════════════════════════════ */
+function docHTML(o) {
+  const isDevis = o.kind === "devis";
+  const E = ENTREPRISE;
+  const lg = o.lignes || [];
+  const t = computeTotals(lg);
+  const e = escapeHtml;
+
+  const emetteur = [E.formeJuridique, E.adresse, E.zone].filter(Boolean)
+    .concat([E.tel ? "Tél. " + E.tel : "", E.email])
+    .concat([E.siret ? "SIRET " + E.siret : "", E.numeroSAP ? "Déclaration SAP n° " + E.numeroSAP : ""])
+    .filter(Boolean).map(x => e(x)).join("<br>");
+
+  const clientLignes = [o.client.adresse, o.client.email, o.client.tel]
+    .filter(Boolean).map(x => `<div>${e(x)}</div>`).join("");
+
+  const rows = lg.length ? lg.map(l => `
+      <tr>
+        <td>
+          <span class="lib">${e(l.desc) || "—"}</span>
+          ${l.detail ? `<span class="sub">${e(l.detail)}</span>` : ""}
+          ${l.maj ? `<span class="tag maj">${e(MAJ_LABEL[l.maj])}</span> ` : ""}
+          ${l.sap ? `<span class="tag">Crédit d'impôt 50 %</span>` : ""}
+        </td>
+        <td class="c">${fmtQte(l.heures)} ${e(l.unit)}</td>
+        <td class="r">${fmtEUR(puEff(l))}</td>
+        <td class="r b">${fmtEUR(ligneTotal(l))}</td>
+      </tr>`).join("")
+    : `<tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:8mm 0">Aucune prestation</td></tr>`;
+
+  const ciBox = t.assiette > 0 ? `
+      <div class="cibox">
+        <div class="tl"><span>Prestations éligibles au crédit d'impôt</span><span>${fmtEUR(t.assiette)}</span></div>
+        <div class="tl"><span>Crédit d'impôt estimé (50 %)</span><span>− ${fmtEUR(t.credit)}</span></div>
+        <div class="tl big"><span>Coût réel estimé après crédit d'impôt</span><span>${fmtEUR(t.reste)}</span></div>
+      </div>` : "";
+
+  /* ── Mentions légales, affichées seulement si elles s'appliquent ── */
+  const men = [];
+  men.push(`<p><b>TVA non applicable, art. 293 B du code général des impôts.</b></p>`);
+  if (isDevis) {
+    men.push(`<p>Devis gratuit et sans engagement, valable jusqu'au ${e(o.date2Txt)}. La prestation débute après retour du présent devis daté et signé, revêtu de la mention manuscrite « Bon pour accord ».</p>`);
+    men.push(`<p>Majorations applicables : + 25 % les dimanches et jours fériés, + 100 % le 1er mai et le 25 décembre. ${e(E.fraisDeplacement)}</p>`);
+    men.push(`<p>Paiement à réception de facture, par virement bancaire ou en espèces.</p>`);
+  } else {
+    men.push(`<p>Prestations exécutées${o.periode ? " " + e(o.periode) : ""}. Paiement à réception, au plus tard le <b>${e(o.date2Txt)}</b>, par virement bancaire${E.iban ? " (IBAN " + e(E.iban) + (E.bic ? " — BIC " + e(E.bic) : "") + ")" : ""} ou en espèces.</p>`);
+    men.push(`<p>Pas d'escompte pour paiement anticipé. En cas de retard : pénalités au taux de ${e(E.penalites)}, exigibles sans rappel, et indemnité forfaitaire de ${fmtEUR(E.indemnite)} pour frais de recouvrement due par tout client professionnel (art. L441-10 et D441-5 du code de commerce).</p>`);
+  }
+  if (t.assiette > 0) {
+    men.push(`<p>Les prestations signalées « Crédit d'impôt 50 % » relèvent des services à la personne et ouvrent droit, pour les particuliers, à un crédit d'impôt égal à 50 % des sommes effectivement versées (art. 199 sexdecies du CGI), dans la limite des plafonds annuels en vigueur. Le montant affiché est une <b>estimation</b> donnée à titre indicatif, sous réserve de votre situation fiscale.${E.numeroSAP ? " Déclaration services à la personne n° " + e(E.numeroSAP) + "." : ""}${isDevis ? "" : " Une attestation fiscale annuelle vous sera adressée."}</p>`);
+  }
+  if (E.assurance) men.push(`<p>Assurance responsabilité civile professionnelle : ${e(E.assurance)}.</p>`);
+  if (!E.siret && !isDevis) men.push(`<p style="color:#dc2626"><b>⚠️ SIRET non renseigné — facture non conforme.</b> Renseignez-le dans l'écran « ⚙️ Paramètres ».</p>`);
+
+  const pied = [E.facebook ? "Facebook : " + E.facebook : "", E.tiktok ? "TikTok : " + E.tiktok : "", E.email]
+    .filter(Boolean).map(x => e(x)).join(" &nbsp;·&nbsp; ");
+
+  return `<div class="a4">
+    <div class="hd">
+      <div>
+        ${E.logoDataUri ? `<img src="${e(E.logoDataUri)}" alt="" style="height:16mm;margin-bottom:3mm">` : ""}
+        <div class="brand">DOMI CLEAN<small>${e(E.baseline)}</small></div>
+        <div class="em">${emetteur}</div>
+      </div>
+      <div>
+        <div class="doctype">${isDevis ? "DEVIS" : "FACTURE"}</div>
+        <div class="docmeta">
+          <b>N° ${e(o.num)}</b><br>
+          ${isDevis ? "Date d'émission" : "Date de facture"} : ${e(o.date1Txt)}<br>
+          ${isDevis ? "Valable jusqu'au" : "Échéance de paiement"} : ${e(o.date2Txt)}
+          ${!isDevis && o.ref ? `<br>Réf. devis : ${e(o.ref)}` : ""}
+        </div>
+      </div>
+    </div>
+    <div class="rule"></div>
+    <div class="parties">
+      <div class="party">
+        <h4>${isDevis ? "Devis établi pour" : "Facturé à"}</h4>
+        <div class="nm">${e(o.client.nom) || "—"}</div>
+        ${clientLignes}
+      </div>
+      ${o.periode ? `<div class="party"><h4>${isDevis ? "Intervention prévue" : "Période d'exécution"}</h4><div class="nm" style="font-size:9.5pt;font-weight:600">${e(o.periode)}</div></div>` : ""}
+    </div>
+    <table class="it">
+      <thead><tr><th>Prestation</th><th class="c">Quantité</th><th class="r">Prix unitaire</th><th class="r">Montant</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div class="totwrap"><div class="tot">
+      ${t.majorations ? `<div class="tl"><span>Sous-total avant majorations</span><span>${fmtEUR(t.base)}</span></div>
+      <div class="tl"><span>Majorations dimanche / jour férié</span><span>+ ${fmtEUR(t.majorations)}</span></div>` : ""}
+      <div class="tl big"><span>${isDevis ? "TOTAL À PAYER" : "NET À PAYER"}</span><span>${fmtEUR(t.total)}</span></div>
+      <div class="tva">TVA non applicable, art. 293 B du CGI</div>
+      ${ciBox}
+    </div></div>
+    ${o.notes ? `<div class="note">${e(o.notes)}</div>` : ""}
+    <div class="legal">${men.join("")}</div>
+    ${isDevis ? `<div class="sign">
+      <div class="box"><b>Bon pour accord</b><br>Date : ____ / ____ / ________<div class="line"></div></div>
+      <div class="box" style="text-align:right"><b>Signature du client</b><br><span style="font-size:7.5pt">précédée de la mention « Bon pour accord »</span><div class="line"></div></div>
+    </div>` : ""}
+    <div class="foot">${pied}</div>
+  </div>`;
+}
+
+/* Rend le document dans un conteneur d'aperçu et l'adapte à la largeur dispo. */
+function renderDocInto(wrapId, html) {
+  const wrap = document.getElementById(wrapId);
+  if (!wrap) return;
+  wrap.innerHTML = `<div class="a4-page">${html}</div>`;
+  fitDoc(wrapId);
+}
+function fitDoc(wrapId) {
+  const wrap = document.getElementById(wrapId);
+  if (!wrap) return;
+  const page = wrap.querySelector(".a4-page");
+  if (!page) return;
+  page.style.transform = "none";
+  page.style.transformOrigin = "top left";
+  const natural = page.offsetWidth || 794;
+  // Section masquée → largeur nulle : ne pas figer un scale(0), la navigation rappellera fitDoc.
+  if (!wrap.clientWidth) return;
+  const scale = Math.min(1, wrap.clientWidth / natural);
+  page.style.transform = "scale(" + scale + ")";
+  wrap.style.height = Math.ceil(page.offsetHeight * scale) + "px";
+}
+let _fitTimer = null;
+window.addEventListener("resize", () => {
+  clearTimeout(_fitTimer);
+  _fitTimer = setTimeout(() => { fitDoc("devisPreview"); fitDoc("facturePreview"); }, 120);
+});
+
+/* ══ GÉNÉRATION PDF ═══════════════════════════════════════════════════════
+   Rend depuis #pdfStage à la largeur A4 réelle (et non depuis l'aperçu
+   rétréci) : texte net, marges de 15 mm sur chaque page, lignes de tableau
+   jamais coupées en deux, pagination « page n/N » ajoutée après coup.
+   ══════════════════════════════════════════════════════════════════════════ */
+async function makePdf(html, filename, footerLabel, mode) {
+  const stage = document.getElementById("pdfStage");
+  stage.innerHTML = html;
+  const node = stage.firstElementChild;
+  const opt = {
+    margin:      [15, 15, 16, 15],
+    filename:    filename,
+    image:       { type: "jpeg", quality: 0.96 },
+    html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff", letterRendering: true, windowWidth: 794 },
+    jsPDF:       { unit: "mm", format: "a4", orientation: "portrait", compress: true },
+    pagebreak:   { mode: ["css", "legacy"], avoid: ["tr", ".party", ".cibox", ".sign"] }
+  };
+  try {
+    let w = html2pdf().set(opt).from(node).toPdf().get("pdf").then(pdf => {
+      const n = pdf.internal.getNumberOfPages();
+      for (let i = 1; i <= n; i++) {
+        pdf.setPage(i);
+        pdf.setFontSize(7.5);
+        pdf.setTextColor(150, 150, 150);
+        pdf.text(footerLabel + "  ·  page " + i + "/" + n, 105, 290, { align: "center" });
+      }
+    });
+    return mode === "blob" ? await w.outputPdf("blob") : await w.save();
+  } finally {
+    stage.innerHTML = "";
+  }
+}
+
+/* ══ ÉDITEUR DE LIGNES PARTAGÉ ════════════════════════════════════════════
+   Un seul moteur pour le tableau du devis et celui de la facture.
+   Point clé : la saisie de la quantité ou du prix ne redessine PAS le tableau
+   (l'ancienne version le faisait, ce qui vidait le champ du focus à chaque
+   frappe) — seule la cellule « Total » et le récapitulatif sont rafraîchis.
+   ═══════════════════════════════════════════════════════════════════════════ */
+function fillPresetSelect(sel) {
+  sel.innerHTML = `<option value="">➕ Ajouter une prestation de la grille tarifaire…</option>` +
+    TARIFS.map(g => `<optgroup label="${escapeHtml(g.cat)}">` + g.items.map(it =>
+      `<option value="${escapeHtml(it.id)}">${escapeHtml(it.label)} — ${it.surDevis ? "sur devis" : fmtEUR(it.pu) + " / " + escapeHtml(it.unit)}</option>`
+    ).join("") + `</optgroup>`).join("");
+}
+
+function rowHTML(l, i) {
+  const opts = (arr, val, fmt) => arr.map(o => {
+    const v = fmt ? o.v : o, lab = fmt ? o.court : o;
+    return `<option value="${v}"${String(v) === String(val) ? " selected" : ""}>${escapeHtml(String(lab))}</option>`;
+  }).join("");
+  return `<tr data-i="${i}"${num(l.prix) <= 0 ? ' class="to-price"' : ""}>
+    <td>
+      <input class="desc-main" data-k="desc" value="${escapeHtml(l.desc)}" placeholder="Intitulé de la prestation" aria-label="Intitulé de la prestation">
+      <input class="desc-sub" data-k="detail" value="${escapeHtml(l.detail)}" placeholder="Détail affiché sur le document (optionnel)" aria-label="Détail de la prestation">
+    </td>
+    <td><input class="num" data-k="heures" type="number" min="0" step="any" value="${l.heures}" aria-label="Quantité"></td>
+    <td><select class="mini" data-k="unit" aria-label="Unité">${opts(UNITS, l.unit)}</select></td>
+    <td><input class="num" data-k="prix" type="number" min="0" step="any" value="${l.prix}" aria-label="Prix unitaire de base"></td>
+    <td><select class="mini" data-k="maj" aria-label="Majoration">${opts(MAJORATIONS, l.maj, true)}</select></td>
+    <td class="ci-cell"><input type="checkbox" data-k="sap"${l.sap ? " checked" : ""} aria-label="Éligible au crédit d'impôt"></td>
+    <td class="td-total">${fmtEUR(ligneTotal(l))}</td>
+    <td style="text-align:center"><button class="btn-del-row" data-del="${i}" title="Supprimer la ligne" aria-label="Supprimer la ligne">✕</button></td>
+  </tr>`;
+}
+
+function makeEditor(o) {
+  const tbody = document.getElementById(o.tbody);
+  const ed = { tbody: tbody, get: o.get, onChange: o.onChange };
+
+  ed.render = function () {
+    const lg = ed.get();
+    tbody.innerHTML = lg.length
+      ? lg.map(rowHTML).join("")
+      : `<tr class="prest-empty"><td colspan="8">Aucune prestation — ajoutez-en depuis la grille tarifaire ci-dessus, ou créez une ligne libre.</td></tr>`;
+    ed.onChange();
+  };
+  ed.refreshRow = function (i) {
+    const tr = tbody.querySelector('tr[data-i="' + i + '"]');
+    if (!tr) return;
+    const l = ed.get()[i];
+    tr.querySelector(".td-total").textContent = fmtEUR(ligneTotal(l));
+    tr.classList.toggle("to-price", num(l.prix) <= 0);
+  };
+
+  function apply(e, rerender) {
+    const tr = e.target.closest("tr[data-i]");
+    if (!tr) return;
+    const i = parseInt(tr.dataset.i, 10);
+    const k = e.target.dataset.k;
+    const l = ed.get()[i];
+    if (!l || !k) return;
+    if (k === "sap")            l.sap = e.target.checked;
+    else if (k === "maj")       l.maj = num(e.target.value);
+    else if (k === "heures" || k === "prix") l[k] = num(e.target.value);
+    else                        l[k] = e.target.value;
+    if (rerender) ed.refreshRow(i);
+    ed.onChange();
+  }
+  tbody.addEventListener("input",  e => { if (e.target.dataset.k) apply(e, true); });
+  tbody.addEventListener("change", e => { if (e.target.dataset.k) apply(e, true); });
+  tbody.addEventListener("click",  e => {
+    const b = e.target.closest("[data-del]");
+    if (!b) return;
+    ed.get().splice(parseInt(b.dataset.del, 10), 1);
+    ed.render();
+  });
+
+  const sel = document.getElementById(o.select);
+  fillPresetSelect(sel);
+  sel.addEventListener("change", function () {
+    const l = ligneFromTarif(this.value);
+    this.value = "";
+    if (!l) return;
+    ed.get().push(l);
+    ed.render();
+    if (TARIF_INDEX[l.ref] && TARIF_INDEX[l.ref].surDevis) toast("Prestation sur devis — saisissez le prix négocié", "info");
+  });
+  document.getElementById(o.addBtn).addEventListener("click", () => {
+    ed.get().push(normLigne({ desc: "", heures: 1, prix: 30, unit: "h", sap: true }));
+    ed.render();
+  });
+  return ed;
+}
+
+/* Récapitulatif chiffré affiché sous le tableau de saisie. */
+function renderTotals(boxId, lignes) {
+  const t = computeTotals(lignes);
+  const box = document.getElementById(boxId);
+  if (!box) return;
+  box.innerHTML =
+    (t.majorations ? `<div class="total-line sub"><span>Sous-total avant majorations</span><span>${fmtEUR(t.base)}</span></div>
+     <div class="total-line sub"><span>Majorations dimanche / jour férié</span><span>+ ${fmtEUR(t.majorations)}</span></div>` : "") +
+    `<div class="total-line main"><span>TOTAL</span><span>${fmtEUR(t.total)}</span></div>` +
+    (t.assiette > 0 ? `<div class="total-line ci"><span>Dont éligible crédit d'impôt</span><span>${fmtEUR(t.assiette)}</span></div>
+     <div class="total-line ci"><span>Crédit d'impôt estimé (50 %)</span><span>− ${fmtEUR(t.credit)}</span></div>
+     <div class="total-line ci" style="font-weight:700"><span>Coût réel estimé pour le client</span><span>${fmtEUR(t.reste)}</span></div>` : "");
+}
+
 /* ══ DEVIS ══ */
 let lignes = [];
+let devisEditor = null;
 
 async function getNextNum() {
   const year = new Date().getFullYear();
   let max = 0;
 
   try {
-    const { data: d1 } = await sb.from("devis")
-      .select("numero").like("numero", `DC-${year}-%`)
-      .order("id", { ascending: false }).limit(1);
-    if (d1 && d1.length) max = Math.max(max, parseInt(d1[0].numero.split("-")[2]) || 0);
+    const { data: d1 } = await sb.from("devis").select("numero").like("numero", `DC-${year}-%`);
+    (d1 || []).forEach(d => {
+      const m = String(d.numero || "").match(/DC-\d{4}-(\d+)/);
+      if (m) max = Math.max(max, parseInt(m[1], 10));
+    });
   } catch(e) {}
 
   try {
@@ -1184,393 +2137,325 @@ async function getNextNum() {
   return `DC-${year}-${String(max + 1).padStart(3, "0")}`;
 }
 
+/* Date locale au format YYYY-MM-DD — toISOString() renvoyait la date UTC,
+   ce qui décalait l'émission d'un jour en soirée depuis Paris. */
+function isoLocal(d) {
+  return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+}
+function plusJours(n) { const d = new Date(); d.setDate(d.getDate() + n); return d; }
+function fmtDateFr(iso) {
+  if (!iso) return "—";
+  const d = new Date(iso);
+  return isNaN(d) ? "—" : d.toLocaleDateString("fr-FR", { day: "2-digit", month: "long", year: "numeric" });
+}
+
+const DEVIS_FIELDS = ["d-nom","d-email","d-tel","d-adresse","d-notes","d-periode"];
+
 async function initDevis() {
-  const today = new Date();
-  const validite = new Date(today); validite.setDate(validite.getDate() + 30);
-  document.getElementById("d-date").value = today.toISOString().split("T")[0];
-  document.getElementById("d-valid").value = validite.toISOString().split("T")[0];
-  document.getElementById("d-num").value = await getNextNum();
-  renderLignes();
+  document.getElementById("d-date").value  = isoLocal(new Date());
+  document.getElementById("d-valid").value = isoLocal(plusJours(30));
+  document.getElementById("d-num").value   = await getNextNum();
+  if (!devisEditor) devisEditor = makeEditor({
+    tbody: "prestBody", select: "presetSelect", addBtn: "devisAddRow",
+    get: () => lignes, onChange: onDevisChange
+  });
+  maybeRestoreDraft("devis");
+  devisEditor.render();
+}
+
+function onDevisChange() {
+  renderTotals("devisTotals", lignes);
   updatePreview();
+  saveDraft("devis");
 }
 
 function resetDevis() {
   lignes = [];
-  ["d-nom","d-email","d-tel","d-adresse","d-notes"].forEach(id => document.getElementById(id).value = "");
+  DEVIS_FIELDS.forEach(id => document.getElementById(id).value = "");
+  clearDraft("devis");
   initDevis();
 }
 
-const UNITS = ["h","m²","forfait","j"];
-function unitSel(i, val, fn, refreshFn) {
-  return `<select style="background:var(--dark);border:1px solid var(--border);border-radius:5px;color:var(--text);font-size:.78rem;padding:4px 5px;cursor:pointer" onchange="${fn}[${i}].unit=this.value;${refreshFn}()">${UNITS.map(u=>`<option${u===val?" selected":""}>${u}</option>`).join("")}</select>`;
-}
-
-function renderLignes() {
-  const tbody = document.getElementById("prestBody");
-  tbody.innerHTML = "";
-  lignes.forEach((l, i) => {
-    const u = l.unit || "h";
-    const t = ((parseFloat(l.heures)||0) * (parseFloat(l.prix)||0)).toFixed(2);
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td><input value="${escapeHtml(l.desc)}" placeholder="Description de la prestation" oninput="lignes[${i}].desc=this.value;updatePreview()"></td>
-      <td><input class="num" type="number" value="${l.heures}" min="0" step="0.5" style="width:60px" oninput="lignes[${i}].heures=this.value;calcTotals()"></td>
-      <td>${unitSel(i, u, "lignes", "updatePreview")}</td>
-      <td><input class="num" type="number" value="${l.prix}" min="0" step="0.5" style="width:72px" oninput="lignes[${i}].prix=this.value;calcTotals()"></td>
-      <td class="td-total">${t} €</td>
-      <td style="text-align:center"><button class="btn-del-row" ${lignes.length===1?"disabled":""} onclick="removeLigne(${i})">✕</button></td>`;
-    tbody.appendChild(tr);
-  });
-}
-
-function addLigne() { lignes.push({ desc: "", heures: 1, prix: 20, unit: "h" }); renderLignes(); calcTotals(); }
-
-function addPreset(sel) {
-  if (!sel.value) return;
-  const [desc, heures, prix, unit] = sel.value.split("|");
-  lignes.push({ desc, heures: parseFloat(heures), prix: parseFloat(prix), unit: unit||"h" });
-  renderLignes(); calcTotals();
-  sel.value = "";
-}
-function removeLigne(i) { if(lignes.length===1) return; lignes.splice(i,1); renderLignes(); calcTotals(); }
-function calcTotals() {
-  const s = lignes.reduce((a,l) => a + (parseFloat(l.heures)||0)*(parseFloat(l.prix)||0), 0);
-  document.getElementById("d-sous-total").textContent = s.toFixed(2).replace(".",",") + " €";
-  document.getElementById("d-total").textContent = s.toFixed(2).replace(".",",") + " €";
-  renderLignes();
-  updatePreview();
-}
-
-function fmtDateFr(iso) {
-  if (!iso) return "—";
-  return new Date(iso).toLocaleDateString("fr-FR", { day:"2-digit", month:"long", year:"numeric" });
+function devisData() {
+  return {
+    kind: "devis",
+    num:      document.getElementById("d-num").value || "—",
+    date1:    document.getElementById("d-date").value,
+    date2:    document.getElementById("d-valid").value,
+    date1Txt: fmtDateFr(document.getElementById("d-date").value),
+    date2Txt: fmtDateFr(document.getElementById("d-valid").value),
+    client: {
+      nom:     document.getElementById("d-nom").value.trim(),
+      email:   document.getElementById("d-email").value.trim(),
+      tel:     document.getElementById("d-tel").value.trim(),
+      adresse: document.getElementById("d-adresse").value.trim()
+    },
+    periode: document.getElementById("d-periode").value.trim(),
+    notes:   document.getElementById("d-notes").value.trim(),
+    lignes:  lignes
+  };
 }
 
 function updatePreview() {
-  const num  = document.getElementById("d-num").value || "—";
-  const date = fmtDateFr(document.getElementById("d-date").value);
-  const valid= fmtDateFr(document.getElementById("d-valid").value);
-  const nom  = document.getElementById("d-nom").value || "—";
-  const email= document.getElementById("d-email").value;
-  const tel  = document.getElementById("d-tel").value;
-  const adr  = document.getElementById("d-adresse").value;
-  const notes= document.getElementById("d-notes").value;
-  const total= lignes.reduce((a,l)=>a+(parseFloat(l.heures)||0)*(parseFloat(l.prix)||0),0);
+  renderDocInto("devisPreview", docHTML(devisData()));
+  saveDraft("devis");
+}
 
-  const rowsHTML = lignes.map(l => {
-    const t = ((parseFloat(l.heures)||0)*(parseFloat(l.prix)||0)).toFixed(2);
-    return `<tr>
-      <td style="padding:8px 6px;border-bottom:1px solid #e2e8f0;font-size:11px">${escapeHtml(l.desc)||"—"}</td>
-      <td style="padding:8px 6px;border-bottom:1px solid #e2e8f0;text-align:center;font-size:11px">${parseFloat(l.heures)||0} ${escapeHtml(l.unit||"h")}</td>
-      <td style="padding:8px 6px;border-bottom:1px solid #e2e8f0;text-align:right;font-size:11px">${parseFloat(l.prix||0).toFixed(2)} €</td>
-      <td style="padding:8px 6px;border-bottom:1px solid #e2e8f0;text-align:right;font-weight:700;font-size:11px">${t} €</td>
-    </tr>`;
-  }).join("");
-
-  document.getElementById("devisPreview").innerHTML = `
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;gap:12px">
-      <div>
-        <div style="font-size:17px;font-weight:800;color:#0a6fd4;letter-spacing:-.3px">DOMI CLEAN</div>
-        <div style="color:#64748b;font-size:10px;margin-top:5px;line-height:1.7">
-          Île-de-France<br>
-          📞 06 28 48 72 17<br>
-          ✉️ domicleanidf@gmail.com
-        </div>
-      </div>
-      <div style="text-align:right">
-        <div style="font-size:20px;font-weight:900;color:#0f172a;letter-spacing:-1px">DEVIS</div>
-        <div style="color:#64748b;font-size:10px;margin-top:5px;line-height:1.8">
-          <strong style="color:#0f172a">N° ${escapeHtml(num)}</strong><br>
-          Date : ${escapeHtml(date)}<br>
-          Valable jusqu'au ${escapeHtml(valid)}
-        </div>
-      </div>
-    </div>
-    <div style="height:1px;background:linear-gradient(90deg,#0a6fd4,#22c55e);margin-bottom:16px;border-radius:2px"></div>
-    <div style="background:#f8fafc;border-radius:8px;padding:12px 14px;margin-bottom:18px">
-      <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#94a3b8;margin-bottom:6px">Client</div>
-      <div style="font-weight:700;font-size:12px">${escapeHtml(nom)}</div>
-      ${adr?`<div style="color:#555;font-size:10px;margin-top:2px">${escapeHtml(adr)}</div>`:""}
-      ${email||tel?`<div style="color:#64748b;font-size:10px;margin-top:2px">${escapeHtml([email,tel].filter(Boolean).join(" · "))}</div>`:""}
-    </div>
-    <table style="width:100%;border-collapse:collapse;margin-bottom:14px">
-      <thead>
-        <tr style="background:#f1f5f9">
-          <th style="padding:7px 6px;text-align:left;font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:#64748b;font-weight:700">Prestation</th>
-          <th style="padding:7px 6px;text-align:center;font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:#64748b;font-weight:700">Qté</th>
-          <th style="padding:7px 6px;text-align:right;font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:#64748b;font-weight:700">Prix unit.</th>
-          <th style="padding:7px 6px;text-align:right;font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:#64748b;font-weight:700">Total</th>
-        </tr>
-      </thead>
-      <tbody>${rowsHTML}</tbody>
-    </table>
-    <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
-      <div style="min-width:190px">
-        <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:10px;color:#64748b;border-bottom:1px solid #e2e8f0">
-          <span>Sous-total HT</span><span>${total.toFixed(2)} €</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;padding:9px 0 5px;font-size:13px;font-weight:800;color:#0f172a">
-          <span>TOTAL TTC</span><span>${total.toFixed(2)} €</span>
-        </div>
-      </div>
-    </div>
-    ${notes?`<div style="background:#f8fafc;border-radius:6px;padding:10px 12px;font-size:10px;color:#475569;margin-bottom:12px"><strong>Notes :</strong> ${escapeHtml(notes)}</div>`:""}
-    <div style="margin-top:14px;padding-top:12px;border-top:1px solid #e2e8f0">
-      <div style="font-size:9px;color:#475569;background:#f8fafc;border-radius:6px;padding:10px 12px;margin-bottom:14px;line-height:1.7">
-        <strong style="color:#334155">Conditions :</strong>
-        Paiement à réception de facture. Règlement par virement bancaire ou espèces.
-        Devis valable 30 jours. Intervention soumise à la signature du présent devis.
-        Crédit d'impôt de 50 % applicable (services à la personne, art. 199 sexdecies du CGI).
-        TVA non applicable, art. 293 B du CGI.
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:flex-end">
-        <div style="font-size:9px;color:#94a3b8">
-          Bon pour accord — Date : _______________
-        </div>
-        <div style="font-size:9px;color:#94a3b8;text-align:right">
-          Signature client :<br>
-          <div style="margin-top:20px;width:130px;border-bottom:1px solid #cbd5e1"></div>
-        </div>
-      </div>
-    </div>`;
+/* Garde-fous : mieux vaut bloquer ici qu'envoyer un devis à 0 € au client. */
+function validerDevis(pourEnvoi) {
+  const d = devisData();
+  const manque = [];
+  if (!d.client.nom) manque.push("le nom du client");
+  if (pourEnvoi) {
+    if (!d.client.email) manque.push("l'email du client");
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.client.email)) manque.push("un email valide");
+  }
+  if (!lignes.length) manque.push("au moins une prestation");
+  if (manque.length) { toast("Il manque " + manque.join(", "), "error"); return null; }
+  return d;
+}
+async function confirmerLignesA0(lg) {
+  const zero = lg.filter(l => num(l.prix) <= 0);
+  if (!zero.length) return true;
+  return await showConfirm(
+    "Prestation sans prix",
+    zero.length + " ligne" + (zero.length > 1 ? "s sont" : " est") + " à 0 € (« " + zero.map(l => l.desc || "sans intitulé").join(" », « ") + " »). Continuer quand même ?",
+    "Continuer"
+  );
 }
 
 async function downloadPDF() {
+  const d = validerDevis(false);
+  if (!d) return;
+  if (!await confirmerLignesA0(lignes)) return;
   const btn = document.getElementById("btnDownload");
   btn.disabled = true; btn.textContent = "⏳ Génération…";
-  updatePreview();
-  const num = document.getElementById("d-num").value;
-  const el = document.getElementById("devisPreview");
-  const opt = {
-    margin: [12,12,12,12],
-    filename: `${num}.pdf`,
-    image: { type:"jpeg", quality:.97 },
-    html2canvas: { scale:2, useCORS:true, backgroundColor:"#ffffff" },
-    jsPDF: { unit:"mm", format:"a4", orientation:"portrait" }
-  };
-  await html2pdf().set(opt).from(el).save();
+  try {
+    await makePdf(docHTML(d), d.num + ".pdf", "Devis " + d.num + " — " + ENTREPRISE.nom, "save");
+    toast("✅ PDF téléchargé");
+  } catch (err) {
+    console.error(err);
+    toast("❌ Échec de la génération du PDF", "error");
+  }
   btn.disabled = false; btn.textContent = "⬇️ Télécharger PDF";
-  toast("✅ PDF téléchargé");
 }
 
 async function saveAndSend() {
-  const clientEmail  = document.getElementById("d-email").value.trim();
-  const clientNom    = document.getElementById("d-nom").value.trim();
-  const clientTel    = document.getElementById("d-tel").value.trim();
-  const clientAdresse= document.getElementById("d-adresse").value.trim();
-  const notes        = document.getElementById("d-notes").value.trim();
-  const num          = document.getElementById("d-num").value;
-  const dateValid    = document.getElementById("d-valid").value;
-  if (!clientEmail) { toast("Ajoutez l'email du client", "error"); return; }
-  if (!clientNom)   { toast("Ajoutez le nom du client", "error"); return; }
+  const d = validerDevis(true);
+  if (!d) return;
+  if (!await confirmerLignesA0(lignes)) return;
 
   const btn = document.getElementById("btnSend");
   btn.disabled = true; btn.textContent = "⏳ Envoi…";
-  toast("Génération du PDF…", "info");
-  updatePreview();
-
-  const total = lignes.reduce((a,l)=>a+(parseFloat(l.heures)||0)*(parseFloat(l.prix)||0), 0);
+  const total = computeTotals(lignes).total;
+  let pdfUrl = null, enregistre = false;
 
   try {
-    // 1. Générer le blob PDF
-    const el  = document.getElementById("devisPreview");
-    const opt = {
-      margin:[12,12,12,12], filename:`${num}.pdf`,
-      image:{type:"jpeg",quality:.97},
-      html2canvas:{scale:2,useCORS:true,backgroundColor:"#ffffff"},
-      jsPDF:{unit:"mm",format:"a4",orientation:"portrait"}
-    };
-    const blob = await html2pdf().set(opt).from(el).outputPdf("blob");
+    toast("Génération du PDF…", "info");
+    const blob = await makePdf(docHTML(d), d.num + ".pdf", "Devis " + d.num + " — " + ENTREPRISE.nom, "blob");
 
-    // 2. Upload Supabase Storage
-    const path = `devis/${num}.pdf`;
-    const { error: upErr } = await sb.storage.from("documents").upload(path, blob, { contentType:"application/pdf", upsert:true });
-    if (upErr) throw new Error("Erreur upload PDF : " + upErr.message);
-    const { data: urlData } = sb.storage.from("documents").getPublicUrl(path);
-    const pdfUrl = urlData.publicUrl;
+    // 1. Dépôt du PDF (upsert:false : on refuse d'écraser un devis portant déjà ce numéro)
+    const path = "devis/" + d.num + ".pdf";
+    let up = await sb.storage.from("documents").upload(path, blob, { contentType: "application/pdf", upsert: false });
+    if (up.error) {
+      const dejaLa = /exists|duplicate/i.test(up.error.message || "");
+      if (!dejaLa) throw new Error("Dépôt du PDF impossible — " + up.error.message);
+      const ecraser = await showConfirm("Numéro déjà utilisé",
+        "Un PDF existe déjà pour le devis " + d.num + ". L'écraser ?", "Écraser");
+      if (!ecraser) throw new Error("__annule__");
+      up = await sb.storage.from("documents").upload(path, blob, { contentType: "application/pdf", upsert: true });
+      if (up.error) throw new Error("Dépôt du PDF impossible — " + up.error.message);
+    }
+    pdfUrl = sb.storage.from("documents").getPublicUrl(path).data.publicUrl;
 
-    // 3. Sauvegarder dans la table devis
-    await sb.from("devis").insert({
-      numero: num,
-      client_nom: clientNom,
-      client_email: clientEmail,
-      client_tel: clientTel,
-      client_adresse: clientAdresse,
-      lignes: lignes,
-      total: parseFloat(total.toFixed(2)),
-      notes: notes,
-      date_validite: dateValid,
-      pdf_url: pdfUrl,
-      statut: "envoyé"
+    // 2. Enregistrement en base (l'erreur n'est plus avalée)
+    const ins = await sb.from("devis").insert({
+      numero:         d.num,
+      client_nom:     d.client.nom,
+      client_email:   d.client.email,
+      client_tel:     d.client.tel,
+      client_adresse: d.client.adresse,
+      lignes:         lignes,
+      total:          parseFloat(total.toFixed(2)),
+      notes:          buildNotes({ periode: d.periode }, d.notes),
+      date_validite:  d.date2,
+      pdf_url:        pdfUrl,
+      statut:         "envoyé"
     });
+    if (ins.error) throw new Error("Enregistrement en base impossible — " + ins.error.message);
+    enregistre = true;
 
-    // 4. Upsert client
-    await upsertClient(clientNom, clientEmail, clientTel, clientAdresse);
+    await upsertClient(d.client.nom, d.client.email, d.client.tel, d.client.adresse);
 
-    // 5. Envoyer l'email
+    // 3. Email au client
     await emailjs.send("service_hwm2hla", "template_bkhdovi", {
-      to_name:    clientNom,
-      to_email:   clientEmail,
+      to_name:    d.client.nom,
+      to_email:   d.client.email,
       doc_type:   "Devis",
-      doc_num:    num,
+      doc_num:    d.num,
       doc_url:    pdfUrl,
-      total:      total.toFixed(2) + " €",
+      total:      fmtEUR(total),
       date_label: "Valable jusqu'au",
-      date_val:   fmtDateFr(dateValid),
+      date_val:   d.date2Txt
     });
 
-    toast(`✅ Devis ${num} envoyé à ${clientEmail}`);
+    toast("✅ Devis " + d.num + " envoyé à " + d.client.email);
     resetDevis();
 
-  } catch(err) {
+  } catch (err) {
     console.error(err);
-    if (err.message && err.message.includes("upload")) {
-      toast("❌ Échec upload PDF — " + err.message, "error");
+    if (err && err.message === "__annule__") {
+      toast("Envoi annulé", "info");
+    } else if (enregistre) {
+      // PDF déposé + devis enregistré : seul l'email a échoué, rien à refaire côté données.
+      toast("📄 Devis " + d.num + " enregistré, mais l'email n'est pas parti. Utilisez « 📧 Renvoyer » depuis l'historique.", "error");
+      resetDevis();
     } else {
-      toast("📄 PDF sauvegardé — erreur envoi email (vérifiez template EmailJS)", "info");
+      toast("❌ " + (err && err.message ? err.message : "Erreur inconnue") + " — le devis n'a PAS été enregistré.", "error");
     }
   }
 
   btn.disabled = false; btn.textContent = "📧 Envoyer au client";
 }
 
-/* ══ HISTORIQUE DEVIS ══ */
+/* ══ HISTORIQUE DEVIS ═══════════════════════════════════════════════════════
+   Les actions ne passent plus par des onclick inline interpolant du JSON
+   (un nom de client contenant une apostrophe cassait le bouton) : chaque
+   bouton porte un index, et un seul écouteur délégué lit l'objet en mémoire.
+   ═══════════════════════════════════════════════════════════════════════════ */
+let devisItems = [];
+let devisFiltre = "tous";
+
 async function loadDevisHistory() {
   const list = document.getElementById("devisHistList");
   list.innerHTML = `<div class="skeleton" style="height:64px;border-radius:12px"></div>`.repeat(3);
 
-  // Nouveaux devis (table devis)
-  let newDevis = [];
+  let newDevis = [], oldDevis = [], storageDevis = [], erreurs = [];
+
   try {
     const { data, error } = await sb.from("devis").select("*").order("id", { ascending: false });
-    if (!error) newDevis = data || [];
-  } catch(e) {}
+    if (error) erreurs.push("table devis : " + error.message); else newDevis = data || [];
+  } catch (e) { erreurs.push("table devis : " + e.message); }
 
-  // Anciens devis (fichiers_pdf table)
-  let oldDevis = [];
   try {
-    const { data } = await sb.from("fichiers_pdf")
-      .select("*").ilike("nom", "DEVIS%").order("id", { ascending: false });
+    const { data } = await sb.from("fichiers_pdf").select("*").ilike("nom", "DEVIS%").order("id", { ascending: false });
     oldDevis = data || [];
-  } catch(e) {}
+  } catch (e) {}
 
-  // Anciens devis (Storage bucket — récupère les PDFs orphelins)
-  let storageDevis = [];
   try {
     const { data: files } = await sb.storage.from("documents").list("devis", { limit: 200, sortBy: { column: "created_at", order: "desc" } });
     if (files) {
       storageDevis = files.filter(f => f.name && f.name.endsWith(".pdf")).map(f => {
-        const { data: urlData } = sb.storage.from("documents").getPublicUrl(`devis/${f.name}`);
+        const url = sb.storage.from("documents").getPublicUrl("devis/" + f.name).data.publicUrl;
         const m = f.name.match(/(DC-\d{4}-\d+)/);
-        return { _legacy: true, _storage: true,
-          numero: m ? m[1] : f.name.replace(".pdf",""),
-          client_nom: "", client_email: "",
-          pdf_url: urlData.publicUrl, total: null, statut: "envoyé",
-          created_at: f.created_at || null };
+        return { _legacy: true, _storage: true, numero: m ? m[1] : f.name.replace(".pdf", ""),
+                 client_nom: "", client_email: "", pdf_url: url, total: null, statut: "envoyé",
+                 created_at: f.created_at || null };
       });
     }
-  } catch(e) {}
+  } catch (e) {}
 
-  // Fusion sans doublons (DB > fichiers_pdf > storage)
   const newNums = new Set(newDevis.map(d => d.numero));
   const legacy = oldDevis.filter(f => {
     const m = f.nom.match(/DC-\d{4}-\d+/);
     return m ? !newNums.has(m[0]) : !newNums.has(f.nom);
   }).map(f => {
     const m = f.nom.match(/(DC-\d{4}-\d+)/);
-    const client = f.nom.includes("—") ? f.nom.split("—")[1].trim() : "";
-    return { _legacy:true, numero: m ? m[1] : f.nom, client_nom: client,
-             client_email:"", pdf_url: f.url, total: null, statut:"envoyé", created_at: f.created_at };
+    return { _legacy: true, numero: m ? m[1] : f.nom,
+             client_nom: f.nom.includes("—") ? f.nom.split("—")[1].trim() : "",
+             client_email: "", pdf_url: f.url, total: null, statut: "envoyé", created_at: f.created_at };
   });
 
-  const allKnownNums = new Set([...newDevis.map(d => d.numero), ...legacy.map(d => d.numero)]);
-  const storageLegacy = storageDevis.filter(f => !allKnownNums.has(f.numero));
+  const connus = new Set([...newDevis.map(d => d.numero), ...legacy.map(d => d.numero)]);
+  devisItems = [...newDevis, ...legacy, ...storageDevis.filter(f => !connus.has(f.numero))]
+    .sort((a, b) => (b.created_at ? new Date(b.created_at) : 0) - (a.created_at ? new Date(a.created_at) : 0));
 
-  const items = [...newDevis, ...legacy, ...storageLegacy].sort((a,b) => {
-    const da = a.created_at ? new Date(a.created_at) : 0;
-    const db = b.created_at ? new Date(b.created_at) : 0;
-    return db - da;
-  });
+  const ca = newDevis.filter(d => d.statut !== "refusé").reduce((s, d) => s + num(d.total), 0);
+  document.getElementById("statDevis").textContent = devisItems.length;
+  document.getElementById("statCA").textContent    = ca > 0 ? fmtEUR(ca) : "—";
 
-  const ca = newDevis.reduce((s, d) => s + (parseFloat(d.total) || 0), 0);
-  document.getElementById("statDevis").textContent = items.length;
-  document.getElementById("statCA").textContent = ca > 0 ? ca.toFixed(0) + " €" : "—";
-
-  const actifs  = items.filter(f => f.statut !== "refusé");
-  const refuses = items.filter(f => f.statut === "refusé");
-
-  if (!actifs.length && !refuses.length) {
-    list.innerHTML = `<div class="files-empty"><div class="empty-icon">📭</div><p>Aucun devis créé</p></div>`;
+  if (erreurs.length) {
+    list.innerHTML = `<div class="err-box"><b>Chargement partiel.</b><br>${escapeHtml(erreurs.join(" · "))}</div>`;
     return;
   }
-
-  const statutClass = { "envoyé":"sent", "accepté":"accepted", "refusé":"refused" };
-  const statutLabel = { "envoyé":"Envoyé", "accepté":"Accepté ✓", "refusé":"Refusé ✗" };
-
-  function buildCard(f) {
-    const sc = statutClass[f.statut] || "draft";
-    const sl = statutLabel[f.statut] || f.statut;
-    const isLegacy = !!f._legacy;
-    const div = document.createElement("div");
-    div.className = "devis-hist-item";
-    div.innerHTML = `
-      <div class="dhi-num">${escapeHtml(f.numero)}</div>
-      <div class="dhi-client">
-        ${escapeHtml(f.client_nom) || "—"}
-        <br><span style="font-size:.72rem;color:var(--muted)">${escapeHtml(f.client_email) || (isLegacy ? "Ancien devis" : "")}</span>
-      </div>
-      <div class="dhi-total">${f.total != null ? parseFloat(f.total).toFixed(2) + " €" : "—"}</div>
-      <div class="dhi-date">${fmtDate(f.created_at)}</div>
-      <div class="status-badge ${sc}">${sl}</div>
-      <div class="dhi-actions">
-        ${!isLegacy && f.statut !== "accepté" ? `<button class="act-btn cp" title="Marquer comme accepté" style="padding:5px 9px;font-size:.73rem;background:rgba(34,197,94,.1);color:#4ade80" onclick="setStatut(${f.id},'accepté')">✓ Accepté</button>` : ""}
-        ${!isLegacy && f.statut !== "refusé"  ? `<button class="act-btn" title="Marquer comme refusé" style="padding:5px 9px;font-size:.73rem;background:rgba(251,191,36,.1);color:#fbbf24" onclick="setStatut(${f.id},'refusé')">✗ Refusé</button>` : ""}
-        ${!isLegacy && f.statut === "accepté" ? `<button class="act-btn" title="Générer la facture depuis ce devis" style="padding:5px 9px;font-size:.73rem;background:rgba(168,85,247,.12);color:#c084fc" onclick='createFactureFromDevis(${JSON.stringify(f).replace(/'/g,"&#39;")})'>🧾 Facturer</button>` : ""}
-        ${!isLegacy ? `<button class="act-btn pv" title="Dupliquer ce devis" style="padding:5px 9px;font-size:.73rem" onclick='duplicateDevis(${JSON.stringify(f).replace(/'/g,"&#39;")})'>📋 Dupliquer</button>` : ""}
-        ${!isLegacy && f.client_email ? `<button class="act-btn dl" title="Renvoyer le devis par email" style="padding:5px 9px;font-size:.73rem" onclick='resendDevis(${JSON.stringify(f).replace(/'/g,"&#39;")})'>📧 Renvoyer</button>` : ""}
-        ${f.pdf_url ? `<a href="${f.pdf_url}" target="_blank" class="act-btn ghost" title="Télécharger le PDF" style="padding:5px 9px;font-size:.73rem;background:var(--surf2);color:var(--text)">⬇️ PDF</a>` : ""}
-        <button class="act-btn del" title="Supprimer ce devis" style="padding:5px 9px;font-size:.73rem" onclick='deleteDevis(${JSON.stringify({id:f.id,numero:f.numero,pdf_url:f.pdf_url,_legacy:f._legacy,_storage:f._storage}).replace(/'/g,"&#39;")})'>🗑️</button>
-      </div>`;
-    return div;
-  }
-
-  list.innerHTML = "";
-
-  if (!actifs.length) {
-    list.innerHTML = `<div class="files-empty"><div class="empty-icon">📭</div><p>Aucun devis actif</p></div>`;
-  } else {
-    actifs.forEach(f => list.appendChild(buildCard(f)));
-  }
-
-  if (refuses.length) {
-    const archiveWrap = document.createElement("div");
-    archiveWrap.style.marginTop = "24px";
-    archiveWrap.innerHTML = `
-      <button onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'flex':'none';this.textContent=this.textContent.includes('▶')?'▼ Archive refusés (${refuses.length})':'▶ Archive refusés (${refuses.length})';"
-        style="display:flex;align-items:center;gap:8px;background:none;border:1px solid var(--border);color:var(--muted);padding:9px 16px;border-radius:8px;cursor:pointer;font-size:.84rem;margin-bottom:10px">
-        ▶ Archive refusés (${refuses.length})
-      </button>
-      <div style="display:none;flex-direction:column;gap:10px"></div>`;
-    const archiveList = archiveWrap.querySelector("div");
-    refuses.forEach(f => archiveList.appendChild(buildCard(f)));
-    list.appendChild(archiveWrap);
-  }
+  renderDevisHistory();
 }
 
+function devisCard(f, i) {
+  const sc = { "envoyé": "sent", "accepté": "accepted", "refusé": "refused" }[f.statut] || "draft";
+  const sl = { "envoyé": "Envoyé", "accepté": "Accepté ✓", "refusé": "Refusé ✗" }[f.statut] || f.statut;
+  const leg = !!f._legacy;
+  const b = (act, label, titre, style) =>
+    `<button class="act-btn" data-act="${act}" data-i="${i}" title="${escapeHtml(titre)}" style="padding:5px 9px;font-size:.73rem;${style}">${label}</button>`;
+  return `<div class="devis-hist-item">
+    <div class="dhi-num">${escapeHtml(f.numero)}</div>
+    <div class="dhi-client">${escapeHtml(f.client_nom) || "—"}
+      <br><span style="font-size:.72rem;color:var(--muted)">${escapeHtml(f.client_email) || (leg ? "Ancien devis" : "")}</span></div>
+    <div class="dhi-total">${f.total != null ? fmtEUR(f.total) : "—"}</div>
+    <div class="dhi-date">${fmtDate(f.created_at)}</div>
+    <div class="status-badge ${sc}">${escapeHtml(sl)}</div>
+    <div class="dhi-actions">
+      ${!leg && f.statut !== "accepté" ? b("accepte", "✓ Accepté", "Marquer comme accepté", "background:rgba(34,197,94,.1);color:#4ade80") : ""}
+      ${!leg && f.statut !== "refusé"  ? b("refuse",  "✗ Refusé",  "Marquer comme refusé",  "background:rgba(251,191,36,.1);color:#fbbf24") : ""}
+      ${!leg && f.statut === "accepté" ? b("facture", "🧾 Facturer", "Générer la facture depuis ce devis", "background:rgba(168,85,247,.12);color:#c084fc") : ""}
+      ${!leg ? b("duplique", "📋 Dupliquer", "Dupliquer ce devis", "background:rgba(10,111,212,.13);color:#60a5fa") : ""}
+      ${!leg && f.client_email ? b("renvoie", "📧 Renvoyer", "Renvoyer le devis par email", "background:rgba(10,111,212,.13);color:#60a5fa") : ""}
+      ${f.pdf_url ? `<a href="${escapeHtml(f.pdf_url)}" target="_blank" rel="noopener" class="act-btn" title="Ouvrir le PDF" style="padding:5px 9px;font-size:.73rem;background:var(--surf2);color:var(--text)">⬇️ PDF</a>` : ""}
+      ${b("supprime", "🗑️", "Supprimer ce devis", "background:rgba(239,68,68,.08);color:#f87171")}
+    </div></div>`;
+}
+
+function renderDevisHistory() {
+  const list = document.getElementById("devisHistList");
+  const q = (document.getElementById("devisSearch").value || "").toLowerCase().trim();
+  const vus = devisItems
+    .map((f, i) => ({ f, i }))
+    .filter(({ f }) => devisFiltre === "tous" || f.statut === devisFiltre)
+    .filter(({ f }) => !q || [f.numero, f.client_nom, f.client_email].some(v => String(v || "").toLowerCase().includes(q)));
+
+  document.getElementById("devisCount").textContent =
+    vus.length ? vus.length + " devis" + (vus.length !== devisItems.length ? " sur " + devisItems.length : "") : "";
+
+  list.innerHTML = vus.length
+    ? vus.map(({ f, i }) => devisCard(f, i)).join("")
+    : `<div class="files-empty"><div class="empty-icon">📭</div><p>${devisItems.length ? "Aucun devis ne correspond à ce filtre" : "Aucun devis créé"}</p></div>`;
+}
+
+document.getElementById("devisSearch").addEventListener("input", renderDevisHistory);
+document.querySelectorAll("[data-dfilter]").forEach(c => c.addEventListener("click", () => {
+  document.querySelectorAll("[data-dfilter]").forEach(x => x.classList.remove("on"));
+  c.classList.add("on");
+  devisFiltre = c.dataset.dfilter;
+  renderDevisHistory();
+}));
+
+document.getElementById("devisHistList").addEventListener("click", async e => {
+  const btn = e.target.closest("[data-act]");
+  if (!btn) return;
+  const f = devisItems[parseInt(btn.dataset.i, 10)];
+  if (!f) return;
+  const act = btn.dataset.act;
+  if (act === "accepte")  return setStatut(f.id, "accepté");
+  if (act === "refuse")   return setStatut(f.id, "refusé");
+  if (act === "facture")  return createFactureFromDevis(f);
+  if (act === "duplique") return duplicateDevis(f);
+  if (act === "renvoie")  return resendDevis(f);
+  if (act === "supprime") return deleteDevis(f);
+});
+
 async function deleteDevis(f) {
-  const ok = await showConfirm(`Supprimer le devis ${f.numero} ?`);
+  const ok = await showConfirm(`Supprimer le devis ${f.numero} ?`,
+    "La numérotation comptable doit rester continue : préférez « ✗ Refusé » pour conserver la trace du devis.", "Supprimer quand même");
   if (!ok) return;
-  // Supprimer le PDF du Storage
   if (f.pdf_url) {
     try {
-      const path = f._storage ? `devis/${f.numero}.pdf` : new URL(f.pdf_url).pathname.split("/documents/")[1];
-      if (path) await sb.storage.from("documents").remove([path]);
-    } catch(e) {}
+      const path = f._storage ? "devis/" + f.numero + ".pdf" : new URL(f.pdf_url).pathname.split("/documents/")[1];
+      if (path) await sb.storage.from("documents").remove([decodeURIComponent(path)]);
+    } catch (e) {}
   }
-  // Supprimer de la table devis (si pas legacy)
   if (!f._legacy && f.id) {
     const { error } = await sb.from("devis").delete().eq("id", f.id);
-    if (error) { toast("❌ Erreur suppression", "error"); return; }
+    if (error) { toast("❌ Suppression impossible — " + error.message, "error"); return; }
   }
   toast("🗑️ Devis supprimé");
   loadDevisHistory();
@@ -1578,20 +2463,20 @@ async function deleteDevis(f) {
 
 async function setStatut(id, statut) {
   const { error } = await sb.from("devis").update({ statut }).eq("id", id);
-  if (error) { toast("❌ Erreur mise à jour statut", "error"); return; }
-  const label = { "accepté":"Devis accepté ✓", "refusé":"Devis refusé ✗" };
-  toast(label[statut] || "Statut mis à jour");
+  if (error) { toast("❌ Mise à jour impossible — " + error.message, "error"); return; }
+  toast({ "accepté": "Devis accepté ✓", "refusé": "Devis refusé ✗" }[statut] || "Statut mis à jour");
   loadDevisHistory();
 }
 
 async function duplicateDevis(f) {
-  try { lignes = typeof f.lignes === "string" ? JSON.parse(f.lignes) : f.lignes; } catch(e) { lignes = []; }
-  if (!lignes || !lignes.length) lignes = [];
+  lignes = normLignes(f.lignes);
+  const n = parseNotes(f.notes);
   document.getElementById("d-nom").value     = f.client_nom     || "";
   document.getElementById("d-email").value   = f.client_email   || "";
   document.getElementById("d-tel").value     = f.client_tel     || "";
   document.getElementById("d-adresse").value = f.client_adresse || "";
-  document.getElementById("d-notes").value   = f.notes          || "";
+  document.getElementById("d-periode").value = n.meta.periode   || "";
+  document.getElementById("d-notes").value   = n.texte;
   await initDevis();
   document.querySelector('[data-sec="devis"]').click();
   toast("📋 Devis dupliqué — nouveau numéro généré", "info");
@@ -1602,38 +2487,35 @@ async function resendDevis(f) {
   if (!f.pdf_url)      { toast("Pas de PDF disponible", "error"); return; }
   try {
     await emailjs.send("service_hwm2hla", "template_bkhdovi", {
-      to_name:    f.client_nom   || "Client",
+      to_name:    f.client_nom || "Client",
       to_email:   f.client_email,
       doc_type:   "Devis",
       doc_num:    f.numero,
       doc_url:    f.pdf_url,
-      total:      parseFloat(f.total || 0).toFixed(2) + " €",
+      total:      fmtEUR(f.total),
       date_label: "Valable jusqu'au",
-      date_val:   fmtDateFr(f.date_validite),
+      date_val:   fmtDateFr(f.date_validite)
     });
     toast(`📧 Devis ${f.numero} renvoyé à ${f.client_email}`);
-  } catch(err) {
-    toast("❌ Erreur envoi email", "error");
+  } catch (err) {
+    toast("❌ Envoi de l'email impossible — " + (err && (err.text || err.message) || ""), "error");
   }
 }
 
 /* ══ CRÉER FACTURE DEPUIS DEVIS ══ */
 async function createFactureFromDevis(f) {
-  // Pré-remplir le formulaire facture avec les données du devis
-  try { factLignes = typeof f.lignes === "string" ? JSON.parse(f.lignes) : f.lignes; } catch(e) { factLignes = []; }
-  if (!factLignes || !factLignes.length) factLignes = [];
-
+  factLignes = normLignes(f.lignes);
+  const n = parseNotes(f.notes);
   document.getElementById("f-nom").value     = f.client_nom     || "";
   document.getElementById("f-email").value   = f.client_email   || "";
   document.getElementById("f-tel").value     = f.client_tel     || "";
   document.getElementById("f-adresse").value = f.client_adresse || "";
-  document.getElementById("f-notes").value   = f.notes          || "";
-
-  // Générer le numéro de facture et les dates
+  document.getElementById("f-periode").value = n.meta.periode   || "";
+  document.getElementById("f-ref").value     = f.numero         || "";
+  document.getElementById("f-notes").value   = n.texte;
   await initFacture();
-
-  // Basculer sur la section Factures
   document.querySelector('[data-sec="factures"]').click();
+  loadFactureHistory();
   toast(`🧾 Facture pré-remplie depuis le devis ${f.numero}`, "info");
 }
 
@@ -1730,7 +2612,7 @@ async function markAllRead() {
 }
 
 async function deleteMsg(id) {
-  const ok = await showConfirm("Supprimer ce message ?");
+  const ok = await confirmDelete("ce message");
   if (!ok) return;
   try { await sb.from("messages").delete().eq("id", id); } catch(e) {}
   toast("🗑️ Message supprimé");
@@ -1785,7 +2667,8 @@ function filterClients() {
 async function deleteClient(id) {
   const c = allClients.find(x => x.id === id);
   const nom = c ? c.nom : "";
-  const ok = await showConfirm(`Supprimer le client "${nom}" ?`);
+  const ok = await showConfirm(`Supprimer le client « ${nom} » ?`,
+    "La fiche client est effacée. Ses devis et factures, eux, sont conservés : la loi impose de garder les factures 10 ans.", "Supprimer la fiche");
   if (!ok) return;
   try { await sb.from("clients").delete().eq("id", id); } catch(e) {}
   toast("🗑️ Client supprimé");
@@ -1794,152 +2677,168 @@ async function deleteClient(id) {
 
 /* ══ FACTURES ══ */
 let factLignes = [];
+let factEditor = null;
+let factItems  = [];
+let factFiltre = "tous";
+
+const FACT_FIELDS = ["f-nom","f-email","f-tel","f-adresse","f-notes","f-periode","f-ref"];
 
 async function getNextFactureNum() {
   const year = new Date().getFullYear();
   let max = 0;
   try {
-    const { data } = await sb.from("factures").select("numero").like("numero", `FAC-${year}-%`).order("id", { ascending: false }).limit(1);
-    if (data && data.length) max = Math.max(max, parseInt(data[0].numero.split("-")[2]) || 0);
-  } catch(e) {}
+    const { data } = await sb.from("factures").select("numero").like("numero", `FAC-${year}-%`);
+    (data || []).forEach(f => {
+      const m = String(f.numero || "").match(/FAC-\d{4}-(\d+)/);
+      if (m) max = Math.max(max, parseInt(m[1], 10));
+    });
+  } catch (e) {}
   return `FAC-${year}-${String(max + 1).padStart(3, "0")}`;
 }
 
 async function initFacture() {
-  const today = new Date();
-  const echeance = new Date(today); echeance.setDate(echeance.getDate() + 30);
-  const fmt = d => d.toISOString().split("T")[0];
-  document.getElementById("f-date").value     = fmt(today);
-  document.getElementById("f-echeance").value = fmt(echeance);
+  document.getElementById("f-date").value     = isoLocal(new Date());
+  document.getElementById("f-echeance").value = isoLocal(plusJours(ENTREPRISE.delaiPaiement));
   document.getElementById("f-num").value      = await getNextFactureNum();
-  renderFactLignes();
+  if (!factEditor) factEditor = makeEditor({
+    tbody: "factLignes", select: "factPresetSelect", addBtn: "factAddRow",
+    get: () => factLignes, onChange: onFactChange
+  });
+  maybeRestoreDraft("facture");
+  factEditor.render();
+}
+
+function onFactChange() {
+  renderTotals("factTotals", factLignes);
   updateFacturePreview();
 }
 
 function resetFacture() {
   factLignes = [];
-  ["f-nom","f-email","f-tel","f-adresse","f-notes"].forEach(id => document.getElementById(id).value = "");
+  FACT_FIELDS.forEach(id => document.getElementById(id).value = "");
+  clearDraft("facture");
   initFacture();
 }
 
-function renderFactLignes() {
-  const tbody = document.getElementById("factLignes");
-  tbody.innerHTML = "";
-  factLignes.forEach((l, i) => {
-    const u = l.unit || "h";
-    const total = ((parseFloat(l.heures)||0) * (parseFloat(l.prix)||0)).toFixed(2);
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td><input class="prest-desc" value="${escapeHtml(l.desc)}" oninput="factLignes[${i}].desc=this.value;updateFacturePreview()"></td>
-      <td><input type="number" class="num" value="${l.heures}" min="0" step="0.5" style="width:58px" oninput="factLignes[${i}].heures=parseFloat(this.value)||0;renderFactLignes()"></td>
-      <td>${unitSel(i, u, "factLignes", "updateFacturePreview")}</td>
-      <td><input type="number" class="num" value="${l.prix}" min="0" step="0.5" style="width:70px" oninput="factLignes[${i}].prix=parseFloat(this.value)||0;renderFactLignes()"></td>
-      <td class="td-total">${total} €</td>
-      <td><button class="btn-del-row" onclick="factLignes.splice(${i},1);renderFactLignes()" ${factLignes.length===1?"disabled":""}>✕</button></td>`;
-    tbody.appendChild(tr);
-  });
-  const subtotal = factLignes.reduce((s,l) => s + l.heures*l.prix, 0);
-  document.getElementById("factTotals").innerHTML = `
-    <div class="total-line"><span>Sous-total HT</span><span>${subtotal.toFixed(2)} €</span></div>
-    <div class="total-line main"><span>Total TTC</span><span>${subtotal.toFixed(2)} €</span></div>`;
-  updateFacturePreview();
-}
-
-function addFactLigne() { factLignes.push({ desc: "", heures: 1, prix: 20, unit: "h" }); renderFactLignes(); }
-
-function addFactPreset(sel) {
-  if (!sel.value) return;
-  const [desc, heures, prix, unit] = sel.value.split("|");
-  factLignes.push({ desc, heures: parseFloat(heures), prix: parseFloat(prix), unit: unit||"h" });
-  renderFactLignes();
-  sel.value = "";
+function factureData() {
+  return {
+    kind: "facture",
+    num:      document.getElementById("f-num").value || "—",
+    date1:    document.getElementById("f-date").value,
+    date2:    document.getElementById("f-echeance").value,
+    date1Txt: fmtDateFr(document.getElementById("f-date").value),
+    date2Txt: fmtDateFr(document.getElementById("f-echeance").value),
+    client: {
+      nom:     document.getElementById("f-nom").value.trim(),
+      email:   document.getElementById("f-email").value.trim(),
+      tel:     document.getElementById("f-tel").value.trim(),
+      adresse: document.getElementById("f-adresse").value.trim()
+    },
+    periode: document.getElementById("f-periode").value.trim(),
+    ref:     document.getElementById("f-ref").value.trim(),
+    notes:   document.getElementById("f-notes").value.trim(),
+    lignes:  factLignes
+  };
 }
 
 function updateFacturePreview() {
-  const num      = document.getElementById("f-num").value;
-  const date     = document.getElementById("f-date").value;
-  const echeance = document.getElementById("f-echeance").value;
-  const nom      = document.getElementById("f-nom").value || "—";
-  const email    = document.getElementById("f-email").value;
-  const tel      = document.getElementById("f-tel").value;
-  const adresse  = document.getElementById("f-adresse").value;
-  const notes    = document.getElementById("f-notes").value;
-  const subtotal = factLignes.reduce((s,l) => s + l.heures*l.prix, 0);
-  const rows     = factLignes.map(l => `<tr><td style="padding:6px 8px">${escapeHtml(l.desc)}</td><td style="text-align:right;padding:6px 8px">${l.heures} ${escapeHtml(l.unit||"h")}</td><td style="text-align:right;padding:6px 8px">${parseFloat(l.prix).toFixed(2)} €</td><td style="text-align:right;font-weight:600;padding:6px 8px">${((parseFloat(l.heures)||0)*(parseFloat(l.prix)||0)).toFixed(2)} €</td></tr>`).join("");
-  document.getElementById("facturePreview").innerHTML = `
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px">
-      <div><div style="font-size:20px;font-weight:900;color:#0f172a;letter-spacing:-1px">FACTURE</div><div style="font-size:13px;font-weight:700;color:#0a6fd4">${escapeHtml(num)}</div></div>
-      <div style="text-align:right;font-size:9px;color:#475569"><div style="font-weight:700;font-size:11px;color:#0f172a">Domi Clean</div><div>Île-de-France</div><div>domicleanidf@gmail.com</div></div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;font-size:9px">
-      <div style="background:#f8fafc;border-radius:6px;padding:10px"><div style="font-weight:700;margin-bottom:4px;color:#0f172a">FACTURÉ À</div><div>${escapeHtml(nom)}</div>${adresse?`<div>${escapeHtml(adresse)}</div>`:""}${email?`<div>${escapeHtml(email)}</div>`:""}${tel?`<div>${escapeHtml(tel)}</div>`:""}</div>
-      <div style="background:#f8fafc;border-radius:6px;padding:10px;text-align:right"><div style="font-weight:700;margin-bottom:4px;color:#0f172a">DATES</div><div>Émission : ${fmtDateFr(date)}</div><div>Échéance : ${fmtDateFr(echeance)}</div></div>
-    </div>
-    <table style="width:100%;border-collapse:collapse;font-size:9px;margin-bottom:12px">
-      <thead><tr style="background:#0a6fd4;color:#fff"><th style="padding:7px 8px;text-align:left">Prestation</th><th style="padding:7px 8px;text-align:right">Qté</th><th style="padding:7px 8px;text-align:right">Prix unit.</th><th style="padding:7px 8px;text-align:right">Montant</th></tr></thead>
-      <tbody>${rows}</tbody>
-    </table>
-    <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
-      <div style="background:#0f172a;color:#fff;padding:10px 18px;border-radius:7px;font-size:11px"><span style="color:#94a3b8">TOTAL TTC : </span><strong style="font-size:15px">${subtotal.toFixed(2)} €</strong></div>
-    </div>
-    ${notes?`<div style="font-size:8px;color:#475569;margin-bottom:10px;padding:8px;background:#f1f5f9;border-radius:5px">${escapeHtml(notes)}</div>`:""}
-    <div style="font-size:7.5px;color:#64748b;border-top:1px solid #e2e8f0;padding-top:8px">Paiement à réception de facture. Règlement par virement bancaire ou espèces. TVA non applicable, art. 293 B du CGI.</div>`;
+  renderDocInto("facturePreview", docHTML(factureData()));
+  saveDraft("facture");
+}
+
+function validerFacture() {
+  const d = factureData();
+  const manque = [];
+  if (!d.client.nom) manque.push("le nom du client");
+  if (!factLignes.length) manque.push("au moins une prestation");
+  if (manque.length) { toast("Il manque " + manque.join(", "), "error"); return null; }
+  return d;
 }
 
 async function downloadFacturePDF() {
-  const el = document.getElementById("facturePreview");
-  const num = document.getElementById("f-num").value;
-  const opt = { margin:[12,12,12,12], filename:`${num}.pdf`, image:{type:"jpeg",quality:.97}, html2canvas:{scale:2,useCORS:true,backgroundColor:"#ffffff"}, jsPDF:{unit:"mm",format:"a4",orientation:"portrait"} };
-  await html2pdf().set(opt).from(el).save();
+  const d = validerFacture();
+  if (!d) return;
+  if (!await confirmerLignesA0(factLignes)) return;
+  try {
+    await makePdf(docHTML(d), d.num + ".pdf", "Facture " + d.num + " — " + ENTREPRISE.nom, "save");
+    toast("✅ PDF téléchargé");
+  } catch (err) {
+    console.error(err);
+    toast("❌ Échec de la génération du PDF", "error");
+  }
 }
 
 async function saveFacture() {
-  const btn = document.getElementById("btnSaveFacture");
-  btn.disabled = true; btn.textContent = "Enregistrement…";
-  const num      = document.getElementById("f-num").value;
-  const clientNom     = document.getElementById("f-nom").value;
-  const clientEmail   = document.getElementById("f-email").value;
-  const clientTel     = document.getElementById("f-tel").value;
-  const clientAdresse = document.getElementById("f-adresse").value;
-  const notes    = document.getElementById("f-notes").value;
-  const echeance = document.getElementById("f-echeance").value;
-  const total    = factLignes.reduce((s,l) => s + l.heures*l.prix, 0);
-  if (!clientNom) { toast("Nom du client requis", "error"); btn.disabled=false; btn.textContent="💾 Enregistrer"; return; }
-  try {
-    const el  = document.getElementById("facturePreview");
-    const opt = { margin:[12,12,12,12], filename:`${num}.pdf`, image:{type:"jpeg",quality:.97}, html2canvas:{scale:2,useCORS:true,backgroundColor:"#ffffff"}, jsPDF:{unit:"mm",format:"a4",orientation:"portrait"} };
-    const blob = await html2pdf().set(opt).from(el).outputPdf("blob");
-    const path = `factures/${num}.pdf`;
-    const { error: upErr } = await sb.storage.from("documents").upload(path, blob, { contentType:"application/pdf", upsert:true });
-    if (upErr) throw upErr;
-    const { data: urlData } = sb.storage.from("documents").getPublicUrl(path);
-    await sb.from("factures").insert({ numero:num, client_nom:clientNom, client_email:clientEmail, client_tel:clientTel, client_adresse:clientAdresse, lignes:factLignes, total:parseFloat(total.toFixed(2)), notes, date_echeance:echeance, pdf_url:urlData.publicUrl, statut:"envoyée" });
-    await upsertClient(clientNom, clientEmail, clientTel, clientAdresse);
+  const d = validerFacture();
+  if (!d) return;
+  if (!await confirmerLignesA0(factLignes)) return;
 
-    // Envoyer la facture par email si un email est renseigné
-    if (clientEmail) {
+  const btn = document.getElementById("btnSaveFacture");
+  btn.disabled = true; btn.textContent = "⏳ Enregistrement…";
+  const total = computeTotals(factLignes).total;
+  let enregistre = false;
+
+  try {
+    const blob = await makePdf(docHTML(d), d.num + ".pdf", "Facture " + d.num + " — " + ENTREPRISE.nom, "blob");
+
+    const path = "factures/" + d.num + ".pdf";
+    let up = await sb.storage.from("documents").upload(path, blob, { contentType: "application/pdf", upsert: false });
+    if (up.error) {
+      const dejaLa = /exists|duplicate/i.test(up.error.message || "");
+      if (!dejaLa) throw new Error("Dépôt du PDF impossible — " + up.error.message);
+      const ecraser = await showConfirm("Numéro déjà utilisé",
+        "Un PDF existe déjà pour la facture " + d.num + ". L'écraser ?", "Écraser");
+      if (!ecraser) throw new Error("__annule__");
+      up = await sb.storage.from("documents").upload(path, blob, { contentType: "application/pdf", upsert: true });
+      if (up.error) throw new Error("Dépôt du PDF impossible — " + up.error.message);
+    }
+    const pdfUrl = sb.storage.from("documents").getPublicUrl(path).data.publicUrl;
+
+    const ins = await sb.from("factures").insert({
+      numero:         d.num,
+      client_nom:     d.client.nom,
+      client_email:   d.client.email,
+      client_tel:     d.client.tel,
+      client_adresse: d.client.adresse,
+      lignes:         factLignes,
+      total:          parseFloat(total.toFixed(2)),
+      notes:          buildNotes({ periode: d.periode, ref: d.ref }, d.notes),
+      date_echeance:  d.date2,
+      pdf_url:        pdfUrl,
+      statut:         "envoyée"
+    });
+    if (ins.error) throw new Error("Enregistrement en base impossible — " + ins.error.message);
+    enregistre = true;
+
+    await upsertClient(d.client.nom, d.client.email, d.client.tel, d.client.adresse);
+
+    if (d.client.email) {
       try {
         await emailjs.send("service_hwm2hla", "template_bkhdovi", {
-          to_name:    clientNom,
-          to_email:   clientEmail,
+          to_name:    d.client.nom,
+          to_email:   d.client.email,
           doc_type:   "Facture",
-          doc_num:    num,
-          doc_url:    urlData.publicUrl,
-          total:      total.toFixed(2) + " €",
-          date_label: "Échéance paiement",
-          date_val:   fmtDateFr(echeance),
+          doc_num:    d.num,
+          doc_url:    pdfUrl,
+          total:      fmtEUR(total),
+          date_label: "Échéance de paiement",
+          date_val:   d.date2Txt
         });
-        toast(`✅ Facture ${num} enregistrée et envoyée à ${clientEmail}`);
-      } catch(emailErr) {
-        toast(`📄 Facture ${num} enregistrée — échec envoi email`, "info");
+        toast(`✅ Facture ${d.num} enregistrée et envoyée à ${d.client.email}`);
+      } catch (emailErr) {
+        toast(`📄 Facture ${d.num} enregistrée, mais l'email n'est pas parti.`, "error");
       }
     } else {
-      toast(`✅ Facture ${num} enregistrée`);
+      toast(`✅ Facture ${d.num} enregistrée`);
     }
     loadFactureHistory();
     resetFacture();
-  } catch(err) {
-    toast("❌ Erreur : " + err.message, "error");
+
+  } catch (err) {
+    console.error(err);
+    if (err && err.message === "__annule__")      toast("Enregistrement annulé", "info");
+    else if (enregistre)                          toast("📄 Facture enregistrée, mais une étape a échoué : " + err.message, "error");
+    else                                          toast("❌ " + (err.message || "Erreur") + " — la facture n'a PAS été enregistrée.", "error");
   }
   btn.disabled = false; btn.textContent = "📧 Enregistrer & Envoyer";
 }
@@ -1947,55 +2846,141 @@ async function saveFacture() {
 async function loadFactureHistory() {
   const list = document.getElementById("factHistList");
   if (!list) return;
-  let items = [];
   try {
-    const { data } = await sb.from("factures").select("*").order("id", { ascending: false });
-    items = data || [];
-  } catch(e) {}
-  const paid    = items.filter(f => f.statut === "payée").length;
-  const pending = items.filter(f => f.statut !== "payée").length;
-  document.getElementById("statFactures").textContent = items.length;
-  document.getElementById("statFactPaid").textContent = paid;
-  document.getElementById("statFactPending").textContent = pending;
-  if (!items.length) { list.innerHTML = `<div class="files-empty"><div class="empty-icon">📭</div><p>Aucune facture</p></div>`; return; }
-  const sc = { "envoyée":"sent", "payée":"paid", "en retard":"late" };
-  const sl = { "envoyée":"Envoyée", "payée":"Payée ✓", "en retard":"En retard ⚠️" };
-  list.innerHTML = "";
-  items.forEach(f => {
-    const div = document.createElement("div");
-    div.className = "devis-hist-item";
-    div.innerHTML = `
-      <div class="dhi-num" style="color:#a78bfa">${escapeHtml(f.numero)}</div>
-      <div class="dhi-client">${escapeHtml(f.client_nom)||"—"}<br><span style="font-size:.72rem;color:var(--muted)">${escapeHtml(f.client_email)||""}</span></div>
-      <div class="dhi-total">${f.total!=null?parseFloat(f.total).toFixed(2)+" €":"—"}</div>
-      <div class="dhi-date">${fmtDate(f.created_at)}</div>
-      <div class="status-badge ${sc[f.statut]||"draft"}">${sl[f.statut]||f.statut}</div>
-      <div class="dhi-actions">
-        ${f.statut !== "payée"    ? `<button class="act-btn cp" title="Marquer comme payée" style="padding:5px 9px;font-size:.73rem;background:rgba(34,197,94,.1);color:#4ade80" onclick="setFactureStatut(${f.id},'payée')">✓ Payée</button>` : ""}
-        ${f.statut !== "en retard"? `<button class="act-btn" title="Marquer en retard de paiement" style="padding:5px 9px;font-size:.73rem;background:rgba(239,68,68,.1);color:#f87171" onclick="setFactureStatut(${f.id},'en retard')">⚠️ Retard</button>` : ""}
-        ${f.pdf_url ? `<a href="${f.pdf_url}" target="_blank" class="act-btn ghost" title="Télécharger le PDF" style="padding:5px 9px;font-size:.73rem;background:var(--surf2);color:var(--text)">⬇️ PDF</a>` : ""}
-        <button class="act-btn del" title="Supprimer cette facture" style="padding:5px 9px;font-size:.73rem" onclick="deleteFacture(${f.id},'${f.numero}','${f.pdf_url||""}')">🗑️</button>
-      </div>`;
-    list.appendChild(div);
-  });
+    const { data, error } = await sb.from("factures").select("*").order("id", { ascending: false });
+    if (error) { list.innerHTML = `<div class="err-box"><b>Chargement impossible.</b><br>${escapeHtml(error.message)}</div>`; return; }
+    factItems = data || [];
+  } catch (e) {
+    list.innerHTML = `<div class="err-box"><b>Chargement impossible.</b><br>${escapeHtml(e.message)}</div>`;
+    return;
+  }
+  const impayees = factItems.filter(f => f.statut !== "payée");
+  document.getElementById("statFactures").textContent   = factItems.length;
+  document.getElementById("statFactPaid").textContent   = factItems.length - impayees.length;
+  document.getElementById("statFactPending").textContent = impayees.length;
+  renderFactureHistory();
 }
 
+function renderFactureHistory() {
+  const list = document.getElementById("factHistList");
+  const q = (document.getElementById("factSearch").value || "").toLowerCase().trim();
+  const vus = factItems
+    .map((f, i) => ({ f, i }))
+    .filter(({ f }) => factFiltre === "tous" || f.statut === factFiltre)
+    .filter(({ f }) => !q || [f.numero, f.client_nom, f.client_email].some(v => String(v || "").toLowerCase().includes(q)));
+
+  document.getElementById("factCount").textContent =
+    vus.length ? vus.length + " facture" + (vus.length > 1 ? "s" : "") + (vus.length !== factItems.length ? " sur " + factItems.length : "") : "";
+
+  if (!vus.length) {
+    list.innerHTML = `<div class="files-empty"><div class="empty-icon">📭</div><p>${factItems.length ? "Aucune facture ne correspond à ce filtre" : "Aucune facture"}</p></div>`;
+    return;
+  }
+  const sc = { "envoyée": "sent", "payée": "paid", "en retard": "late" };
+  const sl = { "envoyée": "Envoyée", "payée": "Payée ✓", "en retard": "En retard ⚠️" };
+  list.innerHTML = vus.map(({ f, i }) => {
+    const b = (act, label, titre, style) =>
+      `<button class="act-btn" data-fact="${act}" data-i="${i}" title="${escapeHtml(titre)}" style="padding:5px 9px;font-size:.73rem;${style}">${label}</button>`;
+    return `<div class="devis-hist-item">
+      <div class="dhi-num" style="color:#a78bfa">${escapeHtml(f.numero)}</div>
+      <div class="dhi-client">${escapeHtml(f.client_nom) || "—"}<br><span style="font-size:.72rem;color:var(--muted)">${escapeHtml(f.client_email) || ""}</span></div>
+      <div class="dhi-total">${f.total != null ? fmtEUR(f.total) : "—"}</div>
+      <div class="dhi-date">${fmtDate(f.created_at)}</div>
+      <div class="status-badge ${sc[f.statut] || "draft"}">${escapeHtml(sl[f.statut] || f.statut)}</div>
+      <div class="dhi-actions">
+        ${f.statut !== "payée"     ? b("payee",  "✓ Payée",  "Marquer comme payée",           "background:rgba(34,197,94,.1);color:#4ade80") : ""}
+        ${f.statut !== "en retard" ? b("retard", "⚠️ Retard", "Marquer en retard de paiement", "background:rgba(239,68,68,.1);color:#f87171") : ""}
+        ${f.pdf_url ? `<a href="${escapeHtml(f.pdf_url)}" target="_blank" rel="noopener" class="act-btn" title="Ouvrir le PDF" style="padding:5px 9px;font-size:.73rem;background:var(--surf2);color:var(--text)">⬇️ PDF</a>` : ""}
+        ${b("supprime", "🗑️", "Supprimer cette facture", "background:rgba(239,68,68,.08);color:#f87171")}
+      </div></div>`;
+  }).join("");
+}
+
+document.getElementById("factSearch").addEventListener("input", renderFactureHistory);
+document.querySelectorAll("[data-ffilter]").forEach(c => c.addEventListener("click", () => {
+  document.querySelectorAll("[data-ffilter]").forEach(x => x.classList.remove("on"));
+  c.classList.add("on");
+  factFiltre = c.dataset.ffilter;
+  renderFactureHistory();
+}));
+
+document.getElementById("factHistList").addEventListener("click", e => {
+  const btn = e.target.closest("[data-fact]");
+  if (!btn) return;
+  const f = factItems[parseInt(btn.dataset.i, 10)];
+  if (!f) return;
+  if (btn.dataset.fact === "payee")    return setFactureStatut(f.id, "payée");
+  if (btn.dataset.fact === "retard")   return setFactureStatut(f.id, "en retard");
+  if (btn.dataset.fact === "supprime") return deleteFacture(f);
+});
+
 async function setFactureStatut(id, statut) {
-  try { await sb.from("factures").update({ statut }).eq("id", id); } catch(e) { toast("❌ Erreur", "error"); return; }
+  const { error } = await sb.from("factures").update({ statut }).eq("id", id);
+  if (error) { toast("❌ Mise à jour impossible — " + error.message, "error"); return; }
   toast(statut === "payée" ? "✅ Facture marquée payée" : "⚠️ Facture marquée en retard");
   loadFactureHistory();
 }
 
-async function deleteFacture(id, num, pdfUrl) {
-  const ok = await showConfirm(`Supprimer la facture ${num} ?`);
+async function deleteFacture(f) {
+  const ok = await showConfirm(`Supprimer la facture ${f.numero} ?`,
+    "En France, une facture émise doit être conservée 10 ans et ne devrait pas être supprimée : émettez plutôt un avoir.", "Supprimer quand même");
   if (!ok) return;
-  if (pdfUrl) {
-    try { await sb.storage.from("documents").remove([`factures/${num}.pdf`]); } catch(e) {}
-  }
-  try { await sb.from("factures").delete().eq("id", id); } catch(e) {}
+  if (f.pdf_url) { try { await sb.storage.from("documents").remove([`factures/${f.numero}.pdf`]); } catch (e) {} }
+  const { error } = await sb.from("factures").delete().eq("id", f.id);
+  if (error) { toast("❌ Suppression impossible — " + error.message, "error"); return; }
   toast("🗑️ Facture supprimée");
   loadFactureHistory();
 }
+
+/* ══ BROUILLONS ═══════════════════════════════════════════════════════════
+   Un devis à moitié saisi survit désormais à un rechargement d'onglet.
+   Stockage local uniquement, effacé dès que le document est envoyé.
+   ═══════════════════════════════════════════════════════════════════════════ */
+const DRAFTS = {
+  devis:   { cle: "domiclean.brouillon.devis",   champs: DEVIS_FIELDS, get: () => lignes,     set: v => { lignes = v; },     bar: "devisDraftBar", clr: "devisDraftClear", reset: () => resetDevis() },
+  facture: { cle: "domiclean.brouillon.facture", champs: FACT_FIELDS,  get: () => factLignes, set: v => { factLignes = v; }, bar: "factDraftBar",  clr: "factDraftClear",  reset: () => resetFacture() }
+};
+const _draftTimers = {};
+let _draftRestaure = {};
+
+function saveDraft(kind) {
+  const d = DRAFTS[kind];
+  if (!d) return;
+  clearTimeout(_draftTimers[kind]);
+  _draftTimers[kind] = setTimeout(() => {
+    try {
+      const champs = {};
+      d.champs.forEach(id => { const el = document.getElementById(id); if (el) champs[id] = el.value; });
+      const vide = !d.get().length && Object.keys(champs).every(k => !champs[k].trim());
+      if (vide) { localStorage.removeItem(d.cle); return; }
+      localStorage.setItem(d.cle, JSON.stringify({ champs, lignes: d.get() }));
+    } catch (e) {}
+  }, 400);
+}
+function clearDraft(kind) {
+  const d = DRAFTS[kind];
+  if (!d) return;
+  clearTimeout(_draftTimers[kind]);
+  try { localStorage.removeItem(d.cle); } catch (e) {}
+  const bar = document.getElementById(d.bar);
+  if (bar) bar.classList.remove("show");
+}
+function maybeRestoreDraft(kind) {
+  const d = DRAFTS[kind];
+  if (!d || _draftRestaure[kind]) return;
+  _draftRestaure[kind] = true;
+  let brouillon = null;
+  try { brouillon = JSON.parse(localStorage.getItem(d.cle) || "null"); } catch (e) {}
+  if (!brouillon) return;
+  d.champs.forEach(id => { const el = document.getElementById(id); if (el && brouillon.champs && brouillon.champs[id] != null) el.value = brouillon.champs[id]; });
+  d.set(normLignes(brouillon.lignes));
+  const bar = document.getElementById(d.bar);
+  if (bar) bar.classList.add("show");
+}
+Object.keys(DRAFTS).forEach(kind => {
+  const btn = document.getElementById(DRAFTS[kind].clr);
+  if (btn) btn.addEventListener("click", () => { DRAFTS[kind].reset(); toast("Formulaire réinitialisé", "info"); });
+});
 </script>
 </body>
 </html>

@@ -403,7 +403,9 @@
     .tarif-notes b{color:var(--text)}
 
     /* ── PARAMÈTRES ── */
-    .param-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;align-items:start}
+    .param-layout{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:24px;align-items:start}
+    @media(max-width:1240px){.param-layout{grid-template-columns:1fr}}
+    .param-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;align-items:start}
     .param-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px}
     .param-card h3{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:0 0 16px;display:flex;align-items:center;gap:8px}
     .param-card .field label .req{color:#f87171;margin-left:3px}
@@ -592,6 +594,7 @@
             <li><strong>Enregistrement</strong> — les paramètres sont conservés pour les fois suivantes : dans Supabase s'ils peuvent y être écrits (vous les retrouvez sur tous vos appareils), sinon dans ce navigateur.</li>
             <li><strong>Synchroniser</strong> — dépliez le bloc SQL en bas de l'écran Paramètres et exécutez-le une fois dans Supabase → SQL Editor pour créer la table <code>parametres</code>.</li>
             <li><strong>Logo</strong> — une image PNG/JPEG de 200 Ko max s'ajoute en haut des devis et factures.</li>
+            <li><strong>Aperçu en direct</strong> — le document d'exemple à droite suit votre saisie caractère par caractère, sans attendre l'enregistrement. Basculez entre « Devis » et « Facture » pour vérifier les deux jeux de mentions.</li>
             <li>Les champs laissés vides ne sont simplement pas imprimés : rien n'est inventé à votre place.</li>
           </ul>
         </div>
@@ -1043,17 +1046,34 @@
         </div>
 
         <div class="param-status" id="paramStatus"></div>
-        <div class="param-grid" id="paramGrid"></div>
 
-        <div class="param-bar">
-          <button class="btn-action blue" id="paramSave2">💾 Enregistrer les paramètres</button>
-          <span class="param-hint" style="margin:0">Ces informations sont réutilisées sur tous les documents suivants.</span>
+        <div class="param-layout">
+          <div>
+            <div class="param-grid" id="paramGrid"></div>
+
+            <div class="param-bar">
+              <button class="btn-action blue" id="paramSave2">💾 Enregistrer les paramètres</button>
+              <span class="param-hint" style="margin:0">Ces informations sont réutilisées sur tous les documents suivants.</span>
+            </div>
+
+            <details class="sql-block">
+              <summary>🗄️ Synchroniser entre plusieurs appareils — SQL à exécuter une fois dans Supabase</summary>
+              <pre id="paramSql"></pre>
+            </details>
+          </div>
+
+          <div class="preview-sticky">
+            <div class="section-title" style="justify-content:space-between">
+              <span>👁️ Aperçu en direct</span>
+              <span style="display:flex;gap:6px">
+                <button class="chip on" data-apercu="devis">Devis</button>
+                <button class="chip" data-apercu="facture">Facture</button>
+              </span>
+            </div>
+            <div class="doc-scroll" id="paramPreview"></div>
+            <div class="param-hint">Document d'exemple : le client et les prestations sont fictifs, seules vos coordonnées et vos mentions sont réelles. L'aperçu suit votre saisie sans attendre l'enregistrement.</div>
+          </div>
         </div>
-
-        <details class="sql-block">
-          <summary>🗄️ Synchroniser entre plusieurs appareils — SQL à exécuter une fois dans Supabase</summary>
-          <pre id="paramSql"></pre>
-        </details>
       </div>
 
       <!-- ══ SECTION : MESSAGES ══ -->
@@ -1375,7 +1395,7 @@ document.querySelectorAll(".nav-item[data-sec]").forEach(btn => {
     if (sec === "messages")   loadMessages();
     if (sec === "clients")    loadClients();
     if (sec === "tarifs")     renderTarifs();
-    if (sec === "parametres") renderParametres();
+    if (sec === "parametres") { renderParametres(); fitDoc("paramPreview"); }
     if (sec === "factures")   { initFacture(); loadFactureHistory(); }
     // Les aperçus A4 sont dimensionnés à l'affichage : une section masquée a une largeur nulle.
     if (sec === "devis")    fitDoc("devisPreview");
@@ -1517,15 +1537,69 @@ function renderParametres(force) {
       </div>`;
 
   renderLogoPreview();
-  grid.addEventListener("input", () => { if (!paramModifie) { paramModifie = true; majParamStatut(); } });
+  grid.addEventListener("input", () => {
+    if (!paramModifie) { paramModifie = true; majParamStatut(); }
+    apercuParametresDiffere();
+  });
+  grid.addEventListener("change", apercuParametresDiffere);
   document.getElementById("logoInput").addEventListener("change", onLogoChoisi);
   document.getElementById("logoClear").addEventListener("click", () => {
     ENTREPRISE.logoDataUri = "";
+    paramModifie = true;
     renderLogoPreview();
+    apercuParametres();
+    majParamStatut();
     toast("Logo retiré — pensez à enregistrer", "info");
   });
   majParamStatut();
+  apercuParametres();
 }
+
+/* ══ APERÇU EN DIRECT DES PARAMÈTRES ══════════════════════════════════════
+   Document d'exemple rendu avec les valeurs actuellement DANS LE FORMULAIRE,
+   pas celles enregistrées : on voit l'effet d'un SIRET, d'un IBAN ou d'un logo
+   avant même de cliquer sur Enregistrer. Les trois lignes d'exemple couvrent
+   tous les cas de mentions — service à la personne, majoration du dimanche,
+   et prestation professionnelle non éligible au crédit d'impôt.
+   ═══════════════════════════════════════════════════════════════════════════ */
+let paramApercuType = "devis";
+let _apercuTimer = null;
+
+function apercuParametresDiffere() {
+  clearTimeout(_apercuTimer);
+  _apercuTimer = setTimeout(apercuParametres, 200);
+}
+
+function apercuParametres() {
+  const wrap = document.getElementById("paramPreview");
+  if (!wrap || !document.getElementById("p-siret")) return;   // formulaire pas encore construit
+  const estDevis = paramApercuType === "devis";
+  const an = new Date().getFullYear();
+  const ex = id => TARIF_INDEX[id];
+  renderDocInto("paramPreview", docHTML({
+    kind:       paramApercuType,
+    entreprise: lireParametres(),
+    num:        (estDevis ? "DC-" : "FAC-") + an + "-000",
+    date1Txt:   fmtDateFr(isoLocal(new Date())),
+    date2Txt:   fmtDateFr(isoLocal(plusJours(estDevis ? 30 : num(document.getElementById("p-delaiPaiement").value, 30)))),
+    client:     { nom: "Marie Dupont (exemple)", email: "marie.dupont@exemple.fr", tel: "06 00 00 00 00", adresse: "12 rue de la Paix, 91000 Évry-Courcouronnes" },
+    periode:    estDevis ? "tous les mardis, à partir du mois prochain" : "le mois écoulé",
+    ref:        estDevis ? "" : "DC-" + an + "-000",
+    notes:      "Exemple de note libre ajoutée au bas du document.",
+    lignes: [
+      normLigne({ desc: ex("menage").label,      detail: ex("menage").detail,      heures: 10, prix: 30, unit: "h", sap: true }),
+      normLigne({ desc: ex("nuit").label,        detail: ex("nuit").detail,        heures: 4,  prix: 40, unit: "h", maj: 25, sap: true }),
+      normLigne({ desc: ex("locaux-jour").label, detail: ex("locaux-jour").detail, heures: 6,  prix: 30, unit: "h", sap: false })
+    ]
+  }));
+}
+
+document.querySelectorAll("[data-apercu]").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll("[data-apercu]").forEach(x => x.classList.remove("on"));
+  b.classList.add("on");
+  paramApercuType = b.dataset.apercu;
+  apercuParametres();
+}));
 
 function renderLogoPreview() {
   const box = document.getElementById("logoPrev");
@@ -1546,6 +1620,7 @@ function onLogoChoisi(e) {
   const r = new FileReader();
   r.onload = () => {
     ENTREPRISE.logoDataUri = r.result;
+    paramModifie = true;
     renderLogoPreview();
     rafraichirDocuments();
     toast("Logo chargé — pensez à enregistrer", "info");
@@ -1585,11 +1660,13 @@ function lireParametres() {
   return obj;
 }
 
-/* Recalcule tout ce qui dépend des paramètres. */
+/* Recalcule tout ce qui dépend des paramètres : les deux aperçus de document,
+   l'aperçu d'exemple des paramètres, la grille tarifaire et le bandeau d'état. */
 function rafraichirDocuments() {
-  if (document.getElementById("devisPreview"))    updatePreview();
-  if (document.getElementById("facturePreview"))  updateFacturePreview();
+  if (document.getElementById("devisPreview"))   updatePreview();
+  if (document.getElementById("facturePreview")) updateFacturePreview();
   if (document.getElementById("tarifNotes") && document.getElementById("tarifNotes").innerHTML) renderTarifs();
+  apercuParametres();
   majParamStatut();
 }
 
@@ -1834,7 +1911,8 @@ document.getElementById("searchInput").addEventListener("input", function() {
    ══════════════════════════════════════════════════════════════════════════ */
 function docHTML(o) {
   const isDevis = o.kind === "devis";
-  const E = ENTREPRISE;
+  // o.entreprise permet de prévisualiser des paramètres pas encore enregistrés.
+  const E = o.entreprise || ENTREPRISE;
   const lg = o.lignes || [];
   const t = computeTotals(lg);
   const e = escapeHtml;
@@ -1959,7 +2037,7 @@ function fitDoc(wrapId) {
 let _fitTimer = null;
 window.addEventListener("resize", () => {
   clearTimeout(_fitTimer);
-  _fitTimer = setTimeout(() => { fitDoc("devisPreview"); fitDoc("facturePreview"); }, 120);
+  _fitTimer = setTimeout(() => { fitDoc("devisPreview"); fitDoc("facturePreview"); fitDoc("paramPreview"); }, 120);
 });
 
 /* ══ GÉNÉRATION PDF ═══════════════════════════════════════════════════════

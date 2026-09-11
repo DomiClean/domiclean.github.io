@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin — Domi Clean</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@4.2.1/dist/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -386,11 +386,7 @@
     .a4 .foot{margin-top:6mm;border-top:1px solid #e8edf3;padding-top:2.5mm;text-align:center;font-size:7.5pt;color:#94a3b8}
     .a4 tr,.a4 .party,.a4 .cibox,.a4 .sign{page-break-inside:avoid}
     .doc-scroll{overflow:hidden;border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,.4);background:#fff}
-    /* Le PDF est rendu à 178 mm (et non 180) avec des marges de 16 mm :
-       1 mm de sécurité de chaque côté, pour absorber les arrondis de
-       html2canvas qui faisaient mordre le document sur la marge droite. */
-    #pdfStage{position:absolute;left:-12000px;top:0;width:178mm;background:#fff;z-index:-1;opacity:1;pointer-events:none}
-    #pdfStage .a4{width:178mm}
+    #pdfStage{position:absolute;left:-12000px;top:0;width:180mm;background:#fff;z-index:-1;opacity:1;pointer-events:none}
 
     /* ── BARRE D'OUTILS HISTORIQUE ── */
     .hist-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
@@ -475,7 +471,7 @@
       .dhi-client{flex-basis:100%;order:-1}
       .tarif-grid{grid-template-columns:1fr}
     }
-    /* ── IMPRESSION RÉELLE (vectorielle, sans passer par html2pdf) ──
+    /* ── IMPRESSION NAVIGATEUR ──
        body.printing masque toute l'interface et n'imprime que #pdfStage,
        remis en flux normal à la largeur utile A4. Texte net et
        sélectionnable, sauts de page gérés par le navigateur. */
@@ -1943,9 +1939,30 @@ document.getElementById("searchInput").addEventListener("input", function() {
 /* ══════════════════════════════════════════════════════════════════════════
    MOTEUR DE DOCUMENT A4 — un seul gabarit pour le devis et la facture,
    utilisé à la fois pour l'aperçu écran et pour le PDF (WYSIWYG réel).
-   Largeur utile 180 mm ; les 15 mm de marge sont ajoutés par html2pdf, ce qui
-   garantit des marges identiques sur TOUTES les pages d'un document long.
+   Largeur utile 180 mm. Ce gabarit sert à l'aperçu écran et à l'impression
+   navigateur ; le PDF envoyé au client est tracé par le moteur vectoriel.
    ══════════════════════════════════════════════════════════════════════════ */
+/* Mentions légales en texte brut (** = gras). Utilisé tel quel par le moteur
+   PDF vectoriel, et converti en <b> pour l'aperçu écran. */
+function docMentions(o, E, t, isDevis) {
+  const e = x => String(x ?? ""), men = [];
+  men.push("**TVA non applicable, art. 293 B du code général des impôts.**");
+  if (isDevis) {
+    men.push(`Devis gratuit et sans engagement, valable jusqu'au ${e(o.date2Txt)}. La prestation débute après retour du présent devis daté et signé, revêtu de la mention manuscrite « Bon pour accord ».`);
+    men.push(`Majorations applicables : + 25 % les dimanches et jours fériés, + 100 % le 1er mai et le 25 décembre. ${e(E.fraisDeplacement)}`);
+    men.push("Paiement à réception de facture, par virement bancaire ou en espèces.");
+  } else {
+    men.push(`Prestations exécutées${o.periode ? " " + e(o.periode) : ""}. Paiement à réception, au plus tard le **${e(o.date2Txt)}**, par virement bancaire${E.iban ? " (IBAN " + e(E.iban) + (E.bic ? " — BIC " + e(E.bic) : "") + ")" : ""} ou en espèces.`);
+    men.push(`Pas d'escompte pour paiement anticipé. En cas de retard : pénalités au taux de ${e(E.penalites)}, exigibles sans rappel, et indemnité forfaitaire de ${fmtEUR(E.indemnite)} pour frais de recouvrement due par tout client professionnel (art. L441-10 et D441-5 du code de commerce).`);
+  }
+  if (t.assiette > 0) {
+    men.push(`Les prestations signalées « Crédit d'impôt 50 % » relèvent des services à la personne et ouvrent droit, pour les particuliers, à un crédit d'impôt égal à 50 % des sommes effectivement versées (art. 199 sexdecies du CGI), dans la limite des plafonds annuels en vigueur. Le montant affiché est une **estimation** donnée à titre indicatif, sous réserve de votre situation fiscale.${E.numeroSAP ? " Déclaration services à la personne n° " + e(E.numeroSAP) + "." : ""}${isDevis ? "" : " Une attestation fiscale annuelle vous sera adressée."}`);
+  }
+  if (E.assurance) men.push(`Assurance responsabilité civile professionnelle : ${e(E.assurance)}.`);
+  if (!E.siret && !isDevis) men.push("**SIRET non renseigné — facture non conforme.** Renseignez-le dans l'écran « Paramètres ».");
+  return men;
+}
+
 function docHTML(o) {
   const isDevis = o.kind === "devis";
   // o.entreprise permet de prévisualiser des paramètres pas encore enregistrés.
@@ -1983,22 +2000,10 @@ function docHTML(o) {
         <div class="tl big"><span>Coût réel estimé après crédit d'impôt</span><span>${fmtEUR(t.reste)}</span></div>
       </div>` : "";
 
-  /* ── Mentions légales, affichées seulement si elles s'appliquent ── */
-  const men = [];
-  men.push(`<p><b>TVA non applicable, art. 293 B du code général des impôts.</b></p>`);
-  if (isDevis) {
-    men.push(`<p>Devis gratuit et sans engagement, valable jusqu'au ${e(o.date2Txt)}. La prestation débute après retour du présent devis daté et signé, revêtu de la mention manuscrite « Bon pour accord ».</p>`);
-    men.push(`<p>Majorations applicables : + 25 % les dimanches et jours fériés, + 100 % le 1er mai et le 25 décembre. ${e(E.fraisDeplacement)}</p>`);
-    men.push(`<p>Paiement à réception de facture, par virement bancaire ou en espèces.</p>`);
-  } else {
-    men.push(`<p>Prestations exécutées${o.periode ? " " + e(o.periode) : ""}. Paiement à réception, au plus tard le <b>${e(o.date2Txt)}</b>, par virement bancaire${E.iban ? " (IBAN " + e(E.iban) + (E.bic ? " — BIC " + e(E.bic) : "") + ")" : ""} ou en espèces.</p>`);
-    men.push(`<p>Pas d'escompte pour paiement anticipé. En cas de retard : pénalités au taux de ${e(E.penalites)}, exigibles sans rappel, et indemnité forfaitaire de ${fmtEUR(E.indemnite)} pour frais de recouvrement due par tout client professionnel (art. L441-10 et D441-5 du code de commerce).</p>`);
-  }
-  if (t.assiette > 0) {
-    men.push(`<p>Les prestations signalées « Crédit d'impôt 50 % » relèvent des services à la personne et ouvrent droit, pour les particuliers, à un crédit d'impôt égal à 50 % des sommes effectivement versées (art. 199 sexdecies du CGI), dans la limite des plafonds annuels en vigueur. Le montant affiché est une <b>estimation</b> donnée à titre indicatif, sous réserve de votre situation fiscale.${E.numeroSAP ? " Déclaration services à la personne n° " + e(E.numeroSAP) + "." : ""}${isDevis ? "" : " Une attestation fiscale annuelle vous sera adressée."}</p>`);
-  }
-  if (E.assurance) men.push(`<p>Assurance responsabilité civile professionnelle : ${e(E.assurance)}.</p>`);
-  if (!E.siret && !isDevis) men.push(`<p style="color:#dc2626"><b>⚠️ SIRET non renseigné — facture non conforme.</b> Renseignez-le dans l'écran « ⚙️ Paramètres ».</p>`);
+  /* ── Mentions légales — source unique, partagée par l'aperçu HTML et le PDF.
+     Les segments entre **doubles astérisques** sont rendus en gras. ── */
+  const men = docMentions(o, E, t, isDevis).map(p =>
+    `<p>${escapeHtml(p).replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>")}</p>`);
 
   const pied = [E.facebook ? "Facebook : " + E.facebook : "", E.tiktok ? "TikTok : " + E.tiktok : "", E.email]
     .filter(Boolean).map(x => e(x)).join(" &nbsp;·&nbsp; ");
@@ -2077,52 +2082,436 @@ window.addEventListener("resize", () => {
   _fitTimer = setTimeout(() => { fitDoc("devisPreview"); fitDoc("facturePreview"); fitDoc("paramPreview"); }, 120);
 });
 
-/* ══ GÉNÉRATION PDF ═══════════════════════════════════════════════════════
-   Rend depuis #pdfStage à la largeur A4 réelle (et non depuis l'aperçu
-   rétréci) : texte net, marges de 15 mm sur chaque page, lignes de tableau
-   jamais coupées en deux, pagination « page n/N » ajoutée après coup.
-   ══════════════════════════════════════════════════════════════════════════ */
-async function makePdf(html, filename, footerLabel, mode) {
-  const stage = document.getElementById("pdfStage");
-  stage.innerHTML = html;
-  const node = stage.firstElementChild;
-  // Polices et images doivent être prêtes AVANT la capture, sinon le texte
-  // est mesuré avec une police de repli puis redessiné → décalages.
-  try { if (document.fonts && document.fonts.ready) await document.fonts.ready; } catch (e) {}
-  await Promise.all([...node.querySelectorAll("img")].map(img =>
-    img.complete ? Promise.resolve() : new Promise(r => { img.onload = img.onerror = r; })));
-  await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
-  const opt = {
-    margin:      [15, 16, 16, 16],
-    filename:    filename,
-    // PNG et non JPEG : le JPEG crée des artefacts de compression autour des
-    // lettres (texte noir sur blanc) — c'est ce qui rendait le PDF « sale ».
-    image:       { type: "png" },
-    // scale 3 ≈ 290 dpi ; windowWidth supprimé car il valait 794 px alors que
-    // le document fait 180 mm (≈ 680 px) → tout était rendu décalé/rogné.
-    html2canvas: { scale: 3, useCORS: true, backgroundColor: "#ffffff", scrollX: 0, scrollY: 0 },
-    jsPDF:       { unit: "mm", format: "a4", orientation: "portrait", compress: true },
-    pagebreak:   { mode: ["css", "legacy"], avoid: ["tr", ".party", ".cibox", ".sign", ".totwrap"] }
+/* Les polices intégrées de jsPDF utilisent l'encodage WinAnsi : il ne connaît
+   ni les espaces fines insécables produites par Intl.NumberFormat, ni le signe
+   moins typographique, ni les emojis. On normalise avant de tracer. */
+function sane(v) {
+  return String(v == null ? "" : v)
+    .replace(/[\u00A0\u202F\u2009\u2007]/g, " ")
+    .replace(/\u2212/g, "-")
+    .replace(/[\u2018\u2019]/g, "'")
+    .replace(/[\u201C\u201D]/g, '"')
+    .replace(/\u2026/g, "...")
+    .replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\uFE0F]/gu, "")
+    .replace(/[ \t]+/g, " ")
+    .trim();
+}
+
+const PDFC = {
+  blue:   [10, 111, 212],
+  green:  [34, 197, 94],
+  dark:   [15, 23, 42],
+  body:   [31, 41, 55],
+  slate:  [71, 85, 105],
+  mute:   [148, 163, 184],
+  line:   [232, 237, 243],
+  soft:   [248, 250, 252],
+  stripe: [251, 252, 254],
+  ciBg:   [240, 253, 244],
+  ciBd:   [187, 247, 208],
+  ciTx:   [22, 101, 52],
+  ciBig:  [20, 83, 45],
+  tagBg:  [220, 252, 231],
+  tagTx:  [21, 128, 61],
+  majBg:  [254, 243, 199],
+  majTx:  [146, 64, 14],
+  red:    [220, 38, 38],
+  white:  [255, 255, 255]
+};
+
+const PAGE_W = 210, PAGE_H = 297;
+const PM = { l: 15, r: 15, t: 15, b: 20 };
+const PW = PAGE_W - PM.l - PM.r;            // 180 mm de largeur utile
+const PCOL = { qte: 24, pu: 31, tot: 31 };
+PCOL.desc = PW - PCOL.qte - PCOL.pu - PCOL.tot;
+
+function drawDoc(doc, o) {
+  const E = o.entreprise || ENTREPRISE;
+  const lignes = o.lignes || [];
+  const t = computeTotals(lignes);
+  const isDevis = o.kind === "devis";
+  o.mentions = docMentions(o, E, t, isDevis);
+  let y = PM.t;
+
+  /* ── primitives ────────────────────────────────────────────────────── */
+  const f = (name, style, size, color) => {
+    doc.setFont(name || "helvetica", style || "normal");
+    doc.setFontSize(size);
+    doc.setTextColor.apply(doc, color || PDFC.body);
   };
-  try {
-    let w = html2pdf().set(opt).from(node).toPdf().get("pdf").then(pdf => {
-      const n = pdf.internal.getNumberOfPages();
-      for (let i = 1; i <= n; i++) {
-        pdf.setPage(i);
-        pdf.setFontSize(7.5);
-        pdf.setTextColor(150, 150, 150);
-        pdf.text(footerLabel + "  ·  page " + i + "/" + n, 105, 290, { align: "center" });
-      }
-    });
-    return mode === "blob" ? await w.outputPdf("blob") : await w.save();
-  } finally {
-    stage.innerHTML = "";
+  const fill = c => doc.setFillColor.apply(doc, c);
+  const stroke = c => doc.setDrawColor.apply(doc, c);
+
+  /* Hauteur d'une ligne de texte pour une taille en points. */
+  const lh = pt => pt * 0.3528 * 1.32;
+
+  function newPage() { doc.addPage(); y = PM.t; }
+  function need(h) { if (y + h > PAGE_H - PM.b) { newPage(); return true; } return false; }
+
+  /* Texte multi-ligne avec retour à la ligne automatique. */
+  function para(txt, x, maxW, opt) {
+    opt = opt || {};
+    const size = opt.size || 9;
+    f(null, opt.style || "normal", size, opt.color);
+    const lines = doc.splitTextToSize(sane(txt), maxW);
+    const step = opt.lead || lh(size);
+    for (const ln of lines) {
+      if (opt.paged !== false) need(step);
+      doc.text(ln, opt.align === "right" ? x + maxW : x, y + size * 0.3528 * 0.82,
+               { align: opt.align || "left" });
+      y += step;
+    }
+    return y;
   }
+
+  /* Mesure la hauteur d'un paragraphe sans le tracer. */
+  function paraH(txt, maxW, size, lead) {
+    f(null, "normal", size || 9);
+    return doc.splitTextToSize(sane(txt), maxW).length * (lead || lh(size || 9));
+  }
+
+  /* Texte à graisse mixte : les segments **entre doubles astérisques** sont
+     tracés en gras, le retour à la ligne est calculé mot par mot. */
+  function richPara(txt, x, maxW, size, color, lead) {
+    const runs = [];
+    sane(txt).split(/(\*\*[^*]+\*\*)/).forEach(seg => {
+      if (!seg) return;
+      const bold = /^\*\*/.test(seg);
+      const clean = bold ? seg.slice(2, -2) : seg;
+      clean.split(/(\s+)/).forEach(w => { if (w !== "") runs.push({ w, bold }); });
+    });
+    const step = lead || lh(size);
+    let line = [], wid = 0;
+    const flush = () => {
+      if (!line.length) return;
+      need(step);
+      let cx = x;
+      for (const r of line) {
+        f(null, r.bold ? "bold" : "normal", size, r.bold ? PDFC.slate : color);
+        doc.text(r.w, cx, y + size * 0.3528 * 0.82);
+        cx += doc.getTextWidth(r.w);
+      }
+      y += step; line = []; wid = 0;
+    };
+    for (const r of runs) {
+      f(null, r.bold ? "bold" : "normal", size);
+      const ww = doc.getTextWidth(r.w);
+      if (wid + ww > maxW && line.length) { 
+        while (line.length && /^\s+$/.test(line[line.length - 1].w)) line.pop();
+        flush();
+        if (/^\s+$/.test(r.w)) continue;
+      }
+      line.push(r); wid += ww;
+    }
+    flush();
+  }
+
+  /* ── en-tête ───────────────────────────────────────────────────────── */
+  const rightX = PM.l + PW;
+  let leftY = y, rightY = y;
+
+  if (E.logoDataUri) {
+    try {
+      const p = doc.getImageProperties(E.logoDataUri);
+      const h = 16, w = Math.min(55, h * p.width / p.height);
+      doc.addImage(E.logoDataUri, p.fileType || "PNG", PM.l, leftY, w, h);
+      leftY += h + 3;
+    } catch (e) { /* logo illisible : on continue sans */ }
+  }
+
+  f(null, "bold", 19, PDFC.blue);
+  doc.text(sane(E.nom || "Domi Clean").toUpperCase(), PM.l, leftY + 6);
+  leftY += 8;
+  if (E.baseline) {
+    f(null, "bold", 8, PDFC.slate);
+    doc.text(sane(E.baseline).toUpperCase(), PM.l, leftY + 2.2);
+    leftY += 4;
+  }
+  leftY += 2;
+
+  const emetteur = [E.formeJuridique, E.adresse, E.zone,
+                    E.tel ? "T\u00e9l. " + E.tel : "", E.email,
+                    E.siret ? "SIRET " + E.siret : "",
+                    E.numeroSAP ? "D\u00e9claration SAP n\u00b0 " + E.numeroSAP : ""].filter(Boolean);
+  f(null, "normal", 8.5, PDFC.slate);
+  for (const ln of emetteur) {
+    doc.text(doc.splitTextToSize(sane(ln), 100)[0], PM.l, leftY + 2.4);
+    leftY += 4.1;
+  }
+
+  f(null, "bold", 23, PDFC.dark);
+  doc.text(isDevis ? "DEVIS" : "FACTURE", rightX, rightY + 8, { align: "right" });
+  rightY += 12;
+  const meta = [
+    ["N\u00b0 " + o.num, true],
+    [(isDevis ? "Date d'\u00e9mission" : "Date de facture") + " : " + o.date1Txt, false],
+    [(isDevis ? "Valable jusqu'au" : "\u00c9ch\u00e9ance de paiement") + " : " + o.date2Txt, false]
+  ];
+  if (!isDevis && o.ref) meta.push(["R\u00e9f. devis : " + o.ref, false]);
+  for (const [txt, bold] of meta) {
+    f(null, bold ? "bold" : "normal", 9, bold ? PDFC.dark : PDFC.slate);
+    doc.text(sane(txt), rightX, rightY + 2.6, { align: "right" });
+    rightY += 4.5;
+  }
+
+  y = Math.max(leftY, rightY) + 5;
+
+  /* filet dégradé bleu → vert */
+  for (let i = 0; i < 90; i++) {
+    const k = i / 89;
+    doc.setFillColor(Math.round(PDFC.blue[0] + (PDFC.green[0] - PDFC.blue[0]) * k),
+                     Math.round(PDFC.blue[1] + (PDFC.green[1] - PDFC.blue[1]) * k),
+                     Math.round(PDFC.blue[2] + (PDFC.green[2] - PDFC.blue[2]) * k));
+    doc.rect(PM.l + i * (PW / 90), y, PW / 90 + 0.1, 0.9, "F");
+  }
+  y += 6;
+
+  /* ── encadrés client / période ──────────────────────────────────────── */
+  const boxes = [{
+    title: isDevis ? "DEVIS \u00c9TABLI POUR" : "FACTUR\u00c9 \u00c0",
+    name: o.client.nom || "-",
+    lines: [o.client.adresse, o.client.email, o.client.tel].filter(Boolean)
+  }];
+  if (o.periode) boxes.push({
+    title: isDevis ? "INTERVENTION PR\u00c9VUE" : "P\u00c9RIODE D'EX\u00c9CUTION",
+    name: o.periode, lines: [], small: true
+  });
+
+  const bw = boxes.length > 1 ? (PW - 5) / 2 : PW;
+  let bh = 0;
+  for (const b of boxes) {
+    let h = 4 + 3 + paraH(b.name, bw - 9, b.small ? 9.5 : 11, lh(11));
+    for (const l of b.lines) h += paraH(l, bw - 9, 9);
+    bh = Math.max(bh, h + 4);
+  }
+  need(bh + 6);
+  boxes.forEach((b, i) => {
+    const bx = PM.l + i * (bw + 5);
+    fill(PDFC.soft); stroke(PDFC.line); doc.setLineWidth(0.2);
+    doc.roundedRect(bx, y, bw, bh, 2, 2, "FD");
+    const save = y;
+    y += 4;
+    f(null, "bold", 7.5, PDFC.mute);
+    doc.text(sane(b.title), bx + 4.5, y);
+    y += 3.4;
+    para(b.name, bx + 4.5, bw - 9,
+         { size: b.small ? 9.5 : 11, style: "bold", color: PDFC.dark, lead: lh(11), paged: false });
+    for (const l of b.lines) para(l, bx + 4.5, bw - 9, { size: 9, color: PDFC.slate, paged: false });
+    y = save;
+  });
+  y += bh + 6;
+
+  /* ── tableau des prestations ────────────────────────────────────────── */
+  const xQ = PM.l + PCOL.desc, xP = xQ + PCOL.qte, xT = xP + PCOL.pu;
+  function tableHead() {
+    fill(PDFC.dark);
+    doc.rect(PM.l, y, PW, 7, "F");
+    f(null, "bold", 7.5, PDFC.white);
+    doc.text("PRESTATION", PM.l + 3, y + 4.6);
+    doc.text("QUANTIT\u00c9", xQ + PCOL.qte / 2, y + 4.6, { align: "center" });
+    doc.text("PRIX UNITAIRE", xP + PCOL.pu - 3, y + 4.6, { align: "right" });
+    doc.text("MONTANT", xT + PCOL.tot - 3, y + 4.6, { align: "right" });
+    y += 7;
+  }
+  need(20); tableHead();
+
+  if (!lignes.length) {
+    f(null, "normal", 9.5, PDFC.mute);
+    doc.text("Aucune prestation", PM.l + PW / 2, y + 6, { align: "center" });
+    y += 12;
+  }
+
+  lignes.forEach((l, idx) => {
+    f(null, "bold", 9.5);
+    const dLines = doc.splitTextToSize(sane(l.desc) || "-", PCOL.desc - 6);
+    const sLines = l.detail ? (f(null, "normal", 8), doc.splitTextToSize(sane(l.detail), PCOL.desc - 6)) : [];
+    const tags = [];
+    if (l.maj && MAJ_LABEL[l.maj]) tags.push({ txt: MAJ_LABEL[l.maj], bg: PDFC.majBg, tx: PDFC.majTx });
+    if (l.sap) tags.push({ txt: "Cr\u00e9dit d'imp\u00f4t 50 %", bg: PDFC.tagBg, tx: PDFC.tagTx });
+    const rh = 2.6 + dLines.length * lh(9.5) + sLines.length * lh(8) + (tags.length ? 5 : 0) + 2.6;
+
+    if (y + rh > PAGE_H - PM.b) { newPage(); tableHead(); }
+
+    if (idx % 2 === 1) { fill(PDFC.stripe); doc.rect(PM.l, y, PW, rh, "F"); }
+    let ly = y + 2.6;
+    f(null, "bold", 9.5, PDFC.dark);
+    for (const ln of dLines) { doc.text(ln, PM.l + 3, ly + 2.7); ly += lh(9.5); }
+    f(null, "normal", 8, PDFC.slate);
+    for (const ln of sLines) { doc.text(ln, PM.l + 3, ly + 2.3); ly += lh(8); }
+    if (tags.length) {
+      let tx = PM.l + 3;
+      for (const tg of tags) {
+        f(null, "bold", 7, tg.tx);
+        const tw = doc.getTextWidth(sane(tg.txt)) + 3;
+        fill(tg.bg); doc.roundedRect(tx, ly + 0.4, tw, 3.8, 1.2, 1.2, "F");
+        doc.text(sane(tg.txt), tx + 1.5, ly + 3);
+        tx += tw + 2;
+      }
+      ly += 5;
+    }
+    f(null, "normal", 9.5, PDFC.body);
+    doc.text(sane(fmtQte(l.heures) + " " + l.unit), xQ + PCOL.qte / 2, y + 5.3, { align: "center" });
+    doc.text(sane(fmtEUR(puEff(l))), xP + PCOL.pu - 3, y + 5.3, { align: "right" });
+    f(null, "bold", 9.5, PDFC.dark);
+    doc.text(sane(fmtEUR(ligneTotal(l))), xT + PCOL.tot - 3, y + 5.3, { align: "right" });
+
+    y += rh;
+    stroke(PDFC.line); doc.setLineWidth(0.2);
+    doc.line(PM.l, y, PM.l + PW, y);
+  });
+  y += 5;
+
+  /* ── totaux ─────────────────────────────────────────────────────────── */
+  const tw = 88, tx0 = PM.l + PW - tw;
+  const totLines = [];
+  if (t.majorations) {
+    totLines.push(["Sous-total avant majorations", fmtEUR(t.base), false]);
+    totLines.push(["Majorations dimanche / jour f\u00e9ri\u00e9", "+ " + fmtEUR(t.majorations), false]);
+  }
+  const ciH = t.assiette > 0 ? 22 : 0;
+  need(totLines.length * 5 + 14 + ciH);
+
+  for (const [lab, val] of totLines) {
+    f(null, "normal", 9.5, PDFC.slate);
+    doc.text(sane(lab), tx0, y + 3);
+    doc.text(sane(val), tx0 + tw, y + 3, { align: "right" });
+    y += 5.2;
+  }
+  y += 1.5;
+  stroke(PDFC.dark); doc.setLineWidth(0.5);
+  doc.line(tx0, y, tx0 + tw, y);
+  y += 2.5;
+  f(null, "bold", 13, PDFC.dark);
+  doc.text(isDevis ? "TOTAL \u00c0 PAYER" : "NET \u00c0 PAYER", tx0, y + 4);
+  doc.text(sane(fmtEUR(t.total)), tx0 + tw, y + 4, { align: "right" });
+  y += 7;
+  f(null, "normal", 8, PDFC.slate);
+  doc.text("TVA non applicable, art. 293 B du CGI", tx0 + tw, y + 2.4, { align: "right" });
+  y += 5;
+
+  if (t.assiette > 0) {
+    const bigLab = "Co\u00fbt r\u00e9el estim\u00e9 apr\u00e8s cr\u00e9dit d'imp\u00f4t";
+    const bigVal = fmtEUR(t.reste);
+    f(null, "bold", 11.5);
+    const bigValW = doc.getTextWidth(sane(bigVal));
+    f(null, "bold", 10);
+    const bigLines = doc.splitTextToSize(sane(bigLab), tw - 7 - bigValW - 3);
+    const h = 4 + 4.6 * 2 + 2.5 + bigLines.length * lh(10) + 3;
+    fill(PDFC.ciBg); stroke(PDFC.ciBd); doc.setLineWidth(0.2);
+    doc.roundedRect(tx0, y, tw, h, 2, 2, "FD");
+    let cy = y + 4;
+    for (const [lab, val] of [["Prestations \u00e9ligibles au cr\u00e9dit d'imp\u00f4t", fmtEUR(t.assiette)],
+                              ["Cr\u00e9dit d'imp\u00f4t estim\u00e9 (50 %)", "- " + fmtEUR(t.credit)]]) {
+      f(null, "normal", 9, PDFC.ciTx);
+      doc.text(sane(lab), tx0 + 3.5, cy + 3);
+      doc.text(sane(val), tx0 + tw - 3.5, cy + 3, { align: "right" });
+      cy += 4.6;
+    }
+    stroke([134, 239, 172]); doc.setLineWidth(0.2);
+    doc.line(tx0 + 3, cy + 0.5, tx0 + tw - 3, cy + 0.5);
+    cy += 2.5;
+    f(null, "bold", 11.5, PDFC.ciBig);
+    doc.text(sane(bigVal), tx0 + tw - 3.5, cy + 3.4, { align: "right" });
+    f(null, "bold", 10, PDFC.ciBig);
+    bigLines.forEach((ln, i) => doc.text(ln, tx0 + 3.5, cy + 3.2 + i * lh(10)));
+    y += h + 2;
+  }
+  y += 4;
+
+  /* ── notes ──────────────────────────────────────────────────────────── */
+  if (o.notes) {
+    const h = paraH(o.notes, PW - 10, 9) + 6;
+    need(h + 4);
+    fill(PDFC.soft); doc.rect(PM.l, y, PW, h, "F");
+    fill(PDFC.blue); doc.rect(PM.l, y, 0.9, h, "F");
+    const save = y; y += 3;
+    para(o.notes, PM.l + 5, PW - 10, { size: 9, color: PDFC.slate, paged: false });
+    y = save + h + 5;
+  }
+
+  /* ── mentions légales ───────────────────────────────────────────────── */
+  need(14);
+  stroke(PDFC.line); doc.setLineWidth(0.2);
+  doc.line(PM.l, y, PM.l + PW, y);
+  y += 3.5;
+  for (const p of o.mentions) {
+    richPara(p, PM.l, PW, 7.8, PDFC.slate, lh(7.8) * 1.15);
+    y += 1.4;
+  }
+
+  /* ── cadres de signature (devis uniquement) ─────────────────────────── */
+  if (isDevis) {
+    const sw = (PW - 10) / 2, sh = 26;
+    need(sh + 8);
+    y += 4;
+    doc.setLineDashPattern([1, 1], 0);
+    stroke([203, 213, 225]); doc.setLineWidth(0.2);
+    doc.roundedRect(PM.l, y, sw, sh, 1.5, 1.5, "D");
+    doc.roundedRect(PM.l + sw + 10, y, sw, sh, 1.5, 1.5, "D");
+    doc.setLineDashPattern([], 0);
+    f(null, "bold", 8.5, PDFC.slate);
+    doc.text("Bon pour accord", PM.l + 4, y + 6);
+    doc.text("Signature du client", PM.l + sw + 10 + sw - 4, y + 6, { align: "right" });
+    f(null, "normal", 8.5, PDFC.slate);
+    doc.text("Date : ____ / ____ / ________", PM.l + 4, y + 11);
+    f(null, "normal", 7.5, PDFC.mute);
+    doc.text("pr\u00e9c\u00e9d\u00e9e de la mention \u00ab Bon pour accord \u00bb",
+             PM.l + sw + 10 + sw - 4, y + 11, { align: "right" });
+    stroke([203, 213, 225]);
+    doc.line(PM.l + 4, y + sh - 5, PM.l + sw - 4, y + sh - 5);
+    doc.line(PM.l + sw + 14, y + sh - 5, PM.l + sw + 10 + sw - 4, y + sh - 5);
+    y += sh + 6;
+  }
+
+  /* ── pied de document ───────────────────────────────────────────────── */
+  const pied = [E.facebook ? "Facebook : " + E.facebook : "",
+                E.tiktok ? "TikTok : " + E.tiktok : "", E.email]
+                .filter(Boolean).join("   -   ");
+  if (pied) {
+    need(10);
+    y += 2;
+    stroke(PDFC.line); doc.setLineWidth(0.2);
+    doc.line(PM.l, y, PM.l + PW, y);
+    y += 2.5;
+    f(null, "normal", 7.5, PDFC.mute);
+    doc.text(sane(pied), PM.l + PW / 2, y + 2.4, { align: "center" });
+  }
+
+  return doc;
+}
+
+/* Numérotation « page i/N », ajoutée une fois le document complet. */
+function paginate(doc, label) {
+  const n = doc.internal.getNumberOfPages();
+  for (let i = 1; i <= n; i++) {
+    doc.setPage(i);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(7.5);
+    doc.setTextColor(150, 150, 150);
+    doc.text(sane(label) + "  -  page " + i + "/" + n, PAGE_W / 2, PAGE_H - 9, { align: "center" });
+  }
+  return doc;
+}
+
+
+/* ══ POINT D'ENTRÉE PDF ════════════════════════════════════════════════════
+   makePdf(o, nomFichier, libellePied, mode) — « blob » pour le dépôt Supabase,
+   « save » pour un téléchargement direct. Aucune capture d'écran : le
+   document est tracé, donc les marges sont exactes et rien n'est rogné.
+   ═══════════════════════════════════════════════════════════════════════════ */
+async function makePdf(o, filename, footerLabel, mode) {
+  const JSPDF = (window.jspdf && window.jspdf.jsPDF) || window.jsPDF;
+  if (!JSPDF) throw new Error("Moteur PDF non chargé — vérifiez votre connexion puis rechargez la page.");
+  const doc = new JSPDF({ unit: "mm", format: "a4", compress: true });
+  drawDoc(doc, o);
+  paginate(doc, footerLabel);
+  if (mode === "blob") return doc.output("blob");
+  doc.save(filename);
+  return null;
 }
 
 /* ══ IMPRESSION VECTORIELLE ═══════════════════════════════════════════════
-   Contrairement au PDF (image rastérisée par html2canvas), l'impression
-   navigateur produit du texte vectoriel : net à l'écran comme sur papier,
+   L'impression navigateur produit elle aussi du texte vectoriel,
    sélectionnable, et « Enregistrer au format PDF » depuis la boîte
    d'impression donne un fichier bien plus léger et plus propre.
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -2411,7 +2800,7 @@ async function saveAndSend() {
 
   try {
     toast("Génération du PDF…", "info");
-    const blob = await makePdf(docHTML(d), d.num + ".pdf", "Devis " + d.num + " — " + ENTREPRISE.nom, "blob");
+    const blob = await makePdf(d, d.num + ".pdf", "Devis " + d.num + " — " + ENTREPRISE.nom, "blob");
 
     // 1. Dépôt du PDF (upsert:false : on refuse d'écraser un devis portant déjà ce numéro)
     const path = "devis/" + d.num + ".pdf";
@@ -2925,7 +3314,7 @@ async function saveFacture() {
   let enregistre = false;
 
   try {
-    const blob = await makePdf(docHTML(d), d.num + ".pdf", "Facture " + d.num + " — " + ENTREPRISE.nom, "blob");
+    const blob = await makePdf(d, d.num + ".pdf", "Facture " + d.num + " — " + ENTREPRISE.nom, "blob");
 
     const path = "factures/" + d.num + ".pdf";
     let up = await sb.storage.from("documents").upload(path, blob, { contentType: "application/pdf", upsert: false });

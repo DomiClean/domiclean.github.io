@@ -340,17 +340,17 @@
     .a4 .docmeta{font-size:9pt;color:#475569;text-align:right;line-height:1.7;margin-top:6pt}
     .a4 .docmeta b{color:#0f172a}
     .a4 .rule{height:2.5pt;background:linear-gradient(90deg,#0a6fd4,#22c55e);border-radius:2pt;margin:7mm 0 6mm}
-    .a4 .parties{margin-bottom:6mm;font-size:0}
-    .a4 .party{display:inline-block;vertical-align:top;width:calc(50% - 2.5mm);font-size:10.5pt;background:#f8fafc;border:1px solid #e8edf3;border-radius:3mm;padding:4mm 4.5mm}
-    .a4 .party:only-child{width:100%}
-    .a4 .party + .party{margin-left:5mm}
+    .a4 .parties{display:table;width:100%;table-layout:fixed;margin-bottom:6mm}
+    .a4 .parties .pc{display:table-cell;vertical-align:top;padding-right:2.5mm}
+    .a4 .parties .pc + .pc{padding-right:0;padding-left:2.5mm}
+    .a4 .party{background:#f8fafc;border:1px solid #e8edf3;border-radius:3mm;padding:4mm 4.5mm}
     .a4 .party h4{font-size:7.5pt;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#94a3b8;margin:0 0 2mm}
     .a4 .party .nm{font-weight:700;font-size:11pt;color:#0f172a}
     .a4 .party div{font-size:9pt;color:#475569}
     .a4 table.it{width:100%;border-collapse:collapse;margin-bottom:5mm;table-layout:fixed}
-    .a4 table.it th:nth-child(2),.a4 table.it td:nth-child(2){width:26mm}
-    .a4 table.it th:nth-child(3),.a4 table.it td:nth-child(3){width:29mm}
-    .a4 table.it th:nth-child(4),.a4 table.it td:nth-child(4){width:29mm}
+    .a4 table.it th:nth-child(2),.a4 table.it td:nth-child(2){width:24mm}
+    .a4 table.it th:nth-child(3),.a4 table.it td:nth-child(3){width:31mm}
+    .a4 table.it th:nth-child(4),.a4 table.it td:nth-child(4){width:31mm}
     .a4 table.it th{background:#0f172a;color:#fff;font-size:7.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:2.6mm 3mm;text-align:left}
     .a4 table.it th.c{text-align:center}
     .a4 table.it th.r{text-align:right}
@@ -363,8 +363,9 @@
     .a4 .sub{display:block;font-size:8pt;color:#64748b;margin-top:1mm;line-height:1.4}
     .a4 .tag{display:inline-block;margin-top:1.2mm;font-size:7pt;font-weight:700;padding:.6mm 2mm;border-radius:6pt;background:#dcfce7;color:#15803d}
     .a4 .tag.maj{background:#fef3c7;color:#92400e}
-    .a4 .totwrap{text-align:right;margin-bottom:5mm;font-size:0}
-    .a4 .tot{display:inline-block;width:88mm;text-align:left;font-size:10.5pt}
+    .a4 .totwrap{display:table;width:100%;margin-bottom:5mm}
+    .a4 .totspacer{display:table-cell}
+    .a4 .tot{display:table-cell;width:88mm;vertical-align:top}
     .a4 .tl{display:table;width:100%;padding:1.6mm 0;font-size:9.5pt;color:#475569}
     .a4 .tl > span{display:table-cell;vertical-align:baseline}
     .a4 .tl > span:last-child{text-align:right;white-space:nowrap;padding-left:4mm;width:1%}
@@ -377,9 +378,10 @@
     .a4 .legal{border-top:1px solid #e8edf3;padding-top:3.5mm;font-size:7.8pt;color:#64748b;line-height:1.65}
     .a4 .legal p{margin:0 0 1.6mm}
     .a4 .legal b{color:#334155}
-    .a4 .sign{margin-top:7mm;font-size:0;color:#64748b}
-    .a4 .sign .box{display:inline-block;vertical-align:top;width:calc(50% - 5mm);font-size:8.5pt;border:1px dashed #cbd5e1;border-radius:2mm;padding:3mm 4mm}
-    .a4 .sign .box + .box{margin-left:10mm}
+    .a4 .sign{display:table;width:100%;table-layout:fixed;margin-top:7mm;font-size:8.5pt;color:#64748b}
+    .a4 .sign .sc{display:table-cell;vertical-align:top;padding-right:5mm}
+    .a4 .sign .sc + .sc{padding-right:0;padding-left:5mm}
+    .a4 .sign .box{border:1px dashed #cbd5e1;border-radius:2mm;padding:3mm 4mm}
     .a4 .sign .line{margin-top:14mm;border-bottom:1px solid #cbd5e1}
     .a4 .foot{margin-top:6mm;border-top:1px solid #e8edf3;padding-top:2.5mm;text-align:center;font-size:7.5pt;color:#94a3b8}
     .a4 tr,.a4 .party,.a4 .cibox,.a4 .sign{page-break-inside:avoid}
@@ -569,7 +571,7 @@
             <li><strong>Colonne « CI »</strong> — prestation de service à la personne ouvrant droit au crédit d'impôt de 50 %. Cochée d'office pour les prestations aux particuliers, à décocher pour un client professionnel.</li>
             <li><strong>Prestations « sur devis »</strong> — jardinage et fin de chantier arrivent à 0 € et la ligne est surlignée : saisissez le prix négocié avant d'envoyer.</li>
             <li><strong>Période / lieu</strong> — apparaît sur le document ; utile pour justifier le crédit d'impôt.</li>
-            <li><strong>⬇️ Télécharger PDF</strong> — génère et télécharge le PDF sans l'envoyer ni l'enregistrer.</li>
+            <li><strong>🖨️ Imprimer / PDF</strong> — ouvre la fenêtre d'impression du navigateur. « Destination : Enregistrer au format PDF » donne un fichier net et léger, sans l'envoyer ni l'enregistrer.</li>
             <li><strong>📧 Envoyer au client</strong> — génère le PDF, le dépose, l'enregistre en base et envoie l'email.</li>
             <li><strong>Brouillon</strong> — le formulaire en cours est sauvegardé dans le navigateur : fermer l'onglet par erreur ne fait plus perdre la saisie.</li>
           </ul>
@@ -809,8 +811,7 @@
           <div class="page-title"><h1>Nouveau Devis</h1><p>Remplissez le formulaire, prévisualisez et envoyez</p></div>
           <div class="devis-actions">
             <button class="btn-action ghost" onclick="resetDevis()">🔄 Nouveau</button>
-            <button class="btn-action ghost" onclick="printDevis()">🖨️ Imprimer</button>
-            <button class="btn-action green" id="btnDownload" onclick="downloadPDF()">⬇️ Télécharger PDF</button>
+            <button class="btn-action green" id="btnPrintDevis" onclick="printDevis()">🖨️ Imprimer / PDF</button>
             <button class="btn-action blue" id="btnSend" onclick="saveAndSend()">📧 Envoyer au client</button>
           </div>
         </div>
@@ -939,8 +940,7 @@
           <div class="page-title"><h1>Factures</h1><p>Générez et suivez vos factures</p></div>
           <div class="devis-actions">
             <button class="btn-action ghost" onclick="resetFacture()">🔄 Nouvelle</button>
-            <button class="btn-action ghost" onclick="printFacture()">🖨️ Imprimer</button>
-            <button class="btn-action green" onclick="downloadFacturePDF()">⬇️ Télécharger PDF</button>
+            <button class="btn-action green" id="btnPrintFacture" onclick="printFacture()">🖨️ Imprimer / PDF</button>
             <button class="btn-action blue" id="btnSaveFacture" onclick="saveFacture()">📧 Enregistrer & Envoyer</button>
           </div>
         </div>
@@ -2022,18 +2022,18 @@ function docHTML(o) {
     </div>
     <div class="rule"></div>
     <div class="parties">
-      <div class="party">
+      <div class="pc"><div class="party">
         <h4>${isDevis ? "Devis établi pour" : "Facturé à"}</h4>
         <div class="nm">${e(o.client.nom) || "—"}</div>
         ${clientLignes}
-      </div>
-      ${o.periode ? `<div class="party"><h4>${isDevis ? "Intervention prévue" : "Période d'exécution"}</h4><div class="nm" style="font-size:9.5pt;font-weight:600">${e(o.periode)}</div></div>` : ""}
+      </div></div>
+      ${o.periode ? `<div class="pc"><div class="party"><h4>${isDevis ? "Intervention prévue" : "Période d'exécution"}</h4><div class="nm" style="font-size:9.5pt;font-weight:600">${e(o.periode)}</div></div></div>` : ""}
     </div>
     <table class="it">
       <thead><tr><th>Prestation</th><th class="c">Quantité</th><th class="r">Prix unitaire</th><th class="r">Montant</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>
-    <div class="totwrap"><div class="tot">
+    <div class="totwrap"><div class="totspacer"></div><div class="tot">
       ${t.majorations ? `<div class="tl"><span>Sous-total avant majorations</span><span>${fmtEUR(t.base)}</span></div>
       <div class="tl"><span>Majorations dimanche / jour férié</span><span>+ ${fmtEUR(t.majorations)}</span></div>` : ""}
       <div class="tl big"><span>${isDevis ? "TOTAL À PAYER" : "NET À PAYER"}</span><span>${fmtEUR(t.total)}</span></div>
@@ -2043,8 +2043,8 @@ function docHTML(o) {
     ${o.notes ? `<div class="note">${e(o.notes)}</div>` : ""}
     <div class="legal">${men.join("")}</div>
     ${isDevis ? `<div class="sign">
-      <div class="box"><b>Bon pour accord</b><br>Date : ____ / ____ / ________<div class="line"></div></div>
-      <div class="box" style="text-align:right"><b>Signature du client</b><br><span style="font-size:7.5pt">précédée de la mention « Bon pour accord »</span><div class="line"></div></div>
+      <div class="sc"><div class="box"><b>Bon pour accord</b><br>Date : ____ / ____ / ________<div class="line"></div></div></div>
+      <div class="sc"><div class="box" style="text-align:right"><b>Signature du client</b><br><span style="font-size:7.5pt">précédée de la mention « Bon pour accord »</span><div class="line"></div></div></div>
     </div>` : ""}
     <div class="foot">${pied}</div>
   </div>`;
@@ -2138,8 +2138,18 @@ function printDoc(html) {
   window.addEventListener("afterprint", cleanup);
   setTimeout(() => { window.print(); setTimeout(cleanup, 1500); }, 60);
 }
-function printDevis()   { printDoc(docHTML(devisData())); }
-function printFacture() { printDoc(docHTML(factureData())); }
+async function printDevis() {
+  const d = validerDevis(false);
+  if (!d) return;
+  if (!await confirmerLignesA0(lignes)) return;
+  printDoc(docHTML(d));
+}
+async function printFacture() {
+  const d = validerFacture();
+  if (!d) return;
+  if (!await confirmerLignesA0(factLignes)) return;
+  printDoc(docHTML(d));
+}
 
 /* Ctrl+P depuis l'écran Devis ou Factures imprime le document, pas l'interface. */
 window.addEventListener("beforeprint", () => {
@@ -2387,22 +2397,6 @@ async function confirmerLignesA0(lg) {
     zero.length + " ligne" + (zero.length > 1 ? "s sont" : " est") + " à 0 € (« " + zero.map(l => l.desc || "sans intitulé").join(" », « ") + " »). Continuer quand même ?",
     "Continuer"
   );
-}
-
-async function downloadPDF() {
-  const d = validerDevis(false);
-  if (!d) return;
-  if (!await confirmerLignesA0(lignes)) return;
-  const btn = document.getElementById("btnDownload");
-  btn.disabled = true; btn.textContent = "⏳ Génération…";
-  try {
-    await makePdf(docHTML(d), d.num + ".pdf", "Devis " + d.num + " — " + ENTREPRISE.nom, "save");
-    toast("✅ PDF téléchargé");
-  } catch (err) {
-    console.error(err);
-    toast("❌ Échec de la génération du PDF", "error");
-  }
-  btn.disabled = false; btn.textContent = "⬇️ Télécharger PDF";
 }
 
 async function saveAndSend() {
@@ -2918,19 +2912,6 @@ function validerFacture() {
   if (!factLignes.length) manque.push("au moins une prestation");
   if (manque.length) { toast("Il manque " + manque.join(", "), "error"); return null; }
   return d;
-}
-
-async function downloadFacturePDF() {
-  const d = validerFacture();
-  if (!d) return;
-  if (!await confirmerLignesA0(factLignes)) return;
-  try {
-    await makePdf(docHTML(d), d.num + ".pdf", "Facture " + d.num + " — " + ENTREPRISE.nom, "save");
-    toast("✅ PDF téléchargé");
-  } catch (err) {
-    console.error(err);
-    toast("❌ Échec de la génération du PDF", "error");
-  }
 }
 
 async function saveFacture() {

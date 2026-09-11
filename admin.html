@@ -325,12 +325,14 @@
 
     /* ── DOCUMENT A4 (aperçu + source PDF) ── */
     .a4-page{background:#fff;padding:15mm;width:210mm;border-radius:6px}
-    .a4{width:180mm;background:#fff;color:#1f2937;font-family:'Segoe UI',Arial,Helvetica,sans-serif;font-size:10.5pt;line-height:1.5;transform-origin:top left}
+    .a4{width:180mm;background:#fff;color:#1f2937;font-family:'Segoe UI',Arial,Helvetica,sans-serif;font-size:10.5pt;line-height:1.5;transform-origin:top left;overflow-wrap:break-word;word-break:break-word}
+    .a4 img{max-width:100%}
     .a4 *{box-sizing:border-box}
-    .a4 .hd{display:table;width:100%;table-layout:fixed}
+    .a4 .hd{display:table;width:100%}
     .a4 .hd > div{display:table-cell;vertical-align:top}
-    .a4 .hd > div:first-child{width:58%}
-    .a4 .hd > div:last-child{width:42%;padding-left:10mm}
+    .a4 .hd > div:first-child{width:56%}
+    .a4 .hd > div:last-child{padding-left:8mm}
+    .a4 .hd img{max-width:55mm}
     .a4 .brand{font-size:19pt;font-weight:800;color:#0a6fd4;letter-spacing:-.5px;line-height:1.1;text-transform:uppercase}
     .a4 .brand small{display:block;font-size:8pt;font-weight:600;color:#64748b;letter-spacing:.18em;text-transform:uppercase;margin-top:3pt}
     .a4 .em{font-size:8.5pt;color:#475569;line-height:1.65;margin-top:6pt}
@@ -345,7 +347,10 @@
     .a4 .party h4{font-size:7.5pt;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#94a3b8;margin:0 0 2mm}
     .a4 .party .nm{font-weight:700;font-size:11pt;color:#0f172a}
     .a4 .party div{font-size:9pt;color:#475569}
-    .a4 table.it{width:100%;border-collapse:collapse;margin-bottom:5mm}
+    .a4 table.it{width:100%;border-collapse:collapse;margin-bottom:5mm;table-layout:fixed}
+    .a4 table.it th:nth-child(2),.a4 table.it td:nth-child(2){width:26mm}
+    .a4 table.it th:nth-child(3),.a4 table.it td:nth-child(3){width:29mm}
+    .a4 table.it th:nth-child(4),.a4 table.it td:nth-child(4){width:29mm}
     .a4 table.it th{background:#0f172a;color:#fff;font-size:7.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:2.6mm 3mm;text-align:left}
     .a4 table.it th.c{text-align:center}
     .a4 table.it th.r{text-align:right}
@@ -379,7 +384,11 @@
     .a4 .foot{margin-top:6mm;border-top:1px solid #e8edf3;padding-top:2.5mm;text-align:center;font-size:7.5pt;color:#94a3b8}
     .a4 tr,.a4 .party,.a4 .cibox,.a4 .sign{page-break-inside:avoid}
     .doc-scroll{overflow:hidden;border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,.4);background:#fff}
-    #pdfStage{position:absolute;left:-12000px;top:0;width:180mm;background:#fff;z-index:-1;opacity:1;pointer-events:none}
+    /* Le PDF est rendu à 178 mm (et non 180) avec des marges de 16 mm :
+       1 mm de sécurité de chaque côté, pour absorber les arrondis de
+       html2canvas qui faisaient mordre le document sur la marge droite. */
+    #pdfStage{position:absolute;left:-12000px;top:0;width:178mm;background:#fff;z-index:-1;opacity:1;pointer-events:none}
+    #pdfStage .a4{width:178mm}
 
     /* ── BARRE D'OUTILS HISTORIQUE ── */
     .hist-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
@@ -2084,7 +2093,7 @@ async function makePdf(html, filename, footerLabel, mode) {
     img.complete ? Promise.resolve() : new Promise(r => { img.onload = img.onerror = r; })));
   await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
   const opt = {
-    margin:      [15, 15, 16, 15],
+    margin:      [15, 16, 16, 16],
     filename:    filename,
     // PNG et non JPEG : le JPEG crée des artefacts de compression autour des
     // lettres (texte noir sur blanc) — c'est ce qui rendait le PDF « sale ».

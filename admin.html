@@ -327,7 +327,10 @@
     .a4-page{background:#fff;padding:15mm;width:210mm;border-radius:6px}
     .a4{width:180mm;background:#fff;color:#1f2937;font-family:'Segoe UI',Arial,Helvetica,sans-serif;font-size:10.5pt;line-height:1.5;transform-origin:top left}
     .a4 *{box-sizing:border-box}
-    .a4 .hd{display:flex;justify-content:space-between;align-items:flex-start;gap:14mm}
+    .a4 .hd{display:table;width:100%;table-layout:fixed}
+    .a4 .hd > div{display:table-cell;vertical-align:top}
+    .a4 .hd > div:first-child{width:58%}
+    .a4 .hd > div:last-child{width:42%;padding-left:10mm}
     .a4 .brand{font-size:19pt;font-weight:800;color:#0a6fd4;letter-spacing:-.5px;line-height:1.1;text-transform:uppercase}
     .a4 .brand small{display:block;font-size:8pt;font-weight:600;color:#64748b;letter-spacing:.18em;text-transform:uppercase;margin-top:3pt}
     .a4 .em{font-size:8.5pt;color:#475569;line-height:1.65;margin-top:6pt}
@@ -335,8 +338,10 @@
     .a4 .docmeta{font-size:9pt;color:#475569;text-align:right;line-height:1.7;margin-top:6pt}
     .a4 .docmeta b{color:#0f172a}
     .a4 .rule{height:2.5pt;background:linear-gradient(90deg,#0a6fd4,#22c55e);border-radius:2pt;margin:7mm 0 6mm}
-    .a4 .parties{display:flex;gap:5mm;margin-bottom:6mm}
-    .a4 .party{flex:1;background:#f8fafc;border:1px solid #e8edf3;border-radius:3mm;padding:4mm 4.5mm}
+    .a4 .parties{margin-bottom:6mm;font-size:0}
+    .a4 .party{display:inline-block;vertical-align:top;width:calc(50% - 2.5mm);font-size:10.5pt;background:#f8fafc;border:1px solid #e8edf3;border-radius:3mm;padding:4mm 4.5mm}
+    .a4 .party:only-child{width:100%}
+    .a4 .party + .party{margin-left:5mm}
     .a4 .party h4{font-size:7.5pt;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#94a3b8;margin:0 0 2mm}
     .a4 .party .nm{font-weight:700;font-size:11pt;color:#0f172a}
     .a4 .party div{font-size:9pt;color:#475569}
@@ -353,9 +358,11 @@
     .a4 .sub{display:block;font-size:8pt;color:#64748b;margin-top:1mm;line-height:1.4}
     .a4 .tag{display:inline-block;margin-top:1.2mm;font-size:7pt;font-weight:700;padding:.6mm 2mm;border-radius:6pt;background:#dcfce7;color:#15803d}
     .a4 .tag.maj{background:#fef3c7;color:#92400e}
-    .a4 .totwrap{display:flex;justify-content:flex-end;margin-bottom:5mm}
-    .a4 .tot{width:88mm}
-    .a4 .tl{display:flex;justify-content:space-between;gap:4mm;padding:1.6mm 0;font-size:9.5pt;color:#475569}
+    .a4 .totwrap{text-align:right;margin-bottom:5mm;font-size:0}
+    .a4 .tot{display:inline-block;width:88mm;text-align:left;font-size:10.5pt}
+    .a4 .tl{display:table;width:100%;padding:1.6mm 0;font-size:9.5pt;color:#475569}
+    .a4 .tl > span{display:table-cell;vertical-align:baseline}
+    .a4 .tl > span:last-child{text-align:right;white-space:nowrap;padding-left:4mm;width:1%}
     .a4 .tl.big{border-top:1.5pt solid #0f172a;margin-top:1.5mm;padding-top:2.5mm;font-size:13pt;font-weight:800;color:#0f172a}
     .a4 .tva{font-size:8pt;color:#64748b;text-align:right;margin-top:1.5mm}
     .a4 .cibox{margin-top:3.5mm;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:3mm;padding:3.5mm 4mm}
@@ -365,13 +372,14 @@
     .a4 .legal{border-top:1px solid #e8edf3;padding-top:3.5mm;font-size:7.8pt;color:#64748b;line-height:1.65}
     .a4 .legal p{margin:0 0 1.6mm}
     .a4 .legal b{color:#334155}
-    .a4 .sign{display:flex;justify-content:space-between;gap:10mm;margin-top:7mm;font-size:8.5pt;color:#64748b}
-    .a4 .sign .box{border:1px dashed #cbd5e1;border-radius:2mm;padding:3mm 4mm;min-width:70mm}
+    .a4 .sign{margin-top:7mm;font-size:0;color:#64748b}
+    .a4 .sign .box{display:inline-block;vertical-align:top;width:calc(50% - 5mm);font-size:8.5pt;border:1px dashed #cbd5e1;border-radius:2mm;padding:3mm 4mm}
+    .a4 .sign .box + .box{margin-left:10mm}
     .a4 .sign .line{margin-top:14mm;border-bottom:1px solid #cbd5e1}
     .a4 .foot{margin-top:6mm;border-top:1px solid #e8edf3;padding-top:2.5mm;text-align:center;font-size:7.5pt;color:#94a3b8}
     .a4 tr,.a4 .party,.a4 .cibox,.a4 .sign{page-break-inside:avoid}
     .doc-scroll{overflow:hidden;border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,.4);background:#fff}
-    #pdfStage{position:fixed;left:-12000px;top:0;width:180mm;background:#fff;z-index:-1;opacity:1;pointer-events:none}
+    #pdfStage{position:absolute;left:-12000px;top:0;width:180mm;background:#fff;z-index:-1;opacity:1;pointer-events:none}
 
     /* ── BARRE D'OUTILS HISTORIQUE ── */
     .hist-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
@@ -456,7 +464,25 @@
       .dhi-client{flex-basis:100%;order:-1}
       .tarif-grid{grid-template-columns:1fr}
     }
-    @media print{body{background:#fff}#adminPanel,.sidebar,.topbar{display:none!important}}
+    /* ── IMPRESSION RÉELLE (vectorielle, sans passer par html2pdf) ──
+       body.printing masque toute l'interface et n'imprime que #pdfStage,
+       remis en flux normal à la largeur utile A4. Texte net et
+       sélectionnable, sauts de page gérés par le navigateur. */
+    @page{size:A4;margin:15mm}
+    @media print{
+      html,body{background:#fff!important;color:#000!important}
+      body.printing > *{display:none!important}
+      body.printing > #pdfStage{
+        display:block!important;position:static!important;
+        left:auto!important;top:auto!important;
+        width:100%!important;z-index:auto!important;opacity:1!important}
+      body.printing #pdfStage .a4{width:100%!important;font-size:10.5pt}
+      #pdfStage .a4 tr,#pdfStage .a4 .party,
+      #pdfStage .a4 .cibox,#pdfStage .a4 .sign,
+      #pdfStage .a4 .totwrap{page-break-inside:avoid}
+      #pdfStage .a4 thead{display:table-header-group}
+      *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+    }
   </style>
 </head>
 <body>
@@ -774,6 +800,7 @@
           <div class="page-title"><h1>Nouveau Devis</h1><p>Remplissez le formulaire, prévisualisez et envoyez</p></div>
           <div class="devis-actions">
             <button class="btn-action ghost" onclick="resetDevis()">🔄 Nouveau</button>
+            <button class="btn-action ghost" onclick="printDevis()">🖨️ Imprimer</button>
             <button class="btn-action green" id="btnDownload" onclick="downloadPDF()">⬇️ Télécharger PDF</button>
             <button class="btn-action blue" id="btnSend" onclick="saveAndSend()">📧 Envoyer au client</button>
           </div>
@@ -903,6 +930,7 @@
           <div class="page-title"><h1>Factures</h1><p>Générez et suivez vos factures</p></div>
           <div class="devis-actions">
             <button class="btn-action ghost" onclick="resetFacture()">🔄 Nouvelle</button>
+            <button class="btn-action ghost" onclick="printFacture()">🖨️ Imprimer</button>
             <button class="btn-action green" onclick="downloadFacturePDF()">⬇️ Télécharger PDF</button>
             <button class="btn-action blue" id="btnSaveFacture" onclick="saveFacture()">📧 Enregistrer & Envoyer</button>
           </div>
@@ -2049,13 +2077,23 @@ async function makePdf(html, filename, footerLabel, mode) {
   const stage = document.getElementById("pdfStage");
   stage.innerHTML = html;
   const node = stage.firstElementChild;
+  // Polices et images doivent être prêtes AVANT la capture, sinon le texte
+  // est mesuré avec une police de repli puis redessiné → décalages.
+  try { if (document.fonts && document.fonts.ready) await document.fonts.ready; } catch (e) {}
+  await Promise.all([...node.querySelectorAll("img")].map(img =>
+    img.complete ? Promise.resolve() : new Promise(r => { img.onload = img.onerror = r; })));
+  await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
   const opt = {
     margin:      [15, 15, 16, 15],
     filename:    filename,
-    image:       { type: "jpeg", quality: 0.96 },
-    html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff", letterRendering: true, windowWidth: 794 },
+    // PNG et non JPEG : le JPEG crée des artefacts de compression autour des
+    // lettres (texte noir sur blanc) — c'est ce qui rendait le PDF « sale ».
+    image:       { type: "png" },
+    // scale 3 ≈ 290 dpi ; windowWidth supprimé car il valait 794 px alors que
+    // le document fait 180 mm (≈ 680 px) → tout était rendu décalé/rogné.
+    html2canvas: { scale: 3, useCORS: true, backgroundColor: "#ffffff", scrollX: 0, scrollY: 0 },
     jsPDF:       { unit: "mm", format: "a4", orientation: "portrait", compress: true },
-    pagebreak:   { mode: ["css", "legacy"], avoid: ["tr", ".party", ".cibox", ".sign"] }
+    pagebreak:   { mode: ["css", "legacy"], avoid: ["tr", ".party", ".cibox", ".sign", ".totwrap"] }
   };
   try {
     let w = html2pdf().set(opt).from(node).toPdf().get("pdf").then(pdf => {
@@ -2072,6 +2110,46 @@ async function makePdf(html, filename, footerLabel, mode) {
     stage.innerHTML = "";
   }
 }
+
+/* ══ IMPRESSION VECTORIELLE ═══════════════════════════════════════════════
+   Contrairement au PDF (image rastérisée par html2canvas), l'impression
+   navigateur produit du texte vectoriel : net à l'écran comme sur papier,
+   sélectionnable, et « Enregistrer au format PDF » depuis la boîte
+   d'impression donne un fichier bien plus léger et plus propre.
+   ═══════════════════════════════════════════════════════════════════════════ */
+function printDoc(html) {
+  const stage = document.getElementById("pdfStage");
+  stage.innerHTML = html;
+  document.body.classList.add("printing");
+  const cleanup = () => {
+    document.body.classList.remove("printing");
+    stage.innerHTML = "";
+    window.removeEventListener("afterprint", cleanup);
+  };
+  window.addEventListener("afterprint", cleanup);
+  setTimeout(() => { window.print(); setTimeout(cleanup, 1500); }, 60);
+}
+function printDevis()   { printDoc(docHTML(devisData())); }
+function printFacture() { printDoc(docHTML(factureData())); }
+
+/* Ctrl+P depuis l'écran Devis ou Factures imprime le document, pas l'interface. */
+window.addEventListener("beforeprint", () => {
+  if (document.body.classList.contains("printing")) return;
+  const stage = document.getElementById("pdfStage");
+  try {
+    const sec = document.querySelector(".section.active");
+    const id  = sec && sec.id;
+    if (id === "sec-devis")         stage.innerHTML = docHTML(devisData());
+    else if (id === "sec-factures") stage.innerHTML = docHTML(factureData());
+    else return;
+    document.body.classList.add("printing");
+    window.addEventListener("afterprint", function off() {
+      document.body.classList.remove("printing");
+      stage.innerHTML = "";
+      window.removeEventListener("afterprint", off);
+    });
+  } catch (e) {}
+});
 
 /* ══ ÉDITEUR DE LIGNES PARTAGÉ ════════════════════════════════════════════
    Un seul moteur pour le tableau du devis et celui de la facture.

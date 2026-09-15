@@ -442,6 +442,44 @@
     .sql-block pre{margin:0;padding:0 20px 18px;overflow-x:auto;font-family:ui-monospace,Consolas,monospace;font-size:.75rem;line-height:1.65;color:#93c5fd;white-space:pre}
     .nav-badge.warn{background:#f59e0b;color:#1f1300}
 
+    /* ── DEMANDES ── */
+    .dem-layout{display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:22px;align-items:start}
+    .dem-list{display:flex;flex-direction:column;gap:10px}
+    .dem-item{background:var(--surf);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;display:flex;gap:14px;align-items:flex-start;cursor:pointer;text-align:left;width:100%;color:var(--text);font:inherit;transition:.15s}
+    .dem-item:hover{border-color:rgba(10,111,212,.35)}
+    .dem-item.sel{border-color:var(--p);box-shadow:0 0 0 3px rgba(10,111,212,.18)}
+    .dem-item.nouvelle{border-left:3px solid var(--p)}
+    .dem-emo{font-size:1.4rem;line-height:1.1;flex-shrink:0}
+    .dem-info{flex:1;min-width:0}
+    .dem-nom{display:block;font-weight:600;font-size:.92rem;overflow-wrap:anywhere}
+    .dem-meta{display:block;font-size:.78rem;color:var(--muted);margin-top:3px}
+    .dem-date{font-size:.74rem;color:var(--muted);white-space:nowrap}
+    .dem-panel{background:var(--surf);border:1px solid var(--border);border-radius:16px;padding:20px;position:sticky;top:24px;max-height:calc(100vh - 48px);overflow:auto}
+    .dem-panel h2{font-size:1.1rem;margin:0 0 8px;line-height:1.3}
+    .dem-dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:.84rem;margin:12px 0}
+    .dem-dl dt{color:var(--muted)}
+    .dem-dl dd{margin:0;overflow-wrap:anywhere}
+    .dem-dl a{color:#60a5fa;text-decoration:none}
+    .dem-bloc{border-top:1px solid var(--border);margin-top:16px;padding-top:14px}
+    .dem-bloc h3{font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:0 0 10px}
+    .dem-bloc h4{font-size:.88rem;margin:12px 0 4px}
+    .dem-note{background:var(--dark);border-radius:10px;padding:10px 12px;font-size:.84rem;white-space:pre-wrap;line-height:1.5}
+    .dem-avis{border-radius:10px;padding:9px 12px;font-size:.8rem;margin-top:10px;line-height:1.45}
+    .dem-avis.ok{background:rgba(34,197,94,.08);color:#86efac;border:1px solid rgba(34,197,94,.2)}
+    .dem-avis.warn{background:rgba(251,191,36,.08);color:#fcd34d;border:1px solid rgba(251,191,36,.22)}
+    .dem-actions{display:flex;flex-wrap:wrap;gap:8px}
+    .lien-demande{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;background:rgba(10,111,212,.08);border:1px solid rgba(10,111,212,.3);color:#93c5fd;border-radius:10px;padding:12px 16px;font-size:.84rem;line-height:1.5}
+    .lien-demande[hidden]{display:none}
+    .lien-demande b{color:var(--text)}
+    .lien-demande summary{cursor:pointer;margin-top:6px;color:#60a5fa}
+    .lien-demande .dem-bloc{border-top:none;margin-top:4px;padding-top:0;color:var(--text)}
+    .status-badge.new{background:rgba(10,111,212,.18);color:#93c5fd}
+    .status-badge.plan{background:rgba(168,85,247,.14);color:#c084fc}
+    .status-badge.done{background:rgba(148,163,184,.12);color:var(--muted)}
+    .status-badge.cancel{background:rgba(239,68,68,.1);color:#f87171}
+    .status-badge.avoir{background:rgba(168,85,247,.14);color:#c084fc}
+    @media(max-width:1200px){.dem-layout{grid-template-columns:1fr}.dem-panel{position:static;max-height:none}}
+
     /* ── NAV MOBILE ── */
     .topbar{display:none;position:sticky;top:0;z-index:900;background:var(--surf);border-bottom:1px solid var(--border);padding:11px 14px;align-items:center;gap:12px}
     .topbar .burger{background:none;border:1px solid var(--border);color:var(--text);width:38px;height:38px;border-radius:9px;font-size:1.1rem;cursor:pointer;flex-shrink:0}
@@ -531,7 +569,8 @@
       <button class="btn-close" onclick="closeHelp()">✕</button>
     </div>
     <div class="help-tabs">
-      <button class="help-tab active" onclick="showHelp('docs',this)">📁 Documents</button>
+      <button class="help-tab active" onclick="showHelp('demandes',this)">📥 Demandes</button>
+      <button class="help-tab" onclick="showHelp('docs',this)">📁 Documents</button>
       <button class="help-tab" onclick="showHelp('devis',this)">📝 Devis</button>
       <button class="help-tab" onclick="showHelp('factures',this)">🧾 Factures</button>
       <button class="help-tab" onclick="showHelp('tarifs',this)">💶 Tarifs</button>
@@ -540,20 +579,35 @@
     </div>
     <div class="help-body">
 
+      <!-- DEMANDES -->
+      <div class="help-section active" id="help-demandes">
+        <div class="help-block">
+          <h3>📥 Traiter une demande</h3>
+          <ul>
+            <li><strong>Arrivée</strong> — chaque demande faite dans l'espace client arrive ici et un e-mail vous prévient. La pastille du menu compte les nouvelles.</li>
+            <li><strong>Détail</strong> — cliquez sur une demande : coordonnées, services cochés avec les réponses du client, informations « sur place » et précisions.</li>
+            <li><strong>📝 Créer le devis</strong> — ouvre l'écran Devis déjà rempli : le client, la période, une ligne par service avec les quantités tirées des réponses. Vérifiez, puis chiffrez les lignes à 0 €.</li>
+            <li><strong>Envoi</strong> — la demande passe à « Devis envoyé ». Le client accepte en ligne depuis son espace : l'acceptation est horodatée (article 3 des CGV) et le devis passe « Accepté » dans l'historique.</li>
+            <li><strong>📅 Planifier</strong> — date, créneau et intervenant, visibles aussitôt par le client.</li>
+            <li><strong>🧾 Facturer</strong> — une fois le devis accepté, la facture se pré-remplit depuis le devis et apparaît dans l'espace du client.</li>
+          </ul>
+        </div>
+        <div class="help-tip">💡 L'encadré « Compte client actif » indique si le client s'est déjà connecté à son espace. Sinon, ses documents l'y attendent : ils s'affichent à sa première connexion avec la même adresse.</div>
+      </div>
+
       <!-- DOCUMENTS -->
-      <div class="help-section active" id="help-docs">
+      <div class="help-section" id="help-docs">
         <div class="help-block">
           <h3>📁 Gestion des documents PDF</h3>
           <ul>
-            <li><strong>Uploader un fichier</strong> — glissez un PDF dans la zone d'upload ou cliquez pour parcourir. Taille max : 10 MB.</li>
-            <li><strong>⬇️ Ouvrir</strong> — ouvre le PDF dans un nouvel onglet.</li>
-            <li><strong>🔗 Copier lien</strong> — copie l'URL publique du fichier dans le presse-papier, à partager avec un client.</li>
-            <li><strong>👁️ Aperçu</strong> — affiche le PDF directement dans l'admin sans quitter la page.</li>
+            <li><strong>Ajouter un fichier</strong> — glissez un PDF dans la zone d'upload ou cliquez pour parcourir. Taille max : 10 MB.</li>
+            <li><strong>👁️ Ouvrir</strong> — affiche le PDF dans l'admin, avec un bouton pour l'ouvrir dans un nouvel onglet.</li>
+            <li><strong>🔗 Lien 7 jours</strong> — copie un lien de partage qui expire au bout de 7 jours, à envoyer à un client.</li>
             <li><strong>🗑️ Supprimer</strong> — supprime le fichier du stockage et de la base. Action irréversible.</li>
             <li><strong>Recherche</strong> — filtrez vos fichiers par nom en temps réel.</li>
           </ul>
         </div>
-        <div class="help-tip">💡 Les fichiers sont stockés sur Supabase Storage (bucket "documents"). Les liens sont publics et permanents.</div>
+        <div class="help-tip">🔒 Les PDF sont rangés dans un dossier privé : personne ne peut les ouvrir sans lien temporaire. Les devis et factures envoyés par e-mail contiennent un lien valable 30 jours ; ensuite, le client les retrouve dans son espace.</div>
       </div>
 
       <!-- DEVIS -->
@@ -568,7 +622,8 @@
             <li><strong>Prestations « sur devis »</strong> — jardinage et fin de chantier arrivent à 0 € et la ligne est surlignée : saisissez le prix négocié avant d'envoyer.</li>
             <li><strong>Période / lieu</strong> — apparaît sur le document ; utile pour justifier le crédit d'impôt.</li>
             <li><strong>🖨️ Imprimer / PDF</strong> — ouvre la fenêtre d'impression du navigateur. « Destination : Enregistrer au format PDF » donne un fichier net et léger, sans l'envoyer ni l'enregistrer.</li>
-            <li><strong>📧 Envoyer au client</strong> — génère le PDF, le dépose, l'enregistre en base et envoie l'email.</li>
+            <li><strong>Depuis une demande</strong> — le bouton 📝 Créer le devis de l'écran Demandes remplit tout le formulaire. Un bandeau bleu rappelle la demande reliée et les réponses du client.</li>
+            <li><strong>📧 Envoyer au client</strong> — génère le PDF, le dépose, l'enregistre, l'ajoute à l'espace du client et envoie l'e-mail avec un lien valable 30 jours.</li>
             <li><strong>Brouillon</strong> — le formulaire en cours est sauvegardé dans le navigateur : fermer l'onglet par erreur ne fait plus perdre la saisie.</li>
           </ul>
         </div>
@@ -591,10 +646,10 @@
         <div class="help-block">
           <h3>🧾 Créer une facture</h3>
           <ul>
-            <li><strong>Depuis un devis</strong> — dans l'historique, cliquez sur 🧾 Facturer sur un devis accepté. Le formulaire se pré-remplit.</li>
-            <li><strong>Manuellement</strong> — remplissez le formulaire comme un devis. Numérotation FAC-2025-001.</li>
+            <li><strong>Depuis un devis</strong> — dans l'historique, cliquez sur 🧾 Facturer sur un devis accepté, ou sur 🧾 Facturer dans l'écran Demandes. Le formulaire se pré-remplit.</li>
+            <li><strong>Manuellement</strong> — remplissez le formulaire comme un devis. Numérotation FAC-2026-001, sans trou.</li>
             <li><strong>Échéance</strong> — date limite de paiement (30 jours par défaut).</li>
-            <li><strong>📧 Enregistrer & Envoyer</strong> — sauvegarde en base, génère le PDF et envoie l'email au client.</li>
+            <li><strong>📧 Enregistrer & Envoyer</strong> — sauvegarde, génère le PDF, l'ajoute à l'espace du client et envoie l'e-mail.</li>
           </ul>
         </div>
         <div class="help-block">
@@ -602,10 +657,11 @@
           <ul>
             <li><strong>✓ Payée</strong> — marque la facture comme réglée.</li>
             <li><strong>⚠️ Retard</strong> — signale un retard de paiement.</li>
-            <li><strong>⬇️ PDF</strong> — télécharge ou ouvre la facture.</li>
+            <li><strong>⬇️ PDF</strong> — affiche la facture.</li>
+            <li><strong>↩️ Avoir</strong> — annule une facture erronée : un avoir numéroté AV-2026-001 est émis pour le même montant, la facture passe « Annulée ». Refaites ensuite une facture correcte si besoin.</li>
           </ul>
         </div>
-        <div class="help-tip">💡 En France, les factures doivent être conservées 10 ans. Ne les supprimez pas : émettez un avoir si besoin.</div>
+        <div class="help-tip">⚖️ Une facture émise ne se supprime jamais : la loi impose une numérotation continue et une conservation de 10 ans. Toute correction passe par un avoir.</div>
       </div>
 
       <!-- TARIFS -->
@@ -700,7 +756,7 @@
 <div id="adminPanel">
   <div class="topbar">
     <button class="burger" id="burgerBtn" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="sidebar">☰</button>
-    <span class="tb-title" id="tbTitle">Documents PDF</span>
+    <span class="tb-title" id="tbTitle">Demandes</span>
     <button class="btn-help" onclick="openHelp()" aria-label="Guide d'utilisation" style="padding:8px 11px">❓</button>
   </div>
   <div class="scrim" id="navScrim"></div>
@@ -715,8 +771,9 @@
       <a href="index.html" class="nav-item">
         <span class="nav-icon">🏠</span> Voir le site
       </a>
-      <button class="nav-item active" data-sec="documents">
-        <span class="nav-icon">📁</span> Documents PDF
+      <button class="nav-item active" data-sec="demandes">
+        <span class="nav-icon">📥</span> Demandes
+        <span class="nav-badge" id="demBadge" style="display:none">0</span>
       </button>
       <button class="nav-item" data-sec="devis">
         <span class="nav-icon">📝</span> Devis
@@ -729,6 +786,9 @@
       </button>
       <button class="nav-item" data-sec="clients">
         <span class="nav-icon">👥</span> Clients
+      </button>
+      <button class="nav-item" data-sec="documents">
+        <span class="nav-icon">📁</span> Documents PDF
       </button>
       <button class="nav-item" data-sec="tarifs">
         <span class="nav-icon">💶</span> Grille tarifaire
@@ -760,8 +820,39 @@
         <button class="btn-logout" id="logoutBtn">⎋ Déconnexion</button>
       </div>
 
+      <!-- ══ SECTION : DEMANDES ══ -->
+      <div class="section active" id="sec-demandes">
+        <div class="page-header">
+          <div class="page-title"><h1>Demandes</h1><p>Les demandes de devis reçues depuis l'espace client</p></div>
+          <button class="btn-action ghost" id="demRefresh">↻ Actualiser</button>
+        </div>
+        <div class="stats-row">
+          <div class="stat-card"><div class="stat-icon blue">📥</div><div><div class="stat-val" id="statDemNew">—</div><div class="stat-lbl">À traiter</div></div></div>
+          <div class="stat-card"><div class="stat-icon purple">📝</div><div><div class="stat-val" id="statDemDevis">—</div><div class="stat-lbl">Devis en attente de réponse</div></div></div>
+          <div class="stat-card"><div class="stat-icon green">📅</div><div><div class="stat-val" id="statDemPlan">—</div><div class="stat-lbl">Acceptées ou planifiées</div></div></div>
+        </div>
+        <div class="hist-toolbar">
+          <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <label class="sr-only" for="demSearch">Rechercher une demande</label>
+            <input type="text" id="demSearch" placeholder="Nom, e-mail, ville, service…">
+          </div>
+          <button class="chip on" data-demfiltre="a_traiter">À traiter</button>
+          <button class="chip" data-demfiltre="attente">Devis envoyés</button>
+          <button class="chip" data-demfiltre="acceptees">Acceptées</button>
+          <button class="chip" data-demfiltre="planifiees">Planifiées</button>
+          <button class="chip" data-demfiltre="closes">Terminées et annulées</button>
+          <button class="chip" data-demfiltre="toutes">Toutes</button>
+          <span class="file-count" id="demCount"></span>
+        </div>
+        <div class="dem-layout">
+          <div class="dem-list" id="demList"></div>
+          <div id="demPanel"></div>
+        </div>
+      </div>
+
       <!-- ══ SECTION : DOCUMENTS ══ -->
-      <div class="section active" id="sec-documents">
+      <div class="section" id="sec-documents">
         <div class="page-header">
           <div class="page-title"><h1>Documents PDF</h1><p>Uploadez et partagez vos fichiers</p></div>
         </div>
@@ -834,6 +925,8 @@
               <span>💾 Un brouillon non envoyé a été restauré.</span>
               <button type="button" id="devisDraftClear">Repartir de zéro</button>
             </div>
+
+            <div class="lien-demande" id="devisLien" hidden></div>
 
             <!-- Client -->
             <div class="form-card">
@@ -970,6 +1063,8 @@
               <span>💾 Une facture non enregistrée a été restaurée.</span>
               <button type="button" id="factDraftClear">Repartir de zéro</button>
             </div>
+
+            <div class="lien-demande" id="factLien" hidden></div>
             <div class="form-card">
               <div class="form-card-title">👤 Client</div>
               <div class="form-row">
@@ -1031,6 +1126,7 @@
             <button class="chip" data-ffilter="envoyée">Envoyées</button>
             <button class="chip" data-ffilter="payée">Payées</button>
             <button class="chip" data-ffilter="en retard">En retard</button>
+            <button class="chip" data-ffilter="avoir">Avoirs</button>
             <span class="file-count" id="factCount"></span>
           </div>
           <div id="factHistList" style="display:flex;flex-direction:column;gap:10px"></div>
@@ -1132,6 +1228,7 @@
 <!-- SUPABASE AUTH (RLS-aware: this session's JWT is what RLS policies check) -->
 <script>
 const ALLOWED = "domicleanidf@gmail.com";
+let sessionAdmin = false;
 const sb = window.supabase.createClient(
   "https://smgzffkjwokcfjdejsbd.supabase.co",
   "sb_publishable_JzkhEKjWGzWGwN_310ukew_m5EW3HrW"
@@ -1178,12 +1275,20 @@ sb.auth.onAuthStateChange(async (event, session) => {
     const label = user.user_metadata?.full_name || user.email;
     document.getElementById("userEmailDisplay").textContent = label;
     document.getElementById("userInitial").textContent = label[0].toUpperCase();
+    // Le jeton se renouvelle toutes les heures : on ne recharge pas tout à chaque fois.
+    if (sessionAdmin) return;
+    sessionAdmin = true;
     // Les paramètres d'abord : devis et factures s'affichent déjà avec les bonnes mentions.
     await loadParametres();
-    loadFiles();
     initDevis();
     loadUnreadCount();
+    const sections = [...document.querySelectorAll(".nav-item[data-sec]")].map(b => b.dataset.sec);
+    const cible = sections.includes(location.hash.slice(1)) ? location.hash.slice(1) : "demandes";
+    document.querySelector(`.nav-item[data-sec="${cible}"]`).click();
+    // Pastille des demandes et bandeaux « relié à la demande » : utiles quel que soit l'écran d'arrivée.
+    if (cible !== "demandes") loadDemandes(true);
   } else {
+    sessionAdmin = false;
     document.getElementById("loginBox").style.display = "flex";
     document.getElementById("adminPanel").style.display = "none";
   }
@@ -1422,8 +1527,11 @@ document.querySelectorAll(".nav-item[data-sec]").forEach(btn => {
     btn.classList.add("active");
     document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
     document.getElementById("sec-" + sec).classList.add("active");
-    document.getElementById("tbTitle").textContent = btn.textContent.trim();
+    document.getElementById("tbTitle").textContent = [...btn.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join("").trim();
+    history.replaceState(null, "", "#" + sec);
     closeNav();
+    if (sec === "demandes")   loadDemandes();
+    if (sec === "documents")  loadFiles();
     if (sec === "historique") loadDevisHistory();
     if (sec === "messages")   loadMessages();
     if (sec === "clients")    loadClients();
@@ -1513,27 +1621,9 @@ const PARAM_GROUPES = [
 ];
 const PARAM_CHAMPS = PARAM_GROUPES.reduce((a, g) => a.concat(g.champs), []);
 
-const PARAM_SQL = `-- À exécuter UNE SEULE FOIS dans Supabase → SQL Editor.
--- Sans cette table, les paramètres restent enregistrés dans ce navigateur uniquement.
-
-create table if not exists public.parametres (
-  cle        text primary key,
-  valeur     jsonb       not null,
-  updated_at timestamptz not null default now()
-);
-
-alter table public.parametres enable row level security;
-
-drop policy if exists "admin lecture"  on public.parametres;
-drop policy if exists "admin ecriture" on public.parametres;
-
-create policy "admin lecture" on public.parametres
-  for select using (auth.jwt() ->> 'email' = 'domicleanidf@gmail.com');
-
-create policy "admin ecriture" on public.parametres
-  for all
-  using      (auth.jwt() ->> 'email' = 'domicleanidf@gmail.com')
-  with check (auth.jwt() ->> 'email' = 'domicleanidf@gmail.com');`;
+const PARAM_SQL = `-- La table « parametres » est créée, et réservée à l'admin, par le fichier
+-- supabase.sql du site : Supabase > SQL Editor > coller tout le fichier > Run.
+-- Ce fichier se relance sans risque, autant de fois que nécessaire.`;
 
 let paramModifie = false;
 
@@ -1879,11 +1969,8 @@ async function loadFiles() {
       storageFiles = files
         .filter(f => f.name && f.name !== ".emptyFolderPlaceholder" && !f.name.endsWith("/") && f.name !== "devis" && f.name.includes("."))
         .filter(f => !dbPaths.has(f.name) && !dbNoms.has(f.name))
-        .map(f => {
-          const { data: urlData } = sb.storage.from("documents").getPublicUrl(f.name);
-          return { id: "storage-" + f.name, nom: f.name.replace(/^\d+-/, ""),
-                   url: urlData.publicUrl, chemin: f.name, created_at: f.created_at || null, _storageOnly: true };
-        });
+        .map(f => ({ id: "storage-" + f.name, nom: f.name.replace(/^\d+-/, ""),
+                     chemin: f.name, created_at: f.created_at || null, _storageOnly: true }));
     }
   } catch(e) {}
 
@@ -1901,6 +1988,7 @@ function renderFiles(files) {
   files.forEach(f => {
     const card = document.createElement("div");
     card.className = "file-card";
+    const chemin = f.chemin || cheminDepuisUrl(f.url);
     card.innerHTML = `
       <div class="file-card-top">
         <div class="pdf-icon">📄</div>
@@ -1910,20 +1998,21 @@ function renderFiles(files) {
         </div>
       </div>
       <div class="file-actions">
-        <a href="${escapeHtml(f.url)}" target="_blank" class="act-btn dl" title="Ouvrir le fichier">⬇️ Ouvrir</a>
-        <button class="act-btn cp" data-url="${escapeHtml(f.url)}" title="Copier le lien">🔗 Copier lien</button>
-        <button class="act-btn pv" data-url="${escapeHtml(f.url)}" data-name="${escapeHtml(f.nom)}" title="Aperçu dans l'admin">👁️ Aperçu</button>
-        <button class="act-btn del" data-id="${escapeHtml(f.id)}" data-chemin="${escapeHtml(f.chemin||'')}" data-nom="${escapeHtml(f.nom)}" title="Supprimer le fichier">🗑️ Supprimer</button>
+        <button class="act-btn pv" title="Afficher le PDF">👁️ Ouvrir</button>
+        <button class="act-btn cp" title="Copier un lien de partage valable 7 jours">🔗 Lien 7 jours</button>
+        <button class="act-btn del" title="Supprimer le fichier">🗑️ Supprimer</button>
       </div>`;
-    card.querySelector(".cp").onclick = function() { navigator.clipboard.writeText(this.dataset.url).then(() => toast("🔗 Lien copié !", "info")); };
-    card.querySelector(".pv").onclick = function() { openPv(this.dataset.url, this.dataset.name); };
-    card.querySelector(".del").onclick = async function() {
-      const ok = await confirmDelete('le fichier « ' + this.dataset.nom + ' »');
-      if (!ok) return;
-      if (this.dataset.chemin) await sb.storage.from("documents").remove([this.dataset.chemin]);
-      if (!String(this.dataset.id).startsWith("storage-")) {
-        await sb.from("fichiers_pdf").delete().eq("id", this.dataset.id);
-      }
+    card.querySelector(".pv").onclick = () => ouvrirPdf(chemin, f.nom);
+    card.querySelector(".cp").onclick = async () => {
+      try {
+        await navigator.clipboard.writeText(await lienTemporaire(chemin, 7 * 24 * 3600));
+        toast("🔗 Lien copié — il expire dans 7 jours", "info");
+      } catch (e) { toast("❌ " + e.message, "error"); }
+    };
+    card.querySelector(".del").onclick = async () => {
+      if (!await confirmDelete("le fichier « " + f.nom + " »")) return;
+      if (chemin) await sb.storage.from("documents").remove([chemin]);
+      if (!f._storageOnly) await sb.from("fichiers_pdf").delete().eq("id", f.id);
       toast("🗑️ Supprimé");
       loadFiles();
     };
@@ -1947,7 +2036,9 @@ document.getElementById("searchInput").addEventListener("input", function() {
 function docMentions(o, E, t, isDevis) {
   const e = x => String(x ?? ""), men = [];
   men.push("**TVA non applicable, art. 293 B du code général des impôts.**");
-  if (isDevis) {
+  if (o.kind === "avoir") {
+    men.push(`Avoir établi en annulation totale de la facture n° **${e(o.ref)}**${o.date2Txt ? " du " + e(o.date2Txt) : ""}. Ce montant vient en déduction des sommes dues ; s'il a déjà été réglé, il vous est remboursé.`);
+  } else if (isDevis) {
     men.push(`Devis gratuit et sans engagement, valable jusqu'au ${e(o.date2Txt)}. La prestation débute après retour du présent devis daté et signé, revêtu de la mention manuscrite « Bon pour accord ».`);
     men.push(`Majorations applicables : + 25 % les dimanches et jours fériés, + 100 % le 1er mai et le 25 décembre. ${e(E.fraisDeplacement)}`);
     men.push("Paiement à réception de facture, par virement bancaire ou en espèces.");
@@ -1955,7 +2046,9 @@ function docMentions(o, E, t, isDevis) {
     men.push(`Prestations exécutées${o.periode ? " " + e(o.periode) : ""}. Paiement à réception, au plus tard le **${e(o.date2Txt)}**, par virement bancaire${E.iban ? " (IBAN " + e(E.iban) + (E.bic ? " — BIC " + e(E.bic) : "") + ")" : ""} ou en espèces.`);
     men.push(`Pas d'escompte pour paiement anticipé. En cas de retard : pénalités au taux de ${e(E.penalites)}, exigibles sans rappel, et indemnité forfaitaire de ${fmtEUR(E.indemnite)} pour frais de recouvrement due par tout client professionnel (art. L441-10 et D441-5 du code de commerce).`);
   }
-  if (t.assiette > 0) {
+  if (t.assiette > 0 && o.kind === "avoir") {
+    men.push("Le crédit d'impôt éventuellement calculé sur la facture d'origine est annulé à hauteur du présent avoir.");
+  } else if (t.assiette > 0) {
     men.push(`Les prestations signalées « Crédit d'impôt 50 % » relèvent des services à la personne et ouvrent droit, pour les particuliers, à un crédit d'impôt égal à 50 % des sommes effectivement versées (art. 199 sexdecies du CGI), dans la limite des plafonds annuels en vigueur. Le montant affiché est une **estimation** donnée à titre indicatif, sous réserve de votre situation fiscale.${E.numeroSAP ? " Déclaration services à la personne n° " + e(E.numeroSAP) + "." : ""}${isDevis ? "" : " Une attestation fiscale annuelle vous sera adressée."}`);
   }
   if (E.assurance) men.push(`Assurance responsabilité civile professionnelle : ${e(E.assurance)}.`);
@@ -1965,6 +2058,7 @@ function docMentions(o, E, t, isDevis) {
 
 function docHTML(o) {
   const isDevis = o.kind === "devis";
+  const isAvoir = o.kind === "avoir";
   // o.entreprise permet de prévisualiser des paramètres pas encore enregistrés.
   const E = o.entreprise || ENTREPRISE;
   const lg = o.lignes || [];
@@ -1993,7 +2087,7 @@ function docHTML(o) {
       </tr>`).join("")
     : `<tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:8mm 0">Aucune prestation</td></tr>`;
 
-  const ciBox = t.assiette > 0 ? `
+  const ciBox = t.assiette > 0 && !isAvoir ? `
       <div class="cibox">
         <div class="tl"><span>Prestations éligibles au crédit d'impôt</span><span>${fmtEUR(t.assiette)}</span></div>
         <div class="tl"><span>Crédit d'impôt estimé (50 %)</span><span>− ${fmtEUR(t.credit)}</span></div>
@@ -2016,19 +2110,19 @@ function docHTML(o) {
         <div class="em">${emetteur}</div>
       </div>
       <div>
-        <div class="doctype">${isDevis ? "DEVIS" : "FACTURE"}</div>
+        <div class="doctype">${isDevis ? "DEVIS" : isAvoir ? "AVOIR" : "FACTURE"}</div>
         <div class="docmeta">
           <b>N° ${e(o.num)}</b><br>
-          ${isDevis ? "Date d'émission" : "Date de facture"} : ${e(o.date1Txt)}<br>
-          ${isDevis ? "Valable jusqu'au" : "Échéance de paiement"} : ${e(o.date2Txt)}
-          ${!isDevis && o.ref ? `<br>Réf. devis : ${e(o.ref)}` : ""}
+          ${isDevis ? "Date d'émission" : isAvoir ? "Date de l'avoir" : "Date de facture"} : ${e(o.date1Txt)}<br>
+          ${isAvoir ? `Facture d'origine : ${e(o.ref)}` : `${isDevis ? "Valable jusqu'au" : "Échéance de paiement"} : ${e(o.date2Txt)}`}
+          ${!isDevis && !isAvoir && o.ref ? `<br>Réf. devis : ${e(o.ref)}` : ""}
         </div>
       </div>
     </div>
     <div class="rule"></div>
     <div class="parties">
       <div class="pc"><div class="party">
-        <h4>${isDevis ? "Devis établi pour" : "Facturé à"}</h4>
+        <h4>${isDevis ? "Devis établi pour" : isAvoir ? "Avoir établi pour" : "Facturé à"}</h4>
         <div class="nm">${e(o.client.nom) || "—"}</div>
         ${clientLignes}
       </div></div>
@@ -2041,7 +2135,7 @@ function docHTML(o) {
     <div class="totwrap"><div class="totspacer"></div><div class="tot">
       ${t.majorations ? `<div class="tl"><span>Sous-total avant majorations</span><span>${fmtEUR(t.base)}</span></div>
       <div class="tl"><span>Majorations dimanche / jour férié</span><span>+ ${fmtEUR(t.majorations)}</span></div>` : ""}
-      <div class="tl big"><span>${isDevis ? "TOTAL À PAYER" : "NET À PAYER"}</span><span>${fmtEUR(t.total)}</span></div>
+      <div class="tl big"><span>${isDevis ? "TOTAL À PAYER" : isAvoir ? "MONTANT DE L'AVOIR" : "NET À PAYER"}</span><span>${fmtEUR(t.total)}</span></div>
       <div class="tva">TVA non applicable, art. 293 B du CGI</div>
       ${ciBox}
     </div></div>
@@ -2130,6 +2224,7 @@ function drawDoc(doc, o) {
   const lignes = o.lignes || [];
   const t = computeTotals(lignes);
   const isDevis = o.kind === "devis";
+  const isAvoir = o.kind === "avoir";
   o.mentions = docMentions(o, E, t, isDevis);
   let y = PM.t;
 
@@ -2240,14 +2335,15 @@ function drawDoc(doc, o) {
   }
 
   f(null, "bold", 23, PDFC.dark);
-  doc.text(isDevis ? "DEVIS" : "FACTURE", rightX, rightY + 8, { align: "right" });
+  doc.text(isDevis ? "DEVIS" : isAvoir ? "AVOIR" : "FACTURE", rightX, rightY + 8, { align: "right" });
   rightY += 12;
   const meta = [
     ["N\u00b0 " + o.num, true],
-    [(isDevis ? "Date d'\u00e9mission" : "Date de facture") + " : " + o.date1Txt, false],
-    [(isDevis ? "Valable jusqu'au" : "\u00c9ch\u00e9ance de paiement") + " : " + o.date2Txt, false]
+    [(isDevis ? "Date d'\u00e9mission" : isAvoir ? "Date de l'avoir" : "Date de facture") + " : " + o.date1Txt, false],
+    isAvoir ? ["Facture d'origine : " + o.ref, false]
+            : [(isDevis ? "Valable jusqu'au" : "\u00c9ch\u00e9ance de paiement") + " : " + o.date2Txt, false]
   ];
-  if (!isDevis && o.ref) meta.push(["R\u00e9f. devis : " + o.ref, false]);
+  if (!isDevis && !isAvoir && o.ref) meta.push(["R\u00e9f. devis : " + o.ref, false]);
   for (const [txt, bold] of meta) {
     f(null, bold ? "bold" : "normal", 9, bold ? PDFC.dark : PDFC.slate);
     doc.text(sane(txt), rightX, rightY + 2.6, { align: "right" });
@@ -2268,7 +2364,7 @@ function drawDoc(doc, o) {
 
   /* ── encadrés client / période ──────────────────────────────────────── */
   const boxes = [{
-    title: isDevis ? "DEVIS \u00c9TABLI POUR" : "FACTUR\u00c9 \u00c0",
+    title: isDevis ? "DEVIS \u00c9TABLI POUR" : isAvoir ? "AVOIR \u00c9TABLI POUR" : "FACTUR\u00c9 \u00c0",
     name: o.client.nom || "-",
     lines: [o.client.adresse, o.client.email, o.client.tel].filter(Boolean)
   }];
@@ -2368,7 +2464,7 @@ function drawDoc(doc, o) {
     totLines.push(["Sous-total avant majorations", fmtEUR(t.base), false]);
     totLines.push(["Majorations dimanche / jour f\u00e9ri\u00e9", "+ " + fmtEUR(t.majorations), false]);
   }
-  const ciH = t.assiette > 0 ? 22 : 0;
+  const ciH = t.assiette > 0 && !isAvoir ? 22 : 0;
   need(totLines.length * 5 + 14 + ciH);
 
   for (const [lab, val] of totLines) {
@@ -2382,14 +2478,14 @@ function drawDoc(doc, o) {
   doc.line(tx0, y, tx0 + tw, y);
   y += 2.5;
   f(null, "bold", 13, PDFC.dark);
-  doc.text(isDevis ? "TOTAL \u00c0 PAYER" : "NET \u00c0 PAYER", tx0, y + 4);
+  doc.text(isDevis ? "TOTAL \u00c0 PAYER" : isAvoir ? "MONTANT DE L'AVOIR" : "NET \u00c0 PAYER", tx0, y + 4);
   doc.text(sane(fmtEUR(t.total)), tx0 + tw, y + 4, { align: "right" });
   y += 7;
   f(null, "normal", 8, PDFC.slate);
   doc.text("TVA non applicable, art. 293 B du CGI", tx0 + tw, y + 2.4, { align: "right" });
   y += 5;
 
-  if (t.assiette > 0) {
+  if (t.assiette > 0 && !isAvoir) {
     const bigLab = "Co\u00fbt r\u00e9el estim\u00e9 apr\u00e8s cr\u00e9dit d'imp\u00f4t";
     const bigVal = fmtEUR(t.reste);
     f(null, "bold", 11.5);
@@ -2668,6 +2764,7 @@ function renderTotals(boxId, lignes) {
 /* ══ DEVIS ══ */
 let lignes = [];
 let devisEditor = null;
+let devisDemande = null;   // demande de l'espace client reliée au devis en cours
 
 async function getNextNum() {
   const year = new Date().getFullYear();
@@ -2737,7 +2834,8 @@ function resetDevis() {
   lignes = [];
   DEVIS_FIELDS.forEach(id => document.getElementById(id).value = "");
   clearDraft("devis");
-  initDevis();
+  relierDevis(null);
+  return initDevis();
 }
 
 function devisData() {
@@ -2796,6 +2894,7 @@ async function saveAndSend() {
   const btn = document.getElementById("btnSend");
   btn.disabled = true; btn.textContent = "⏳ Envoi…";
   const total = computeTotals(lignes).total;
+  const dm = devisDemande;
   let pdfUrl = null, enregistre = false;
 
   try {
@@ -2828,21 +2927,27 @@ async function saveAndSend() {
       notes:          buildNotes({ periode: d.periode }, d.notes),
       date_validite:  d.date2,
       pdf_url:        pdfUrl,
-      statut:         "envoyé"
+      statut:         "envoyé",
+      ...(dm ? { demande_id: dm.id } : {})
     });
     if (ins.error) throw new Error("Enregistrement en base impossible — " + ins.error.message);
     enregistre = true;
 
     await upsertClient(d.client.nom, d.client.email, d.client.tel, d.client.adresse);
-    await enregistrerDansEspaceClient("Devis", "Devis " + d.num, path, d.client.email);
+    await enregistrerDansEspaceClient("Devis", "Devis " + d.num, path, d.client.email, dm && dm.id);
+    if (dm) {
+      await remplacerAnciensDevis(dm.id, d.num);
+      await majDemande(dm.id, { statut: "devis_envoye", devis_montant: parseFloat(total.toFixed(2)),
+        devis_chemin: path, devis_envoye_le: new Date().toISOString(), devis_accepte_le: null });
+    }
 
-    // 3. Email au client
+    // 3. Email au client, avec un lien temporaire : le dossier des PDF est privé.
     await emailjs.send("service_hwm2hla", "template_bkhdovi", {
       to_name:    d.client.nom,
       to_email:   d.client.email,
       doc_type:   "Devis",
       doc_num:    d.num,
-      doc_url:    pdfUrl,
+      doc_url:    await lienTemporaire(path, DUREE_LIEN_EMAIL),
       total:      fmtEUR(total),
       date_label: "Valable jusqu'au",
       date_val:   d.date2Txt
@@ -2949,7 +3054,8 @@ function devisCard(f, i) {
       ${!leg && f.statut === "accepté" ? b("facture", "🧾 Facturer", "Générer la facture depuis ce devis", "background:rgba(168,85,247,.12);color:#c084fc") : ""}
       ${!leg ? b("duplique", "📋 Dupliquer", "Dupliquer ce devis", "background:rgba(10,111,212,.13);color:#60a5fa") : ""}
       ${!leg && f.client_email ? b("renvoie", "📧 Renvoyer", "Renvoyer le devis par email", "background:rgba(10,111,212,.13);color:#60a5fa") : ""}
-      ${f.pdf_url ? `<a href="${escapeHtml(f.pdf_url)}" target="_blank" rel="noopener" class="act-btn" title="Ouvrir le PDF" style="padding:5px 9px;font-size:.73rem;background:var(--surf2);color:var(--text)">⬇️ PDF</a>` : ""}
+      ${f.pdf_url || f._storage ? b("pdf", "⬇️ PDF", "Afficher le PDF", "background:var(--surf2);color:var(--text)") : ""}
+      ${f.demande_id ? b("demande", "📥 Demande", "Voir la demande du client", "background:rgba(10,111,212,.13);color:#60a5fa") : ""}
       ${b("supprime", "🗑️", "Supprimer ce devis", "background:rgba(239,68,68,.08);color:#f87171")}
     </div></div>`;
 }
@@ -2984,8 +3090,10 @@ document.getElementById("devisHistList").addEventListener("click", async e => {
   const f = devisItems[parseInt(btn.dataset.i, 10)];
   if (!f) return;
   const act = btn.dataset.act;
-  if (act === "accepte")  return setStatut(f.id, "accepté");
-  if (act === "refuse")   return setStatut(f.id, "refusé");
+  if (act === "accepte")  return setStatut(f, "accepté");
+  if (act === "refuse")   return setStatut(f, "refusé");
+  if (act === "pdf")      return ouvrirPdf(cheminDevis(f), "Devis " + f.numero);
+  if (act === "demande")  return ouvrirDemande(f.demande_id);
   if (act === "facture")  return createFactureFromDevis(f);
   if (act === "duplique") return duplicateDevis(f);
   if (act === "renvoie")  return resendDevis(f);
@@ -2994,30 +3102,44 @@ document.getElementById("devisHistList").addEventListener("click", async e => {
 
 async function deleteDevis(f) {
   const ok = await showConfirm(`Supprimer le devis ${f.numero} ?`,
-    "La numérotation comptable doit rester continue : préférez « ✗ Refusé » pour conserver la trace du devis.", "Supprimer quand même");
+    "Préférez « ✗ Refusé » pour garder une trace du devis. La suppression le retire aussi de l'espace du client.", "Supprimer quand même");
   if (!ok) return;
-  if (f.pdf_url) {
-    try {
-      const path = f._storage ? "devis/" + f.numero + ".pdf" : new URL(f.pdf_url).pathname.split("/documents/")[1];
-      if (path) await sb.storage.from("documents").remove([decodeURIComponent(path)]);
-    } catch (e) {}
+  const chemin = (f.pdf_url || f._storage) ? cheminDevis(f) : "";
+  if (chemin) {
+    try { await sb.storage.from("documents").remove([chemin]); } catch (e) {}
+    try { await sb.from("documents").delete().eq("chemin", chemin); } catch (e) {}
   }
   if (!f._legacy && f.id) {
     const { error } = await sb.from("devis").delete().eq("id", f.id);
     if (error) { toast("❌ Suppression impossible — " + error.message, "error"); return; }
   }
+  if (f.demande_id) {
+    const { data: dm } = await sb.from("demandes").select("id, devis_chemin").eq("id", f.demande_id).maybeSingle();
+    if (dm && dm.devis_chemin === chemin)
+      await majDemande(dm.id, { statut: "envoyee", devis_chemin: null, devis_montant: null, devis_envoye_le: null, devis_accepte_le: null });
+  }
   toast("🗑️ Devis supprimé");
   loadDevisHistory();
 }
 
-async function setStatut(id, statut) {
-  const { error } = await sb.from("devis").update({ statut }).eq("id", id);
+/* Un devis relié à une demande garde celle-ci à jour : accepté, elle passe
+   « Devis accepté » ; refusé, elle est annulée. */
+async function setStatut(f, statut) {
+  const { error } = await sb.from("devis").update({ statut }).eq("id", f.id);
   if (error) { toast("❌ Mise à jour impossible — " + error.message, "error"); return; }
+  if (f.demande_id) {
+    const { data: dm } = await sb.from("demandes").select("id, statut").eq("id", f.demande_id).maybeSingle();
+    if (dm && statut === "accepté" && ["envoyee", "appel_prevu", "devis_envoye"].includes(dm.statut))
+      await majDemande(dm.id, { statut: "devis_accepte", devis_accepte_le: new Date().toISOString() });
+    if (dm && statut === "refusé" && !["terminee", "annulee"].includes(dm.statut))
+      await majDemande(dm.id, { statut: "annulee" });
+  }
   toast({ "accepté": "Devis accepté ✓", "refusé": "Devis refusé ✗" }[statut] || "Statut mis à jour");
   loadDevisHistory();
 }
 
 async function duplicateDevis(f) {
+  relierDevis(null);
   lignes = normLignes(f.lignes);
   const n = parseNotes(f.notes);
   document.getElementById("d-nom").value     = f.client_nom     || "";
@@ -3040,7 +3162,7 @@ async function resendDevis(f) {
       to_email:   f.client_email,
       doc_type:   "Devis",
       doc_num:    f.numero,
-      doc_url:    f.pdf_url,
+      doc_url:    await lienTemporaire(cheminDevis(f), DUREE_LIEN_EMAIL),
       total:      fmtEUR(f.total),
       date_label: "Valable jusqu'au",
       date_val:   fmtDateFr(f.date_validite)
@@ -3053,6 +3175,9 @@ async function resendDevis(f) {
 
 /* ══ CRÉER FACTURE DEPUIS DEVIS ══ */
 async function createFactureFromDevis(f) {
+  // Un ancien brouillon de facture ne doit pas écraser ce pré-remplissage.
+  _draftRestaure.facture = true;
+  clearDraft("facture");
   factLignes = normLignes(f.lignes);
   const n = parseNotes(f.notes);
   document.getElementById("f-nom").value     = f.client_nom     || "";
@@ -3062,9 +3187,9 @@ async function createFactureFromDevis(f) {
   document.getElementById("f-periode").value = n.meta.periode   || "";
   document.getElementById("f-ref").value     = f.numero         || "";
   document.getElementById("f-notes").value   = n.texte;
-  await initFacture();
-  document.querySelector('[data-sec="factures"]').click();
-  loadFactureHistory();
+  factDemandeId = f.demande_id || null;
+  document.querySelector('.nav-item[data-sec="factures"]').click();   // initialise le formulaire et l'historique
+  afficherLienFacture();
   toast(`🧾 Facture pré-remplie depuis le devis ${f.numero}`, "info");
 }
 
@@ -3084,13 +3209,13 @@ async function upsertClient(nom, email, tel, adresse) {
 }
 
 /* ══ ESPACE CLIENT ══ user_id null si pas encore de compte : rattacher_demandes() le complète à la 1re connexion. */
-async function enregistrerDansEspaceClient(type, titre, chemin, email) {
+async function enregistrerDansEspaceClient(type, titre, chemin, email, demandeId) {
   if (!email) return;
   try {
     const { data: userId, error: rpcErr } = await sb.rpc("id_compte", { p_email: email });
     if (rpcErr) throw rpcErr;
     const { error } = await sb.from("documents").upsert(
-      { email, user_id: userId || null, titre, type, chemin },
+      { email, user_id: userId || null, demande_id: demandeId || null, titre, type, chemin },
       { onConflict: "chemin" }
     );
     if (error) throw error;
@@ -3099,6 +3224,422 @@ async function enregistrerDansEspaceClient(type, titre, chemin, email) {
     toast("⚠️ " + titre + " non ajouté à l'espace client — " + (e.message || "erreur inconnue"), "error");
   }
 }
+
+/* ══ PDF PRIVÉS ══ Le dossier « documents » n'est pas public : chaque ouverture passe par un lien temporaire. */
+const DUREE_LIEN_EMAIL = 30 * 24 * 3600;
+
+function cheminDepuisUrl(url) {
+  try { return decodeURIComponent(new URL(url).pathname.split("/documents/")[1] || ""); } catch (e) { return ""; }
+}
+function cheminDevis(f) {
+  return f._storage ? "devis/" + f.numero + ".pdf" : (cheminDepuisUrl(f.pdf_url) || "devis/" + f.numero + ".pdf");
+}
+function cheminFacture(f) {
+  return cheminDepuisUrl(f.pdf_url) || (f.statut === "avoir" ? "avoirs/" : "factures/") + f.numero + ".pdf";
+}
+async function lienTemporaire(chemin, secondes) {
+  const { data, error } = await sb.storage.from("documents").createSignedUrl(chemin, secondes || 3600);
+  if (error) throw new Error("Lien vers le PDF impossible — " + error.message);
+  return data.signedUrl;
+}
+async function ouvrirPdf(chemin, titre) {
+  if (!chemin) { toast("PDF introuvable", "error"); return; }
+  try { openPv(await lienTemporaire(chemin), titre || chemin.split("/").pop()); }
+  catch (e) { toast("❌ " + e.message, "error"); }
+}
+
+/* ══ DEMANDES DE L'ESPACE CLIENT ══════════════════════════════════════════
+   Circuit complet : demande → devis pré-rempli → acceptation en ligne par le
+   client → planification → facture. Chaque étape met la demande à jour, et
+   le client la suit dans son espace.
+   ═══════════════════════════════════════════════════════════════════════════ */
+const SERVICES_DEMANDE = {
+  menage:{emo:"🧽",nom:"Ménage à domicile"}, locaux:{emo:"🏢",nom:"Locaux professionnels"},
+  chantier:{emo:"🏗️",nom:"Fin de chantier"}, vitrerie:{emo:"🪟",nom:"Vitrerie"},
+  demenagement:{emo:"📦",nom:"Après déménagement"}, courses:{emo:"🛒",nom:"Aide aux courses"},
+  administratif:{emo:"📋",nom:"Aide administrative"}, compagnie:{emo:"🎲",nom:"Compagnie & activités"},
+  medical:{emo:"🏥",nom:"Accompagnement médical"}, lever:{emo:"🌅",nom:"Lever & coucher"},
+  medicaments:{emo:"💊",nom:"Prise de médicaments"}, nuit:{emo:"🌙",nom:"Présence de nuit"},
+  jardin:{emo:"🌿",nom:"Jardinage"}
+};
+const STATUTS_DEMANDE = {
+  envoyee:["new","Nouvelle"], appel_prevu:["pending","Appel prévu"], devis_envoye:["sent","Devis envoyé"],
+  devis_accepte:["accepted","Devis accepté"], planifiee:["plan","Planifiée"],
+  terminee:["done","Terminée"], annulee:["cancel","Annulée"]
+};
+const RYTHMES_DEMANDE = { ponctuel:"Une seule fois", regulier:"Régulier", aviser:"À définir" };
+const CRENEAUX_DEMANDE = ["8h – 10h","10h – 12h","12h – 14h","14h – 16h","16h – 18h","18h – 20h"];
+const FILTRES_DEMANDE = {
+  a_traiter:  d => ["envoyee", "appel_prevu"].includes(d.statut),
+  attente:    d => d.statut === "devis_envoye",
+  acceptees:  d => d.statut === "devis_accepte",
+  planifiees: d => d.statut === "planifiee",
+  closes:     d => ["terminee", "annulee"].includes(d.statut),
+  toutes:     () => true
+};
+// Service coché dans l'espace client → ligne de la grille TARIFS (sinon ligne libre à chiffrer).
+const TARIF_DEMANDE = { menage:"menage", courses:"courses", administratif:"courses", medical:"courses",
+                        nuit:"nuit", jardin:"jardin", demenagement:"demenagement", chantier:"chantier" };
+const HEURES_DEMANDE = { "1 heure":1, "2 heures":2, "3 heures":3, "4 heures":4, "Demi-journée":4, "21 h – 7 h":10, "22 h – 8 h":10 };
+
+let demandes = [];
+let demandesChargees = false;
+let demFiltre = "a_traiter";
+let demSelection = null;
+const demComptes = {};
+
+const nomServiceDemande = id => (SERVICES_DEMANDE[id] || { nom: id }).nom;
+function nomsServices(d) {
+  const l = d.details && d.details.services;
+  return l && l.length ? l.map(s => s.nom).join(" + ") : nomServiceDemande(d.service);
+}
+function emoDemande(d) {
+  const l = d.details && d.details.services;
+  return (SERVICES_DEMANDE[(l && l.length && l[0].id) || d.service] || {}).emo || "🏠";
+}
+function badgeDemande(statut) {
+  const m = STATUTS_DEMANDE[statut] || ["draft", statut];
+  return `<span class="status-badge ${m[0]}">${escapeHtml(m[1])}</span>`;
+}
+const quandDemande = d => d.date_souhaitee ? fmtDateFr(d.date_souhaitee) + (d.creneau ? " · " + d.creneau : "") : "date à convenir";
+
+async function loadDemandes(silencieux) {
+  const list = document.getElementById("demList");
+  if (!silencieux) list.innerHTML = `<div class="skeleton" style="height:76px;border-radius:12px"></div>`.repeat(3);
+  const { data, error } = await sb.from("demandes").select("*").order("cree_le", { ascending: false });
+  if (error) { list.innerHTML = `<div class="err-box"><b>Chargement impossible.</b><br>${escapeHtml(error.message)}</div>`; return; }
+  demandes = data || [];
+  demandesChargees = true;
+  if (devisDemande) relierDevis(devisDemande.id);
+  if (factDemandeId) afficherLienFacture();
+  majCompteursDemandes();
+  renderDemandes();
+}
+
+function majCompteursDemandes() {
+  const n = demandes.filter(d => d.statut === "envoyee").length;
+  const badge = document.getElementById("demBadge");
+  badge.textContent = n;
+  badge.style.display = n ? "inline" : "none";
+  document.getElementById("statDemNew").textContent   = demandes.filter(FILTRES_DEMANDE.a_traiter).length;
+  document.getElementById("statDemDevis").textContent = demandes.filter(FILTRES_DEMANDE.attente).length;
+  document.getElementById("statDemPlan").textContent  = demandes.filter(d => ["devis_accepte", "planifiee"].includes(d.statut)).length;
+}
+
+function renderDemandes() {
+  const list = document.getElementById("demList");
+  const q = document.getElementById("demSearch").value.toLowerCase().trim();
+  const vus = demandes.filter(FILTRES_DEMANDE[demFiltre])
+    .filter(d => !q || [d.nom, d.email, d.telephone, d.adresse, d.code_postal, d.details && d.details.societe, nomsServices(d)]
+      .some(v => String(v || "").toLowerCase().includes(q)));
+  document.getElementById("demCount").textContent = vus.length ? vus.length + " demande" + (vus.length > 1 ? "s" : "") : "";
+  list.innerHTML = vus.length ? vus.map(d => `
+    <button class="dem-item${d.id === demSelection ? " sel" : ""}${d.statut === "envoyee" ? " nouvelle" : ""}" data-dem="${escapeHtml(d.id)}">
+      <span class="dem-emo">${emoDemande(d)}</span>
+      <span class="dem-info">
+        <span class="dem-nom">${escapeHtml((d.details && d.details.societe) || d.nom)} · ${escapeHtml(nomsServices(d))}</span>
+        <span class="dem-meta">${escapeHtml(d.code_postal)} ${escapeHtml(d.adresse)} · ${escapeHtml(quandDemande(d))}</span>
+        <span style="display:block;margin-top:7px">${badgeDemande(d.statut)}</span>
+      </span>
+      <span class="dem-date">${fmtDate(d.cree_le)}</span>
+    </button>`).join("")
+    : `<div class="files-empty"><div class="empty-icon">📭</div><p>${demandes.length ? "Rien dans cette vue" : "Aucune demande reçue pour l'instant"}</p></div>`;
+  renderPanneauDemande();
+}
+
+function blocDetailsDemande(d) {
+  const x = d.details || {};
+  const dl = l => `<dl class="dem-dl">${l.map(r => `<dt>${escapeHtml(r.question)}</dt><dd>${escapeHtml(r.reponse)}</dd>`).join("")}</dl>`;
+  const services = (x.services || []).map(s =>
+    `<h4>${(SERVICES_DEMANDE[s.id] || {}).emo || ""} ${escapeHtml(s.nom)}</h4>` +
+    (s.reponses && s.reponses.length ? dl(s.reponses) : `<p style="color:var(--muted);font-size:.8rem;margin:0">Aucun détail.</p>`)).join("");
+  const commun = x.commun && x.commun.length ? `<h4>Sur place</h4>${dl(x.commun)}` : "";
+  const precisions = d.precisions ? `<h4>Précisions du client</h4><div class="dem-note">${escapeHtml(d.precisions)}</div>` : "";
+  const sante = x.consentement_sante
+    ? `<div class="dem-avis ok">Consentement à l'usage des informations de santé donné le ${escapeHtml(new Date(x.consentement_sante).toLocaleString("fr-FR"))}.</div>` : "";
+  return services || commun || precisions ? `<div class="dem-bloc"><h3>Besoin du client</h3>${services}${commun}${precisions}${sante}</div>` : "";
+}
+
+function avisCompte(d) {
+  const c = demComptes[d.email];
+  if (c === true)  return `<div class="dem-avis ok">Compte client actif : ses devis et factures apparaissent aussitôt dans son espace.</div>`;
+  if (c === false) return `<div class="dem-avis warn">Pas encore de compte à cette adresse : ses documents s'afficheront dès sa première connexion à l'espace client avec ${escapeHtml(d.email)}.</div>`;
+  return "";
+}
+
+async function verifierCompte(d) {
+  if (!d.email || d.email in demComptes) return;
+  demComptes[d.email] = undefined;
+  const { data, error } = await sb.rpc("compte_existe", { p_email: d.email });
+  demComptes[d.email] = error ? null : data;
+  const box = document.getElementById("demAvis");
+  if (box && demSelection === d.id) box.innerHTML = avisCompte(d);
+}
+
+function renderPanneauDemande() {
+  const box = document.getElementById("demPanel");
+  const d = demandes.find(x => x.id === demSelection);
+  if (!d) {
+    box.innerHTML = `<div class="dem-panel"><p style="color:var(--muted);font-size:.88rem;margin:0">Choisissez une demande pour voir le détail et la traiter.</p></div>`;
+    return;
+  }
+  const x = d.details || {};
+  const e = escapeHtml;
+  const tel = String(d.telephone || "").replace(/\s/g, "");
+  const ouverte = !["terminee", "annulee"].includes(d.statut);
+  box.innerHTML = `<div class="dem-panel">
+    <h2>${emoDemande(d)} ${e(nomsServices(d))}</h2>
+    ${badgeDemande(d.statut)}
+    <dl class="dem-dl">
+      <dt>Client</dt><dd>${e(d.nom)}${x.client ? " · " + e(x.client) : ""}${x.societe ? "<br>" + e(x.societe) : ""}</dd>
+      <dt>Téléphone</dt><dd>${tel ? `<a href="tel:${e(tel)}">${e(d.telephone)}</a>` : "—"}</dd>
+      <dt>E-mail</dt><dd><a href="mailto:${e(d.email)}">${e(d.email)}</a></dd>
+      <dt>Lieu</dt><dd>${e(d.code_postal)} ${e(d.adresse)}</dd>
+      <dt>Souhait</dt><dd>${e(quandDemande(d))}</dd>
+      <dt>Rythme</dt><dd>${e(RYTHMES_DEMANDE[d.rythme] || d.rythme)}</dd>
+      <dt>Reçue le</dt><dd>${e(new Date(d.cree_le).toLocaleString("fr-FR"))}</dd>
+      ${d.intervenant ? `<dt>Intervenant</dt><dd>${e(d.intervenant)}</dd>` : ""}
+      ${d.devis_montant != null ? `<dt>Devis</dt><dd>${fmtEUR(d.devis_montant)}${d.devis_envoye_le ? " · envoyé le " + e(fmtDate(d.devis_envoye_le)) : ""}</dd>` : ""}
+      ${d.devis_accepte_le ? `<dt>Accepté le</dt><dd>${e(new Date(d.devis_accepte_le).toLocaleString("fr-FR"))}</dd>` : ""}
+    </dl>
+    <div id="demAvis">${avisCompte(d)}</div>
+    ${blocDetailsDemande(d)}
+    <div class="dem-bloc"><h3>Devis et facture</h3>
+      <div class="dem-actions">
+        ${["envoyee", "appel_prevu", "devis_envoye"].includes(d.statut) ? `<button class="btn-action blue" data-demact="devis">📝 ${d.devis_chemin ? "Refaire le devis" : "Créer le devis"}</button>` : ""}
+        ${d.devis_chemin ? `<button class="btn-action ghost" data-demact="pdf">⬇️ Voir le devis</button>` : ""}
+        ${["devis_accepte", "planifiee", "terminee"].includes(d.statut) ? `<button class="btn-action green" data-demact="facture">🧾 Facturer</button>` : ""}
+      </div>
+    </div>
+    ${ouverte ? `<div class="dem-bloc"><h3>Planifier l'intervention</h3>
+      <div class="form-row">
+        <div class="field"><label for="dem-date">Date</label><input type="date" id="dem-date" value="${e(d.date_souhaitee || "")}"></div>
+        <div class="field"><label for="dem-creneau">Créneau</label><select id="dem-creneau">${CRENEAUX_DEMANDE.map(c => `<option${c === d.creneau ? " selected" : ""}>${e(c)}</option>`).join("")}</select></div>
+      </div>
+      <div class="field" style="margin-top:12px"><label for="dem-inter">Intervenant</label><input id="dem-inter" value="${e(d.intervenant || "")}" placeholder="Prénom de l'intervenant"></div>
+      <button class="btn-action ghost" data-demact="planifier">📅 ${d.statut === "planifiee" ? "Modifier la planification" : "Confirmer la planification"}</button>
+    </div>` : ""}
+    <div class="dem-bloc"><h3>Suivi</h3>
+      <div class="dem-actions">
+        ${d.statut === "envoyee" ? `<button class="act-btn cp" data-demact="appel">📞 Appel prévu</button>` : ""}
+        ${ouverte ? `<button class="act-btn cp" data-demact="terminee">✓ Terminée</button>` : ""}
+        <button class="act-btn pv" data-demact="copier">📋 Copier le récapitulatif</button>
+        ${ouverte ? `<button class="act-btn del" data-demact="annuler" style="margin-left:0">✗ Annuler la demande</button>` : ""}
+      </div>
+    </div>
+  </div>`;
+  verifierCompte(d);
+}
+
+function periodeDemande(d) {
+  const quand = d.date_souhaitee ? "À partir du " + fmtDateFr(d.date_souhaitee) + (d.creneau ? ", " + d.creneau : "") : "";
+  const freqs = ((d.details && d.details.services) || [])
+    .map(s => ((s.reponses || []).find(r => r.question === "Fréquence") || {}).reponse)
+    .filter(f => f && f !== "À définir");
+  return [quand, [...new Set(freqs)].join(" / ").toLowerCase()].filter(Boolean).join(" · ");
+}
+
+/* Une ligne de devis par service coché, prise dans la grille tarifaire, avec
+   les quantités tirées des réponses du client et ses réponses en détail. */
+function lignesDepuisDemande(d) {
+  const x = d.details || {};
+  const services = x.services && x.services.length ? x.services : [{ id: d.service, nom: nomServiceDemande(d.service), reponses: [] }];
+  return services.map(s => {
+    const rep = q => ((s.reponses || []).find(r => r.question === q) || {}).reponse || "";
+    const tarif = s.id === "locaux"
+      ? (/nuit|soir|matin/i.test(rep("Moment de l'intervention")) ? "locaux-nuit" : "locaux-jour")
+      : TARIF_DEMANDE[s.id];
+    const l = (tarif && ligneFromTarif(tarif)) ||
+      normLigne({ desc: s.nom, heures: 1, prix: 0, unit: s.id === "vitrerie" ? "forfait" : "h", sap: ["compagnie", "lever"].includes(s.id) });
+    if (s.id !== "locaux") l.desc = s.nom;
+    const surface = parseFloat(rep("Surface du logement"));
+    const heures = HEURES_DEMANDE[rep("Durée souhaitée par passage") || rep("Durée par visite") || rep("Horaires de présence")];
+    if (s.id === "demenagement" && surface > 0) l.heures = surface;
+    else if (heures) l.heures = heures;
+    const faits = (s.reponses || []).filter(r => r.question !== "Fréquence").map(r => r.question + " : " + r.reponse);
+    if (faits.length) l.detail = faits.join(" · ");
+    if (x.client === "Professionnel") l.sap = false;
+    return l;
+  });
+}
+
+async function creerDevisDepuisDemande(d) {
+  const enCours = lignes.length || DEVIS_FIELDS.some(id => document.getElementById(id).value.trim());
+  if (enCours && !(devisDemande && devisDemande.id === d.id) &&
+      !await showConfirm("Remplacer le devis en cours ?", "L'écran Devis contient une saisie non envoyée : elle sera remplacée par cette demande.", "Remplacer")) return;
+  document.querySelector('.nav-item[data-sec="devis"]').click();
+  await resetDevis();
+  const x = d.details || {};
+  document.getElementById("d-nom").value     = x.societe ? `${x.societe} (${d.nom})` : d.nom;
+  document.getElementById("d-email").value   = d.email || "";
+  document.getElementById("d-tel").value     = d.telephone || "";
+  document.getElementById("d-adresse").value = [d.code_postal, d.adresse].filter(Boolean).join(" ");
+  document.getElementById("d-periode").value = periodeDemande(d);
+  lignes = lignesDepuisDemande(d);
+  relierDevis(d.id);
+  devisEditor.render();
+  toast("📝 Devis pré-rempli : vérifiez les quantités et chiffrez les lignes à 0 €", "info");
+}
+
+async function facturerDemande(d) {
+  const { data, error } = await sb.from("devis").select("*").eq("demande_id", d.id).neq("statut", "refusé")
+    .order("id", { ascending: false }).limit(1);
+  if (error) { toast("❌ " + error.message, "error"); return; }
+  if (data && data[0]) return createFactureFromDevis(data[0]);
+  // Aucun devis relié (traité par téléphone, par exemple) : on part des réponses du client.
+  _draftRestaure.facture = true;
+  clearDraft("facture");
+  factLignes = lignesDepuisDemande(d);
+  const x = d.details || {};
+  document.getElementById("f-nom").value     = x.societe ? `${x.societe} (${d.nom})` : d.nom;
+  document.getElementById("f-email").value   = d.email || "";
+  document.getElementById("f-tel").value     = d.telephone || "";
+  document.getElementById("f-adresse").value = [d.code_postal, d.adresse].filter(Boolean).join(" ");
+  document.getElementById("f-periode").value = periodeDemande(d);
+  document.getElementById("f-ref").value     = "";
+  document.getElementById("f-notes").value   = "";
+  relierFacture(d.id);
+  document.querySelector('.nav-item[data-sec="factures"]').click();
+  toast("🧾 Facture pré-remplie depuis la demande", "info");
+}
+
+function relierDevis(id) {
+  devisDemande = id ? (demandes.find(x => x.id === id) || { id }) : null;
+  afficherLienDevis();
+}
+function afficherLienDevis() {
+  const box = document.getElementById("devisLien");
+  const d = devisDemande;
+  box.hidden = !d;
+  box.innerHTML = d ? `<span>📥</span>
+    <div style="flex:1;min-width:220px">Devis relié à la demande de <b>${escapeHtml(d.nom || "…")}</b>${d.details ? " — " + escapeHtml(nomsServices(d)) : ""}.
+      À l'envoi, la demande passe « Devis envoyé » et le client peut l'accepter en ligne.
+      ${d.details ? `<details><summary>Voir les réponses du client</summary>${blocDetailsDemande(d)}</details>` : ""}</div>
+    <button type="button" class="act-btn del" data-delier="devis">Délier</button>` : "";
+}
+
+function relierFacture(id) {
+  factDemandeId = id || null;
+  afficherLienFacture();
+}
+function afficherLienFacture() {
+  const box = document.getElementById("factLien");
+  const d = factDemandeId && (demandes.find(x => x.id === factDemandeId) || { id: factDemandeId });
+  box.hidden = !d;
+  box.innerHTML = d ? `<span>📥</span>
+    <div style="flex:1;min-width:220px">Facture reliée à la demande de <b>${escapeHtml(d.nom || "…")}</b>${d.details ? " — " + escapeHtml(nomsServices(d)) : ""}. Elle apparaîtra dans l'espace du client.</div>
+    <button type="button" class="act-btn del" data-delier="facture">Délier</button>` : "";
+}
+
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-delier]");
+  if (!b) return;
+  if (b.dataset.delier === "devis") { relierDevis(null); saveDraft("devis"); }
+  else { relierFacture(null); saveDraft("facture"); }
+  toast("Lien avec la demande retiré", "info");
+});
+
+/* Un nouveau devis pour la même demande remplace le précédent : l'ancien passe
+   « Refusé » et disparaît de l'espace du client, qui n'a qu'un devis à accepter. */
+async function remplacerAnciensDevis(demandeId, sauf) {
+  const { data } = await sb.from("devis").select("id, numero, pdf_url")
+    .eq("demande_id", demandeId).eq("statut", "envoyé").neq("numero", sauf);
+  for (const v of data || []) {
+    await sb.from("devis").update({ statut: "refusé" }).eq("id", v.id);
+    await sb.from("documents").delete().eq("chemin", cheminDevis(v));
+  }
+}
+
+async function majDemande(id, champs, message) {
+  const { error } = await sb.from("demandes").update(champs).eq("id", id);
+  if (error) { toast("❌ Mise à jour de la demande impossible — " + error.message, "error"); return false; }
+  if (champs.statut === "annulee")
+    await sb.from("devis").update({ statut: "refusé" }).eq("demande_id", id).eq("statut", "envoyé");
+  if (message) toast(message);
+  if (demandesChargees) await loadDemandes(true);
+  return true;
+}
+
+function recapDemande(d) {
+  const x = d.details || {};
+  return [
+    `Demande Domi Clean — ${nomsServices(d)}`,
+    `${d.nom}${x.societe ? " (" + x.societe + ")" : ""} · ${d.telephone || ""} · ${d.email}`,
+    `${d.code_postal} ${d.adresse} · ${RYTHMES_DEMANDE[d.rythme] || d.rythme}`,
+    "Souhait : " + quandDemande(d),
+    ...(x.services || []).flatMap(s => [`${s.nom} :`, ...(s.reponses || []).map(r => `  ${r.question} : ${r.reponse}`)]),
+    ...(x.commun && x.commun.length ? ["Sur place :", ...x.commun.map(r => `  ${r.question} : ${r.reponse}`)] : []),
+    d.precisions ? `Précisions : ${d.precisions}` : ""
+  ].filter(Boolean).join("\n");
+}
+
+function ouvrirDemande(id) {
+  demSelection = id;
+  demFiltre = "toutes";
+  document.querySelectorAll("[data-demfiltre]").forEach(x => x.classList.toggle("on", x.dataset.demfiltre === "toutes"));
+  document.querySelector('.nav-item[data-sec="demandes"]').click();
+}
+
+document.getElementById("demList").addEventListener("click", e => {
+  const b = e.target.closest("[data-dem]");
+  if (!b) return;
+  demSelection = b.dataset.dem;
+  renderDemandes();
+  if (window.innerWidth <= 1200) document.getElementById("demPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+});
+document.getElementById("demSearch").addEventListener("input", renderDemandes);
+document.getElementById("demRefresh").addEventListener("click", () => loadDemandes());
+document.querySelectorAll("[data-demfiltre]").forEach(c => c.addEventListener("click", () => {
+  document.querySelectorAll("[data-demfiltre]").forEach(x => x.classList.toggle("on", x === c));
+  demFiltre = c.dataset.demfiltre;
+  renderDemandes();
+}));
+
+document.getElementById("demPanel").addEventListener("click", async e => {
+  const b = e.target.closest("[data-demact]");
+  if (!b) return;
+  const d = demandes.find(x => x.id === demSelection);
+  if (!d) return;
+  const act = b.dataset.demact;
+  if (act === "devis")    return creerDevisDepuisDemande(d);
+  if (act === "pdf")      return ouvrirPdf(d.devis_chemin, "Devis — " + d.nom);
+  if (act === "facture")  return facturerDemande(d);
+  if (act === "copier")   return navigator.clipboard.writeText(recapDemande(d)).then(() => toast("📋 Récapitulatif copié", "info"));
+  if (act === "appel")    return majDemande(d.id, { statut: "appel_prevu" }, "📞 Appel prévu");
+  if (act === "terminee") return majDemande(d.id, { statut: "terminee" }, "✓ Demande terminée");
+  if (act === "annuler") {
+    if (!await showConfirm("Annuler cette demande ?",
+        "Le client la verra « Annulée » dans son espace. Un devis envoyé et non accepté passe « Refusé ».", "Annuler la demande")) return;
+    return majDemande(d.id, { statut: "annulee" }, "Demande annulée");
+  }
+  if (act === "planifier") {
+    const date = document.getElementById("dem-date").value;
+    if (!date) return toast("Choisissez une date", "error");
+    if (!["devis_accepte", "planifiee"].includes(d.statut) &&
+        !await showConfirm("Le devis n'est pas encore accepté",
+          "Les CGV prévoient une acceptation écrite du devis avant l'intervention. Planifier quand même ?", "Planifier")) return;
+    return majDemande(d.id, {
+      date_souhaitee: date,
+      creneau: document.getElementById("dem-creneau").value,
+      intervenant: document.getElementById("dem-inter").value.trim() || null,
+      statut: "planifiee"
+    }, "📅 Intervention planifiée");
+  }
+});
+
+/* Nouvelles demandes : vérification discrète toutes les 2 minutes et au retour
+   sur l'onglet, sans effacer une saisie en cours dans le panneau. */
+async function surveillerDemandes() {
+  if (!sessionAdmin || !demandesChargees || document.visibilityState !== "visible") return;
+  const { data, error } = await sb.from("demandes").select("id");
+  if (error || !data) return;
+  const connues = new Set(demandes.map(d => d.id));
+  if (!data.some(r => !connues.has(r.id))) return;
+  toast("📥 Nouvelle demande reçue", "info");
+  if (!document.getElementById("demPanel").contains(document.activeElement)) loadDemandes(true);
+}
+setInterval(surveillerDemandes, 120000);
+document.addEventListener("visibilitychange", surveillerDemandes);
 
 /* ══ MESSAGES ══ */
 async function loadUnreadCount() {
@@ -3244,6 +3785,7 @@ async function deleteClient(id) {
 /* ══ FACTURES ══ */
 let factLignes = [];
 let factEditor = null;
+let factDemandeId = null;   // demande de l'espace client reliée à la facture en cours
 let factItems  = [];
 let factFiltre = "tous";
 
@@ -3283,7 +3825,8 @@ function resetFacture() {
   factLignes = [];
   FACT_FIELDS.forEach(id => document.getElementById(id).value = "");
   clearDraft("facture");
-  initFacture();
+  relierFacture(null);
+  return initFacture();
 }
 
 function factureData() {
@@ -3329,6 +3872,7 @@ async function saveFacture() {
   const btn = document.getElementById("btnSaveFacture");
   btn.disabled = true; btn.textContent = "⏳ Enregistrement…";
   const total = computeTotals(factLignes).total;
+  const dmId = factDemandeId;
   let enregistre = false;
 
   try {
@@ -3358,13 +3902,14 @@ async function saveFacture() {
       notes:          buildNotes({ periode: d.periode, ref: d.ref }, d.notes),
       date_echeance:  d.date2,
       pdf_url:        pdfUrl,
-      statut:         "envoyée"
+      statut:         "envoyée",
+      ...(dmId ? { demande_id: dmId } : {})
     });
     if (ins.error) throw new Error("Enregistrement en base impossible — " + ins.error.message);
     enregistre = true;
 
     await upsertClient(d.client.nom, d.client.email, d.client.tel, d.client.adresse);
-    await enregistrerDansEspaceClient("Facture", "Facture " + d.num, path, d.client.email);
+    await enregistrerDansEspaceClient("Facture", "Facture " + d.num, path, d.client.email, dmId);
 
     if (d.client.email) {
       try {
@@ -3373,7 +3918,7 @@ async function saveFacture() {
           to_email:   d.client.email,
           doc_type:   "Facture",
           doc_num:    d.num,
-          doc_url:    pdfUrl,
+          doc_url:    await lienTemporaire(path, DUREE_LIEN_EMAIL),
           total:      fmtEUR(total),
           date_label: "Échéance de paiement",
           date_val:   d.date2Txt
@@ -3408,10 +3953,10 @@ async function loadFactureHistory() {
     list.innerHTML = `<div class="err-box"><b>Chargement impossible.</b><br>${escapeHtml(e.message)}</div>`;
     return;
   }
-  const impayees = factItems.filter(f => f.statut !== "payée");
-  document.getElementById("statFactures").textContent   = factItems.length;
-  document.getElementById("statFactPaid").textContent   = factItems.length - impayees.length;
-  document.getElementById("statFactPending").textContent = impayees.length;
+  const actives = factItems.filter(f => !["avoir", "annulée"].includes(f.statut));
+  document.getElementById("statFactures").textContent    = factItems.filter(f => f.statut !== "avoir").length;
+  document.getElementById("statFactPaid").textContent    = actives.filter(f => f.statut === "payée").length;
+  document.getElementById("statFactPending").textContent = actives.filter(f => f.statut !== "payée").length;
   renderFactureHistory();
 }
 
@@ -3430,22 +3975,23 @@ function renderFactureHistory() {
     list.innerHTML = `<div class="files-empty"><div class="empty-icon">📭</div><p>${factItems.length ? "Aucune facture ne correspond à ce filtre" : "Aucune facture"}</p></div>`;
     return;
   }
-  const sc = { "envoyée": "sent", "payée": "paid", "en retard": "late" };
-  const sl = { "envoyée": "Envoyée", "payée": "Payée ✓", "en retard": "En retard ⚠️" };
+  const sc = { "envoyée": "sent", "payée": "paid", "en retard": "late", "annulée": "cancel", "avoir": "avoir" };
+  const sl = { "envoyée": "Envoyée", "payée": "Payée ✓", "en retard": "En retard ⚠️", "annulée": "Annulée", "avoir": "Avoir" };
   list.innerHTML = vus.map(({ f, i }) => {
     const b = (act, label, titre, style) =>
       `<button class="act-btn" data-fact="${act}" data-i="${i}" title="${escapeHtml(titre)}" style="padding:5px 9px;font-size:.73rem;${style}">${label}</button>`;
+    const ouverte = !["annulée", "avoir"].includes(f.statut);
     return `<div class="devis-hist-item">
-      <div class="dhi-num" style="color:#a78bfa">${escapeHtml(f.numero)}</div>
+      <div class="dhi-num" style="color:${f.statut === "avoir" ? "#c084fc" : "#a78bfa"}">${escapeHtml(f.numero)}</div>
       <div class="dhi-client">${escapeHtml(f.client_nom) || "—"}<br><span style="font-size:.72rem;color:var(--muted)">${escapeHtml(f.client_email) || ""}</span></div>
       <div class="dhi-total">${f.total != null ? fmtEUR(f.total) : "—"}</div>
       <div class="dhi-date">${fmtDate(f.created_at)}</div>
       <div class="status-badge ${sc[f.statut] || "draft"}">${escapeHtml(sl[f.statut] || f.statut)}</div>
       <div class="dhi-actions">
-        ${f.statut !== "payée"     ? b("payee",  "✓ Payée",  "Marquer comme payée",           "background:rgba(34,197,94,.1);color:#4ade80") : ""}
-        ${f.statut !== "en retard" ? b("retard", "⚠️ Retard", "Marquer en retard de paiement", "background:rgba(239,68,68,.1);color:#f87171") : ""}
-        ${f.pdf_url ? `<a href="${escapeHtml(f.pdf_url)}" target="_blank" rel="noopener" class="act-btn" title="Ouvrir le PDF" style="padding:5px 9px;font-size:.73rem;background:var(--surf2);color:var(--text)">⬇️ PDF</a>` : ""}
-        ${b("supprime", "🗑️", "Supprimer cette facture", "background:rgba(239,68,68,.08);color:#f87171")}
+        ${ouverte && f.statut !== "payée"     ? b("payee",  "✓ Payée",  "Marquer comme payée",           "background:rgba(34,197,94,.1);color:#4ade80") : ""}
+        ${ouverte && f.statut !== "en retard" ? b("retard", "⚠️ Retard", "Marquer en retard de paiement", "background:rgba(239,68,68,.1);color:#f87171") : ""}
+        ${f.pdf_url ? b("pdf", "⬇️ PDF", "Afficher le PDF", "background:var(--surf2);color:var(--text)") : ""}
+        ${ouverte ? b("avoir", "↩️ Avoir", "Annuler cette facture par un avoir", "background:rgba(168,85,247,.12);color:#c084fc") : ""}
       </div></div>`;
   }).join("");
 }
@@ -3463,9 +4009,10 @@ document.getElementById("factHistList").addEventListener("click", e => {
   if (!btn) return;
   const f = factItems[parseInt(btn.dataset.i, 10)];
   if (!f) return;
-  if (btn.dataset.fact === "payee")    return setFactureStatut(f.id, "payée");
-  if (btn.dataset.fact === "retard")   return setFactureStatut(f.id, "en retard");
-  if (btn.dataset.fact === "supprime") return deleteFacture(f);
+  if (btn.dataset.fact === "payee")  return setFactureStatut(f.id, "payée");
+  if (btn.dataset.fact === "retard") return setFactureStatut(f.id, "en retard");
+  if (btn.dataset.fact === "pdf")    return ouvrirPdf(cheminFacture(f), (f.statut === "avoir" ? "Avoir " : "Facture ") + f.numero);
+  if (btn.dataset.fact === "avoir")  return creerAvoir(f);
 });
 
 async function setFactureStatut(id, statut) {
@@ -3475,14 +4022,84 @@ async function setFactureStatut(id, statut) {
   loadFactureHistory();
 }
 
-async function deleteFacture(f) {
-  const ok = await showConfirm(`Supprimer la facture ${f.numero} ?`,
-    "En France, une facture émise doit être conservée 10 ans et ne devrait pas être supprimée : émettez plutôt un avoir.", "Supprimer quand même");
+async function getNextAvoirNum() {
+  const year = new Date().getFullYear();
+  let max = 0;
+  const { data } = await sb.from("factures").select("numero").like("numero", `AV-${year}-%`);
+  (data || []).forEach(f => {
+    const m = String(f.numero || "").match(/AV-\d{4}-(\d+)/);
+    if (m) max = Math.max(max, parseInt(m[1], 10));
+  });
+  return `AV-${year}-${String(max + 1).padStart(3, "0")}`;
+}
+
+/* ══ AVOIRS ═══════════════════════════════════════════════════════════════
+   Une facture émise ne se supprime pas (numérotation continue, conservation
+   10 ans). Pour l'annuler, on émet un avoir du même montant, numéroté à part
+   (AV-AAAA-NNN) ; la facture passe « Annulée » et reste dans l'historique.
+   ═══════════════════════════════════════════════════════════════════════════ */
+async function creerAvoir(f) {
+  const ok = await showConfirm(`Émettre un avoir pour la facture ${f.numero} ?`,
+    `L'avoir annule la totalité de la facture (${fmtEUR(f.total)}). La facture passe « Annulée » et reste conservée, comme la loi l'impose. Vous pourrez ensuite émettre une facture corrigée.`, "Émettre l'avoir");
   if (!ok) return;
-  if (f.pdf_url) { try { await sb.storage.from("documents").remove([`factures/${f.numero}.pdf`]); } catch (e) {} }
-  const { error } = await sb.from("factures").delete().eq("id", f.id);
-  if (error) { toast("❌ Suppression impossible — " + error.message, "error"); return; }
-  toast("🗑️ Facture supprimée");
+  try {
+    const num = await getNextAvoirNum();
+    const lg = normLignes(f.lignes);
+    const n = parseNotes(f.notes);
+    const aujourdhui = isoLocal(new Date());
+    const d = {
+      kind: "avoir", num,
+      date1Txt: fmtDateFr(aujourdhui),
+      date2Txt: f.created_at ? fmtDateFr(f.created_at) : "",
+      client: { nom: f.client_nom || "", email: f.client_email || "", tel: f.client_tel || "", adresse: f.client_adresse || "" },
+      periode: n.meta.periode || "", ref: f.numero, notes: "", lignes: lg
+    };
+    const blob = await makePdf(d, num + ".pdf", "Avoir " + num + " — " + ENTREPRISE.nom, "blob");
+    const path = "avoirs/" + num + ".pdf";
+    const up = await sb.storage.from("documents").upload(path, blob, { contentType: "application/pdf", upsert: false });
+    if (up.error) throw new Error("Dépôt du PDF impossible — " + up.error.message);
+    const total = computeTotals(lg).total;
+    const ins = await sb.from("factures").insert({
+      numero:         num,
+      client_nom:     f.client_nom,
+      client_email:   f.client_email,
+      client_tel:     f.client_tel,
+      client_adresse: f.client_adresse,
+      lignes:         lg,
+      total:          -parseFloat(total.toFixed(2)),
+      notes:          buildNotes({ ref: f.numero, periode: n.meta.periode }, "Avoir en annulation de la facture " + f.numero),
+      date_echeance:  aujourdhui,
+      pdf_url:        sb.storage.from("documents").getPublicUrl(path).data.publicUrl,
+      statut:         "avoir",
+      ...(f.demande_id ? { demande_id: f.demande_id } : {})
+    });
+    if (ins.error) throw new Error("Enregistrement de l'avoir impossible — " + ins.error.message);
+    const maj = await sb.from("factures").update({ statut: "annulée" }).eq("id", f.id);
+    if (maj.error) throw new Error("Avoir émis, mais la facture n'a pas pu passer « Annulée » — " + maj.error.message);
+    await enregistrerDansEspaceClient("Avoir", "Avoir " + num + " (facture " + f.numero + ")", path, f.client_email, f.demande_id);
+    toast(`✅ Avoir ${num} émis — la facture ${f.numero} est annulée`);
+
+    if (f.client_email && await showConfirm("Envoyer l'avoir au client ?", `Un e-mail avec l'avoir ${num} part à ${f.client_email}.`, "Envoyer")) {
+      try {
+        await emailjs.send("service_hwm2hla", "template_bkhdovi", {
+          to_name:    f.client_nom || "Client",
+          to_email:   f.client_email,
+          doc_type:   "Avoir",
+          doc_num:    num,
+          doc_url:    await lienTemporaire(path, DUREE_LIEN_EMAIL),
+          total:      fmtEUR(total),
+          date_label: "Facture annulée",
+          date_val:   f.numero
+        });
+        toast(`📧 Avoir ${num} envoyé à ${f.client_email}`);
+      } catch (err) {
+        toast("❌ L'e-mail n'est pas parti — " + (err && (err.text || err.message) || ""), "error");
+      }
+    }
+  } catch (e) {
+    console.error(e);
+    toast("❌ " + e.message, "error");
+  }
   loadFactureHistory();
 }
 
@@ -3491,8 +4108,10 @@ async function deleteFacture(f) {
    Stockage local uniquement, effacé dès que le document est envoyé.
    ═══════════════════════════════════════════════════════════════════════════ */
 const DRAFTS = {
-  devis:   { cle: "domiclean.brouillon.devis",   champs: DEVIS_FIELDS, get: () => lignes,     set: v => { lignes = v; },     bar: "devisDraftBar", clr: "devisDraftClear", reset: () => resetDevis() },
-  facture: { cle: "domiclean.brouillon.facture", champs: FACT_FIELDS,  get: () => factLignes, set: v => { factLignes = v; }, bar: "factDraftBar",  clr: "factDraftClear",  reset: () => resetFacture() }
+  devis:   { cle: "domiclean.brouillon.devis",   champs: DEVIS_FIELDS, get: () => lignes,     set: v => { lignes = v; },     bar: "devisDraftBar", clr: "devisDraftClear", reset: () => resetDevis(),
+             lien: () => devisDemande && devisDemande.id, relier: id => relierDevis(id) },
+  facture: { cle: "domiclean.brouillon.facture", champs: FACT_FIELDS,  get: () => factLignes, set: v => { factLignes = v; }, bar: "factDraftBar",  clr: "factDraftClear",  reset: () => resetFacture(),
+             lien: () => factDemandeId, relier: id => relierFacture(id) }
 };
 const _draftTimers = {};
 let _draftRestaure = {};
@@ -3507,7 +4126,7 @@ function saveDraft(kind) {
       d.champs.forEach(id => { const el = document.getElementById(id); if (el) champs[id] = el.value; });
       const vide = !d.get().length && Object.keys(champs).every(k => !champs[k].trim());
       if (vide) { localStorage.removeItem(d.cle); return; }
-      localStorage.setItem(d.cle, JSON.stringify({ champs, lignes: d.get() }));
+      localStorage.setItem(d.cle, JSON.stringify({ champs, lignes: d.get(), lien: d.lien() || null }));
     } catch (e) {}
   }, 400);
 }
@@ -3528,6 +4147,7 @@ function maybeRestoreDraft(kind) {
   if (!brouillon) return;
   d.champs.forEach(id => { const el = document.getElementById(id); if (el && brouillon.champs && brouillon.champs[id] != null) el.value = brouillon.champs[id]; });
   d.set(normLignes(brouillon.lignes));
+  if (brouillon.lien) d.relier(brouillon.lien);
   const bar = document.getElementById(d.bar);
   if (bar) bar.classList.add("show");
 }

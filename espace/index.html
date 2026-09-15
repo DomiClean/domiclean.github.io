@@ -222,9 +222,10 @@ const CONFIG = {
   confidentialite: "https://domiclean.github.io/politique-confidentialite.html",
   mentions: "https://domiclean.github.io/mentions-legales.html",
   departements: ["75","77","78","91","92","93","94","95"],
-  // Alerte « nouvelle demande » : même modèle EmailJS que le formulaire de contact du site.
-  emailjs: { publicKey:"ceAxgfHqfXrWzhops", service:"service_hwm2hla", template:"template_yayz1yf" },
-  backOffice: "https://domiclean.github.io/admin-demandes.html"
+  // template : alerte « nouvelle demande », même modèle EmailJS que le formulaire de contact du site.
+  // accuse : accusé de réception envoyé au client (modèle à créer, voir LISEZ-MOI) ; vide = pas d'accusé.
+  emailjs: { publicKey:"ceAxgfHqfXrWzhops", service:"service_hwm2hla", template:"template_yayz1yf", accuse:"" },
+  backOffice: "https://domiclean.github.io/admin.html#demandes"
 };
 
 const CATEGORIES = [
@@ -429,9 +430,11 @@ const store = {
     });
     return error ? { ok:false, error:error.message } : { ok:true };
   },
-  async majDemande(id, champs){
-    if (!sb){ const s = demo.read(); const x = s.demandes.find(v => v.id === id); if (x) Object.assign(x, champs); demo.save(s); return; }
-    await sb.from("demandes").update(champs).eq("id", id);
+  // Le client ne modifie jamais une demande directement : la base n'autorise que ces actions.
+  async action(nom, id, champsDemo){
+    if (!sb){ const s = demo.read(); const x = s.demandes.find(v => v.id === id); if (x) Object.assign(x, champsDemo); demo.save(s); return { ok:true }; }
+    const { error } = await sb.rpc(nom, { p_demande:id });
+    return error ? { ok:false, error:error.message } : { ok:true };
   },
   async listDocs(){
     if (!sb) return [];
@@ -825,6 +828,7 @@ document.addEventListener("click", async e => {
     const res = await store.createDemande({ ...b, service:b.services[0], rythme:rythmeGlobal(b), details, statut:"envoyee" });
     if (!res.ok){ t.disabled = false; t.textContent = "Envoyer ma demande"; return toast("L'envoi a échoué. Réessayez ou appelez-nous."); }
     notifierEntreprise({ ...b, details });
+    accuserReception({ ...b, details });
     state.b = nouvelleDemande();
     await refresh();
     toast("Demande reçue. Devis sous 24 h.");
@@ -848,7 +852,8 @@ document.addEventListener("click", async e => {
   if (t.dataset.accepter){
     const d = state.demandes.find(x => x.id === t.dataset.accepter);
     if (!confirm(`En acceptant, vous validez le devis par écrit au sens de nos CGV${d?.devis_montant ? ` (${euro(d.devis_montant)})` : ""}. Confirmer ?`)) return;
-    await store.majDemande(d.id, { statut:"devis_accepte", devis_accepte_le:new Date().toISOString() });
+    const r = await store.action("accepter_devis", d.id, { statut:"devis_accepte", devis_accepte_le:new Date().toISOString() });
+    if (!r.ok) return toast("Acceptation impossible : " + r.error);
     await refresh(); toast("Devis accepté. Nous planifions l'intervention."); return render();
   }
 
@@ -856,7 +861,8 @@ document.addEventListener("click", async e => {
     const d = state.demandes.find(x => x.id === t.dataset.report);
     const p = penalite(d.date, d.creneau);
     if (!confirm(`Demander un report ?\n\n${p.taux ? "Attention : " + p.texte + " Un report convenu avec nous reste sans frais." : p.texte}`)) return;
-    await store.majDemande(d.id, { statut:"devis_accepte", date_souhaitee:null });
+    const r = await store.action("reporter_demande", d.id, { statut:"devis_accepte", date:null });
+    if (!r.ok) return toast("Report impossible : " + r.error);
     await refresh(); toast("Report demandé. Nous vous rappelons."); return render();
   }
 
@@ -864,7 +870,8 @@ document.addEventListener("click", async e => {
     const d = state.demandes.find(x => x.id === t.dataset.annuler);
     const p = penalite(d.date, d.creneau);
     if (!confirm(`Annuler cette ${d.statut === "envoyee" ? "demande" : "intervention"} ?\n\n${p.texte}`)) return;
-    await store.majDemande(d.id, { statut:"annulee" });
+    const r = await store.action("annuler_demande", d.id, { statut:"annulee" });
+    if (!r.ok) return toast("Annulation impossible : " + r.error);
     await refresh(); toast(p.taux ? "Annulée. Nous vous recontactons." : "Annulée, sans frais."); return render();
   }
 
@@ -887,6 +894,17 @@ document.addEventListener("input", e => {
 });
 
 function majContinuer(){ const n = $("[data-next]"); if (n) n.disabled = !valide(); }
+
+function accuserReception(d){
+  if (!window.emailjs || !CONFIG.emailjs.accuse) return;
+  window.emailjs.send(CONFIG.emailjs.service, CONFIG.emailjs.accuse, {
+    to_name:d.nom,
+    to_email:d.email,
+    services:d.details.services.map(s => s.nom).join(", "),
+    souhait:d.date ? new Date(d.date + "T00:00:00").toLocaleDateString("fr-FR") + (d.creneau ? " · " + d.creneau : "") : "date à convenir",
+    espace_url:CONFIG.site + "espace/?email=" + encodeURIComponent(d.email)
+  }, CONFIG.emailjs.publicKey).catch(err => console.error("Accusé de réception :", err));
+}
 
 function notifierEntreprise(d){
   if (!window.emailjs) return;

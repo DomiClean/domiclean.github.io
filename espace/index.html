@@ -297,8 +297,10 @@ const store = {
     return error ? [] : data;
   },
   async docUrl(chemin){
-    const { data, error } = await sb.storage.from("documents").createSignedUrl(chemin, 60);
-    return error ? null : data.signedUrl;
+    try {
+      const { data, error } = await sb.storage.from("documents").createSignedUrl(chemin, 60);
+      return error ? { error:error.message } : { url:data.signedUrl };
+    } catch (e) { return { error:e.message }; }
   }
 };
 
@@ -671,9 +673,11 @@ document.addEventListener("click", async e => {
   if (t.dataset.doc){
     e.preventDefault();
     if (!sb) return toast("Le devis sera consultable ici une fois la base connectée.");
-    const url = await store.docUrl(t.dataset.doc);
-    if (!url) return toast("Document indisponible.");
-    window.open(url, "_blank", "noopener");
+    toast("Ouverture du document…");
+    const r = await store.docUrl(t.dataset.doc);
+    if (r.error) return toast("Document indisponible : " + r.error);
+    // Même onglet : les navigateurs bloquent un nouvel onglet ouvert après un appel réseau.
+    location.href = r.url;
   }
 });
 

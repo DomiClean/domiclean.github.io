@@ -1,693 +1,1701 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Domi Clean — votre espace</title>
-<meta name="description" content="Demandez un devis, suivez vos interventions et retrouvez vos factures. Île-de-France.">
-<link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#F1F5F3">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Domi Clean">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<link rel="icon" href="icons/icon-192.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ═══ SEO PRIMAIRE ═══ -->
+<title>Domi Clean — Ménage & Aide à domicile en Île-de-France | Devis gratuit</title>
+<meta name="description" content="Domi Clean : ménage, aide à domicile et repassage en Île-de-France. Intervenants vérifiés, devis gratuit sous 24h, crédit d'impôt 50 %. Réservez votre appel gratuit en ligne.">
+<meta name="keywords" content="ménage à domicile île-de-france, aide à domicile paris, nettoyage domicile, femme de ménage île-de-france, service à domicile paris, entretien maison, repassage à domicile, aide personne âgée, domi clean">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta name="author" content="Domi Clean">
+<link rel="canonical" href="https://domiclean.github.io/">
+
+<!-- ═══ GÉO ═══ -->
+<meta name="geo.region" content="FR-IDF">
+<meta name="geo.placename" content="Île-de-France">
+
+<!-- ═══ OPEN GRAPH ═══ -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Domi Clean">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:url" content="https://domiclean.github.io/">
+<meta property="og:title" content="Domi Clean — Ménage & Aide à domicile en Île-de-France">
+<meta property="og:description" content="Ménage, aide à domicile et repassage en Île-de-France. Intervenants vérifiés, devis gratuit sous 24h, crédit d'impôt 50 %.">
+<meta property="og:image" content="https://domiclean.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<!-- ═══ TWITTER CARD ═══ -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Domi Clean — Ménage & Aide à domicile en Île-de-France">
+<meta name="twitter:description" content="Ménage, aide à domicile et repassage en Île-de-France. Devis gratuit sous 24h.">
+<meta name="twitter:image" content="https://domiclean.github.io/og-image.png">
+
+<!-- ═══ FAVICON ═══ -->
+<link rel="icon" type="image/png" href="favicon-32x32.png">
+
+<!-- ═══ JSON-LD : LocalBusiness + FAQPage ═══ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "LocalBusiness",
+      "@id": "https://domiclean.github.io/#business",
+      "name": "Domi Clean",
+      "description": "Services professionnels de ménage, aide à domicile et repassage en Île-de-France. Intervenants vérifiés, devis gratuit sous 24h.",
+      "url": "https://domiclean.github.io",
+      "telephone": "+33628487217",
+      "email": "domicleanidf@gmail.com",
+      "image": "https://domiclean.github.io/favicon-32x32.png",
+      "priceRange": "€€",
+      "address": {
+        "@type": "PostalAddress",
+        "addressRegion": "Île-de-France",
+        "addressCountry": "FR"
+      },
+      "areaServed": [
+        { "@type": "City", "name": "Paris" },
+        { "@type": "AdministrativeArea", "name": "Hauts-de-Seine" },
+        { "@type": "AdministrativeArea", "name": "Val-de-Marne" },
+        { "@type": "AdministrativeArea", "name": "Seine-Saint-Denis" },
+        { "@type": "AdministrativeArea", "name": "Essonne" },
+        { "@type": "AdministrativeArea", "name": "Val-d'Oise" },
+        { "@type": "State", "name": "Île-de-France" }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Services à domicile Île-de-France",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Ménage à domicile",
+              "description": "Entretien et nettoyage complet de votre domicile en Île-de-France par des professionnels vérifiés."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Aide à domicile",
+              "description": "Accompagnement personnalisé pour les personnes âgées ou en situation de dépendance en Île-de-France."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Repassage à domicile",
+              "description": "Service de repassage professionnel à votre domicile en Île-de-France."
+            }
+          }
+        ]
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+          "opens": "08:00",
+          "closes": "19:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Saturday",
+          "opens": "08:00",
+          "closes": "17:00"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Dans quelle zone géographique intervenez-vous ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nous intervenons principalement en Île-de-France, couvrant Paris et ses alentours (Hauts-de-Seine, Val-de-Marne, Seine-Saint-Denis…). N'hésitez pas à nous contacter pour vérifier si nous couvrons votre secteur."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Comment obtenir un devis ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Réservez un appel gratuit de 30 minutes via notre calendrier en ligne. Après avoir échangé sur vos besoins, nous vous envoyons un devis personnalisé et transparent sous 24h. Aucun engagement requis."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Les intervenants sont-ils vérifiés et formés ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Absolument. Tous nos intervenants sont soigneusement sélectionnés, vérifiés et formés aux techniques professionnelles de nettoyage et d'aide à domicile. Votre sécurité et votre confort sont notre priorité."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quels sont vos horaires d'intervention ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nous nous adaptons à vos disponibilités. Interventions possibles en semaine et le week-end selon les créneaux disponibles."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Puis-je bénéficier d'avantages fiscaux ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Oui ! Les services à la personne peuvent bénéficier d'un crédit d'impôt de 50 % pour les particuliers. Nous pouvons vous accompagner dans ces démarches pour alléger votre reste à charge."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Que se passe-t-il si je ne suis pas satisfait ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Votre satisfaction est notre priorité absolue. Si vous n'êtes pas pleinement satisfait d'une intervention, contactez-nous et nous trouverons ensemble la meilleure solution."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+
 <style>
-/* =====================================================================
-   COULEURS — remplacez ces six valeurs par celles du :root de votre site
-   pour que l'app soit au même vert / bleu que domiclean.github.io
-   ===================================================================== */
-:root{
-  --accent:#1F6F5C;        /* couleur principale des boutons */
-  --accent-deep:#0E3F34;   /* variante foncée, survol */
-  --soft:#DCEDE6;          /* fond des éléments sélectionnés */
-  --paper:#F1F5F3;         /* fond de l'application */
-  --ink:#10242C;           /* texte principal */
-  --ink-2:#556D75;         /* texte secondaire */
-
-  --card:#FFFFFF;
-  --line:#DBE5E2;
-  --amber:#B87333;
-  --amber-soft:#F6E7D6;
-  --rouge:#9C3B2E;
-  --rouge-soft:#F7E7E5;
-  --shadow:0 1px 2px rgba(16,36,44,.06), 0 8px 24px -12px rgba(16,36,44,.18);
-  --tab-h:66px;
-  --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
-  --body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root {
+  --p:          #0a6fd4;
+  --p-dark:     #0856a8;
+  --p-light:    #3fa9f5;
+  --p-pale:     #dbeafe;
+  --a:          #22c55e;
+  --a-dark:     #16a34a;
+  --a-pale:     #dcfce7;
+  --dark:       #0f172a;
+  --dark2:      #1e293b;
+  --dark3:      #334155;
+  --text:       #475569;
+  --muted:      #94a3b8;
+  --border:     #e2e8f0;
+  --bg:         #f8fafc;
+  --white:      #ffffff;
+  --sh-sm:      0 2px 8px rgba(0,0,0,.08);
+  --sh:         0 4px 20px rgba(10,111,212,.1);
+  --sh-md:      0 8px 30px rgba(10,111,212,.13);
+  --sh-lg:      0 20px 60px rgba(10,111,212,.16);
+  --sh-xl:      0 32px 80px rgba(10,111,212,.2);
+  --r-xs:       6px;
+  --r-sm:       10px;
+  --r:          16px;
+  --r-lg:       24px;
+  --r-xl:       32px;
+  --r-f:        9999px;
+  --nav-h:      72px;
+  --ease:       .25s cubic-bezier(.4,0,.2,1);
 }
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
-body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overscroll-behavior-y:none}
-h1,h2,h3{font-family:var(--display);font-weight:700;letter-spacing:-.02em;margin:0;line-height:1.15}
-h1{font-size:1.6rem}
-h2{font-size:1.05rem}
-h3{font-size:1rem;letter-spacing:-.01em}
-p{margin:0 0 .75rem}
-button{font:inherit;color:inherit}
-a{color:var(--accent-deep)}
 
-.app{max-width:560px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(env(safe-area-inset-top) + 14px) 20px 10px}
-.brand{display:flex;align-items:center;gap:9px;font-family:var(--display);font-weight:700;font-size:1.02rem;letter-spacing:-.02em}
-.topbar .who{font-size:.78rem;color:var(--ink-2);max-width:48%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-main{flex:1;padding:6px 20px calc(var(--tab-h) + env(safe-area-inset-bottom) + 28px)}
+/* ============================================================
+   RESET
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'DM Sans',sans-serif;font-size:1rem;line-height:1.65;color:var(--dark3);background:var(--white);overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+ul{list-style:none}
 
-.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(255,255,255,.93);backdrop-filter:saturate(1.4) blur(12px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
-.tabbar ul{max-width:560px;margin:0 auto;padding:0;list-style:none;display:grid;grid-template-columns:repeat(4,1fr)}
-.tabbar a{height:var(--tab-h);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-decoration:none;color:var(--ink-2);font-size:.7rem;font-weight:500}
-.tabbar a[aria-current="page"]{color:var(--accent-deep)}
-.tabbar a[aria-current="page"] .ic{background:var(--soft)}
-.ic{width:42px;height:26px;border-radius:999px;display:grid;place-items:center;transition:background .18s ease}
-.ic svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+.container{width:100%;max-width:1200px;margin:0 auto;padding:0 24px}
+.section{padding:96px 0}
+.section--alt{background:var(--bg)}
 
-.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
-.card + .card{margin-top:14px}
-.section{margin:26px 0 12px;display:flex;align-items:baseline;justify-content:space-between;gap:10px}
-.muted{color:var(--ink-2)}
-.small{font-size:.85rem}
-.center{text-align:center}
+.badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 14px;
+  background:var(--p-pale);color:var(--p);
+  font-size:.8125rem;font-weight:600;letter-spacing:.02em;
+  border-radius:var(--r-f);border:1px solid rgba(10,111,212,.18);
+}
 
-.next{background:linear-gradient(168deg,var(--accent) 0%, var(--accent-deep) 100%);color:#fff;border:0;border-radius:22px;padding:22px;box-shadow:0 14px 30px -18px rgba(14,63,52,.9)}
-.next .when{display:flex;align-items:flex-end;gap:14px;margin-bottom:14px}
-.next .daynum{font-family:var(--display);font-size:3.1rem;line-height:.85;font-weight:700}
-.next .dayrest{font-size:.92rem;opacity:.92;padding-bottom:4px}
-.next .dayrest strong{display:block;font-weight:600;font-size:1.05rem}
-.next dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:.9rem}
-.next dt{opacity:.72}
-.next dd{margin:0}
-.next .acts{display:flex;gap:10px;margin-top:18px}
-.next .acts button{flex:1;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);color:#fff;border-radius:999px;padding:10px;font-size:.86rem;font-weight:500;cursor:pointer}
-.next .acts button:hover{background:rgba(255,255,255,.22)}
+.sh{text-align:center;max-width:640px;margin:0 auto 64px}
+.sh .badge{margin-bottom:14px}
 
-.empty{border:1px dashed var(--line);background:#fff;border-radius:22px;padding:24px 20px}
-.empty h2{margin-bottom:8px;font-size:1.25rem}
+h1,h2,h3,h4{font-family:'DM Serif Display',serif;line-height:1.2;color:var(--dark)}
 
-.shortcuts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-.shortcut{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:8px;min-height:84px;justify-content:space-between}
-.shortcut:hover{border-color:#c3d4cf}
-.shortcut span{font-weight:500;font-size:.92rem}
-.shortcut svg{width:20px;height:20px;stroke:var(--accent);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.section-title{font-size:clamp(2rem,4vw,2.75rem);margin-bottom:14px}
+.section-sub{font-size:1.0625rem;color:var(--text);line-height:1.75}
 
-.visit{display:flex;gap:14px;align-items:flex-start;padding:15px 0;border-bottom:1px solid var(--line)}
-.visit:last-child{border-bottom:0;padding-bottom:0}
-.visit .date{flex:0 0 52px;text-align:center;border-radius:12px;background:var(--soft);color:var(--accent-deep);padding:7px 0}
-.visit .date b{display:block;font-family:var(--display);font-size:1.25rem;line-height:1}
-.visit .date i{font-style:normal;font-size:.68rem}
-.visit .date.vide{background:#EDF1F0;color:var(--ink-2);font-size:1.3rem;line-height:1.7}
-.visit .body{flex:1;min-width:0}
-.visit h3{margin-bottom:2px}
-.visit .meta{font-size:.85rem;color:var(--ink-2)}
-.visit .acts{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-.tag{display:inline-block;font-size:.72rem;font-weight:600;padding:3px 9px;border-radius:999px;margin-top:7px}
-.tag.ok{background:var(--soft);color:var(--accent-deep)}
-.tag.wait{background:var(--amber-soft);color:var(--amber)}
-.tag.done{background:#EDF1F0;color:var(--ink-2)}
-.tag.off{background:var(--rouge-soft);color:var(--rouge)}
+/* Buttons */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:13px 28px;font-size:.9375rem;font-weight:600;
+  border-radius:var(--r-f);transition:var(--ease);white-space:nowrap;
+}
+.btn-lg{padding:16px 36px;font-size:1rem}
+.btn-primary{background:var(--p);color:var(--white);box-shadow:0 4px 15px rgba(10,111,212,.3)}
+.btn-primary:hover{background:var(--p-dark);transform:translateY(-2px);box-shadow:0 8px 25px rgba(10,111,212,.35)}
+.btn-secondary{background:var(--white);color:var(--dark);border:1.5px solid var(--border)}
+.btn-secondary:hover{border-color:var(--p);color:var(--p);transform:translateY(-2px);box-shadow:var(--sh-sm)}
+.btn-ghost{background:rgba(255,255,255,.12);color:var(--white);border:1.5px solid rgba(255,255,255,.28);backdrop-filter:blur(8px)}
+.btn-ghost:hover{background:rgba(255,255,255,.22);transform:translateY(-2px)}
+.btn-accent{background:var(--a);color:var(--white);box-shadow:0 4px 15px rgba(34,197,94,.3)}
+.btn-accent:hover{background:var(--a-dark);transform:translateY(-2px);box-shadow:0 8px 25px rgba(34,197,94,.35)}
 
-label{display:block;font-size:.85rem;font-weight:500;margin-bottom:6px}
-input,select,textarea{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:12px;background:#fff;font:inherit;color:var(--ink)}
-textarea{min-height:88px;resize:vertical}
-input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(31,111,92,.15)}
-button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.field{margin-bottom:14px}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+/* Animations */
+.fu{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease}
+.fu.vis{opacity:1;transform:translateY(0)}
+.fu-d1{transition-delay:.1s}.fu-d2{transition-delay:.2s}.fu-d3{transition-delay:.3s}.fu-d4{transition-delay:.4s}
 
-.btn{display:block;width:100%;padding:14px;border-radius:999px;border:0;background:var(--accent);color:#fff;font-weight:600;cursor:pointer;text-align:center;text-decoration:none}
-.btn:hover{background:var(--accent-deep)}
-.btn[disabled]{opacity:.45;cursor:not-allowed}
-.btn.ghost{background:#fff;color:var(--accent-deep);border:1px solid var(--line)}
-.btn.ghost:hover{background:#fff;border-color:var(--accent)}
-.btn.slim{padding:11px;font-size:.9rem;width:auto;display:inline-block;padding-left:18px;padding-right:18px}
-.btn.danger{background:#fff;color:var(--rouge);border:1px solid var(--line)}
+/* Scrollbar */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:var(--r-f)}
+::-webkit-scrollbar-thumb:hover{background:var(--muted)}
 
-.choices{display:flex;flex-direction:column;gap:10px}
-.choice{display:flex;gap:13px;align-items:flex-start;text-align:left;width:100%;cursor:pointer;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px}
-.choice:hover{border-color:#c3d4cf}
-.choice[aria-pressed="true"]{border-color:var(--accent);background:var(--soft)}
-.choice .emo{flex:0 0 28px;font-size:1.35rem;line-height:1.2}
-.choice b{display:block;font-weight:600;font-size:.97rem}
-.choice em{font-style:normal;font-size:.84rem;color:var(--ink-2)}
+/* ============================================================
+   LOADER
+   ============================================================ */
+#loader{
+  position:fixed;inset:0;z-index:9999;
+  background:linear-gradient(160deg,#0f172a 0%,#0c1e3a 55%,#0a1a0f 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity .6s,visibility .6s;overflow:hidden;
+}
+#loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
 
-.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
-.slot{padding:11px 6px;border-radius:12px;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:.9rem}
-.slot[aria-pressed="true"]{border-color:var(--accent);background:var(--soft);color:var(--accent-deep);font-weight:600}
+/* Subtle floating dots in bg */
+.ld-dots{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.ld-dot{
+  position:absolute;border-radius:50%;
+  background:rgba(255,255,255,.12);
+  animation:ldDotFloat var(--dur,4s) ease-in-out infinite;
+  animation-delay:var(--del,0s);
+}
+@keyframes ldDotFloat{
+  0%,100%{transform:translateY(0) scale(1);opacity:.12}
+  50%{transform:translateY(-20px) scale(1.15);opacity:.28}
+}
 
-.steps{display:flex;align-items:center;gap:7px;margin:4px 0 18px}
-.steps i{height:4px;flex:1;border-radius:2px;background:var(--line)}
-.steps i.on{background:var(--accent)}
-.stepno{font-size:.8rem;color:var(--ink-2);margin-bottom:5px}
+/* Logo + brand */
+.ld-center{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;align-items:center;
+  margin-bottom:36px;
+}
+.ld-glow{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:140px;height:140px;
+  background:radial-gradient(circle,rgba(10,111,212,.45) 0%,transparent 70%);
+  border-radius:50%;
+  animation:ldGlowPulse 2s ease-in-out infinite;
+}
+@keyframes ldGlowPulse{
+  0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.6}
+  50%{transform:translate(-50%,-50%) scale(1.5);opacity:1}
+}
+.ld-logo{
+  width:92px;height:92px;object-fit:contain;
+  position:relative;z-index:1;
+  animation:ldLogoBreathe 2s ease-in-out infinite;
+  filter:drop-shadow(0 4px 22px rgba(63,169,245,.35));
+}
+@keyframes ldLogoBreathe{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.05)}
+}
+.ld-brand{
+  font-family:'DM Serif Display',serif;font-size:1.875rem;
+  color:var(--white);margin-top:14px;position:relative;z-index:1;
+  letter-spacing:-.01em;
+}
+.ld-tagline{
+  font-size:.875rem;color:rgba(255,255,255,.45);
+  font-weight:500;margin-top:4px;position:relative;z-index:1;
+  letter-spacing:.04em;
+}
 
-.recap{background:var(--soft);border-radius:16px;padding:16px;margin:16px 0;font-size:.9rem}
-.recap div{display:flex;justify-content:space-between;gap:16px;padding:3px 0}
-.recap span:first-child{color:var(--accent-deep);opacity:.75}
-.recap span:last-child{text-align:right;font-weight:500}
+/* 3 service cards appear one by one */
+.ld-svcs{
+  position:relative;z-index:2;
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:38px;
+}
+.ld-svc{
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  opacity:0;transform:translateY(12px) scale(.88);
+}
+.ld-svc:nth-child(1){animation:ldSvcIn .45s cubic-bezier(.34,1.56,.64,1) forwards .35s}
+.ld-svc:nth-child(2){animation:ldSvcIn .45s cubic-bezier(.34,1.56,.64,1) forwards .6s}
+.ld-svc:nth-child(3){animation:ldSvcIn .45s cubic-bezier(.34,1.56,.64,1) forwards .85s}
+@keyframes ldSvcIn{
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.ld-svc-ico{
+  width:46px;height:46px;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);
+  border-radius:14px;
+  display:flex;align-items:center;justify-content:center;font-size:1.375rem;
+}
+.ld-svc-lbl{
+  font-size:.7rem;color:rgba(255,255,255,.45);font-weight:500;
+  text-align:center;max-width:72px;line-height:1.3;
+}
 
-.doc{display:flex;align-items:center;gap:13px;padding:13px 0;border-bottom:1px solid var(--line)}
-.doc:last-child{border-bottom:0}
-.doc svg{width:19px;height:19px;stroke:var(--accent);fill:none;stroke-width:1.5}
-.doc .body{flex:1;min-width:0}
-.doc b{font-weight:500;font-size:.93rem;display:block}
-.doc a{font-size:.85rem;font-weight:600;text-decoration:none}
+/* Broom sweep across the bottom */
+.ld-sweep-wrap{
+  position:absolute;bottom:0;left:0;right:0;height:48px;
+  overflow:hidden;pointer-events:none;z-index:2;
+}
+.ld-sweep{
+  position:absolute;bottom:9px;left:-50px;
+  font-size:1.375rem;line-height:1;
+  animation:ldSweep 1.6s cubic-bezier(.4,0,.6,1) infinite;
+}
+.ld-sweep-trail{
+  position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent 0%,rgba(10,111,212,.5) 40%,rgba(34,197,94,.5) 60%,transparent 100%);
+  animation:ldTrail 1.6s ease infinite;
+}
+@keyframes ldSweep{
+  0%{left:-50px;opacity:.7}
+  85%{opacity:.7}
+  100%{left:calc(100% + 50px);opacity:0}
+}
+@keyframes ldTrail{
+  0%{clip-path:inset(0 100% 0 0)}
+  50%{clip-path:inset(0 0% 0 0)}
+  100%{clip-path:inset(0 0 0 100%)}
+}
 
-.avis{background:var(--amber-soft);color:var(--amber);border-radius:14px;padding:12px 14px;font-size:.85rem;margin:14px 0}
-.avis.rouge{background:var(--rouge-soft);color:var(--rouge)}
-.liens{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;font-size:.78rem;margin-top:22px}
-.liens a{color:var(--ink-2);text-decoration:none}
-.toast{position:fixed;left:50%;transform:translateX(-50%) translateY(12px);bottom:calc(var(--tab-h) + env(safe-area-inset-bottom) + 16px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:999px;font-size:.88rem;z-index:60;opacity:0;pointer-events:none;transition:opacity .22s ease,transform .22s ease;max-width:90vw;text-align:center}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.backlink{background:none;border:0;padding:0;margin-bottom:14px;color:var(--ink-2);font-size:.88rem;cursor:pointer}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+/* Progress bar */
+.ld-bar{
+  width:180px;height:2px;
+  background:rgba(255,255,255,.1);border-radius:var(--r-f);overflow:hidden;
+  position:relative;z-index:2;
+}
+.ld-prog{
+  height:100%;
+  background:linear-gradient(90deg,var(--p),var(--p-light),var(--a));
+  animation:ldFill 1.6s ease forwards;
+}
+@keyframes ldFill{from{width:0}to{width:100%}}
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:var(--nav-h);transition:var(--ease);
+}
+.nav.scrolled{
+  background:rgba(255,255,255,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  box-shadow:0 1px 24px rgba(0,0,0,.08);
+}
+.nav-inner{height:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+
+.nav-logo{
+  display:flex;align-items:center;gap:10px;flex-shrink:0;
+  font-family:'DM Serif Display',serif;font-size:1.35rem;color:var(--dark);
+}
+.nav-logo img{width:62px;height:62px;border-radius:var(--r-sm);object-fit:contain}
+.nav-logo-txt{display:flex;flex-direction:column;line-height:1.1;margin-top:8px}
+.nav-logo-txt span{color:var(--p)}
+.nav-logo-txt small{font-family:'DM Sans',sans-serif;font-size:.62rem;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+
+.nav-links{display:flex;align-items:center;gap:2px}
+.nav-link{
+  padding:8px 13px;font-size:.9rem;font-weight:500;color:var(--dark3);
+  border-radius:var(--r-sm);transition:var(--ease);
+}
+.nav-link:hover{color:var(--p);background:var(--p-pale)}
+
+.nav-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.nav-tel{
+  display:flex;align-items:center;gap:6px;
+  font-size:.875rem;font-weight:500;color:var(--dark3);
+  padding:8px 13px;border-radius:var(--r-f);transition:var(--ease);
+}
+.nav-tel:hover{color:var(--p)}
+
+/* Hamburger */
+.nav-burger{
+  display:none;flex-direction:column;gap:5px;
+  width:44px;height:44px;align-items:center;justify-content:center;
+  border-radius:var(--r-sm);transition:var(--ease);
+  background:rgba(10,111,212,.08);border:1px solid rgba(10,111,212,.18);
+}
+.nav-burger:hover{background:rgba(10,111,212,.15)}
+.nav-burger span{display:block;width:24px;height:2.5px;background:var(--p);border-radius:var(--r-f);transition:var(--ease)}
+.nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-burger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* Mobile drawer */
+.drawer{
+  position:fixed;inset:0;z-index:190;background:var(--dark);
+  display:flex;flex-direction:column;padding:96px 28px 48px;
+  transform:translateX(100%);transition:transform .4s cubic-bezier(.4,0,.2,1);
+}
+.drawer.open{transform:translateX(0)}
+.drawer-links{display:flex;flex-direction:column;gap:2px;flex:1}
+.drawer-link{
+  font-family:'DM Serif Display',serif;font-size:1.85rem;
+  color:rgba(255,255,255,.75);padding:12px 0;
+  border-bottom:1px solid rgba(255,255,255,.07);transition:var(--ease);
+}
+.drawer-link:hover{color:var(--white);padding-left:8px}
+.drawer-bottom{display:flex;flex-direction:column;gap:12px;margin-top:28px}
+.drawer-tel{font-size:.9375rem;color:var(--muted)}
+.drawer-tel a{color:rgba(255,255,255,.8)}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  position:relative;min-height:100svh;
+  display:flex;align-items:center;
+  background:var(--dark);overflow:hidden;
+  padding:calc(var(--nav-h) + 48px) 0 80px;
+}
+.hero-bg{position:absolute;inset:0;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.45}
+.blob-1{
+  width:620px;height:620px;
+  background:radial-gradient(circle,rgba(10,111,212,.65) 0%,transparent 70%);
+  top:-200px;right:-80px;animation:bl1 9s ease-in-out infinite;
+}
+.blob-2{
+  width:420px;height:420px;
+  background:radial-gradient(circle,rgba(34,197,94,.4) 0%,transparent 70%);
+  bottom:-80px;left:8%;animation:bl2 11s ease-in-out infinite;
+}
+.blob-3{
+  width:280px;height:280px;
+  background:radial-gradient(circle,rgba(63,169,245,.5) 0%,transparent 70%);
+  top:35%;left:-40px;animation:bl3 7s ease-in-out infinite;
+}
+@keyframes bl1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-25px,18px) scale(1.04)}}
+@keyframes bl2{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,-25px) scale(1.06)}}
+@keyframes bl3{0%,100%{transform:translate(0,0)}50%{transform:translate(12px,12px) scale(1.04)}}
+
+.hero-content{
+  position:relative;z-index:2;
+  display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;
+}
+
+/* Hero left */
+.hero-badge-wrap{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 16px 6px 8px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);
+  border-radius:var(--r-f);color:rgba(255,255,255,.82);font-size:.8125rem;font-weight:500;
+  margin-bottom:28px;backdrop-filter:blur(8px);
+}
+.hero-dot{
+  width:8px;height:8px;background:var(--a);border-radius:50%;
+  animation:dot 2s ease infinite;
+}
+@keyframes dot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.35);opacity:.65}}
+
+.hero-title{
+  font-size:clamp(2.5rem,5vw,3.75rem);color:var(--white);line-height:1.12;margin-bottom:22px;
+}
+.hero-title em{
+  font-style:normal;
+  background:linear-gradient(135deg,var(--p-light),var(--a));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{font-size:1.125rem;color:rgba(255,255,255,.62);line-height:1.75;max-width:480px;margin-bottom:38px}
+
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:44px}
+
+
+/* Hero right */
+.hero-right{position:relative;display:flex;justify-content:center;align-items:center}
+.hero-card{
+  background:rgba(255,255,255,.07);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.12);border-radius:var(--r-xl);
+  padding:30px;width:320px;animation:hFloat 5s ease-in-out infinite;
+}
+@keyframes hFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.hero-card-icon{
+  width:52px;height:52px;background:linear-gradient(135deg,var(--p),var(--p-light));
+  border-radius:var(--r);display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;margin-bottom:18px;
+}
+.hero-card-title{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--white);margin-bottom:14px}
+.hero-card-list{display:flex;flex-direction:column;gap:9px}
+.hero-card-item{
+  display:flex;align-items:center;gap:10px;
+  color:rgba(255,255,255,.68);font-size:.875rem;
+}
+.hero-card-item::before{
+  content:'';width:6px;height:6px;background:var(--a);border-radius:50%;flex-shrink:0;
+}
+
+.hero-fc{
+  position:absolute;
+  background:rgba(255,255,255,.09);backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.14);border-radius:var(--r);
+  padding:12px 16px;display:flex;align-items:center;gap:11px;white-space:nowrap;
+}
+.hero-fc-1{top:-16px;right:-24px;animation:fc1 6s ease-in-out infinite}
+.hero-fc-2{bottom:-40px;left:-36px;animation:fc2 7s ease-in-out infinite}
+@keyframes fc1{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-8px) rotate(0)}}
+@keyframes fc2{0%,100%{transform:translateY(0) rotate(2deg)}50%{transform:translateY(-10px) rotate(-1deg)}}
+.hero-fc-ico{
+  width:36px;height:36px;border-radius:var(--r-sm);
+  display:flex;align-items:center;justify-content:center;font-size:1.125rem;
+}
+.hero-fc-txt strong{color:var(--white);display:block;font-size:.9375rem}
+.hero-fc-txt span{color:rgba(255,255,255,.55);font-size:.8rem}
+
+/* ============================================================
+   TRUST BAR
+   ============================================================ */
+.trust-bar{padding:26px 0;background:var(--white);border-bottom:1px solid var(--border)}
+.trust-inner{display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap}
+.trust-item{display:flex;align-items:center;gap:10px;font-size:.9rem;font-weight:500;color:var(--dark3)}
+.trust-ico{
+  width:36px;height:36px;background:var(--p-pale);border-radius:var(--r-sm);
+  display:flex;align-items:center;justify-content:center;font-size:1rem;
+}
+
+/* ============================================================
+   SERVICES
+   ============================================================ */
+.tabs{display:flex;gap:10px;justify-content:center;margin-bottom:44px;flex-wrap:wrap}
+.tab-btn{
+  display:flex;align-items:center;gap:8px;
+  padding:11px 24px;
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--r-f);font-size:.9375rem;font-weight:600;color:var(--text);
+  transition:var(--ease);
+}
+.tab-btn:hover{border-color:var(--p);color:var(--p)}
+.tab-btn.active{background:var(--p);border-color:var(--p);color:var(--white);box-shadow:0 4px 14px rgba(10,111,212,.25)}
+
+.panel{display:none}.panel.active{display:block}
+
+.srv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:22px}
+.srv-card{
+  background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:30px 26px;transition:var(--ease);
+}
+.srv-card:hover{border-color:var(--p);box-shadow:var(--sh-md);transform:translateY(-4px)}
+.srv-ico{
+  width:54px;height:54px;border-radius:var(--r);
+  display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:18px;
+}
+.ico-b{background:var(--p-pale)}.ico-g{background:var(--a-pale)}.ico-c{background:#cffafe}
+.ico-p{background:#ede9fe}.ico-o{background:#ffedd5}.ico-pk{background:#fce7f3}
+.srv-card h3{font-family:'DM Sans',sans-serif;font-size:1.0625rem;font-weight:700;margin-bottom:8px;color:var(--dark)}
+.srv-card p{font-size:.9rem;color:var(--text);line-height:1.65}
+
+/* ============================================================
+   PROCESS
+   ============================================================ */
+.process-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:32px;position:relative;
+}
+.process-line{
+  position:absolute;top:35px;
+  left:calc(100%/6);right:calc(100%/6);
+  height:1px;background:linear-gradient(90deg,var(--p),var(--a));opacity:.2;
+}
+.process-step{text-align:center;position:relative}
+.process-num{
+  width:70px;height:70px;border-radius:50%;
+  background:linear-gradient(135deg,var(--p),var(--p-light));
+  color:var(--white);font-family:'DM Serif Display',serif;font-size:1.5rem;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 18px;box-shadow:0 8px 24px rgba(10,111,212,.25);position:relative;z-index:2;
+}
+.process-step h3{font-family:'DM Sans',sans-serif;font-size:1.0625rem;font-weight:700;margin-bottom:7px;color:var(--dark)}
+.process-step p{font-size:.9rem;color:var(--text)}
+
+/* ============================================================
+   STATS
+   ============================================================ */
+.stats{background:linear-gradient(135deg,var(--dark) 0%,var(--dark2) 100%);padding:80px 0}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+.stat{text-align:center}
+.stat-n{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(2.5rem,5vw,3.5rem);color:var(--white);line-height:1;margin-bottom:7px;
+}
+.stat-n span{color:var(--p-light)}
+.stat-l{font-size:.9rem;color:rgba(255,255,255,.5)}
+
+/* ============================================================
+   WHY US
+   ============================================================ */
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.why-visual{position:relative}
+.why-img{
+  border-radius:var(--r-xl);overflow:hidden;
+  box-shadow:var(--sh-xl);aspect-ratio:4/3;
+  background:linear-gradient(135deg,var(--p-pale),var(--a-pale));
+}
+.why-img img{width:100%;height:100%;object-fit:cover}
+.why-badge{
+  position:absolute;bottom:-18px;right:-18px;
+  background:var(--white);border-radius:var(--r);padding:15px 18px;
+  box-shadow:var(--sh-lg);display:flex;align-items:center;gap:11px;
+}
+.why-badge-ico{
+  width:42px;height:42px;background:var(--a-pale);border-radius:var(--r-sm);
+  display:flex;align-items:center;justify-content:center;font-size:1.125rem;
+}
+.why-badge-txt strong{display:block;font-size:.9375rem;color:var(--dark)}
+.why-badge-txt span{font-size:.8125rem;color:var(--text)}
+
+.why-list{display:flex;flex-direction:column;gap:18px;margin-top:30px}
+.why-item{display:flex;gap:15px;align-items:flex-start}
+.why-item-ico{
+  width:44px;height:44px;background:var(--p-pale);border-radius:var(--r-sm);
+  display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;
+}
+.why-item h4{font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;color:var(--dark);margin-bottom:3px}
+.why-item p{font-size:.9rem;color:var(--text)}
+
+/* ============================================================
+   TESTIMONIALS
+   ============================================================ */
+
+/* ============================================================
+   CALENDLY SECTION
+   ============================================================ */
+.cal-section{
+  background:linear-gradient(135deg,var(--dark) 0%,#0e2744 100%);
+  padding:96px 0;overflow:hidden;position:relative;
+}
+.cal-section::before{
+  content:'';position:absolute;top:-120px;right:-120px;
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(10,111,212,.28) 0%,transparent 70%);
+  pointer-events:none;
+}
+.cal-section::after{
+  content:'';position:absolute;bottom:-80px;left:-80px;
+  width:360px;height:360px;
+  background:radial-gradient(circle,rgba(34,197,94,.18) 0%,transparent 70%);
+  pointer-events:none;
+}
+.cal-inner{position:relative;z-index:2}
+.cal-header{text-align:center;max-width:620px;margin:0 auto 48px}
+.cal-header .badge{background:rgba(255,255,255,.09);color:rgba(255,255,255,.82);border-color:rgba(255,255,255,.14)}
+.cal-header .section-title{color:var(--white);margin-top:14px}
+.cal-header .section-sub{color:rgba(255,255,255,.6)}
+
+.cal-perks{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:48px}
+.cal-perk{
+  display:flex;align-items:center;gap:9px;
+  color:rgba(255,255,255,.7);font-size:.9rem;font-weight:500;
+}
+.cal-perk-ico{
+  width:32px;height:32px;background:rgba(255,255,255,.09);
+  border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:.875rem;
+}
+
+.cal-widget{
+  border-radius:var(--r-xl);overflow:hidden;
+  box-shadow:0 32px 80px rgba(0,0,0,.45);
+  max-width:920px;margin:0 auto;
+  border:1px solid rgba(255,255,255,.08);
+  position:relative;
+  background:#fff;
+}
+.cal-loading{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;
+  background:#fff;border-radius:var(--r-xl);z-index:2;
+  transition:opacity .4s;pointer-events:none;
+}
+.cal-loading.hidden{opacity:0}
+.cal-spinner{
+  width:36px;height:36px;border-radius:50%;
+  border:3px solid rgba(10,111,212,.15);
+  border-top-color:#0a6fd4;
+  animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.cal-loading p{font-size:.85rem;color:#94a3b8;font-weight:500}
+.calendly-inline-widget{
+  min-width:320px;height:700px;
+  display:block;
+}
+@media(max-width:600px){.calendly-inline-widget{height:800px}}
+
+/* ============================================================
+   FAQ
+   ============================================================ */
+.faq-list{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:11px}
+.faq-item{background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:var(--ease)}
+.faq-item.open{box-shadow:var(--sh);border-color:var(--p)}
+.faq-btn{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  width:100%;padding:19px 22px;text-align:left;
+  font-size:1rem;font-weight:600;color:var(--dark);transition:var(--ease);
+}
+.faq-btn:hover{color:var(--p)}
+.faq-ico{
+  width:26px;height:26px;background:var(--p-pale);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--p);font-size:1.2rem;flex-shrink:0;transition:var(--ease);
+}
+.faq-item.open .faq-ico{transform:rotate(45deg);background:var(--p);color:var(--white)}
+.faq-body{padding:0 22px;max-height:0;overflow:hidden;transition:max-height .32s ease,padding .32s ease}
+.faq-item.open .faq-body{max-height:320px;padding-bottom:18px}
+.faq-body p{font-size:.9375rem;color:var(--text);line-height:1.72}
+
+/* ============================================================
+   CONTACT
+   ============================================================ */
+.contact-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:60px;align-items:start}
+.contact-title{font-size:1.8rem;margin-top:14px;margin-bottom:10px}
+.contact-sub{color:var(--text);font-size:.9375rem;line-height:1.72;margin-bottom:32px}
+.contact-items{display:flex;flex-direction:column;gap:14px;margin-bottom:32px}
+.contact-item{display:flex;align-items:center;gap:13px}
+.contact-item-ico{
+  width:42px;height:42px;background:var(--p-pale);border-radius:var(--r-sm);
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;
+}
+.contact-item-lbl{font-size:.8125rem;color:var(--muted);font-weight:500;display:block}
+.contact-item-val{font-size:.9375rem;font-weight:600;color:var(--dark)}
+
+.cf{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:var(--r-xl);padding:38px 36px;box-shadow:var(--sh);
+}
+.cf h3{font-family:'DM Sans',sans-serif;font-size:1.125rem;font-weight:700;margin-bottom:22px;color:var(--dark)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-g{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.form-lbl{font-size:.875rem;font-weight:600;color:var(--dark2)}
+.form-in,.form-ta{
+  padding:11px 15px;background:var(--bg);
+  border:1.5px solid var(--border);border-radius:var(--r-sm);
+  font-family:inherit;font-size:.9375rem;color:var(--dark);
+  transition:var(--ease);outline:none;width:100%;
+}
+.form-in:focus,.form-ta:focus{border-color:var(--p);background:var(--white);box-shadow:0 0 0 3px rgba(10,111,212,.1)}
+.form-ta{resize:vertical;min-height:126px}
+.form-sub{
+  width:100%;padding:14px;background:var(--p);color:var(--white);
+  font-size:1rem;font-weight:600;border-radius:var(--r-f);
+  transition:var(--ease);box-shadow:0 4px 15px rgba(10,111,212,.25);
+}
+.form-sub:hover{background:var(--p-dark);transform:translateY(-2px);box-shadow:0 8px 25px rgba(10,111,212,.3)}
+.form-sub:disabled{opacity:.65;transform:none;cursor:not-allowed}
+.form-status{
+  text-align:center;padding:11px;border-radius:var(--r-sm);
+  font-size:.9rem;font-weight:500;margin-top:11px;display:none;
+}
+.form-status.ok{background:var(--a-pale);color:var(--a-dark);display:block}
+.form-status.err{background:#fee2e2;color:#dc2626;display:block}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer{background:var(--dark);color:rgba(255,255,255,.58);padding:80px 0 36px}
+.footer-grid{
+  display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:48px;
+  padding-bottom:60px;border-bottom:1px solid rgba(255,255,255,.07);
+}
+.footer-brand-logo{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.footer-brand-logo img{width:36px;height:36px;border-radius:var(--r-sm);object-fit:contain}
+.footer-brand-name{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--white)}
+.footer-desc{font-size:.875rem;line-height:1.72;margin-bottom:22px}
+.footer-socials{display:flex;gap:9px}
+.footer-soc{
+  width:35px;height:35px;background:rgba(255,255,255,.07);border-radius:var(--r-sm);
+  display:flex;align-items:center;justify-content:center;font-size:.875rem;
+  transition:var(--ease);color:rgba(255,255,255,.65);
+}
+.footer-soc:hover{background:var(--p);color:var(--white)}
+.footer-col-title{
+  font-size:.7875rem;font-weight:700;color:var(--white);
+  letter-spacing:.07em;text-transform:uppercase;margin-bottom:18px;
+}
+.footer-links{display:flex;flex-direction:column;gap:9px}
+.footer-link{font-size:.875rem;transition:var(--ease)}
+.footer-link:hover{color:var(--white)}
+.footer-bottom{
+  padding-top:28px;display:flex;align-items:center;justify-content:space-between;
+  gap:14px;flex-wrap:wrap;font-size:.8125rem;
+}
+.footer-bottom-links{display:flex;gap:22px;flex-wrap:wrap}
+.footer-bottom a:hover{color:var(--white)}
+
+/* ============================================================
+   MOBILE STICKY CTA
+   ============================================================ */
+.m-cta{
+  display:none;position:fixed;bottom:0;left:0;right:0;z-index:150;
+  padding:10px 16px;background:var(--white);border-top:1px solid var(--border);
+  gap:9px;box-shadow:0 -4px 20px rgba(0,0,0,.1);
+}
+.m-cta a{flex:1;text-align:center;border-radius:var(--r-sm) !important}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:1024px){
+  .hero-content{grid-template-columns:1fr}
+  .hero-right{display:none}
+  .hero-sub{max-width:100%}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .why-grid{grid-template-columns:1fr;gap:40px}
+  .why-visual{display:none}
+  .contact-grid{grid-template-columns:1fr;gap:36px}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:40px}
+  .process-grid{grid-template-columns:1fr;gap:28px}
+  .process-line{display:none}
+}
+
+@media(max-width:768px){
+  :root{--nav-h:64px}
+  .section{padding:72px 0}
+  .nav-links,.nav-tel,.nav-actions .btn{display:none}
+  .nav-burger{display:flex}
+  .hero{padding:calc(var(--nav-h)+32px) 0 96px}
+  .hero-actions{flex-direction:column}
+  .hero-actions .btn{width:100%;justify-content:center}
+  .form-row{grid-template-columns:1fr}
+  .cf{padding:26px 20px}
+  .footer-grid{grid-template-columns:1fr;gap:30px}
+  .footer-bottom{flex-direction:column;align-items:center;text-align:center}
+  .m-cta{display:flex}
+  body{padding-bottom:70px}
+  .stats-grid{grid-template-columns:repeat(2,1fr);gap:24px}
+  .srv-grid{grid-template-columns:1fr}
+  .sh{margin-bottom:40px}
+}
+
+@media(max-width:768px){
+  .hero-badge-wrap{margin-top:18px}
+}
+@media(max-width:480px){
+  .trust-inner{
+    gap:0;
+    overflow-x:auto;
+    flex-wrap:nowrap;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    padding:0 4px;
+  }
+  .trust-inner::-webkit-scrollbar{display:none}
+  .trust-item{
+    flex-shrink:0;
+    font-size:.78rem;
+    gap:6px;
+    padding:0 14px;
+    border-right:1px solid var(--border);
+    white-space:nowrap;
+  }
+  .trust-item:last-child{border-right:none}
+  .trust-item span{display:inline}
+  .trust-ico{font-size:.85rem}
+  .cal-perks{gap:14px}
+  .container{padding:0 18px}
+}
 </style>
 </head>
 <body>
 
-<div class="app">
-  <header class="topbar">
-    <div class="brand">
-      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M3.4 10.6 12 3.5l8.6 7.1v8.2a1.7 1.7 0 0 1-1.7 1.7H5.1a1.7 1.7 0 0 1-1.7-1.7z" fill="var(--accent)"/>
-        <path d="M12 9.2c1.9 1.9 2.9 3.2 2.9 4.5a2.9 2.9 0 0 1-5.8 0c0-1.3 1-2.6 2.9-4.5z" fill="#fff"/>
-      </svg>
-      Domi Clean
+<!-- ===================== LOADER ===================== -->
+<div id="loader">
+  <!-- bg dots -->
+  <div class="ld-dots" id="ldDots"></div>
+
+  <!-- logo + brand -->
+  <div class="ld-center">
+    <div class="ld-glow"></div>
+    <img src="https://i.imgur.com/D29UJPO.png" alt="Domi Clean" class="ld-logo"
+         onerror="this.style.display='none';document.getElementById('ldFb').style.display='flex'">
+    <div id="ldFb" style="display:none;width:92px;height:92px;background:var(--p);border-radius:20px;align-items:center;justify-content:center;font-size:2.25rem;position:relative;z-index:1">🏠</div>
+    <div class="ld-brand">Domi Clean</div>
+    <div class="ld-tagline">NETTOYAGE · AIDE À DOMICILE</div>
+  </div>
+
+  <!-- service icons, apparaissent un par un -->
+  <div class="ld-svcs">
+    <div class="ld-svc">
+      <div class="ld-svc-ico">🧹</div>
+      <div class="ld-svc-lbl">Nettoyage professionnel</div>
     </div>
-    <div class="who" id="who"></div>
-  </header>
+    <div class="ld-svc">
+      <div class="ld-svc-ico">✨</div>
+      <div class="ld-svc-lbl">Résultat impeccable</div>
+    </div>
+    <div class="ld-svc">
+      <div class="ld-svc-ico">🤝</div>
+      <div class="ld-svc-lbl">Aide à domicile</div>
+    </div>
+  </div>
 
-  <main id="view" tabindex="-1"></main>
+  <!-- progress bar -->
+  <div class="ld-bar"><div class="ld-prog"></div></div>
 
-  <nav class="tabbar" aria-label="Navigation principale">
-    <ul>
-      <li><a href="#/accueil" data-tab="accueil"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.8V20h13V9.8"/><path d="M9.8 20v-5.4h4.4V20"/></svg></span>Accueil</a></li>
-      <li><a href="#/demande" data-tab="demande"><span class="ic"><svg viewBox="0 0 24 24"><path d="M6.5 3.5h7.6L18.5 8v12.5h-12z"/><path d="M13.6 3.6V8.3h4.7"/><path d="M9.4 13.4h5.2M9.4 16.6h3.4"/></svg></span>Devis</a></li>
-      <li><a href="#/suivi" data-tab="suivi"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.2V12l3.2 2"/></svg></span>Suivi</a></li>
-      <li><a href="#/compte" data-tab="compte"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8.6" r="3.9"/><path d="M4.8 20c.9-3.6 3.7-5.5 7.2-5.5s6.3 1.9 7.2 5.5"/></svg></span>Compte</a></li>
-    </ul>
-  </nav>
+  <!-- broom sweep -->
+  <div class="ld-sweep-wrap">
+    <div class="ld-sweep">🧹</div>
+    <div class="ld-sweep-trail"></div>
+  </div>
 </div>
 
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<!-- ===================== MOBILE CTA ===================== -->
+<div class="m-cta" id="mCta">
+  <a href="tel:0628487217" class="btn btn-secondary">📞 Appeler</a>
+  <a href="#reservation" class="btn btn-primary" id="mCtaBook">📅 Réserver</a>
+</div>
 
-<script type="module">
-/* =====================================================================
-   1. CONFIGURATION
-   ===================================================================== */
-const CONFIG = {
-  // Laissez tel quel pour tester en mode démo (données sur l'appareil).
-  supabaseUrl: "https://smgzffkjwokcfjdejsbd.supabase.co",
-  supabaseAnonKey: "sb_publishable_JzkhEKjWGzWGwN_310ukew_m5EW3HrW",
+<!-- ===================== NAVIGATION ===================== -->
+<nav class="nav" id="nav">
+  <div class="container">
+    <div class="nav-inner">
 
-  telephone: "06 28 48 72 17",
-  email: "domicleanidf@gmail.com",
-  site: "https://domiclean.github.io/",
-  // Le calendrier d'appel découverte du site. Remplacez par votre lien
-  // Calendly direct si vous préférez ouvrir le calendrier sans passer par le site.
-  reservationAppel: "https://domiclean.github.io/index.html#reservation",
-  cgv: "https://domiclean.github.io/cgv.html",
-  confidentialite: "https://domiclean.github.io/politique-confidentialite.html",
-  mentions: "https://domiclean.github.io/mentions-legales.html",
-  departements: ["75","77","78","91","92","93","94","95"]
-};
+      <a href="index.html" class="nav-logo">
+        <img src="https://i.imgur.com/D29UJPO.png" alt="Logo Domi Clean" onerror="this.style.display='none'">
+        <div class="nav-logo-txt">
+          <small>Île-de-France</small>
+        </div>
+      </a>
 
-const CATEGORIES = [
-  { id:"nettoyage", emo:"🧹", nom:"Nettoyage", desc:"Locaux, chantier, vitrerie, déménagement" },
-  { id:"aide",      emo:"🤝", nom:"Aide à domicile", desc:"Courses, administratif, compagnie, santé" }
-];
-
-const SERVICES = [
-  { id:"locaux",       cat:"nettoyage", emo:"🏢", nom:"Locaux professionnels", desc:"Bureaux, commerces, espaces professionnels" },
-  { id:"chantier",     cat:"nettoyage", emo:"🏗️", nom:"Fin de chantier",       desc:"Remise en état après travaux" },
-  { id:"vitrerie",     cat:"nettoyage", emo:"🪟", nom:"Vitrerie",               desc:"Fenêtres, baies vitrées, vitrines" },
-  { id:"demenagement", cat:"nettoyage", emo:"📦", nom:"Après déménagement",     desc:"Remise en état complète du logement" },
-  { id:"courses",      cat:"aide",      emo:"🛒", nom:"Aide aux courses",       desc:"Vos courses selon votre liste" },
-  { id:"administratif",cat:"aide",      emo:"📋", nom:"Aide administrative",    desc:"Courriers et démarches" },
-  { id:"compagnie",    cat:"aide",      emo:"🎲", nom:"Compagnie & activités",  desc:"Jeux, lecture, promenades" },
-  { id:"medical",      cat:"aide",      emo:"🏥", nom:"Accompagnement médical", desc:"Transport et présence aux rendez-vous" },
-  { id:"lever",        cat:"aide",      emo:"🌅", nom:"Lever & coucher",        desc:"Assistance du matin et du soir" },
-  { id:"medicaments",  cat:"aide",      emo:"💊", nom:"Prise de médicaments",   desc:"Rappel et assistance selon prescription" }
-];
-
-const RYTHMES = [
-  { id:"ponctuel", emo:"📌", nom:"Une seule fois",      desc:"Intervention ponctuelle" },
-  { id:"regulier", emo:"🔁", nom:"Régulièrement",       desc:"Chaque semaine ou tous les quinze jours" },
-  { id:"aviser",   emo:"💬", nom:"Je ne sais pas encore", desc:"Nous en parlons pendant l'appel" }
-];
-
-const CRENEAUX = ["8h – 10h","10h – 12h","12h – 14h","14h – 16h","16h – 18h","18h – 20h"];
-
-/* =====================================================================
-   2. DONNÉES — Supabase si configuré, sinon démo locale
-   ===================================================================== */
-const configured = !CONFIG.supabaseUrl.startsWith("VOTRE_");
-let sb = null;
-if (configured) {
-  const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm");
-  sb = createClient(CONFIG.supabaseUrl, CONFIG.supabaseAnonKey);
-}
-
-const LS = "domiclean.demo";
-const demo = {
-  read(){ try { return JSON.parse(localStorage.getItem(LS)) || { user:null, demandes:[] }; } catch { return { user:null, demandes:[] }; } },
-  save(d){ localStorage.setItem(LS, JSON.stringify(d)); }
-};
-
-const store = {
-  async user(){
-    if (!sb) return demo.read().user;
-    const { data } = await sb.auth.getUser();
-    return data?.user ? { email:data.user.email, prenom:data.user.user_metadata?.prenom || "" } : null;
-  },
-  async signIn(email){
-    if (!sb){ const d = demo.read(); d.user = { email, prenom:"" }; demo.save(d); return { ok:true, demo:true }; }
-    const { error } = await sb.auth.signInWithOtp({ email, options:{ emailRedirectTo:location.href.split("#")[0] } });
-    return error ? { ok:false, error:error.message } : { ok:true };
-  },
-  async signOut(){ if (!sb){ const d = demo.read(); d.user = null; demo.save(d); return; } await sb.auth.signOut(); },
-  async listDemandes(){
-    if (!sb) return demo.read().demandes;
-    const { data, error } = await sb.from("demandes").select("*").order("cree_le", { ascending:false });
-    if (error){ console.error(error); return []; }
-    return data.map(d => ({
-      id:d.id, service:d.service, rythme:d.rythme, date:d.date_souhaitee, creneau:d.creneau,
-      adresse:d.adresse, cp:d.code_postal, precisions:d.precisions, statut:d.statut,
-      intervenant:d.intervenant, devis_chemin:d.devis_chemin, devis_montant:d.devis_montant,
-      devis_accepte_le:d.devis_accepte_le, cree_le:d.cree_le
-    }));
-  },
-  async createDemande(d){
-    if (!sb){ const s = demo.read(); s.demandes.unshift({ ...d, id:crypto.randomUUID(), cree_le:new Date().toISOString() }); demo.save(s); return { ok:true }; }
-    const { data:{ user } } = await sb.auth.getUser();
-    const { error } = await sb.from("demandes").insert({
-      user_id:user?.id ?? null, email:d.email, nom:d.nom, telephone:d.telephone,
-      service:d.service, rythme:d.rythme, date_souhaitee:d.date || null, creneau:d.creneau || null,
-      adresse:d.adresse, code_postal:d.cp, precisions:d.precisions, statut:"envoyee"
-    });
-    return error ? { ok:false, error:error.message } : { ok:true };
-  },
-  async majDemande(id, champs){
-    if (!sb){ const s = demo.read(); const x = s.demandes.find(v => v.id === id); if (x) Object.assign(x, champs); demo.save(s); return; }
-    await sb.from("demandes").update(champs).eq("id", id);
-  },
-  async listDocs(){
-    if (!sb) return [];
-    const { data, error } = await sb.from("documents").select("*").order("cree_le", { ascending:false });
-    return error ? [] : data;
-  },
-  async docUrl(chemin){
-    const { data, error } = await sb.storage.from("documents").createSignedUrl(chemin, 60);
-    return error ? null : data.signedUrl;
-  }
-};
-
-/* =====================================================================
-   3. OUTILS
-   ===================================================================== */
-const $ = s => document.querySelector(s);
-const view = $("#view");
-const JOURS = ["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"];
-const MOIS = ["janv","févr","mars","avril","mai","juin","juil","août","sept","oct","nov","déc"];
-const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
-const euro = n => Number(n).toLocaleString("fr-FR", { style:"currency", currency:"EUR" });
-const svc = id => SERVICES.find(s => s.id === id);
-const paramEmail = new URLSearchParams(location.search).get("email") || "";
-const ajd = () => new Date(Date.now() - new Date().getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
-
-function toast(msg){
-  const t = $("#toast");
-  t.textContent = msg; t.classList.add("show");
-  clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove("show"), 3400);
-}
-
-const STATUTS = {
-  envoyee:      ["wait","Demande envoyée"],
-  appel_prevu:  ["wait","Appel de découverte prévu"],
-  devis_envoye: ["wait","Devis à valider"],
-  devis_accepte:["ok","Devis accepté"],
-  planifiee:    ["ok","Intervention planifiée"],
-  terminee:     ["done","Terminée"],
-  annulee:      ["off","Annulée"]
-};
-const tagStatut = s => { const m = STATUTS[s] || ["done", s]; return `<span class="tag ${m[0]}">${m[1]}</span>`; };
-const estActive = d => !["terminee","annulee"].includes(d.statut);
-
-/* Pénalités d'annulation, telles que fixées par vos CGV (article 6). */
-function penalite(dateIso, creneau){
-  if (!dateIso) return { taux:0, texte:"Cette demande n'est pas encore planifiée : l'annulation est sans frais." };
-  const heure = parseInt((creneau || "8h").match(/\d+/)[0], 10);
-  const debut = new Date(`${dateIso}T${String(heure).padStart(2, "0")}:00:00`);
-  const restant = (debut - Date.now()) / 36e5;
-  if (dateIso === ajd())  return { taux:100, texte:"Annulation le jour même : 100 % du montant du devis reste dû." };
-  if (restant < 24)       return { taux:50,  texte:"Moins de 24 h avant l'intervention : 50 % du montant du devis reste dû." };
-  if (restant < 48)       return { taux:30,  texte:"Entre 24 h et 48 h avant l'intervention : 30 % du montant du devis reste dû." };
-  return { taux:0, texte:"Plus de 48 h avant l'intervention : annulation sans frais." };
-}
-
-/* =====================================================================
-   4. ÉCRANS
-   ===================================================================== */
-const state = { user:null, demandes:[], docs:[], b:{ etape:1 } };
-
-async function refresh(){
-  state.user = await store.user();
-  state.demandes = state.user ? await store.listDemandes() : [];
-  $("#who").textContent = state.user ? state.user.email : "Île-de-France";
-}
-
-/* ---- Accueil ---- */
-function ecranAccueil(){
-  const actives = state.demandes.filter(estActive);
-  const planifiee = actives.filter(d => d.statut === "planifiee" && d.date >= ajd()).sort((a,b) => a.date.localeCompare(b.date))[0];
-  const aValider = actives.find(d => d.statut === "devis_envoye");
-  const bonjour = new Date().getHours() < 18 ? "Bonjour" : "Bonsoir";
-
-  let hero;
-  if (planifiee){
-    const d = new Date(planifiee.date + "T00:00:00");
-    hero = `<section class="next">
-      <div class="when">
-        <div class="daynum">${d.getDate()}</div>
-        <div class="dayrest"><strong>${JOURS[d.getDay()]}</strong>${MOIS[d.getMonth()]} · ${esc(planifiee.creneau || "horaire à confirmer")}</div>
+      <div class="nav-links">
+        <a href="#services" class="nav-link">Services</a>
+        <a href="#comment-ca-marche" class="nav-link">Comment ça marche</a>
+        <a href="histoire.html" class="nav-link">Notre histoire</a>
+        <a href="#faq" class="nav-link">FAQ</a>
+        <a href="#contact" class="nav-link">Contact</a>
       </div>
-      <dl>
-        <dt>Prestation</dt><dd>${esc(svc(planifiee.service)?.nom || planifiee.service)}</dd>
-        <dt>Chez vous</dt><dd>${esc(planifiee.adresse)}</dd>
-        ${planifiee.intervenant ? `<dt>Avec</dt><dd>${esc(planifiee.intervenant)}</dd>` : ""}
-      </dl>
-      <div class="acts">
-        <button data-report="${planifiee.id}">Reporter</button>
-        <button data-annuler="${planifiee.id}">Annuler</button>
-      </div>
-    </section>`;
-  } else if (aValider){
-    hero = `<section class="next">
-      <h2 style="font-size:1.35rem;margin-bottom:8px">Votre devis est prêt</h2>
-      <p style="opacity:.9;font-size:.92rem;margin-bottom:16px">${esc(svc(aValider.service)?.nom || "")}${aValider.devis_montant ? " · " + euro(aValider.devis_montant) : ""}. Valable 30 jours, sans engagement.</p>
-      <div class="acts">
-        ${aValider.devis_chemin ? `<button data-doc="${esc(aValider.devis_chemin)}">Lire le devis</button>` : ""}
-        <button data-accepter="${aValider.id}">Accepter</button>
-      </div>
-    </section>`;
-  } else {
-    hero = `<section class="empty">
-      <h2>Parlons de votre besoin</h2>
-      <p class="muted small">Un appel gratuit de 30 minutes, puis un devis personnalisé sous 24 h. Sans engagement.</p>
-      <a class="btn" href="${CONFIG.reservationAppel}" target="_blank" rel="noopener">Réserver l'appel gratuit</a>
-      <a class="btn ghost" href="#/demande" style="margin-top:10px">Décrire mon besoin par écrit</a>
-    </section>`;
-  }
 
-  const autres = actives.filter(d => d !== planifiee && d !== aValider);
+      <div class="nav-actions">
+        <a href="tel:0628487217" class="nav-tel">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12.73a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.62 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          06 28 48 72 17
+        </a>
+        <a href="#reservation" class="btn btn-primary">📅 Prendre rendez-vous</a>
+      </div>
 
-  return `<h1 style="margin:10px 0 18px">${bonjour}${state.user?.prenom ? " " + esc(state.user.prenom) : ""}.</h1>
-    ${hero}
-    <div class="shortcuts">
-      <button class="shortcut" data-go="#/demande">
-        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span>Nouvelle demande</span>
-      </button>
-      <button class="shortcut" data-appel>
-        <svg viewBox="0 0 24 24"><path d="M6 3.8h3.4l1.7 4.3-2.1 1.5a11 11 0 0 0 5.4 5.4l1.5-2.1 4.3 1.7V18a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4 6a2 2 0 0 1 2-2.2z"/></svg><span>${esc(CONFIG.telephone)}</span>
-      </button>
-      <button class="shortcut" data-go="#/suivi">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.2V12l3.2 2"/></svg><span>Suivre mes demandes</span>
-      </button>
-      <button class="shortcut" data-go="#/compte">
-        <svg viewBox="0 0 24 24"><path d="M6.5 3.5h7.6L18.5 8v12.5h-12z"/><path d="M13.6 3.6V8.3h4.7"/></svg><span>Devis et factures</span>
+      <button class="nav-burger" id="burger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
       </button>
     </div>
-    ${autres.length ? `<div class="section"><h2>En cours</h2></div><div class="card">${autres.map(ligne).join("")}</div>` : ""}
-    ${liensLegaux()}`;
-}
+  </div>
+</nav>
 
-function ligne(d, avecActions = false){
-  const dt = d.date ? new Date(d.date + "T00:00:00") : null;
-  const s = svc(d.service);
-  return `<article class="visit">
-    <div class="date ${dt ? "" : "vide"}">${dt ? `<b>${dt.getDate()}</b><i>${MOIS[dt.getMonth()]}</i>` : (s?.emo || "🏠")}</div>
-    <div class="body">
-      <h3>${esc(s?.nom || d.service)}</h3>
-      <div class="meta">${dt ? esc(d.creneau || "horaire à confirmer") : "Date à convenir"}${d.devis_montant ? " · " + euro(d.devis_montant) : ""}</div>
-      <div class="meta">${esc(d.adresse)}</div>
-      ${tagStatut(d.statut)}
-      ${avecActions ? actionsDemande(d) : ""}
-    </div>
-  </article>`;
-}
+<!-- ===================== MOBILE DRAWER ===================== -->
+<div class="drawer" id="drawer" role="dialog" aria-label="Menu de navigation">
+  <div class="drawer-links">
+    <a href="#services" class="drawer-link" data-close>Services</a>
+    <a href="#comment-ca-marche" class="drawer-link" data-close>Comment ça marche</a>
+    <a href="histoire.html" class="drawer-link" data-close>Notre histoire</a>
+    <a href="#faq" class="drawer-link" data-close>FAQ</a>
+    <a href="#contact" class="drawer-link" data-close>Contact</a>
+  </div>
+  <div class="drawer-bottom">
+    <a href="#reservation" class="btn btn-primary btn-lg" data-close>📅 Prendre rendez-vous</a>
+    <p class="drawer-tel">📞 <a href="tel:0628487217">06 28 48 72 17</a></p>
+  </div>
+</div>
 
-function actionsDemande(d){
-  const a = [];
-  if (d.statut === "devis_envoye"){
-    if (d.devis_chemin) a.push(`<button class="btn ghost slim" data-doc="${esc(d.devis_chemin)}">Lire le devis</button>`);
-    a.push(`<button class="btn slim" data-accepter="${d.id}">Accepter le devis</button>`);
-  }
-  if (["planifiee","devis_accepte"].includes(d.statut)){
-    a.push(`<button class="btn ghost slim" data-report="${d.id}">Reporter</button>`);
-    a.push(`<button class="btn danger slim" data-annuler="${d.id}">Annuler</button>`);
-  }
-  if (d.statut === "envoyee") a.push(`<button class="btn danger slim" data-annuler="${d.id}">Retirer la demande</button>`);
-  return a.length ? `<div class="acts">${a.join("")}</div>` : "";
-}
+<!-- ===================== HERO ===================== -->
+<section class="hero" id="accueil">
+  <div class="hero-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
 
-/* ---- Demande de devis ---- */
-function ecranDemande(){
-  const b = state.b, total = 4;
-  const barre = `<div class="steps">${Array.from({ length:total }, (_, i) => `<i class="${i < b.etape ? "on" : ""}"></i>`).join("")}</div><div class="stepno">Étape ${b.etape} sur ${total}</div>`;
-  let corps = "";
+  <div class="container">
+    <div class="hero-content">
+      <!-- LEFT -->
+      <div class="hero-left">
+        <div class="hero-badge-wrap">
+          <div class="hero-dot"></div>
+          Service professionnel & de confiance en Île-de-France
+        </div>
 
-  if (b.etape === 1){
-    corps = `<h1>De quoi avez-vous besoin ?</h1>
-      <div class="choices" style="margin-top:16px">
-        ${CATEGORIES.map(c => `<button class="choice" aria-pressed="${b.cat === c.id}" data-cat="${c.id}">
-          <span class="emo">${c.emo}</span><span><b>${c.nom}</b><em>${c.desc}</em></span></button>`).join("")}
+        <h1 class="hero-title">
+          Nettoyage &<br>
+          <em>Aide à domicile</em><br>
+          sur mesure
+        </h1>
+
+        <p class="hero-sub">
+          Des services personnalisés de nettoyage professionnel et d'aide à domicile pour particuliers et professionnels. Disponible rapidement, partout en Île-de-France.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#reservation" class="btn btn-primary btn-lg">📅 Réserver un appel gratuit</a>
+          <a href="#services" class="btn btn-ghost btn-lg">Voir nos services</a>
+        </div>
+
       </div>
-      ${b.cat ? `<div class="choices" style="margin-top:14px">
-        ${SERVICES.filter(s => s.cat === b.cat).map(s => `<button class="choice" aria-pressed="${b.service === s.id}" data-svc="${s.id}">
-          <span class="emo">${s.emo}</span><span><b>${s.nom}</b><em>${s.desc}</em></span></button>`).join("")}
-      </div>` : ""}`;
-  }
-  if (b.etape === 2){
-    corps = `<h1>À quel rythme ?</h1>
-      <p class="muted small" style="margin-top:8px">Rien n'est figé : nous ajustons ensemble pendant l'appel.</p>
-      <div class="choices" style="margin-top:16px">
-        ${RYTHMES.map(r => `<button class="choice" aria-pressed="${b.rythme === r.id}" data-rythme="${r.id}">
-          <span class="emo">${r.emo}</span><span><b>${r.nom}</b><em>${r.desc}</em></span></button>`).join("")}
-      </div>`;
-  }
-  if (b.etape === 3){
-    corps = `<h1>Quand vous arrangerait-il ?</h1>
-      <p class="muted small" style="margin-top:8px">Une préférence suffit. Nous confirmons le créneau exact après l'appel.</p>
-      <div class="field" style="margin-top:16px"><label for="d-date">Date souhaitée (facultatif)</label>
-        <input type="date" id="d-date" min="${new Date(Date.now() + 2 * 864e5).toISOString().slice(0,10)}" value="${b.date || ""}"></div>
-      <label>Moment de la journée</label>
-      <div class="slots">${CRENEAUX.map(c => `<button class="slot" aria-pressed="${b.creneau === c}" data-creneau="${c}">${c}</button>`).join("")}</div>`;
-  }
-  if (b.etape === 4){
-    const s = svc(b.service), r = RYTHMES.find(x => x.id === b.rythme);
-    corps = `<h1>Vos coordonnées</h1>
-      <div class="field" style="margin-top:16px"><label for="d-nom">Nom et prénom</label><input id="d-nom" value="${esc(b.nom || "")}" autocomplete="name"></div>
-      <div class="row">
-        <div class="field"><label for="d-tel">Téléphone</label><input id="d-tel" type="tel" value="${esc(b.telephone || "")}" autocomplete="tel"></div>
-        <div class="field"><label for="d-mail">E-mail</label><input id="d-mail" type="email" value="${esc(b.email || state.user?.email || paramEmail)}" autocomplete="email" ${state.user ? "readonly title=\"L'adresse de votre compte\"" : ""}></div>
+
+      <!-- RIGHT (desktop only) -->
+      <div class="hero-right" aria-hidden="true">
+        <div class="hero-card">
+          <div class="hero-card-icon">🏠</div>
+          <div class="hero-card-title">Nos services</div>
+          <div class="hero-card-list">
+            <div class="hero-card-item">Nettoyage de locaux professionnels</div>
+            <div class="hero-card-item">Nettoyage fin de chantier & vitrerie</div>
+            <div class="hero-card-item">Aide aux courses & administratif</div>
+            <div class="hero-card-item">Accompagnement médical</div>
+            <div class="hero-card-item">Compagnie & activités</div>
+          </div>
+        </div>
+
+        <div class="hero-fc hero-fc-1">
+          <div class="hero-fc-ico" style="background:var(--a-pale)">✅</div>
+          <div class="hero-fc-txt">
+            <strong>Devis gratuit</strong>
+            <span>Réponse sous 24h</span>
+          </div>
+        </div>
+
+        <div class="hero-fc hero-fc-2">
+          <div class="hero-fc-ico" style="background:var(--p-pale)">📍</div>
+          <div class="hero-fc-txt">
+            <strong>Région parisienne</strong>
+            <span>Intervention rapide</span>
+          </div>
+        </div>
       </div>
-      <div class="row">
-        <div class="field"><label for="d-cp">Code postal</label><input id="d-cp" inputmode="numeric" maxlength="5" value="${esc(b.cp || "")}" placeholder="93100"></div>
-        <div class="field"><label for="d-adr">Ville</label><input id="d-adr" value="${esc(b.adresse || "")}" placeholder="Montreuil"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TRUST BAR ===================== -->
+<div class="trust-bar">
+  <div class="container">
+    <div class="trust-inner">
+      <div class="trust-item"><div class="trust-ico">🏠</div><span>Aide à domicile</span></div>
+      <div class="trust-item"><div class="trust-ico">✨</div><span>Nettoyage professionnel</span></div>
+      <div class="trust-item"><div class="trust-ico">⚡</div><span>Devis gratuit & rapide</span></div>
+      <div class="trust-item"><div class="trust-ico">🤝</div><span>Service de confiance</span></div>
+      <div class="trust-item"><div class="trust-ico">📍</div><span>Île-de-France</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SERVICES ===================== -->
+<section class="section" id="services">
+  <div class="container">
+    <div class="sh fu">
+      <div class="badge">✦ Nos services</div>
+      <h2 class="section-title">Ce que nous proposons</h2>
+      <p class="section-sub">Des services professionnels et bienveillants, entièrement adaptés à vos besoins.</p>
+    </div>
+
+    <div class="tabs fu">
+      <button class="tab-btn active" onclick="showTab('net')" id="tab-net">🧹 Nettoyage</button>
+      <button class="tab-btn" onclick="showTab('aide')" id="tab-aide">🤝 Aide à domicile</button>
+    </div>
+
+    <div id="panel-net" class="panel active">
+      <div class="srv-grid">
+        <div class="srv-card fu fu-d1">
+          <div class="srv-ico ico-b">🏢</div>
+          <h3>Locaux professionnels</h3>
+          <p>Bureaux, commerces, espaces professionnels. Nettoyage régulier ou ponctuel adapté à votre activité.</p>
+        </div>
+        <div class="srv-card fu fu-d2">
+          <div class="srv-ico ico-g">🏗️</div>
+          <h3>Fin de chantier</h3>
+          <p>Remise en état après travaux. Dépoussiérage complet et nettoyage des surfaces pour une finition impeccable.</p>
+        </div>
+        <div class="srv-card fu fu-d3">
+          <div class="srv-ico ico-c">🪟</div>
+          <h3>Vitrerie</h3>
+          <p>Fenêtres, baies vitrées, vitrines. Nettoyage professionnel pour des vitres parfaitement transparentes.</p>
+        </div>
+        <div class="srv-card fu fu-d4">
+          <div class="srv-ico ico-p">📦</div>
+          <h3>Après déménagement</h3>
+          <p>Remise en état complète d'un logement ou local après déménagement. État des lieux garanti.</p>
+        </div>
       </div>
-      <div class="field"><label for="d-note">Votre besoin en quelques mots</label><textarea id="d-note" placeholder="Surface, nombre de pièces, contraintes d'accès, personne accompagnée…">${esc(b.precisions || "")}</textarea></div>
-      <div class="recap">
-        <div><span>Prestation</span><span>${s.emo} ${esc(s.nom)}</span></div>
-        <div><span>Rythme</span><span>${esc(r.nom)}</span></div>
-        <div><span>Souhait</span><span>${b.date ? esc(new Date(b.date + "T00:00:00").toLocaleDateString("fr-FR")) : "à convenir"}${b.creneau ? " · " + esc(b.creneau) : ""}</span></div>
+    </div>
+
+    <div id="panel-aide" class="panel">
+      <div class="srv-grid">
+        <div class="srv-card fu fu-d1">
+          <div class="srv-ico ico-b">🛒</div>
+          <h3>Aide aux courses</h3>
+          <p>Nous effectuons vos courses selon votre liste, afin que vous n'ayez plus à vous déplacer.</p>
+        </div>
+        <div class="srv-card fu fu-d2">
+          <div class="srv-ico ico-g">📋</div>
+          <h3>Aide administrative</h3>
+          <p>Rédaction de courriers, démarches administratives, gestion des dossiers simples.</p>
+        </div>
+        <div class="srv-card fu fu-d3">
+          <div class="srv-ico ico-o">🎲</div>
+          <h3>Compagnie & activités</h3>
+          <p>Présence et activités de loisirs (jeux, lecture, promenades) pour rompre l'isolement.</p>
+        </div>
+        <div class="srv-card fu fu-d4">
+          <div class="srv-ico ico-c">🏥</div>
+          <h3>Accompagnement médical</h3>
+          <p>Accompagnement à vos rendez-vous médicaux : transport, présence et aide administrative.</p>
+        </div>
+        <div class="srv-card fu fu-d1">
+          <div class="srv-ico ico-p">🌅</div>
+          <h3>Lever & coucher</h3>
+          <p>Assistance bienveillante pour les moments de lever et de coucher, en préservant votre autonomie.</p>
+        </div>
+        <div class="srv-card fu fu-d2">
+          <div class="srv-ico ico-pk">💊</div>
+          <h3>Prise de médicaments</h3>
+          <p>Rappel et assistance pour la prise de médicaments selon les prescriptions médicales.</p>
+        </div>
       </div>
-      <p class="muted small">Nous revenons vers vous sous 24 h avec un devis gratuit et sans engagement. Vous pouvez aussi <a href="${CONFIG.reservationAppel}" target="_blank" rel="noopener">réserver directement l'appel de 30 minutes</a>.</p>`;
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PROCESS ===================== -->
+<section class="section section--alt" id="comment-ca-marche">
+  <div class="container">
+    <div class="sh fu">
+      <div class="badge">✦ Comment ça marche</div>
+      <h2 class="section-title">Simple & rapide</h2>
+      <p class="section-sub">Trois étapes suffisent pour bénéficier de nos services professionnels.</p>
+    </div>
+
+    <div class="process-grid fu">
+      <div class="process-line" aria-hidden="true"></div>
+      <div class="process-step">
+        <div class="process-num">1</div>
+        <h3>Prenez rendez-vous</h3>
+        <p>Réservez un appel gratuit de 30 min via notre calendrier en ligne. Nous analysons votre besoin ensemble.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-num">2</div>
+        <h3>Recevez votre devis</h3>
+        <p>Devis personnalisé et transparent envoyé sous 24h, sans engagement de votre part.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-num">3</div>
+        <h3>Profitez du service</h3>
+        <p>Notre équipe intervient selon vos disponibilités, à l'heure et avec soin.</p>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:44px">
+      <a href="#reservation" class="btn btn-primary btn-lg fu">📅 Démarrer maintenant</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== STATS ===================== -->
+<section class="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat fu">
+        <div class="stat-n">Île-de<span>-France</span></div>
+        <div class="stat-l">Zone couverte</div>
+      </div>
+      <div class="stat fu fu-d1">
+        <div class="stat-n"><span class="counter" data-target="2">0</span></div>
+        <div class="stat-l">Experts fondateurs</div>
+      </div>
+      <div class="stat fu fu-d2">
+        <div class="stat-n"><span class="counter" data-target="10">0</span><span>+</span></div>
+        <div class="stat-l">Services proposés</div>
+      </div>
+      <div class="stat fu fu-d3">
+        <div class="stat-n"><span class="counter" data-target="24">0</span><span>h</span></div>
+        <div class="stat-l">Délai de réponse</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== WHY US ===================== -->
+<section class="section" id="about">
+  <div class="container">
+    <div class="why-grid">
+      <div class="why-visual fu">
+        <div class="why-img">
+          <img src="https://i.imgur.com/XluH0ky.png" alt="Équipe Domi Clean"
+               onerror="this.parentElement.style.background='linear-gradient(135deg,var(--p-pale),var(--a-pale))'">
+        </div>
+      </div>
+
+      <div class="fu fu-d1">
+        <div class="badge">✦ Pourquoi nous choisir</div>
+        <h2 class="section-title" style="margin-top:14px;text-align:left">L'humain avant tout</h2>
+        <p class="section-sub" style="text-align:left">
+          Fondée par deux passionnés de service aux personnes, Domi Clean s'engage à vous offrir un accompagnement personnalisé, fiable et bienveillant.
+        </p>
+
+        <div class="why-list">
+          <div class="why-item">
+            <div class="why-item-ico">🎯</div>
+            <div>
+              <h4>Service sur mesure</h4>
+              <p>Chaque intervention est adaptée à vos besoins. Pas de forfait standard, juste ce dont vous avez besoin.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-item-ico">🤝</div>
+            <div>
+              <h4>Équipe de confiance</h4>
+              <p>Professionnels sérieux, discrets et bienveillants. Vous pouvez nous faire confiance chez vous.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-item-ico">⚡</div>
+            <div>
+              <h4>Réactivité garantie</h4>
+              <p>Devis sous 24h et planification flexible. Nous nous adaptons à votre rythme de vie.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-item-ico">💰</div>
+            <div>
+              <h4>Tarifs transparents</h4>
+              <p>Aucune surprise. Devis clair et détaillé avant toute intervention. Crédit d'impôt possible.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== CALENDLY ===================== -->
+<section class="cal-section" id="reservation">
+  <div class="container">
+    <div class="cal-inner">
+      <div class="cal-header fu">
+        <div class="badge">📅 Prise de rendez-vous</div>
+        <h2 class="section-title">Réservez votre appel<br>gratuit de 30 minutes</h2>
+        <p class="section-sub">Choisissez le créneau qui vous convient. Nous analysons vos besoins et vous envoyons un devis personnalisé sous 24h.</p>
+      </div>
+
+      <div class="cal-perks fu fu-d1">
+        <div class="cal-perk"><div class="cal-perk-ico">🆓</div>Appel 100% gratuit</div>
+        <div class="cal-perk"><div class="cal-perk-ico">⏱️</div>30 minutes chrono</div>
+        <div class="cal-perk"><div class="cal-perk-ico">📋</div>Devis sous 24h</div>
+        <div class="cal-perk"><div class="cal-perk-ico">🔒</div>Sans engagement</div>
+      </div>
+
+      <div class="cal-widget fu fu-d2">
+        <!-- Loader affiché pendant le chargement de Calendly -->
+        <div class="cal-loading" id="calLoader">
+          <div class="cal-spinner"></div>
+          <p>Chargement du calendrier…</p>
+        </div>
+        <!-- Calendly inline widget begin -->
+        <div class="calendly-inline-widget"
+             data-url="https://calendly.com/domicleanidf/30min?hide_event_type_details=1&hide_gdpr_banner=1&primary_color=0a6fd4&text_color=0f172a&background_color=ffffff"
+             style="min-width:320px;height:700px;"></div>
+        <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+        <!-- Calendly inline widget end -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section class="section section--alt" id="faq">
+  <div class="container">
+    <div class="sh fu">
+      <div class="badge">✦ FAQ</div>
+      <h2 class="section-title">Questions fréquentes</h2>
+      <p class="section-sub">Tout ce que vous devez savoir avant de faire appel à nos services.</p>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item fu">
+        <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
+          Dans quelle zone géographique intervenez-vous ?
+          <span class="faq-ico" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-body" role="region">
+          <p>Nous intervenons principalement en Île-de-France, couvrant Paris et ses alentours (Hauts-de-Seine, Val-de-Marne, Seine-Saint-Denis…). N'hésitez pas à nous contacter pour vérifier si nous couvrons votre secteur.</p>
+        </div>
+      </div>
+
+      <div class="faq-item fu fu-d1">
+        <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
+          Comment obtenir un devis ?
+          <span class="faq-ico" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-body" role="region">
+          <p>Réservez un appel gratuit de 30 minutes via notre calendrier en ligne. Après avoir échangé sur vos besoins, nous vous envoyons un devis personnalisé et transparent sous 24h. Aucun engagement requis.</p>
+        </div>
+      </div>
+
+      <div class="faq-item fu fu-d2">
+        <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
+          Les intervenants sont-ils vérifiés et formés ?
+          <span class="faq-ico" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-body" role="region">
+          <p>Absolument. Tous nos intervenants sont soigneusement sélectionnés, vérifiés et formés aux techniques professionnelles de nettoyage et d'aide à domicile. Votre sécurité et votre confort sont notre priorité.</p>
+        </div>
+      </div>
+
+      <div class="faq-item fu fu-d3">
+        <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
+          Quels sont vos horaires d'intervention ?
+          <span class="faq-ico" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-body" role="region">
+          <p>Nous nous adaptons à vos disponibilités. Interventions possibles en semaine et le week-end selon les créneaux disponibles. Vous choisissez l'horaire qui vous convient lors de la prise de rendez-vous.</p>
+        </div>
+      </div>
+
+      <div class="faq-item fu fu-d1">
+        <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
+          Puis-je bénéficier d'avantages fiscaux ?
+          <span class="faq-ico" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-body" role="region">
+          <p>Oui ! Les services à la personne peuvent bénéficier d'un crédit d'impôt de 50 % pour les particuliers. Nous pouvons vous accompagner dans ces démarches pour alléger votre reste à charge.</p>
+        </div>
+      </div>
+
+      <div class="faq-item fu fu-d2">
+        <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
+          Que se passe-t-il si je ne suis pas satisfait ?
+          <span class="faq-ico" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-body" role="region">
+          <p>Votre satisfaction est notre priorité absolue. Si vous n'êtes pas pleinement satisfait d'une intervention, contactez-nous et nous trouverons ensemble la meilleure solution.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section class="section" id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="fu">
+        <div class="badge">✦ Contact</div>
+        <h2 class="contact-title">Parlons de votre projet</h2>
+        <p class="contact-sub">Une question, un besoin spécifique ? Contactez-nous directement ou remplissez le formulaire. Réponse dans les plus brefs délais.</p>
+
+        <div class="contact-items">
+          <div class="contact-item">
+            <div class="contact-item-ico">📧</div>
+            <div>
+              <span class="contact-item-lbl">Email</span>
+              <a href="mailto:domicleanidf@gmail.com" class="contact-item-val">domicleanidf@gmail.com</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-ico">📞</div>
+            <div>
+              <span class="contact-item-lbl">Téléphone</span>
+              <a href="tel:0628487217" class="contact-item-val">06 28 48 72 17</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-ico">📍</div>
+            <div>
+              <span class="contact-item-lbl">Zone d'intervention</span>
+              <span class="contact-item-val">Île-de-France</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-ico">⏰</div>
+            <div>
+              <span class="contact-item-lbl">Délai de réponse</span>
+              <span class="contact-item-val">Sous 24 heures</span>
+            </div>
+          </div>
+        </div>
+
+        <a href="#reservation" class="btn btn-primary">📅 Réserver directement</a>
+      </div>
+
+      <div class="cf fu fu-d1">
+        <h3>Envoyez-nous un message</h3>
+        <form id="contactForm" novalidate>
+          <div class="form-row">
+            <div class="form-g">
+              <label class="form-lbl" for="from_name">Nom</label>
+              <input class="form-in" type="text" id="from_name" name="from_name" placeholder="Votre nom" required>
+            </div>
+            <div class="form-g">
+              <label class="form-lbl" for="from_prenom">Prénom</label>
+              <input class="form-in" type="text" id="from_prenom" name="from_prenom" placeholder="Votre prénom" required>
+            </div>
+          </div>
+          <div class="form-g">
+            <label class="form-lbl" for="from_email">Email</label>
+            <input class="form-in" type="email" id="from_email" name="from_email" placeholder="votre@email.fr" required>
+          </div>
+          <div class="form-g">
+            <label class="form-lbl" for="from_tel">Téléphone</label>
+            <input class="form-in" type="tel" id="from_tel" name="from_tel" placeholder="06 XX XX XX XX">
+          </div>
+          <div class="form-g">
+            <label class="form-lbl" for="message">Message</label>
+            <textarea class="form-ta" id="message" name="message" placeholder="Décrivez votre besoin…" required></textarea>
+          </div>
+          <button type="submit" class="form-sub" id="submitBtn">Envoyer le message</button>
+          <div class="form-status" id="formStatus" role="alert"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-logo">
+          <img src="https://i.imgur.com/D29UJPO.png" alt="Domi Clean" onerror="this.style.display='none'">
+          <span class="footer-brand-name">Domi Clean</span>
+        </div>
+        <p class="footer-desc">Services professionnels de nettoyage et d'aide à domicile en Île-de-France. L'humain avant tout.</p>
+        <div class="footer-socials">
+          <a href="#" class="footer-soc" aria-label="Facebook">f</a>
+          <a href="#" class="footer-soc" aria-label="Instagram">📷</a>
+          <a href="mailto:domicleanidf@gmail.com" class="footer-soc" aria-label="Email">@</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Services</div>
+        <div class="footer-links">
+          <a href="#services" class="footer-link">Nettoyage professionnel</a>
+          <a href="#services" class="footer-link">Fin de chantier</a>
+          <a href="#services" class="footer-link">Vitrerie</a>
+          <a href="#services" class="footer-link">Aide à domicile</a>
+          <a href="#services" class="footer-link">Accompagnement médical</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Entreprise</div>
+        <div class="footer-links">
+          <a href="histoire.html" class="footer-link">Notre histoire</a>
+          <a href="#about" class="footer-link">Nos valeurs</a>
+          <a href="#faq" class="footer-link">FAQ</a>
+          <a href="#contact" class="footer-link">Contact</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Légal</div>
+        <div class="footer-links">
+          <a href="mentions-legales.html" class="footer-link">Mentions légales</a>
+          <a href="politique-confidentialite.html" class="footer-link">Confidentialité</a>
+          <a href="cgv.html" class="footer-link">CGV</a>
+        </div>
+        <div style="margin-top:22px">
+          <div class="footer-col-title">Contact</div>
+          <div class="footer-links">
+            <a href="tel:0628487217" class="footer-link">06 28 48 72 17</a>
+            <a href="mailto:domicleanidf@gmail.com" class="footer-link">domicleanidf@gmail.com</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2025 Domi Clean — Tous droits réservés.</span>
+      <div class="footer-bottom-links">
+        <a href="mentions-legales.html" class="footer-link">Mentions légales</a>
+        <a href="politique-confidentialite.html" class="footer-link">Confidentialité</a>
+        <a href="cgv.html" class="footer-link">CGV</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ===================== SCRIPTS ===================== -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+<script>
+/* ---- Init ---- */
+emailjs.init("ceAxgfHqfXrWzhops");
+
+/* ---- Loader ---- */
+window.addEventListener('load', () => {
+  // Generate background dots for loader
+  const ldDots = document.getElementById('ldDots');
+  if (ldDots) {
+    for (let i = 0; i < 18; i++) {
+      const d = document.createElement('div');
+      d.className = 'ld-dot';
+      const size = 3 + Math.random() * 5;
+      d.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--dur:${3+Math.random()*4}s;--del:${Math.random()*3}s`;
+      ldDots.appendChild(d);
+    }
   }
+  setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1600);
+});
 
-  return `${b.etape > 1 ? '<button class="backlink" data-back>← Retour</button>' : ""}
-    ${barre}${corps}
-    <div style="margin-top:20px"><button class="btn" data-next ${valide() ? "" : "disabled"}>${b.etape === 4 ? "Envoyer ma demande" : "Continuer"}</button></div>`;
+/* ---- Nav scroll ---- */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 16);
+}, { passive: true });
+
+/* ---- Mobile drawer ---- */
+const burger = document.getElementById('burger');
+const drawer = document.getElementById('drawer');
+
+function closeDrawer() {
+  drawer.classList.remove('open');
+  burger.classList.remove('open');
+  burger.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
 }
 
-function valide(){
-  const b = state.b;
-  if (b.etape === 1) return !!b.service;
-  if (b.etape === 2) return !!b.rythme;
-  return true;
-}
+burger.addEventListener('click', () => {
+  const open = drawer.classList.toggle('open');
+  burger.classList.toggle('open', open);
+  burger.setAttribute('aria-expanded', String(open));
+  document.body.style.overflow = open ? 'hidden' : '';
+});
 
-/* ---- Suivi ---- */
-function ecranSuivi(){
-  if (!state.user) return besoinConnexion("Connectez-vous pour suivre vos demandes et vos devis.");
-  const actives = state.demandes.filter(estActive);
-  const closes = state.demandes.filter(d => !estActive(d));
-  return `<h1 style="margin:10px 0 4px">Mes demandes</h1>
-    ${actives.length ? `<div class="section"><h2>En cours</h2></div><div class="card">${actives.map(d => ligne(d, true)).join("")}</div>`
-      : `<div class="card" style="margin-top:18px"><p class="muted" style="margin:0">Aucune demande en cours. <a href="#/demande">En faire une</a>.</p></div>`}
-    ${closes.length ? `<div class="section"><h2>Terminées</h2></div><div class="card">${closes.map(d => ligne(d)).join("")}</div>` : ""}
-    ${liensLegaux()}`;
-}
+document.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', closeDrawer));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
 
-/* ---- Compte ---- */
-function ecranCompte(){
-  if (!state.user) return besoinConnexion("Recevez un lien de connexion par e-mail, sans mot de passe à retenir.");
-  const docs = state.docs || [];
-  return `<h1 style="margin:10px 0 16px">Mon compte</h1>
-    <div class="card">
-      <h3>Connexion</h3>
-      <p class="muted small" style="margin:6px 0 14px">${esc(state.user.email)}</p>
-      <button class="btn ghost slim" data-logout>Se déconnecter</button>
-    </div>
-    <div class="section"><h2>Devis et factures</h2></div>
-    <div class="card">
-      ${docs.length ? docs.map(d => `<div class="doc">
-        <svg viewBox="0 0 24 24"><path d="M6.5 3.5h7.6L18.5 8v12.5h-12z"/><path d="M13.6 3.6V8.3h4.7"/></svg>
-        <div class="body"><b>${esc(d.titre)}</b><span class="muted small">${esc(d.type || "Document")} · ${esc(new Date(d.cree_le).toLocaleDateString("fr-FR"))}</span></div>
-        <a href="#" data-doc="${esc(d.chemin)}">Ouvrir</a></div>`).join("")
-        : `<p class="muted small" style="margin:0">Vos devis et factures apparaîtront ici. Règlement par virement, espèces, chèque ou CESU.</p>`}
-    </div>
-    <div class="section"><h2>Nous joindre</h2></div>
-    <div class="card">
-      <p class="small" style="margin:0 0 12px">Une question, une réclamation ? Réponse sous 24 h, et sous 72 h ouvrées pour une réclamation écrite.</p>
-      <a class="btn ghost" href="tel:${CONFIG.telephone.replace(/\s/g, "")}">${esc(CONFIG.telephone)}</a>
-      <a class="small" href="mailto:${esc(CONFIG.email)}" style="display:block;margin-top:12px;text-align:center">${esc(CONFIG.email)}</a>
-    </div>
-    ${liensLegaux()}`;
-}
-
-function besoinConnexion(phrase){
-  return `<h1 style="margin:10px 0 8px">Votre espace</h1>
-    <p class="muted" style="margin-bottom:18px">${phrase}</p>
-    <div class="card">
-      <div class="field"><label for="c-mail">Votre e-mail</label><input id="c-mail" type="email" autocomplete="email" placeholder="vous@exemple.fr" value="${esc(paramEmail)}">
-      ${paramEmail ? `<p class="muted small" style="margin:8px 0 0">C'est l'adresse qui a reçu votre devis.</p>` : ""}</div>
-      <button class="btn" data-login>Recevoir mon lien</button>
-      ${!configured ? `<p class="muted small center" style="margin:12px 0 0">Mode démo : vos données restent sur cet appareil.</p>` : ""}
-    </div>
-    ${liensLegaux()}`;
-}
-
-const liensLegaux = () => `<div class="liens">
-  <a href="${CONFIG.site}" target="_blank" rel="noopener">Site</a>
-  <a href="${CONFIG.cgv}" target="_blank" rel="noopener">CGV</a>
-  <a href="${CONFIG.confidentialite}" target="_blank" rel="noopener">Confidentialité</a>
-  <a href="${CONFIG.mentions}" target="_blank" rel="noopener">Mentions légales</a>
-</div>`;
-
-/* =====================================================================
-   5. ROUTAGE
-   ===================================================================== */
-const ROUTES = { "/accueil":ecranAccueil, "/demande":ecranDemande, "/suivi":ecranSuivi, "/compte":ecranCompte };
-
-async function render(){
-  const route = location.hash.replace("#", "") || "/accueil";
-  if (route === "/compte" && state.user && sb) state.docs = await store.listDocs();
-  view.innerHTML = (ROUTES[route] || ecranAccueil)();
-  document.querySelectorAll(".tabbar a").forEach(a => {
-    if (a.getAttribute("href") === "#" + route) a.setAttribute("aria-current", "page");
-    else a.removeAttribute("aria-current");
+/* ---- Service tabs ---- */
+function showTab(id) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  const panel = document.getElementById('panel-' + id);
+  panel.classList.add('active');
+  // re-trigger fade-up on newly visible cards
+  panel.querySelectorAll('.fu').forEach(el => {
+    el.classList.remove('vis');
+    requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('vis')));
   });
-  window.scrollTo(0, 0);
 }
-addEventListener("hashchange", render);
 
-/* =====================================================================
-   6. INTERACTIONS
-   ===================================================================== */
-document.addEventListener("click", async e => {
-  const t = e.target.closest("[data-cat],[data-svc],[data-rythme],[data-creneau],[data-next],[data-back],[data-go],[data-appel],[data-login],[data-logout],[data-report],[data-annuler],[data-accepter],[data-doc]");
-  if (!t) return;
-  const b = state.b;
-
-  if (t.dataset.go){ location.hash = t.dataset.go; return; }
-  if (t.hasAttribute("data-appel")){ location.href = "tel:" + CONFIG.telephone.replace(/\s/g, ""); return; }
-
-  if (t.dataset.cat){ b.cat = t.dataset.cat; if (svc(b.service)?.cat !== b.cat) b.service = null; return render(); }
-  if (t.dataset.svc){ b.service = t.dataset.svc; return render(); }
-  if (t.dataset.rythme){ b.rythme = t.dataset.rythme; return render(); }
-  if (t.dataset.creneau){ b.creneau = b.creneau === t.dataset.creneau ? null : t.dataset.creneau; b.date = $("#d-date")?.value || b.date; return render(); }
-  if (t.hasAttribute("data-back")){ b.etape--; return render(); }
-
-  if (t.hasAttribute("data-next")){
-    if (b.etape === 3) b.date = $("#d-date")?.value || "";
-    if (b.etape < 4){ b.etape++; return render(); }
-
-    b.nom = $("#d-nom").value.trim();
-    b.telephone = $("#d-tel").value.trim();
-    b.email = $("#d-mail").value.trim();
-    b.cp = $("#d-cp").value.trim();
-    b.adresse = $("#d-adr").value.trim();
-    b.precisions = $("#d-note").value.trim();
-    if (!b.nom || !b.telephone || !b.email || !b.cp || !b.adresse) return toast("Nom, téléphone, e-mail, code postal et ville sont nécessaires.");
-    if (!CONFIG.departements.includes(b.cp.slice(0, 2)))
-      if (!confirm("Ce code postal est hors Île-de-France. Nous pouvons étudier la demande, mais l'intervention reste soumise à notre accord préalable. Continuer ?")) return;
-
-    t.disabled = true; t.textContent = "Envoi…";
-    const res = await store.createDemande({ ...b, statut:"envoyee" });
-    if (!res.ok){ t.disabled = false; t.textContent = "Envoyer ma demande"; return toast("L'envoi a échoué. Réessayez ou appelez-nous."); }
-    state.b = { etape:1 };
-    await refresh();
-    toast("Demande reçue. Devis sous 24 h.");
-    location.hash = "/accueil";
-    return render();
+/* ---- FAQ ---- */
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => {
+    i.classList.remove('open');
+    i.querySelector('.faq-btn').setAttribute('aria-expanded', 'false');
+  });
+  if (!wasOpen) {
+    item.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
   }
+}
 
-  if (t.hasAttribute("data-login")){
-    const mail = $("#c-mail").value.trim();
-    if (!mail.includes("@")) return toast("Entrez une adresse e-mail valide.");
-    t.disabled = true;
-    const r = await store.signIn(mail);
-    t.disabled = false;
-    if (!r.ok) return toast("Envoi impossible : " + r.error);
-    if (r.demo){ await refresh(); return render(); }
-    toast("Lien envoyé. Ouvrez votre boîte mail.");
-    return;
+/* ---- Scroll fade-up ---- */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); io.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fu').forEach(el => io.observe(el));
+
+/* ---- Counters ---- */
+const cio = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { runCounter(e.target); cio.unobserve(e.target); } });
+}, { threshold: 0.5 });
+document.querySelectorAll('.counter').forEach(el => cio.observe(el));
+
+function runCounter(el) {
+  const target = +el.dataset.target;
+  const dur = 1400;
+  const t0 = performance.now();
+  function tick(now) {
+    const p = Math.min((now - t0) / dur, 1);
+    el.textContent = Math.floor((1 - Math.pow(1 - p, 3)) * target);
+    if (p < 1) requestAnimationFrame(tick);
   }
-  if (t.hasAttribute("data-logout")){ await store.signOut(); await refresh(); return render(); }
+  requestAnimationFrame(tick);
+}
 
-  if (t.dataset.accepter){
-    const d = state.demandes.find(x => x.id === t.dataset.accepter);
-    if (!confirm(`En acceptant, vous validez le devis par écrit au sens de nos CGV${d?.devis_montant ? ` (${euro(d.devis_montant)})` : ""}. Confirmer ?`)) return;
-    await store.majDemande(d.id, { statut:"devis_accepte", devis_accepte_le:new Date().toISOString() });
-    await refresh(); toast("Devis accepté. Nous planifions l'intervention."); return render();
-  }
+/* ---- Mobile CTA visibility ---- */
+const mCta = document.getElementById('mCta');
+window.addEventListener('scroll', () => {
+  mCta.style.opacity = window.scrollY > 80 ? '1' : '0';
+  mCta.style.pointerEvents = window.scrollY > 80 ? 'all' : 'none';
+}, { passive: true });
+mCta.style.opacity = '0';
 
-  if (t.dataset.report){
-    const d = state.demandes.find(x => x.id === t.dataset.report);
-    const p = penalite(d.date, d.creneau);
-    if (!confirm(`Demander un report ?\n\n${p.taux ? "Attention : " + p.texte + " Un report convenu avec nous reste sans frais." : p.texte}`)) return;
-    await store.majDemande(d.id, { statut:"devis_accepte", date_souhaitee:null });
-    await refresh(); toast("Report demandé. Nous vous rappelons."); return render();
-  }
+/* ---- Contact form ---- */
+const _sb = window.supabase
+  ? window.supabase.createClient("https://smgzffkjwokcfjdejsbd.supabase.co","sb_publishable_JzkhEKjWGzWGwN_310ukew_m5EW3HrW")
+  : null;
 
-  if (t.dataset.annuler){
-    const d = state.demandes.find(x => x.id === t.dataset.annuler);
-    const p = penalite(d.date, d.creneau);
-    if (!confirm(`Annuler cette ${d.statut === "envoyee" ? "demande" : "intervention"} ?\n\n${p.texte}`)) return;
-    await store.majDemande(d.id, { statut:"annulee" });
-    await refresh(); toast(p.taux ? "Annulée. Nous vous recontactons." : "Annulée, sans frais."); return render();
-  }
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  const status = document.getElementById('formStatus');
+  btn.disabled = true;
+  btn.textContent = 'Envoi en cours…';
+  status.className = 'form-status';
 
-  if (t.dataset.doc){
-    e.preventDefault();
-    if (!sb) return toast("Le devis sera consultable ici une fois la base connectée.");
-    const url = await store.docUrl(t.dataset.doc);
-    if (!url) return toast("Document indisponible.");
-    window.open(url, "_blank", "noopener");
+  try {
+    await emailjs.sendForm('service_hwm2hla', 'template_yayz1yf', this);
+    // Sauvegarde dans Supabase (silencieuse si échoue)
+    if (_sb) {
+      const nom    = document.getElementById('from_name')?.value   || "";
+      const prenom = document.getElementById('from_prenom')?.value || "";
+      const email  = document.getElementById('from_email')?.value  || "";
+      const tel    = document.getElementById('from_tel')?.value    || "";
+      const msg    = document.getElementById('message')?.value     || "";
+      _sb.from('messages').insert({ nom, prenom, email, tel, message: msg, lu: false }).then(() => {});
+    }
+    status.className = 'form-status ok';
+    status.textContent = '✅ Message envoyé ! Nous vous répondrons sous 24h.';
+    this.reset();
+  } catch {
+    status.className = 'form-status err';
+    status.textContent = '❌ Erreur lors de l\'envoi. Contactez-nous directement par email ou téléphone.';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Envoyer le message';
   }
 });
+</script>
 
-document.addEventListener("change", e => {
-  if (e.target.id === "d-date"){ state.b.date = e.target.value; render(); }
+<script>
+/* Masque le spinner Calendly dès que l'iframe envoie un message de chargement */
+window.addEventListener("message", function(e) {
+  if (e.data && e.data.event && e.data.event.indexOf("calendly") === 0) {
+    const loader = document.getElementById("calLoader");
+    if (loader) loader.classList.add("hidden");
+  }
 });
-
-/* =====================================================================
-   7. DÉMARRAGE
-   ===================================================================== */
-if (sb) sb.auth.onAuthStateChange(async () => { await refresh(); render(); });
-await refresh();
-await render();
-if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+/* Fallback : masque le loader après 4s dans tous les cas */
+setTimeout(function() {
+  const loader = document.getElementById("calLoader");
+  if (loader) loader.classList.add("hidden");
+}, 4000);
 </script>
 </body>
 </html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Domi Clean — demandes</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#1F6F5C; --accent-deep:#0E3F34; --soft:#DCEDE6;
+  --paper:#F1F5F3; --ink:#10242C; --ink-2:#556D75;
+  --card:#FFF; --line:#DBE5E2; --amber:#B87333; --amber-soft:#F6E7D6;
+  --rouge:#9C3B2E; --rouge-soft:#F7E7E5;
+  --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --body:"Inter",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}
+h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:-.02em;line-height:1.15}
+h1{font-size:1.5rem}
+h2{font-size:1.05rem}
+h3{font-size:.98rem}
+a{color:var(--accent-deep)}
+button{font:inherit;color:inherit}
+
+header{background:#fff;border-bottom:1px solid var(--line);padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;position:sticky;top:0;z-index:20}
+.brand{display:flex;align-items:center;gap:9px;font-family:var(--display);font-weight:700}
+header .who{font-size:.82rem;color:var(--ink-2)}
+main{max-width:1180px;margin:0 auto;padding:22px}
+
+.filtres{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+.filtre{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 15px;font-size:.88rem;cursor:pointer;display:flex;gap:7px;align-items:center}
+.filtre[aria-pressed="true"]{border-color:var(--accent);background:var(--soft);color:var(--accent-deep);font-weight:600}
+.filtre b{font-weight:600;background:rgba(16,36,44,.08);border-radius:999px;padding:0 7px;font-size:.78rem}
+
+.grille{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,380px);gap:20px;align-items:start}
+@media (max-width:900px){.grille{grid-template-columns:1fr}}
+
+.liste{display:flex;flex-direction:column;gap:10px}
+.item{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;cursor:pointer;display:flex;gap:14px;align-items:flex-start;text-align:left;width:100%}
+.item:hover{border-color:#bed0cb}
+.item[aria-current="true"]{border-color:var(--accent);box-shadow:0 0 0 3px rgba(31,111,92,.12)}
+.item .emo{font-size:1.4rem;line-height:1.1}
+.item .info{flex:1;min-width:0}
+.item .meta{font-size:.84rem;color:var(--ink-2)}
+.item time{font-size:.76rem;color:var(--ink-2);white-space:nowrap}
+
+.tag{display:inline-block;font-size:.72rem;font-weight:600;padding:3px 9px;border-radius:999px;margin-top:6px}
+.tag.ok{background:var(--soft);color:var(--accent-deep)}
+.tag.wait{background:var(--amber-soft);color:var(--amber)}
+.tag.done{background:#EDF1F0;color:var(--ink-2)}
+.tag.off{background:var(--rouge-soft);color:var(--rouge)}
+
+.panneau{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;position:sticky;top:86px}
+.panneau dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:14px 0;font-size:.88rem}
+.panneau dt{color:var(--ink-2)}
+.panneau dd{margin:0}
+.bloc{border-top:1px solid var(--line);margin-top:18px;padding-top:16px}
+.bloc h3{margin-bottom:10px}
+.besoin{background:var(--paper);border-radius:12px;padding:12px;font-size:.88rem;white-space:pre-wrap}
+
+label{display:block;font-size:.82rem;font-weight:500;margin-bottom:5px}
+input,select,textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;font:inherit;color:var(--ink)}
+input[type="file"]{padding:8px;font-size:.85rem}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(31,111,92,.15)}
+.field{margin-bottom:12px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.btn{display:block;width:100%;padding:12px;border-radius:999px;border:0;background:var(--accent);color:#fff;font-weight:600;cursor:pointer;text-align:center;text-decoration:none}
+.btn:hover{background:var(--accent-deep)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:#fff;color:var(--accent-deep);border:1px solid var(--line)}
+.btn.danger{background:#fff;color:var(--rouge);border:1px solid var(--line)}
+.btn.mini{display:inline-block;width:auto;padding:9px 16px;font-size:.87rem}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+
+.vide{background:#fff;border:1px dashed var(--line);border-radius:16px;padding:40px 24px;text-align:center;color:var(--ink-2)}
+.connexion{max-width:380px;margin:12vh auto;background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px}
+.toast{position:fixed;left:50%;transform:translateX(-50%) translateY(12px);bottom:26px;background:var(--ink);color:#fff;padding:12px 18px;border-radius:999px;font-size:.88rem;z-index:60;opacity:0;pointer-events:none;transition:.22s}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.avis{border-radius:11px;padding:10px 13px;font-size:.84rem;margin:14px 0}
+.avis.ok{background:var(--soft);color:var(--accent-deep)}
+.avis.alerte{background:var(--amber-soft);color:var(--amber)}
+.avis.attente{background:#EDF1F0;color:var(--ink-2)}
+.muted{color:var(--ink-2)}
+.small{font-size:.84rem}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M3.4 10.6 12 3.5l8.6 7.1v8.2a1.7 1.7 0 0 1-1.7 1.7H5.1a1.7 1.7 0 0 1-1.7-1.7z" fill="var(--accent)"/>
+      <path d="M12 9.2c1.9 1.9 2.9 3.2 2.9 4.5a2.9 2.9 0 0 1-5.8 0c0-1.3 1-2.6 2.9-4.5z" fill="#fff"/>
+    </svg>
+    Demandes
+  </div>
+  <div style="display:flex;align-items:center;gap:14px">
+    <span class="who" id="who"></span>
+    <button class="btn ghost mini" id="deconnexion" hidden>Se déconnecter</button>
+  </div>
+</header>
+
+<main id="app"></main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script type="module">
+/* =====================================================================
+   CONFIGURATION — les mêmes valeurs que l'espace client
+   ===================================================================== */
+const CONFIG = {
+  supabaseUrl: "https://smgzffkjwokcfjdejsbd.supabase.co",
+  supabaseAnonKey: "sb_publishable_JzkhEKjWGzWGwN_310ukew_m5EW3HrW"
+};
+
+const SERVICES = {
+  locaux:{emo:"🏢",nom:"Locaux professionnels"}, chantier:{emo:"🏗️",nom:"Fin de chantier"},
+  vitrerie:{emo:"🪟",nom:"Vitrerie"}, demenagement:{emo:"📦",nom:"Après déménagement"},
+  courses:{emo:"🛒",nom:"Aide aux courses"}, administratif:{emo:"📋",nom:"Aide administrative"},
+  compagnie:{emo:"🎲",nom:"Compagnie & activités"}, medical:{emo:"🏥",nom:"Accompagnement médical"},
+  lever:{emo:"🌅",nom:"Lever & coucher"}, medicaments:{emo:"💊",nom:"Prise de médicaments"}
+};
+const RYTHMES = { ponctuel:"Une seule fois", regulier:"Régulièrement", aviser:"À définir" };
+const CRENEAUX = ["8h – 10h","10h – 12h","12h – 14h","14h – 16h","16h – 18h","18h – 20h"];
+const STATUTS = {
+  envoyee:["wait","Nouvelle demande"], appel_prevu:["wait","Appel prévu"],
+  devis_envoye:["wait","Devis envoyé"], devis_accepte:["ok","Devis accepté"],
+  planifiee:["ok","Planifiée"], terminee:["done","Terminée"], annulee:["off","Annulée"]
+};
+const FILTRES = [
+  { id:"a_traiter", nom:"À traiter", test:d => ["envoyee","appel_prevu","devis_accepte"].includes(d.statut) },
+  { id:"attente",   nom:"Devis en attente", test:d => d.statut === "devis_envoye" },
+  { id:"planifiee", nom:"Planifiées", test:d => d.statut === "planifiee" },
+  { id:"closes",    nom:"Terminées et annulées", test:d => ["terminee","annulee"].includes(d.statut) },
+  { id:"toutes",    nom:"Toutes", test:() => true }
+];
+
+/* ===================================================================== */
+const configured = !CONFIG.supabaseUrl.startsWith("VOTRE_");
+let sb = null;
+if (configured) {
+  const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm");
+  sb = createClient(CONFIG.supabaseUrl, CONFIG.supabaseAnonKey);
+}
+
+const $ = s => document.querySelector(s);
+const app = $("#app");
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const euro = n => Number(n).toLocaleString("fr-FR", { style:"currency", currency:"EUR" });
+const jour = iso => iso ? new Date(iso).toLocaleDateString("fr-FR", { day:"numeric", month:"short" }) : "—";
+const tag = s => { const m = STATUTS[s] || ["done", s]; return `<span class="tag ${m[0]}">${m[1]}</span>`; };
+
+function toast(m){ const t = $("#toast"); t.textContent = m; t.classList.add("show"); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove("show"), 3200); }
+
+const state = { user:null, admin:false, demandes:[], filtre:"a_traiter", selection:null, comptes:{} };
+
+async function charger(){
+  const { data:{ user } } = await sb.auth.getUser();
+  state.user = user;
+  if (!user){ state.admin = false; return; }
+  const { data:adm } = await sb.from("admins").select("user_id").eq("user_id", user.id).maybeSingle();
+  state.admin = !!adm;
+  if (!state.admin) return;
+  const { data, error } = await sb.from("demandes").select("*").order("cree_le", { ascending:false });
+  if (error){ toast("Lecture impossible : " + error.message); return; }
+  state.demandes = data;
+}
+
+/* ---- rendu ---- */
+function rendu(){
+  $("#who").textContent = state.user ? state.user.email : "";
+  $("#deconnexion").hidden = !state.user;
+
+  if (!configured) return app.innerHTML = `<div class="vide">Renseignez <code>supabaseUrl</code> et <code>supabaseAnonKey</code> en haut du script pour connecter cette page à votre base.</div>`;
+  if (!state.user) return app.innerHTML = ecranConnexion();
+  if (!state.admin) return app.innerHTML = `<div class="vide">Ce compte n'a pas accès au back-office.<br>Ajoutez son identifiant dans la table <code>admins</code>.</div>`;
+
+  const f = FILTRES.find(x => x.id === state.filtre);
+  const liste = state.demandes.filter(f.test);
+  const sel = state.demandes.find(d => d.id === state.selection);
+
+  app.innerHTML = `
+    <h1>Demandes</h1>
+    <div class="filtres">
+      ${FILTRES.map(x => `<button class="filtre" aria-pressed="${x.id === state.filtre}" data-filtre="${x.id}">
+        ${x.nom} <b>${state.demandes.filter(x.test).length}</b></button>`).join("")}
+    </div>
+    <div class="grille">
+      <div class="liste">
+        ${liste.length ? liste.map(carte).join("") : `<div class="vide">Rien dans cette vue.</div>`}
+      </div>
+      <div>${sel ? panneau(sel) : `<div class="vide">Choisissez une demande pour la traiter.</div>`}</div>
+    </div>`;
+}
+
+function carte(d){
+  const s = SERVICES[d.service] || { emo:"🏠", nom:d.service };
+  return `<button class="item" data-sel="${d.id}" aria-current="${d.id === state.selection}">
+    <span class="emo">${s.emo}</span>
+    <span class="info">
+      <h3>${esc(d.nom)} · ${esc(s.nom)}</h3>
+      <span class="meta">${esc(d.code_postal)} ${esc(d.adresse)} · ${RYTHMES[d.rythme] || ""}</span><br>
+      <span class="meta">${d.date_souhaitee ? jour(d.date_souhaitee) + " · " + esc(d.creneau || "horaire libre") : "date à convenir"}</span>
+      ${tag(d.statut)}
+    </span>
+    <time>${jour(d.cree_le)}</time>
+  </button>`;
+}
+
+function panneau(d){
+  const s = SERVICES[d.service] || { emo:"🏠", nom:d.service };
+  return `<div class="panneau">
+    <h2>${s.emo} ${esc(s.nom)}</h2>
+    ${tag(d.statut)}
+    <dl>
+      <dt>Client</dt><dd>${esc(d.nom)}</dd>
+      <dt>Téléphone</dt><dd><a href="tel:${esc(String(d.telephone).replace(/\s/g,""))}">${esc(d.telephone)}</a></dd>
+      <dt>E-mail</dt><dd><a href="mailto:${esc(d.email)}">${esc(d.email)}</a></dd>
+      <dt>Lieu</dt><dd>${esc(d.code_postal)} ${esc(d.adresse)}</dd>
+      <dt>Rythme</dt><dd>${RYTHMES[d.rythme] || esc(d.rythme)}</dd>
+      <dt>Souhait</dt><dd>${d.date_souhaitee ? jour(d.date_souhaitee) + " · " + esc(d.creneau || "horaire libre") : "à convenir"}</dd>
+      <dt>Reçue le</dt><dd>${new Date(d.cree_le).toLocaleString("fr-FR")}</dd>
+      ${d.devis_montant ? `<dt>Devis</dt><dd>${euro(d.devis_montant)}${d.devis_envoye_le ? " · envoyé le " + jour(d.devis_envoye_le) : ""}</dd>` : ""}
+      ${d.devis_accepte_le ? `<dt>Accepté</dt><dd>${new Date(d.devis_accepte_le).toLocaleString("fr-FR")}</dd>` : ""}
+    </dl>
+    ${alerteCompte(d)}
+    ${d.precisions ? `<div class="besoin">${esc(d.precisions)}</div>` : ""}
+
+    <div class="bloc">
+      <h3>Envoyer le devis</h3>
+      <div class="row">
+        <div class="field"><label for="p-montant">Montant TTC</label><input id="p-montant" type="number" min="0" step="0.01" value="${d.devis_montant ?? ""}"></div>
+        <div class="field"><label for="p-inter">Intervenant</label><input id="p-inter" value="${esc(d.intervenant || "")}"></div>
+      </div>
+      <div class="field"><label for="p-pdf">Devis PDF (facultatif)</label><input id="p-pdf" type="file" accept="application/pdf"></div>
+      <button class="btn" data-devis="${d.id}">Enregistrer et marquer envoyé</button>
+      <p class="muted small" style="margin:10px 0 0">Le client le voit dans son espace et peut l'accepter : l'acceptation est horodatée, comme le prévoit l'article 3 des CGV.</p>
+    </div>
+
+    <div class="bloc">
+      <h3>Planifier l'intervention</h3>
+      <div class="row">
+        <div class="field"><label for="p-date">Date</label><input id="p-date" type="date" value="${d.date_souhaitee || ""}"></div>
+        <div class="field"><label for="p-creneau">Créneau</label>
+          <select id="p-creneau">${CRENEAUX.map(c => `<option ${c === d.creneau ? "selected" : ""}>${c}</option>`).join("")}</select></div>
+      </div>
+      <button class="btn ghost" data-planifier="${d.id}">Confirmer la planification</button>
+    </div>
+
+    <div class="bloc">
+      <h3>Suite</h3>
+      <div class="actions">
+        <button class="btn ghost mini" data-statut="appel_prevu" data-id="${d.id}">Appel prévu</button>
+        <button class="btn ghost mini" data-statut="terminee" data-id="${d.id}">Terminée</button>
+        <button class="btn danger mini" data-statut="annulee" data-id="${d.id}">Annuler</button>
+        <button class="btn ghost mini" data-copier="${d.id}">Copier le récapitulatif</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function alerteCompte(d){
+  const c = state.comptes[d.email];
+  if (c === undefined) return `<div class="avis attente">Vérification du compte client…</div>`;
+  if (c === null) return "";
+  if (c) return `<div class="avis ok">Compte client actif sur ${esc(d.email)} : le devis apparaîtra dans son espace.</div>`;
+  return `<div class="avis alerte">Aucun compte à l'adresse ${esc(d.email)}.<br>
+    Le devis sera stocké et se rattachera automatiquement dès sa première connexion.
+    Pensez à lui indiquer dans le mail de se connecter avec <b>cette adresse</b>.</div>`;
+}
+
+const ecranConnexion = () => `<div class="connexion">
+  <h2>Accès back-office</h2>
+  <p class="muted small" style="margin:8px 0 16px">Un lien de connexion vous est envoyé par e-mail.</p>
+  <div class="field"><label for="c-mail">E-mail</label><input id="c-mail" type="email" autocomplete="email"></div>
+  <button class="btn" id="connexion">Recevoir le lien</button>
+</div>`;
+
+/* ---- actions ---- */
+document.addEventListener("click", async e => {
+  const t = e.target.closest("[data-filtre],[data-sel],[data-devis],[data-planifier],[data-statut],[data-copier],#connexion,#deconnexion");
+  if (!t) return;
+
+  if (t.dataset.filtre){ state.filtre = t.dataset.filtre; return rendu(); }
+  if (t.dataset.sel){
+    state.selection = t.dataset.sel;
+    rendu();
+    const d = state.demandes.find(x => x.id === state.selection);
+    if (d && state.comptes[d.email] === undefined){
+      const { data, error } = await sb.rpc("compte_existe", { p_email:d.email });
+      state.comptes[d.email] = error ? null : data;
+      rendu();
+    }
+    return;
+  }
+
+  if (t.id === "connexion"){
+    const mail = $("#c-mail").value.trim();
+    if (!mail.includes("@")) return toast("Adresse e-mail invalide.");
+    t.disabled = true;
+    const { error } = await sb.auth.signInWithOtp({ email:mail, options:{ emailRedirectTo:location.href.split("#")[0] } });
+    t.disabled = false;
+    return toast(error ? "Envoi impossible : " + error.message : "Lien envoyé. Ouvrez votre boîte mail.");
+  }
+  if (t.id === "deconnexion"){ await sb.auth.signOut(); state.user = null; state.demandes = []; return rendu(); }
+
+  const d = state.demandes.find(x => x.id === (t.dataset.devis || t.dataset.planifier || t.dataset.id || t.dataset.copier));
+
+  if (t.dataset.devis){
+    const montant = parseFloat($("#p-montant").value);
+    if (!montant) return toast("Indiquez le montant du devis.");
+    const fichier = $("#p-pdf").files[0];
+    t.disabled = true; t.textContent = "Enregistrement…";
+    let chemin = d.devis_chemin;
+    if (fichier){
+      chemin = `${d.user_id || "sans-compte"}/devis-${d.id}.pdf`;
+      const { error } = await sb.storage.from("documents").upload(chemin, fichier, { upsert:true, contentType:"application/pdf" });
+      if (error){ t.disabled = false; t.textContent = "Enregistrer et marquer envoyé"; return toast("Envoi du PDF impossible : " + error.message); }
+      await sb.from("documents").upsert({
+        user_id:d.user_id, demande_id:d.id, titre:`Devis — ${(SERVICES[d.service] || {}).nom || d.service}`,
+        type:"Devis", chemin
+      }, { onConflict:"chemin" });
+    }
+    const { error } = await sb.from("demandes").update({
+      devis_montant:montant, devis_chemin:chemin, intervenant:$("#p-inter").value.trim() || null,
+      devis_envoye_le:new Date().toISOString(), statut:"devis_envoye"
+    }).eq("id", d.id);
+    t.disabled = false; t.textContent = "Enregistrer et marquer envoyé";
+    if (error) return toast("Enregistrement impossible : " + error.message);
+    await charger(); toast("Devis enregistré."); return rendu();
+  }
+
+  if (t.dataset.planifier){
+    const date = $("#p-date").value;
+    if (!date) return toast("Choisissez une date.");
+    const { error } = await sb.from("demandes").update({ date_souhaitee:date, creneau:$("#p-creneau").value, statut:"planifiee" }).eq("id", d.id);
+    if (error) return toast("Impossible : " + error.message);
+    await charger(); toast("Intervention planifiée."); return rendu();
+  }
+
+  if (t.dataset.statut){
+    if (t.dataset.statut === "annulee" && !confirm("Annuler cette demande ?")) return;
+    const { error } = await sb.from("demandes").update({ statut:t.dataset.statut }).eq("id", d.id);
+    if (error) return toast("Impossible : " + error.message);
+    await charger(); toast("Statut mis à jour."); return rendu();
+  }
+
+  if (t.dataset.copier){
+    const s = SERVICES[d.service] || { nom:d.service };
+    const txt = [
+      `Demande Domi Clean — ${s.nom}`,
+      `${d.nom} · ${d.telephone} · ${d.email}`,
+      `${d.code_postal} ${d.adresse} · ${RYTHMES[d.rythme] || d.rythme}`,
+      d.date_souhaitee ? `Souhait : ${jour(d.date_souhaitee)} ${d.creneau || ""}` : "Date à convenir",
+      d.precisions ? `Besoin : ${d.precisions}` : ""
+    ].filter(Boolean).join("\n");
+    await navigator.clipboard.writeText(txt);
+    return toast("Récapitulatif copié.");
+  }
+});
+
+/* ---- démarrage ---- */
+if (sb){
+  sb.auth.onAuthStateChange(async () => { await charger(); rendu(); });
+  await charger();
+}
+rendu();
+</script>
+</body>
+</html>

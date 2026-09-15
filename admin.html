@@ -2834,6 +2834,7 @@ async function saveAndSend() {
     enregistre = true;
 
     await upsertClient(d.client.nom, d.client.email, d.client.tel, d.client.adresse);
+    await enregistrerDansEspaceClient("Devis", "Devis " + d.num, path, d.client.email);
 
     // 3. Email au client
     await emailjs.send("service_hwm2hla", "template_bkhdovi", {
@@ -3080,6 +3081,23 @@ async function upsertClient(nom, email, tel, adresse) {
     }
     await sb.from("clients").insert({ nom, email, tel, adresse });
   } catch(e) {}
+}
+
+/* ══ ESPACE CLIENT ══ user_id null si pas encore de compte : rattacher_demandes() le complète à la 1re connexion. */
+async function enregistrerDansEspaceClient(type, titre, chemin, email) {
+  if (!email) return;
+  try {
+    const { data: userId, error: rpcErr } = await sb.rpc("id_compte", { p_email: email });
+    if (rpcErr) throw rpcErr;
+    const { error } = await sb.from("documents").upsert(
+      { email, user_id: userId || null, titre, type, chemin },
+      { onConflict: "chemin" }
+    );
+    if (error) throw error;
+  } catch (e) {
+    console.error("Espace client :", e);
+    toast("⚠️ " + titre + " non ajouté à l'espace client — " + (e.message || "erreur inconnue"), "error");
+  }
 }
 
 /* ══ MESSAGES ══ */
@@ -3346,6 +3364,7 @@ async function saveFacture() {
     enregistre = true;
 
     await upsertClient(d.client.nom, d.client.email, d.client.tel, d.client.adresse);
+    await enregistrerDansEspaceClient("Facture", "Facture " + d.num, path, d.client.email);
 
     if (d.client.email) {
       try {

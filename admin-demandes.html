@@ -121,7 +121,8 @@ const SERVICES = {
   vitrerie:{emo:"🪟",nom:"Vitrerie"}, demenagement:{emo:"📦",nom:"Après déménagement"},
   courses:{emo:"🛒",nom:"Aide aux courses"}, administratif:{emo:"📋",nom:"Aide administrative"},
   compagnie:{emo:"🎲",nom:"Compagnie & activités"}, medical:{emo:"🏥",nom:"Accompagnement médical"},
-  lever:{emo:"🌅",nom:"Lever & coucher"}, medicaments:{emo:"💊",nom:"Prise de médicaments"}
+  lever:{emo:"🌅",nom:"Lever & coucher"}, medicaments:{emo:"💊",nom:"Prise de médicaments"},
+  menage:{emo:"🧽",nom:"Ménage à domicile"}, nuit:{emo:"🌙",nom:"Présence de nuit"}, jardin:{emo:"🌿",nom:"Jardinage"}
 };
 const RYTHMES = { ponctuel:"Une seule fois", regulier:"Régulièrement", aviser:"À définir" };
 const CRENEAUX = ["8h – 10h","10h – 12h","12h – 14h","14h – 16h","16h – 18h","18h – 20h"];
@@ -228,6 +229,7 @@ function panneau(d){
     </dl>
     ${alerteCompte(d)}
     ${d.precisions ? `<div class="besoin">${esc(d.precisions)}</div>` : ""}
+    ${blocDetails(d)}
 
     <div class="bloc">
       <h3>Envoyer le devis</h3>
@@ -270,6 +272,21 @@ function alerteCompte(d){
   return `<div class="avis alerte">Aucun compte à l'adresse ${esc(d.email)}.<br>
     Le devis sera stocké et se rattachera automatiquement dès sa première connexion.
     Pensez à lui indiquer dans le mail de se connecter avec <b>cette adresse</b>.</div>`;
+}
+
+function lignesDetails(d){
+  const x = d.details;
+  if (!x) return [];
+  return [
+    x.client ? ["Client", x.client + (x.societe ? " · " + x.societe : "")] : null,
+    ...(x.reponses || []).map(r => [r.question, r.reponse]),
+    x.consentement_sante ? ["Consentement santé", new Date(x.consentement_sante).toLocaleString("fr-FR")] : null
+  ].filter(Boolean);
+}
+
+function blocDetails(d){
+  const l = lignesDetails(d);
+  return l.length ? `<div class="bloc"><h3>Détails pour le devis</h3><dl>${l.map(([q, r]) => `<dt>${esc(q)}</dt><dd>${esc(r)}</dd>`).join("")}</dl></div>` : "";
 }
 
 const ecranConnexion = () => `<div class="connexion">
@@ -355,6 +372,7 @@ document.addEventListener("click", async e => {
       `${d.nom} · ${d.telephone} · ${d.email}`,
       `${d.code_postal} ${d.adresse} · ${RYTHMES[d.rythme] || d.rythme}`,
       d.date_souhaitee ? `Souhait : ${jour(d.date_souhaitee)} ${d.creneau || ""}` : "Date à convenir",
+      ...lignesDetails(d).map(([q, r]) => `${q} : ${r}`),
       d.precisions ? `Besoin : ${d.precisions}` : ""
     ].filter(Boolean).join("\n");
     await navigator.clipboard.writeText(txt);

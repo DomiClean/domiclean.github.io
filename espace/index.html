@@ -244,14 +244,14 @@ const SERVICES = [
   { id:"administratif",cat:"aide",      emo:"📋", nom:"Aide administrative",    desc:"Courriers et démarches" },
   { id:"compagnie",    cat:"aide",      emo:"🎲", nom:"Compagnie & activités",  desc:"Jeux, lecture, promenades" },
   { id:"medical",      cat:"aide",      emo:"🏥", nom:"Accompagnement médical", desc:"Transport et présence aux rendez-vous" },
-  { id:"lever",        cat:"aide",      emo:"🌅", nom:"Lever & coucher",        desc:"Assistance du matin et du soir" },
+  { id:"lever",        cat:"aide",      emo:"🌅", nom:"Lever & coucher",        desc:"Assistance du matin et du soir" }, // plus proposé, gardé pour les anciennes demandes
   { id:"medicaments",  cat:"aide",      emo:"💊", nom:"Prise de médicaments",   desc:"Rappel et assistance selon prescription" }, // plus proposé (absent d'OFFRES), gardé pour les anciennes demandes
   { id:"nuit",         cat:"aide",      emo:"🌙", nom:"Présence de nuit",       desc:"Présence rassurante au domicile, la nuit" },
   { id:"jardin",       cat:"jardin",    emo:"🌿", nom:"Jardinage",              desc:"Tonte, haies, débroussaillage" }
 ];
 
 const OFFRES = {
-  Particulier:   ["menage","demenagement","chantier","vitrerie","jardin","courses","administratif","compagnie","medical","lever","nuit"],
+  Particulier:   ["menage","demenagement","chantier","vitrerie","jardin","courses","administratif","compagnie","medical","nuit"],
   Professionnel: ["locaux","chantier","vitrerie","demenagement"]
 };
 
@@ -275,6 +275,7 @@ const QUESTIONS = {
     { id:"pieces", label:"Nombre de pièces", type:"nombre" },
     { id:"sdb", label:"Salles de bain et WC", type:"nombre" },
     { id:"duree", label:"Durée souhaitée par passage", type:"choix", options:["2 heures","3 heures","4 heures","À définir"] },
+    JOURS_SEM,
     { id:"extras", label:"En plus de l'entretien courant", type:"multi", options:["Vitres","Four","Réfrigérateur","Placards","Balcon ou terrasse"] },
     { id:"produits", label:"Produits et matériel", type:"choix", options:["J'ai le nécessaire","À apporter"] },
     ETAGE, ANIMAUX, ACCES, PARKING
@@ -311,6 +312,7 @@ const QUESTIONS = {
     { id:"surface", label:"Surface", type:"nombre", unite:"m²", requis:true },
     { id:"sanitaires", label:"Nombre de sanitaires", type:"nombre" },
     { id:"moment", label:"Moment de l'intervention", type:"choix", options:["En journée","Tôt le matin ou le soir","La nuit"] },
+    { id:"duree", label:"Durée par passage, si vous la connaissez", type:"choix", options:["1 heure","2 heures","3 heures","4 heures","Je ne sais pas"] },
     { id:"passages", label:"Passages par semaine", type:"nombre" },
     ETAGE, ACCES, PARKING
   ],
@@ -335,12 +337,6 @@ const QUESTIONS = {
     TRAJETS,
     { id:"pendant", label:"Pendant le rendez-vous", type:"choix", options:["Rester avec la personne","Dépose puis retour"] },
     AUTONOMIE, ETAGE, PARKING],
-  lever: [FREQ, POUR_QUI,
-    { id:"passages", label:"Passages", type:"multi", options:["Lever","Coucher"], requis:true },
-    { id:"horaires", label:"Heures souhaitées", type:"texte", placeholder:"Par exemple 7 h 30 et 21 h" },
-    JOURS_SEM, AUTONOMIE,
-    { id:"equipement", label:"Équipement", type:"choix", options:["Aucun","Lit médicalisé","Lève-personne"], sante:true },
-    ETAGE, ANIMAUX],
   nuit: [FREQ, POUR_QUI,
     { id:"horaires", label:"Horaires de présence", type:"choix", options:["21 h – 7 h","22 h – 8 h","Autres horaires"] },
     { id:"nuits", label:"Nuits par semaine", type:"nombre" },
@@ -480,6 +476,8 @@ const STATUTS = {
 const tagStatut = s => { const m = STATUTS[s] || ["done", s]; return `<span class="tag ${m[0]}">${m[1]}</span>`; };
 const estActive = d => !["terminee","annulee"].includes(d.statut);
 const nomPrestation = d => d.details?.services?.length ? d.details.services.map(x => x.nom).join(" + ") : (svc(d.service)?.nom || d.service);
+// « 450,00 € par mois » pour un devis régulier (texte posé par le back-office à l'envoi).
+const montantDevis = d => d.devis_montant == null ? "" : (d.details?.devis_texte || euro(d.devis_montant));
 
 /* Pénalités d'annulation, telles que fixées par vos CGV (article 6). */
 function penalite(dateIso, creneau){
@@ -533,7 +531,7 @@ function ecranAccueil(){
   } else if (aValider){
     hero = `<section class="next">
       <h2 style="font-size:1.35rem;margin-bottom:8px">Votre devis est prêt</h2>
-      <p style="opacity:.9;font-size:.92rem;margin-bottom:16px">${esc(nomPrestation(aValider))}${aValider.devis_montant ? " · " + euro(aValider.devis_montant) : ""}. Valable 30 jours, sans engagement.</p>
+      <p style="opacity:.9;font-size:.92rem;margin-bottom:16px">${esc(nomPrestation(aValider))}${montantDevis(aValider) ? " · " + esc(montantDevis(aValider)) : ""}. Valable 30 jours, sans engagement.</p>
       <div class="acts">
         ${aValider.devis_chemin ? `<button data-doc="${esc(aValider.devis_chemin)}">Lire le devis</button>` : ""}
         <button data-accepter="${aValider.id}">Accepter</button>
@@ -577,7 +575,7 @@ function ligne(d, avecActions = false){
     <div class="date ${dt ? "" : "vide"}">${dt ? `<b>${dt.getDate()}</b><i>${MOIS[dt.getMonth()]}</i>` : (s?.emo || "🏠")}</div>
     <div class="body">
       <h3>${esc(nomPrestation(d))}</h3>
-      <div class="meta">${dt ? esc(d.creneau || "horaire à confirmer") : "Date à convenir"}${d.devis_montant ? " · " + euro(d.devis_montant) : ""}</div>
+      <div class="meta">${dt ? esc(d.creneau || "horaire à confirmer") : "Date à convenir"}${montantDevis(d) ? " · " + esc(montantDevis(d)) : ""}</div>
       <div class="meta">${esc(d.adresse)}</div>
       ${tagStatut(d.statut)}
       ${avecActions ? actionsDemande(d) : ""}
@@ -851,7 +849,7 @@ document.addEventListener("click", async e => {
 
   if (t.dataset.accepter){
     const d = state.demandes.find(x => x.id === t.dataset.accepter);
-    if (!confirm(`En acceptant, vous validez le devis par écrit au sens de nos CGV${d?.devis_montant ? ` (${euro(d.devis_montant)})` : ""}. Confirmer ?`)) return;
+    if (!confirm(`En acceptant, vous validez le devis par écrit au sens de nos CGV${d && montantDevis(d) ? ` (${montantDevis(d)})` : ""}. Confirmer ?`)) return;
     const r = await store.action("accepter_devis", d.id, { statut:"devis_accepte", devis_accepte_le:new Date().toISOString() });
     if (!r.ok) return toast("Acceptation impossible : " + r.error);
     await refresh(); toast("Devis accepté. Nous planifions l'intervention."); return render();

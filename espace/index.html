@@ -131,6 +131,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 .choice .emo{flex:0 0 28px;font-size:1.35rem;line-height:1.2}
 .choice b{display:block;font-weight:600;font-size:.97rem}
 .choice em{font-style:normal;font-size:.84rem;color:var(--ink-2)}
+.choice[aria-pressed="true"]::after{content:"✓";margin-left:auto;font-weight:700;color:var(--accent-deep)}
 
 .slots{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
 .slot{padding:11px 6px;border-radius:12px;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:.9rem}
@@ -154,6 +155,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 .recap div{display:flex;justify-content:space-between;gap:16px;padding:3px 0}
 .recap span:first-child{color:var(--accent-deep);opacity:.75}
 .recap span:last-child{text-align:right;font-weight:500}
+.recap .titre{font-weight:600;color:var(--accent-deep);padding-top:12px}
 
 .doc{display:flex;align-items:center;gap:13px;padding:13px 0;border-bottom:1px solid var(--line)}
 .doc:last-child{border-bottom:0}
@@ -242,24 +244,31 @@ const SERVICES = [
   { id:"compagnie",    cat:"aide",      emo:"🎲", nom:"Compagnie & activités",  desc:"Jeux, lecture, promenades" },
   { id:"medical",      cat:"aide",      emo:"🏥", nom:"Accompagnement médical", desc:"Transport et présence aux rendez-vous" },
   { id:"lever",        cat:"aide",      emo:"🌅", nom:"Lever & coucher",        desc:"Assistance du matin et du soir" },
-  { id:"medicaments",  cat:"aide",      emo:"💊", nom:"Prise de médicaments",   desc:"Rappel et assistance selon prescription", retire:true }, // plus proposé, gardé pour les anciennes demandes
+  { id:"medicaments",  cat:"aide",      emo:"💊", nom:"Prise de médicaments",   desc:"Rappel et assistance selon prescription" }, // plus proposé (absent d'OFFRES), gardé pour les anciennes demandes
   { id:"nuit",         cat:"aide",      emo:"🌙", nom:"Présence de nuit",       desc:"Présence rassurante au domicile, la nuit" },
   { id:"jardin",       cat:"jardin",    emo:"🌿", nom:"Jardinage",              desc:"Tonte, haies, débroussaillage" }
 ];
 
-/* Étape « Parlons du besoin » : ce qu'il faut pour chiffrer avec la grille tarifaire d'admin.html. */
-const ETAGE     = { id:"etage", label:"Étage", type:"choix", options:["Rez-de-chaussée","Étage avec ascenseur","Étage sans ascenseur"] };
-const ACCES     = { id:"acces", label:"Accès pendant l'intervention", type:"choix", options:["Je serai sur place","Remise des clés","Code ou badge"] };
-const ANIMAUX   = { id:"animaux", label:"Animaux sur place", type:"choix", options:["Aucun","Chat","Chien","Autre"] };
-const PARKING   = { id:"stationnement", label:"Stationnement à proximité", type:"choix", options:["Facile","Payant","Difficile"] };
-const POUR_QUI  = { id:"pour_qui", label:"Pour qui ?", type:"choix", options:["Pour moi","Pour un proche"], requis:true };
-const AUTONOMIE = { id:"autonomie", label:"Autonomie de la personne aidée", type:"choix", options:["Autonome","Besoin d'aide pour certains gestes","Peu autonome"], sante:true };
+const OFFRES = {
+  Particulier:   ["menage","demenagement","chantier","vitrerie","jardin","courses","administratif","compagnie","medical","lever","nuit"],
+  Professionnel: ["locaux","chantier","vitrerie","demenagement"]
+};
+
+/* Questions par service (grille tarifaire d'admin.html) ; « commun » = posée une seule fois, à l'étape « Sur place ». */
+const FREQ      = { id:"frequence", label:"Fréquence", type:"choix", options:["Une seule fois","Chaque semaine","Toutes les 2 semaines","Chaque mois","À définir"], requis:true };
+const ETAGE     = { id:"etage", label:"Étage", type:"choix", options:["Rez-de-chaussée","Étage avec ascenseur","Étage sans ascenseur"], commun:true };
+const ACCES     = { id:"acces", label:"Accès pendant l'intervention", type:"choix", options:["Je serai sur place","Remise des clés","Code ou badge"], commun:true };
+const ANIMAUX   = { id:"animaux", label:"Animaux sur place", type:"choix", options:["Aucun","Chat","Chien","Autre"], commun:true };
+const PARKING   = { id:"stationnement", label:"Stationnement à proximité", type:"choix", options:["Facile","Payant","Difficile"], commun:true };
+const POUR_QUI  = { id:"pour_qui", label:"Pour qui ?", type:"choix", options:["Pour moi","Pour un proche"], requis:true, commun:true };
+const AUTONOMIE = { id:"autonomie", label:"Autonomie de la personne aidée", type:"choix", options:["Autonome","Besoin d'aide pour certains gestes","Peu autonome"], sante:true, commun:true };
 const DUREE     = { id:"duree", label:"Durée par visite", type:"choix", options:["1 heure","2 heures","3 heures","Demi-journée","À définir"] };
 const JOURS_SEM = { id:"jours", label:"Jours souhaités", type:"multi", options:["Lun","Mar","Mer","Jeu","Ven","Sam","Dim"] };
 const TRAJETS   = { id:"trajets", label:"Déplacements", type:"choix", options:["À pied ou en transports","Véhicule nécessaire"] };
 
 const QUESTIONS = {
   menage: [
+    FREQ,
     { id:"logement", label:"Type de logement", type:"choix", options:["Appartement","Maison"] },
     { id:"surface", label:"Surface approximative", type:"nombre", unite:"m²", requis:true },
     { id:"pieces", label:"Nombre de pièces", type:"nombre" },
@@ -287,6 +296,7 @@ const QUESTIONS = {
     ETAGE, ACCES, PARKING
   ],
   vitrerie: [
+    FREQ,
     { id:"lieu", label:"Où ?", type:"choix", options:["Logement","Bureaux","Vitrine de commerce"] },
     { id:"fenetres", label:"Nombre de fenêtres", type:"nombre", requis:true },
     { id:"baies", label:"Baies vitrées ou portes-fenêtres", type:"nombre" },
@@ -295,6 +305,7 @@ const QUESTIONS = {
     ETAGE, ACCES, PARKING
   ],
   locaux: [
+    FREQ,
     { id:"type_local", label:"Type de local", type:"choix", options:["Bureaux","Commerce","Cabinet médical","Parties communes","Autre"] },
     { id:"surface", label:"Surface", type:"nombre", unite:"m²", requis:true },
     { id:"sanitaires", label:"Nombre de sanitaires", type:"nombre" },
@@ -303,6 +314,7 @@ const QUESTIONS = {
     ETAGE, ACCES, PARKING
   ],
   jardin: [
+    FREQ,
     { id:"surface", label:"Surface du jardin", type:"nombre", unite:"m²", requis:true },
     { id:"taches", label:"Travaux", type:"multi", options:["Tonte","Taille de haies","Débroussaillage","Désherbage","Feuilles mortes"] },
     { id:"haies", label:"Longueur de haies", type:"nombre", unite:"m" },
@@ -310,36 +322,41 @@ const QUESTIONS = {
     { id:"materiel", label:"Matériel (tondeuse, taille-haie…)", type:"choix", options:["J'ai le matériel","À apporter"] },
     ACCES, ANIMAUX, PARKING
   ],
-  courses: [POUR_QUI, DUREE, JOURS_SEM, TRAJETS, AUTONOMIE, ETAGE, PARKING],
-  administratif: [POUR_QUI,
+  courses: [FREQ, POUR_QUI, DUREE, JOURS_SEM, TRAJETS, AUTONOMIE, ETAGE, PARKING],
+  administratif: [FREQ, POUR_QUI,
     { id:"demarches", label:"Démarches", type:"multi", options:["Tri du courrier","Dossiers et formulaires","Démarches en ligne","Classement"] },
     DUREE, JOURS_SEM, PARKING],
-  compagnie: [POUR_QUI,
+  compagnie: [FREQ, POUR_QUI,
     { id:"activites", label:"Activités", type:"multi", options:["Conversation","Jeux","Lecture","Promenade","Sorties"] },
     DUREE, JOURS_SEM, AUTONOMIE, ANIMAUX, PARKING],
-  medical: [POUR_QUI,
+  medical: [FREQ, POUR_QUI,
     { id:"ville_rdv", label:"Ville du rendez-vous", type:"texte" },
     TRAJETS,
     { id:"pendant", label:"Pendant le rendez-vous", type:"choix", options:["Rester avec la personne","Dépose puis retour"] },
     AUTONOMIE, ETAGE, PARKING],
-  lever: [POUR_QUI,
+  lever: [FREQ, POUR_QUI,
     { id:"passages", label:"Passages", type:"multi", options:["Lever","Coucher"], requis:true },
     { id:"horaires", label:"Heures souhaitées", type:"texte", placeholder:"Par exemple 7 h 30 et 21 h" },
     JOURS_SEM, AUTONOMIE,
     { id:"equipement", label:"Équipement", type:"choix", options:["Aucun","Lit médicalisé","Lève-personne"], sante:true },
     ETAGE, ANIMAUX],
-  nuit: [POUR_QUI,
+  nuit: [FREQ, POUR_QUI,
     { id:"horaires", label:"Horaires de présence", type:"choix", options:["21 h – 7 h","22 h – 8 h","Autres horaires"] },
     { id:"nuits", label:"Nuits par semaine", type:"nombre" },
     AUTONOMIE, ETAGE, ANIMAUX, PARKING]
 };
 const questionsDe = service => QUESTIONS[service] || [];
-const besoinConsentement = service => questionsDe(service).some(q => q.sante);
+const specifiques = service => questionsDe(service).filter(q => !q.commun);
+const COMMUNES = [POUR_QUI, AUTONOMIE, ETAGE, ACCES, ANIMAUX, PARKING];
+const communes = b => COMMUNES.filter(q => b.services.some(s => questionsDe(s).includes(q)));
+const besoinConsentement = b => b.services.some(s => questionsDe(s).some(q => q.sante));
+const reponsesDe = (b, cle) => cle === "_commun" ? b.commun : (b.rep[cle] ||= {});
 const repondu = v => Array.isArray(v) ? v.length > 0 : v != null && String(v).trim() !== "";
+const complet = (q, v) => !q.requis || (q.type === "nombre" ? Number(v) > 0 : repondu(v));
 
-function reponses(b){
-  return questionsDe(b.service).filter(q => repondu(b.details[q.id])).map(q => {
-    const v = b.details[q.id];
+function lister(qs, vals){
+  return qs.filter(q => repondu(vals[q.id])).map(q => {
+    const v = vals[q.id];
     const r = Array.isArray(v) ? v.join(", ")
       : q.type === "date" ? new Date(v + "T00:00:00").toLocaleDateString("fr-FR")
       : String(v).trim() + (q.unite ? " " + q.unite : "");
@@ -347,11 +364,19 @@ function reponses(b){
   });
 }
 
-const RYTHMES = [
-  { id:"ponctuel", emo:"📌", nom:"Une seule fois",      desc:"Intervention ponctuelle" },
-  { id:"regulier", emo:"🔁", nom:"Régulièrement",       desc:"Chaque semaine ou tous les quinze jours" },
-  { id:"aviser",   emo:"💬", nom:"Je ne sais pas encore", desc:"Nous en parlons pendant l'appel" }
-];
+function resume(b){
+  return {
+    services: b.services.map(s => ({ id:s, nom:svc(s).nom, reponses:lister(specifiques(s), b.rep[s] || {}) })),
+    commun: lister(communes(b), b.commun)
+  };
+}
+
+// Colonne « rythme » de la demande, déduite des fréquences choisies pour chaque service.
+function rythmeGlobal(b){
+  const f = b.services.map(s => b.rep[s]?.frequence || "Une seule fois");
+  if (f.some(x => ["Chaque semaine","Toutes les 2 semaines","Chaque mois"].includes(x))) return "regulier";
+  return f.every(x => x === "Une seule fois") ? "ponctuel" : "aviser";
+}
 
 const CRENEAUX = ["8h – 10h","10h – 12h","12h – 14h","14h – 16h","16h – 18h","18h – 20h"];
 
@@ -391,7 +416,7 @@ const store = {
       id:d.id, service:d.service, rythme:d.rythme, date:d.date_souhaitee, creneau:d.creneau,
       adresse:d.adresse, cp:d.code_postal, precisions:d.precisions, statut:d.statut,
       intervenant:d.intervenant, devis_chemin:d.devis_chemin, devis_montant:d.devis_montant,
-      devis_accepte_le:d.devis_accepte_le, cree_le:d.cree_le
+      devis_accepte_le:d.devis_accepte_le, cree_le:d.cree_le, details:d.details
     }));
   },
   async createDemande(d){
@@ -451,6 +476,7 @@ const STATUTS = {
 };
 const tagStatut = s => { const m = STATUTS[s] || ["done", s]; return `<span class="tag ${m[0]}">${m[1]}</span>`; };
 const estActive = d => !["terminee","annulee"].includes(d.statut);
+const nomPrestation = d => d.details?.services?.length ? d.details.services.map(x => x.nom).join(" + ") : (svc(d.service)?.nom || d.service);
 
 /* Pénalités d'annulation, telles que fixées par vos CGV (article 6). */
 function penalite(dateIso, creneau){
@@ -467,7 +493,8 @@ function penalite(dateIso, creneau){
 /* =====================================================================
    4. ÉCRANS
    ===================================================================== */
-const state = { user:null, demandes:[], docs:[], b:{ etape:1, details:{} } };
+const nouvelleDemande = () => ({ etape:1, client:null, services:[], rep:{}, commun:{} });
+const state = { user:null, demandes:[], docs:[], b:nouvelleDemande() };
 
 async function refresh(){
   state.user = await store.user();
@@ -491,7 +518,7 @@ function ecranAccueil(){
         <div class="dayrest"><strong>${JOURS[d.getDay()]}</strong>${MOIS[d.getMonth()]} · ${esc(planifiee.creneau || "horaire à confirmer")}</div>
       </div>
       <dl>
-        <dt>Prestation</dt><dd>${esc(svc(planifiee.service)?.nom || planifiee.service)}</dd>
+        <dt>Prestation</dt><dd>${esc(nomPrestation(planifiee))}</dd>
         <dt>Chez vous</dt><dd>${esc(planifiee.adresse)}</dd>
         ${planifiee.intervenant ? `<dt>Avec</dt><dd>${esc(planifiee.intervenant)}</dd>` : ""}
       </dl>
@@ -503,7 +530,7 @@ function ecranAccueil(){
   } else if (aValider){
     hero = `<section class="next">
       <h2 style="font-size:1.35rem;margin-bottom:8px">Votre devis est prêt</h2>
-      <p style="opacity:.9;font-size:.92rem;margin-bottom:16px">${esc(svc(aValider.service)?.nom || "")}${aValider.devis_montant ? " · " + euro(aValider.devis_montant) : ""}. Valable 30 jours, sans engagement.</p>
+      <p style="opacity:.9;font-size:.92rem;margin-bottom:16px">${esc(nomPrestation(aValider))}${aValider.devis_montant ? " · " + euro(aValider.devis_montant) : ""}. Valable 30 jours, sans engagement.</p>
       <div class="acts">
         ${aValider.devis_chemin ? `<button data-doc="${esc(aValider.devis_chemin)}">Lire le devis</button>` : ""}
         <button data-accepter="${aValider.id}">Accepter</button>
@@ -546,7 +573,7 @@ function ligne(d, avecActions = false){
   return `<article class="visit">
     <div class="date ${dt ? "" : "vide"}">${dt ? `<b>${dt.getDate()}</b><i>${MOIS[dt.getMonth()]}</i>` : (s?.emo || "🏠")}</div>
     <div class="body">
-      <h3>${esc(s?.nom || d.service)}</h3>
+      <h3>${esc(nomPrestation(d))}</h3>
       <div class="meta">${dt ? esc(d.creneau || "horaire à confirmer") : "Date à convenir"}${d.devis_montant ? " · " + euro(d.devis_montant) : ""}</div>
       <div class="meta">${esc(d.adresse)}</div>
       ${tagStatut(d.statut)}
@@ -577,28 +604,28 @@ function ecranDemande(){
 
   if (b.etape === 1){
     corps = `<h1>De quoi avez-vous besoin ?</h1>
-      <div class="choices" style="margin-top:16px">
-        ${CATEGORIES.map(c => `<button class="choice" aria-pressed="${b.cat === c.id}" data-cat="${c.id}">
-          <span class="emo">${c.emo}</span><span><b>${c.nom}</b><em>${c.desc}</em></span></button>`).join("")}
-      </div>
-      ${b.cat ? `<div class="choices" style="margin-top:14px">
-        ${SERVICES.filter(s => s.cat === b.cat && !s.retire).map(s => `<button class="choice" aria-pressed="${b.service === s.id}" data-svc="${s.id}">
-          <span class="emo">${s.emo}</span><span><b>${s.nom}</b><em>${s.desc}</em></span></button>`).join("")}
-      </div>` : ""}`;
+      <div class="field" style="margin-top:16px"><div class="lab">Vous êtes</div><div class="opts">
+        ${Object.keys(OFFRES).map(c => `<button type="button" class="opt" aria-pressed="${b.client === c}" data-client="${c}">${c}</button>`).join("")}
+      </div></div>
+      ${b.client ? `<p class="muted small">Cochez un ou plusieurs services : un seul devis les regroupera.</p>
+        ${CATEGORIES.map(c => {
+          const liste = OFFRES[b.client].map(svc).filter(s => s.cat === c.id);
+          return liste.length ? `<h2 style="margin:18px 0 10px">${c.emo} ${c.nom}</h2><div class="choices">
+            ${liste.map(s => `<button class="choice" aria-pressed="${b.services.includes(s.id)}" data-svc="${s.id}">
+              <span class="emo">${s.emo}</span><span><b>${s.nom}</b><em>${s.desc}</em></span></button>`).join("")}
+          </div>` : "";
+        }).join("")}` : ""}`;
   }
   if (b.etape === 2){
-    corps = `<h1>À quel rythme ?</h1>
-      <p class="muted small" style="margin-top:8px">Rien n'est figé : nous ajustons ensemble pendant l'appel.</p>
-      <div class="choices" style="margin-top:16px">
-        ${RYTHMES.map(r => `<button class="choice" aria-pressed="${b.rythme === r.id}" data-rythme="${r.id}">
-          <span class="emo">${r.emo}</span><span><b>${r.nom}</b><em>${r.desc}</em></span></button>`).join("")}
-      </div>`;
+    corps = `<h1>Parlons du besoin</h1>
+      <p class="muted small" style="margin-top:8px">Ces réponses nous permettent de chiffrer au plus juste. Les questions marquées <span class="req">*</span> sont nécessaires.</p>
+      ${b.services.map(id => `<div class="card" style="margin-top:14px"><h3 style="margin-bottom:14px">${svc(id).emo} ${esc(svc(id).nom)}</h3>
+        ${specifiques(id).map(q => champ(q, (b.rep[id] || {})[q.id], id)).join("")}</div>`).join("")}`;
   }
   if (b.etape === 3){
-    const s = svc(b.service);
-    corps = `<h1>Parlons du besoin</h1>
-      <p class="muted small" style="margin-top:8px">${s.emo} ${esc(s.nom)} · Ces réponses nous permettent de chiffrer au plus juste. Les questions marquées <span class="req">*</span> sont nécessaires.</p>
-      <div style="margin-top:16px">${questionsDe(b.service).map(q => champ(q, b.details[q.id])).join("")}</div>`;
+    corps = `<h1>Sur place</h1>
+      <p class="muted small" style="margin-top:8px">Quelques informations pratiques, valables pour toute la demande.</p>
+      <div style="margin-top:16px">${communes(b).map(q => champ(q, b.commun[q.id], "_commun")).join("")}</div>`;
   }
   if (b.etape === 4){
     corps = `<h1>Quand vous arrangerait-il ?</h1>
@@ -609,13 +636,9 @@ function ecranDemande(){
       <div class="slots">${CRENEAUX.map(c => `<button class="slot" aria-pressed="${b.creneau === c}" data-creneau="${c}">${c}</button>`).join("")}</div>`;
   }
   if (b.etape === 5){
-    const s = svc(b.service), r = RYTHMES.find(x => x.id === b.rythme);
-    if (!b.client) b.client = b.service === "locaux" ? "Professionnel" : "Particulier";
+    const r = resume(b);
     corps = `<h1>Vos coordonnées</h1>
-      <div class="field" style="margin-top:16px"><div class="lab">Vous êtes</div><div class="opts">
-        ${["Particulier","Professionnel"].map(c => `<button type="button" class="opt" aria-pressed="${b.client === c}" data-client="${c}">${c}</button>`).join("")}
-      </div></div>
-      <div class="field" id="f-societe" ${b.client === "Professionnel" ? "" : "hidden"}><label for="d-societe">Entreprise ou organisme</label><input id="d-societe" value="${esc(b.societe || "")}" autocomplete="organization"></div>
+      ${b.client === "Professionnel" ? `<div class="field" style="margin-top:16px"><label for="d-societe">Entreprise ou organisme</label><input id="d-societe" value="${esc(b.societe || "")}" autocomplete="organization"></div>` : ""}
       <div class="field" style="margin-top:16px"><label for="d-nom">Nom et prénom</label><input id="d-nom" value="${esc(b.nom || "")}" autocomplete="name"></div>
       <div class="row">
         <div class="field"><label for="d-tel">Téléphone</label><input id="d-tel" type="tel" value="${esc(b.telephone || "")}" autocomplete="tel"></div>
@@ -626,12 +649,12 @@ function ecranDemande(){
         <div class="field"><label for="d-adr">Ville</label><input id="d-adr" value="${esc(b.adresse || "")}" placeholder="Montreuil"></div>
       </div>
       <div class="field"><label for="d-note">Autre chose à nous dire ?</label><textarea id="d-note" placeholder="Contraintes horaires, attentes particulières…">${esc(b.precisions || "")}</textarea></div>
-      ${besoinConsentement(b.service) ? `<label class="check"><input type="checkbox" id="d-consent"><span>J'accepte que Domi Clean utilise les informations sur la santé et l'autonomie de la personne aidée pour préparer le devis et l'intervention. <a href="${CONFIG.confidentialite}" target="_blank" rel="noopener">Confidentialité</a></span></label>` : ""}
+      ${besoinConsentement(b) ? `<label class="check"><input type="checkbox" id="d-consent"><span>J'accepte que Domi Clean utilise les informations sur la santé et l'autonomie de la personne aidée pour préparer le devis et l'intervention. <a href="${CONFIG.confidentialite}" target="_blank" rel="noopener">Confidentialité</a></span></label>` : ""}
       <div class="recap">
-        <div><span>Prestation</span><span>${s.emo} ${esc(s.nom)}</span></div>
-        <div><span>Rythme</span><span>${esc(r.nom)}</span></div>
+        <div><span>Client</span><span>${esc(b.client)}</span></div>
         <div><span>Souhait</span><span>${b.date ? esc(new Date(b.date + "T00:00:00").toLocaleDateString("fr-FR")) : "à convenir"}${b.creneau ? " · " + esc(b.creneau) : ""}</span></div>
-        ${reponses(b).map(x => `<div><span>${esc(x.question)}</span><span>${esc(x.reponse)}</span></div>`).join("")}
+        ${r.services.map(x => `<div class="titre">${svc(x.id).emo} ${esc(x.nom)}</div>${x.reponses.map(ligneRecap).join("")}`).join("")}
+        ${r.commun.length ? `<div class="titre">Sur place</div>${r.commun.map(ligneRecap).join("")}` : ""}
       </div>
       <p class="muted small">Nous revenons vers vous sous 24 h avec un devis gratuit et sans engagement. Vous pouvez aussi <a href="${CONFIG.reservationAppel}" target="_blank" rel="noopener">réserver directement l'appel de 30 minutes</a>.</p>`;
   }
@@ -643,24 +666,26 @@ function ecranDemande(){
 
 function valide(){
   const b = state.b;
-  if (b.etape === 1) return !!b.service;
-  if (b.etape === 2) return !!b.rythme;
-  if (b.etape === 3) return questionsDe(b.service).every(q => !q.requis || (q.type === "nombre" ? Number(b.details[q.id]) > 0 : repondu(b.details[q.id])));
+  if (b.etape === 1) return !!b.client && b.services.length > 0;
+  if (b.etape === 2) return b.services.every(s => specifiques(s).every(q => complet(q, (b.rep[s] || {})[q.id])));
+  if (b.etape === 3) return communes(b).every(q => complet(q, b.commun[q.id]));
   return true;
 }
 
-function champ(q, val){
+function champ(q, val, cle){
   const req = q.requis ? ' <span class="req">*</span>' : "";
   if (q.type === "choix" || q.type === "multi"){
     const choisi = [].concat(val ?? []);
     return `<div class="field"><div class="lab">${esc(q.label)}${req}</div><div class="opts">
-      ${q.options.map(o => `<button type="button" class="opt" aria-pressed="${choisi.includes(o)}" data-q="${q.id}" data-v="${esc(o)}">${esc(o)}</button>`).join("")}
+      ${q.options.map(o => `<button type="button" class="opt" aria-pressed="${choisi.includes(o)}" data-q="${q.id}" data-s="${cle}" data-v="${esc(o)}">${esc(o)}</button>`).join("")}
     </div></div>`;
   }
   const type = { nombre:'type="number" inputmode="decimal" min="0"', date:'type="date"', texte:'type="text"' }[q.type];
-  const input = `<input id="q-${q.id}" ${type} data-qin="${q.id}" value="${esc(val ?? "")}" placeholder="${esc(q.placeholder || "")}">`;
-  return `<div class="field"><label for="q-${q.id}">${esc(q.label)}${req}</label>${q.unite ? `<div class="unite">${input}<span>${esc(q.unite)}</span></div>` : input}</div>`;
+  const input = `<input id="q-${cle}-${q.id}" ${type} data-qin="${q.id}" data-s="${cle}" value="${esc(val ?? "")}" placeholder="${esc(q.placeholder || "")}">`;
+  return `<div class="field"><label for="q-${cle}-${q.id}">${esc(q.label)}${req}</label>${q.unite ? `<div class="unite">${input}<span>${esc(q.unite)}</span></div>` : input}</div>`;
 }
+
+const ligneRecap = x => `<div><span>${esc(x.question)}</span><span>${esc(x.reponse)}</span></div>`;
 
 /* ---- Suivi ---- */
 function ecranSuivi(){
@@ -741,39 +766,34 @@ addEventListener("hashchange", render);
    6. INTERACTIONS
    ===================================================================== */
 document.addEventListener("click", async e => {
-  const t = e.target.closest("[data-cat],[data-svc],[data-rythme],[data-creneau],[data-next],[data-back],[data-go],[data-appel],[data-login],[data-logout],[data-report],[data-annuler],[data-accepter],[data-doc],[data-q],[data-client]");
+  const t = e.target.closest("[data-svc],[data-creneau],[data-next],[data-back],[data-go],[data-appel],[data-login],[data-logout],[data-report],[data-annuler],[data-accepter],[data-doc],[data-q],[data-client]");
   if (!t) return;
   const b = state.b;
 
   if (t.dataset.go){ location.hash = t.dataset.go; return; }
   if (t.hasAttribute("data-appel")){ location.href = "tel:" + CONFIG.telephone.replace(/\s/g, ""); return; }
 
-  if (t.dataset.cat){
-    b.cat = t.dataset.cat;
-    if (svc(b.service)?.cat !== b.cat){
-      const liste = SERVICES.filter(s => s.cat === b.cat && !s.retire);
-      b.service = liste.length === 1 ? liste[0].id : null;
-      b.details = {};
-    }
-    return render();
-  }
-  if (t.dataset.svc){ if (b.service !== t.dataset.svc) b.details = {}; b.service = t.dataset.svc; return render(); }
-  if (t.dataset.q){
-    const q = questionsDe(b.service).find(x => x.id === t.dataset.q), v = t.dataset.v;
-    if (q.type === "multi"){
-      const liste = b.details[q.id] || [];
-      b.details[q.id] = liste.includes(v) ? liste.filter(x => x !== v) : [...liste, v];
-    } else b.details[q.id] = b.details[q.id] === v ? undefined : v;
-    document.querySelectorAll(`[data-q="${q.id}"]`).forEach(el => el.setAttribute("aria-pressed", String([].concat(b.details[q.id] ?? []).includes(el.dataset.v))));
-    return majContinuer();
-  }
   if (t.dataset.client){
     b.client = t.dataset.client;
-    document.querySelectorAll("[data-client]").forEach(el => el.setAttribute("aria-pressed", String(el.dataset.client === b.client)));
-    $("#f-societe").hidden = b.client !== "Professionnel";
-    return;
+    b.services = b.services.filter(s => OFFRES[b.client].includes(s));
+    return render();
   }
-  if (t.dataset.rythme){ b.rythme = t.dataset.rythme; return render(); }
+  if (t.dataset.svc){
+    const id = t.dataset.svc;
+    b.services = OFFRES[b.client].filter(s => s === id ? !b.services.includes(id) : b.services.includes(s));
+    t.setAttribute("aria-pressed", String(b.services.includes(id)));
+    return majContinuer();
+  }
+  if (t.dataset.q){
+    const cle = t.dataset.s, vals = reponsesDe(b, cle), v = t.dataset.v;
+    const q = (cle === "_commun" ? COMMUNES : questionsDe(cle)).find(x => x.id === t.dataset.q);
+    if (q.type === "multi"){
+      const liste = vals[q.id] || [];
+      vals[q.id] = liste.includes(v) ? liste.filter(x => x !== v) : [...liste, v];
+    } else vals[q.id] = vals[q.id] === v ? undefined : v;
+    document.querySelectorAll(`[data-q="${q.id}"][data-s="${cle}"]`).forEach(el => el.setAttribute("aria-pressed", String([].concat(vals[q.id] ?? []).includes(el.dataset.v))));
+    return majContinuer();
+  }
   if (t.dataset.creneau){ b.creneau = b.creneau === t.dataset.creneau ? null : t.dataset.creneau; b.date = $("#d-date")?.value || b.date; return render(); }
   if (t.hasAttribute("data-back")){ b.etape--; return render(); }
 
@@ -781,7 +801,7 @@ document.addEventListener("click", async e => {
     if (b.etape === 4) b.date = $("#d-date")?.value || "";
     if (b.etape < 5){ b.etape++; return render(); }
 
-    b.societe = $("#d-societe").value.trim();
+    b.societe = $("#d-societe")?.value.trim() || "";
     b.nom = $("#d-nom").value.trim();
     b.telephone = $("#d-tel").value.trim();
     b.email = $("#d-mail").value.trim();
@@ -792,20 +812,20 @@ document.addEventListener("click", async e => {
     if (!CONFIG.departements.includes(b.cp.slice(0, 2)))
       if (!confirm("Ce code postal est hors Île-de-France. Nous pouvons étudier la demande, mais l'intervention reste soumise à notre accord préalable. Continuer ?")) return;
 
-    const sante = besoinConsentement(b.service);
+    const sante = besoinConsentement(b);
     if (sante && !$("#d-consent").checked) return toast("Cochez la case de consentement pour que nous puissions utiliser ces informations.");
     const details = {
       client:b.client,
       ...(b.client === "Professionnel" && b.societe ? { societe:b.societe } : {}),
-      reponses:reponses(b),
+      ...resume(b),
       ...(sante ? { consentement_sante:new Date().toISOString() } : {})
     };
 
     t.disabled = true; t.textContent = "Envoi…";
-    const res = await store.createDemande({ ...b, details, statut:"envoyee" });
+    const res = await store.createDemande({ ...b, service:b.services[0], rythme:rythmeGlobal(b), details, statut:"envoyee" });
     if (!res.ok){ t.disabled = false; t.textContent = "Envoyer ma demande"; return toast("L'envoi a échoué. Réessayez ou appelez-nous."); }
     notifierEntreprise({ ...b, details });
-    state.b = { etape:1, details:{} };
+    state.b = nouvelleDemande();
     await refresh();
     toast("Demande reçue. Devis sous 24 h.");
     location.hash = "/accueil";
@@ -862,7 +882,7 @@ document.addEventListener("click", async e => {
 document.addEventListener("input", e => {
   const id = e.target.dataset.qin;
   if (!id) return;
-  state.b.details[id] = e.target.value;
+  reponsesDe(state.b, e.target.dataset.s)[id] = e.target.value;
   majContinuer();
 });
 
@@ -870,21 +890,21 @@ function majContinuer(){ const n = $("[data-next]"); if (n) n.disabled = !valide
 
 function notifierEntreprise(d){
   if (!window.emailjs) return;
-  const s = svc(d.service), r = RYTHMES.find(x => x.id === d.rythme);
+  const puce = x => `• ${x.question} : ${x.reponse}`;
   const lignes = [
-    `Prestation : ${s.nom}`,
-    `Rythme : ${r ? r.nom : "—"}`,
-    `Souhait : ${d.date ? new Date(d.date + "T00:00:00").toLocaleDateString("fr-FR") : "date à convenir"}${d.creneau ? " · " + d.creneau : ""}`,
-    `Lieu : ${d.cp} ${d.adresse}`,
-    `Client : ${d.details.client}${d.details.societe ? " · " + d.details.societe : ""}`,
-    ...d.details.reponses.map(x => `${x.question} : ${x.reponse}`),
-    d.precisions ? `Précisions : ${d.precisions}` : "",
-    `À traiter : ${CONFIG.backOffice}`
+    "NOUVELLE DEMANDE DE DEVIS (espace client)",
+    `• Client : ${d.details.client}${d.details.societe ? " · " + d.details.societe : ""}`,
+    `• Souhait : ${d.date ? new Date(d.date + "T00:00:00").toLocaleDateString("fr-FR") : "date à convenir"}${d.creneau ? " · " + d.creneau : ""}`,
+    `• Lieu : ${d.cp} ${d.adresse}`,
+    ...d.details.services.flatMap(s => [`▸ ${s.nom}`, ...s.reponses.map(puce)]),
+    ...(d.details.commun.length ? ["▸ Sur place", ...d.details.commun.map(puce)] : []),
+    d.precisions ? `• Précisions : ${d.precisions}` : "",
+    `▸ À traiter : ${CONFIG.backOffice}`
   ].filter(Boolean);
   window.emailjs.send(CONFIG.emailjs.service, CONFIG.emailjs.template, {
     from_name:d.nom, from_prenom:"", from_email:d.email, from_tel:d.telephone,
-    // Les « • » gardent le message lisible si le modèle EmailJS ignore les retours à la ligne.
-    message:"NOUVELLE DEMANDE DE DEVIS (espace client)\n" + lignes.map(l => "• " + l).join("\n")
+    // Les « • » et « ▸ » gardent le message lisible si le modèle EmailJS ignore les retours à la ligne.
+    message:lignes.join("\n")
   }, CONFIG.emailjs.publicKey).catch(err => console.error("Alerte e-mail :", err));
 }
 

@@ -202,7 +202,7 @@ function carte(d){
   return `<button class="item" data-sel="${d.id}" aria-current="${d.id === state.selection}">
     <span class="emo">${s.emo}</span>
     <span class="info">
-      <h3>${esc(d.nom)} · ${esc(s.nom)}</h3>
+      <h3>${esc(d.nom)} · ${esc(nomsServices(d))}</h3>
       <span class="meta">${esc(d.code_postal)} ${esc(d.adresse)} · ${RYTHMES[d.rythme] || ""}</span><br>
       <span class="meta">${d.date_souhaitee ? jour(d.date_souhaitee) + " · " + esc(d.creneau || "horaire libre") : "date à convenir"}</span>
       ${tag(d.statut)}
@@ -214,7 +214,7 @@ function carte(d){
 function panneau(d){
   const s = SERVICES[d.service] || { emo:"🏠", nom:d.service };
   return `<div class="panneau">
-    <h2>${s.emo} ${esc(s.nom)}</h2>
+    <h2>${s.emo} ${esc(nomsServices(d))}</h2>
     ${tag(d.statut)}
     <dl>
       <dt>Client</dt><dd>${esc(d.nom)}</dd>
@@ -274,19 +274,31 @@ function alerteCompte(d){
     Pensez à lui indiquer dans le mail de se connecter avec <b>cette adresse</b>.</div>`;
 }
 
+function nomsServices(d){
+  const liste = d.details?.services;
+  return liste?.length ? liste.map(x => x.nom).join(" + ") : (SERVICES[d.service] || { nom:d.service }).nom;
+}
+
 function lignesDetails(d){
   const x = d.details;
   if (!x) return [];
   return [
-    x.client ? ["Client", x.client + (x.societe ? " · " + x.societe : "")] : null,
-    ...(x.reponses || []).map(r => [r.question, r.reponse]),
-    x.consentement_sante ? ["Consentement santé", new Date(x.consentement_sante).toLocaleString("fr-FR")] : null
-  ].filter(Boolean);
+    `Client : ${x.client}${x.societe ? " · " + x.societe : ""}`,
+    ...(x.services || []).flatMap(s => [`${s.nom} :`, ...s.reponses.map(r => `  ${r.question} : ${r.reponse}`)]),
+    ...(x.commun?.length ? ["Sur place :", ...x.commun.map(r => `  ${r.question} : ${r.reponse}`)] : [])
+  ];
 }
 
 function blocDetails(d){
-  const l = lignesDetails(d);
-  return l.length ? `<div class="bloc"><h3>Détails pour le devis</h3><dl>${l.map(([q, r]) => `<dt>${esc(q)}</dt><dd>${esc(r)}</dd>`).join("")}</dl></div>` : "";
+  const x = d.details;
+  if (!x) return "";
+  const dl = l => `<dl>${l.map(r => `<dt>${esc(r.question)}</dt><dd>${esc(r.reponse)}</dd>`).join("")}</dl>`;
+  return `<div class="bloc"><h3>Détails pour le devis</h3>
+    <p class="small muted" style="margin:0">Client : ${esc(x.client)}${x.societe ? " · " + esc(x.societe) : ""}</p>
+    ${(x.services || []).map(s => `<h3 style="margin-top:14px">${(SERVICES[s.id] || {}).emo || ""} ${esc(s.nom)}</h3>${s.reponses.length ? dl(s.reponses) : `<p class="small muted">Aucun détail.</p>`}`).join("")}
+    ${x.commun?.length ? `<h3 style="margin-top:14px">Sur place</h3>${dl(x.commun)}` : ""}
+    ${x.consentement_sante ? `<p class="small muted">Consentement santé donné le ${new Date(x.consentement_sante).toLocaleString("fr-FR")}.</p>` : ""}
+  </div>`;
 }
 
 const ecranConnexion = () => `<div class="connexion">
@@ -337,7 +349,7 @@ document.addEventListener("click", async e => {
       const { error } = await sb.storage.from("documents").upload(chemin, fichier, { upsert:true, contentType:"application/pdf" });
       if (error){ t.disabled = false; t.textContent = "Enregistrer et marquer envoyé"; return toast("Envoi du PDF impossible : " + error.message); }
       await sb.from("documents").upsert({
-        user_id:d.user_id, demande_id:d.id, titre:`Devis — ${(SERVICES[d.service] || {}).nom || d.service}`,
+        user_id:d.user_id, demande_id:d.id, titre:`Devis — ${nomsServices(d)}`,
         type:"Devis", chemin
       }, { onConflict:"chemin" });
     }
@@ -366,13 +378,12 @@ document.addEventListener("click", async e => {
   }
 
   if (t.dataset.copier){
-    const s = SERVICES[d.service] || { nom:d.service };
     const txt = [
-      `Demande Domi Clean — ${s.nom}`,
+      `Demande Domi Clean — ${nomsServices(d)}`,
       `${d.nom} · ${d.telephone} · ${d.email}`,
       `${d.code_postal} ${d.adresse} · ${RYTHMES[d.rythme] || d.rythme}`,
       d.date_souhaitee ? `Souhait : ${jour(d.date_souhaitee)} ${d.creneau || ""}` : "Date à convenir",
-      ...lignesDetails(d).map(([q, r]) => `${q} : ${r}`),
+      ...lignesDetails(d),
       d.precisions ? `Besoin : ${d.precisions}` : ""
     ].filter(Boolean).join("\n");
     await navigator.clipboard.writeText(txt);

@@ -363,6 +363,7 @@
     .a4 .sub{display:block;font-size:8pt;color:#64748b;margin-top:1mm;line-height:1.4}
     .a4 .tag{display:inline-block;margin-top:1.2mm;font-size:7pt;font-weight:700;padding:.6mm 2mm;border-radius:6pt;background:#dcfce7;color:#15803d}
     .a4 .tag.maj{background:#fef3c7;color:#92400e}
+    .a4 .tag.mens{background:#dbeafe;color:#1e40af}
     .a4 .totwrap{display:table;width:100%;margin-bottom:5mm}
     .a4 .totspacer{display:table-cell}
     .a4 .tot{display:table-cell;width:88mm;vertical-align:top}
@@ -619,6 +620,7 @@
             <li><strong>Sélecteur de prestations</strong> — reprend la grille tarifaire officielle : libellé, description, tarif, unité et éligibilité au crédit d'impôt sont remplis automatiquement.</li>
             <li><strong>Colonne « Major. »</strong> — applique la majoration de la grille : +25 % le dimanche et les jours fériés, +100 % le 1er mai et le 25 décembre. Le prix unitaire saisi reste le tarif de base.</li>
             <li><strong>Colonne « CI »</strong> — prestation de service à la personne ouvrant droit au crédit d'impôt de 50 %. Cochée d'office pour les prestations aux particuliers, à décocher pour un client professionnel.</li>
+            <li><strong>Colonne « Mois »</strong> — prestation régulière : la quantité et le montant sont mensuels (3 h chaque semaine ≈ 13 h par mois, sur 52 semaines ÷ 12). Le devis affiche un « TOTAL MENSUEL », séparé du total des prestations ponctuelles ; vous facturez ensuite chaque mois les heures réellement faites.</li>
             <li><strong>Prestations « sur devis »</strong> — jardinage et fin de chantier arrivent à 0 € et la ligne est surlignée : saisissez le prix négocié avant d'envoyer.</li>
             <li><strong>Période / lieu</strong> — apparaît sur le document ; utile pour justifier le crédit d'impôt.</li>
             <li><strong>🖨️ Imprimer / PDF</strong> — ouvre la fenêtre d'impression du navigateur. « Destination : Enregistrer au format PDF » donne un fichier net et léger, sans l'envoyer ni l'enregistrer.</li>
@@ -956,6 +958,7 @@
                       <th style="width:82px" class="r">P.U. (€)</th>
                       <th style="width:96px" title="Majoration dimanche / jour férié">Major.</th>
                       <th style="width:40px" class="ci-cell" title="Éligible au crédit d'impôt 50 % (services à la personne)">CI</th>
+                      <th style="width:52px" class="ci-cell" title="Prestation régulière : quantité et montant par mois">Mois</th>
                       <th style="width:92px" class="r">Total</th>
                       <th style="width:38px"></th>
                     </tr>
@@ -964,7 +967,7 @@
                 </table>
               </div>
               <button class="btn-add-row" id="devisAddRow">+ Ligne libre</button>
-              <div class="cat-hint">💡 <b>CI</b> = prestation de service à la personne ouvrant droit au crédit d'impôt de 50 % pour un particulier. Décochez-la pour un client professionnel.</div>
+              <div class="cat-hint">💡 <b>CI</b> = prestation de service à la personne ouvrant droit au crédit d'impôt de 50 % pour un particulier. Décochez-la pour un client professionnel.<br>💡 <b>Mois</b> = prestation régulière : quantité et montant par mois (3 h chaque semaine ≈ 13 h par mois). Le devis affiche alors un total mensuel, séparé du total ponctuel.</div>
             </div>
 
             <!-- Totaux -->
@@ -1393,7 +1396,8 @@ function fmtEUR(v) { return _EUR.format(num(v)); }
 function fmtQte(v) { return _QTE.format(num(v)); }
 
 /* ══ MODÈLE DE LIGNE ══════════════════════════════════════════════════════
-   { desc, detail, heures, prix, unit, maj, sap, ref }
+   { desc, detail, heures, prix, unit, maj, sap, mensuel, ref }
+   `mensuel` : prestation régulière d'un devis, quantité et montant par mois.
    `heures` (quantité) et `prix` (P.U. de base HORS majoration) conservent leur
    nom d'origine : les devis déjà enregistrés au format {desc,heures,prix,unit}
    restent lisibles, les clés ajoutées vivent dans la même colonne JSON.
@@ -1409,6 +1413,7 @@ function normLigne(l) {
     unit:   UNITS.indexOf(l.unit) >= 0 ? l.unit : "h",
     maj:    (maj === 25 || maj === 100) ? maj : 0,
     sap:    l.sap === true,
+    mensuel: l.mensuel === true,
     ref:    String(l.ref == null ? "" : l.ref)
   };
 }
@@ -1436,6 +1441,19 @@ function computeTotals(lignes) {
   const credit = assiette / 2;
   return { base, majorations: total - base, total, assiette, credit, reste: total - credit };
 }
+
+/* Ligne à compléter avant envoi : sans prix ou sans quantité. */
+const aChiffrer = l => num(l.prix) <= 0 || num(l.heures) <= 0;
+
+/* Régulier (par mois) et ponctuel ne s'additionnent pas : un total par groupe. */
+function groupesPeriodicite(lignes) {
+  const mens = lignes.filter(l => l.mensuel), ponct = lignes.filter(l => !l.mensuel);
+  if (!mens.length) return [{ lignes, suffixe: "", titre: "TOTAL" }];
+  const g = [{ lignes: mens, suffixe: " / mois", titre: "TOTAL MENSUEL" }];
+  if (ponct.length) g.push({ lignes: ponct, suffixe: "", titre: "TOTAL PONCTUEL" });
+  return g;
+}
+const texteTotal = lg => groupesPeriodicite(lg).map(g => fmtEUR(computeTotals(g.lignes).total) + (g.suffixe ? " par mois" : "")).join(" + ");
 
 /* ══ MÉTADONNÉES ENCODÉES DANS `notes` ════════════════════════════════════
    Le schéma Supabase n'est pas modifiable ici : la période d'intervention et
@@ -2042,6 +2060,8 @@ function docMentions(o, E, t, isDevis) {
     men.push(`Devis gratuit et sans engagement, valable jusqu'au ${e(o.date2Txt)}. La prestation débute après retour du présent devis daté et signé, revêtu de la mention manuscrite « Bon pour accord ».`);
     men.push(`Majorations applicables : + 25 % les dimanches et jours fériés, + 100 % le 1er mai et le 25 décembre. ${e(E.fraisDeplacement)}`);
     men.push("Paiement à réception de facture, par virement bancaire ou en espèces.");
+    if ((o.lignes || []).some(l => l.mensuel))
+      men.push("Prestations régulières : quantités et montants mensuels estimés sur 52 semaines par an (52 ÷ 12 ≈ 4,33 semaines par mois). La facture est établie chaque mois selon les interventions réellement effectuées, au tarif indiqué.");
   } else {
     men.push(`Prestations exécutées${o.periode ? " " + e(o.periode) : ""}. Paiement à réception, au plus tard le **${e(o.date2Txt)}**, par virement bancaire${E.iban ? " (IBAN " + e(E.iban) + (E.bic ? " — BIC " + e(E.bic) : "") + ")" : ""} ou en espèces.`);
     men.push(`Pas d'escompte pour paiement anticipé. En cas de retard : pénalités au taux de ${e(E.penalites)}, exigibles sans rappel, et indemnité forfaitaire de ${fmtEUR(E.indemnite)} pour frais de recouvrement due par tout client professionnel (art. L441-10 et D441-5 du code de commerce).`);
@@ -2078,6 +2098,7 @@ function docHTML(o) {
         <td>
           <span class="lib">${e(l.desc) || "—"}</span>
           ${l.detail ? `<span class="sub">${e(l.detail)}</span>` : ""}
+          ${isDevis && l.mensuel ? `<span class="tag mens">Par mois</span> ` : ""}
           ${l.maj ? `<span class="tag maj">${e(MAJ_LABEL[l.maj])}</span> ` : ""}
           ${l.sap ? `<span class="tag">Crédit d'impôt 50 %</span>` : ""}
         </td>
@@ -2087,12 +2108,19 @@ function docHTML(o) {
       </tr>`).join("")
     : `<tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:8mm 0">Aucune prestation</td></tr>`;
 
-  const ciBox = t.assiette > 0 && !isAvoir ? `
-      <div class="cibox">
-        <div class="tl"><span>Prestations éligibles au crédit d'impôt</span><span>${fmtEUR(t.assiette)}</span></div>
-        <div class="tl"><span>Crédit d'impôt estimé (50 %)</span><span>− ${fmtEUR(t.credit)}</span></div>
-        <div class="tl big"><span>Coût réel estimé après crédit d'impôt</span><span>${fmtEUR(t.reste)}</span></div>
-      </div>` : "";
+  const groupes = isDevis ? groupesPeriodicite(lg)
+                          : [{ lignes: lg, suffixe: "", titre: isAvoir ? "MONTANT DE L'AVOIR" : "NET À PAYER" }];
+  const blocTotaux = g => {
+    const tg = computeTotals(g.lignes), s = g.suffixe;
+    return (tg.majorations ? `<div class="tl"><span>Sous-total avant majorations</span><span>${fmtEUR(tg.base)}${s}</span></div>
+      <div class="tl"><span>Majorations dimanche / jour férié</span><span>+ ${fmtEUR(tg.majorations)}${s}</span></div>` : "") +
+      `<div class="tl big"><span>${g.titre === "TOTAL" ? "TOTAL À PAYER" : g.titre}</span><span>${fmtEUR(tg.total)}${s}</span></div>` +
+      (tg.assiette > 0 && !isAvoir ? `<div class="cibox">
+        <div class="tl"><span>${s ? "Éligible au crédit d'impôt" : "Prestations éligibles au crédit d'impôt"}</span><span>${fmtEUR(tg.assiette)}${s}</span></div>
+        <div class="tl"><span>Crédit d'impôt estimé (50 %)</span><span>− ${fmtEUR(tg.credit)}${s}</span></div>
+        <div class="tl big"><span>Coût réel estimé après crédit d'impôt</span><span>${fmtEUR(tg.reste)}${s}</span></div>
+      </div>` : "");
+  };
 
   /* ── Mentions légales — source unique, partagée par l'aperçu HTML et le PDF.
      Les segments entre **doubles astérisques** sont rendus en gras. ── */
@@ -2133,11 +2161,8 @@ function docHTML(o) {
       <tbody>${rows}</tbody>
     </table>
     <div class="totwrap"><div class="totspacer"></div><div class="tot">
-      ${t.majorations ? `<div class="tl"><span>Sous-total avant majorations</span><span>${fmtEUR(t.base)}</span></div>
-      <div class="tl"><span>Majorations dimanche / jour férié</span><span>+ ${fmtEUR(t.majorations)}</span></div>` : ""}
-      <div class="tl big"><span>${isDevis ? "TOTAL À PAYER" : isAvoir ? "MONTANT DE L'AVOIR" : "NET À PAYER"}</span><span>${fmtEUR(t.total)}</span></div>
+      ${groupes.map(blocTotaux).join('<div style="height:4mm"></div>')}
       <div class="tva">TVA non applicable, art. 293 B du CGI</div>
-      ${ciBox}
     </div></div>
     ${o.notes ? `<div class="note">${e(o.notes)}</div>` : ""}
     <div class="legal">${men.join("")}</div>
@@ -2209,6 +2234,8 @@ const PDFC = {
   tagTx:  [21, 128, 61],
   majBg:  [254, 243, 199],
   majTx:  [146, 64, 14],
+  mensBg: [219, 234, 254],
+  mensTx: [30, 64, 175],
   red:    [220, 38, 38],
   white:  [255, 255, 255]
 };
@@ -2422,6 +2449,7 @@ function drawDoc(doc, o) {
     const dLines = doc.splitTextToSize(sane(l.desc) || "-", PCOL.desc - 6);
     const sLines = l.detail ? (f(null, "normal", 8), doc.splitTextToSize(sane(l.detail), PCOL.desc - 6)) : [];
     const tags = [];
+    if (isDevis && l.mensuel) tags.push({ txt: "Par mois", bg: PDFC.mensBg, tx: PDFC.mensTx });
     if (l.maj && MAJ_LABEL[l.maj]) tags.push({ txt: MAJ_LABEL[l.maj], bg: PDFC.majBg, tx: PDFC.majTx });
     if (l.sap) tags.push({ txt: "Cr\u00e9dit d'imp\u00f4t 50 %", bg: PDFC.tagBg, tx: PDFC.tagTx });
     const rh = 2.6 + dLines.length * lh(9.5) + sLines.length * lh(8) + (tags.length ? 5 : 0) + 2.6;
@@ -2459,60 +2487,66 @@ function drawDoc(doc, o) {
 
   /* ── totaux ─────────────────────────────────────────────────────────── */
   const tw = 88, tx0 = PM.l + PW - tw;
-  const totLines = [];
-  if (t.majorations) {
-    totLines.push(["Sous-total avant majorations", fmtEUR(t.base), false]);
-    totLines.push(["Majorations dimanche / jour f\u00e9ri\u00e9", "+ " + fmtEUR(t.majorations), false]);
-  }
-  const ciH = t.assiette > 0 && !isAvoir ? 22 : 0;
-  need(totLines.length * 5 + 14 + ciH);
+  // Un bloc de totaux par p\u00e9riodicit\u00e9 : mensuel et ponctuel ne s'additionnent pas.
+  const groupes = isDevis ? groupesPeriodicite(lignes)
+                          : [{ lignes, suffixe: "", titre: isAvoir ? "MONTANT DE L'AVOIR" : "NET \u00c0 PAYER" }];
+  groupes.forEach((g, gi) => {
+    const tg = computeTotals(g.lignes), s = g.suffixe;
+    const totLines = [];
+    if (tg.majorations) {
+      totLines.push(["Sous-total avant majorations", fmtEUR(tg.base) + s]);
+      totLines.push(["Majorations dimanche / jour f\u00e9ri\u00e9", "+ " + fmtEUR(tg.majorations) + s]);
+    }
+    const ciH = tg.assiette > 0 && !isAvoir ? 26 : 0;
+    need(totLines.length * 5 + 14 + ciH);
+    if (gi) y += 3;
 
-  for (const [lab, val] of totLines) {
-    f(null, "normal", 9.5, PDFC.slate);
-    doc.text(sane(lab), tx0, y + 3);
-    doc.text(sane(val), tx0 + tw, y + 3, { align: "right" });
-    y += 5.2;
-  }
-  y += 1.5;
-  stroke(PDFC.dark); doc.setLineWidth(0.5);
-  doc.line(tx0, y, tx0 + tw, y);
-  y += 2.5;
-  f(null, "bold", 13, PDFC.dark);
-  doc.text(isDevis ? "TOTAL \u00c0 PAYER" : isAvoir ? "MONTANT DE L'AVOIR" : "NET \u00c0 PAYER", tx0, y + 4);
-  doc.text(sane(fmtEUR(t.total)), tx0 + tw, y + 4, { align: "right" });
-  y += 7;
+    for (const [lab, val] of totLines) {
+      f(null, "normal", 9.5, PDFC.slate);
+      doc.text(sane(lab), tx0, y + 3);
+      doc.text(sane(val), tx0 + tw, y + 3, { align: "right" });
+      y += 5.2;
+    }
+    y += 1.5;
+    stroke(PDFC.dark); doc.setLineWidth(0.5);
+    doc.line(tx0, y, tx0 + tw, y);
+    y += 2.5;
+    f(null, "bold", 13, PDFC.dark);
+    doc.text(sane(g.titre === "TOTAL" ? "TOTAL \u00c0 PAYER" : g.titre), tx0, y + 4);
+    doc.text(sane(fmtEUR(tg.total) + s), tx0 + tw, y + 4, { align: "right" });
+    y += 8;
+
+    if (tg.assiette > 0 && !isAvoir) {
+      const bigLab = "Co\u00fbt r\u00e9el estim\u00e9 apr\u00e8s cr\u00e9dit d'imp\u00f4t";
+      const bigVal = fmtEUR(tg.reste) + s;
+      f(null, "bold", 11.5);
+      const bigValW = doc.getTextWidth(sane(bigVal));
+      f(null, "bold", 10);
+      const bigLines = doc.splitTextToSize(sane(bigLab), tw - 7 - bigValW - 3);
+      const h = 4 + 4.6 * 2 + 2.5 + bigLines.length * lh(10) + 3;
+      fill(PDFC.ciBg); stroke(PDFC.ciBd); doc.setLineWidth(0.2);
+      doc.roundedRect(tx0, y, tw, h, 2, 2, "FD");
+      let cy = y + 4;
+      for (const [lab, val] of [[s ? "\u00c9ligible au cr\u00e9dit d'imp\u00f4t" : "Prestations \u00e9ligibles au cr\u00e9dit d'imp\u00f4t", fmtEUR(tg.assiette) + s],
+                                ["Cr\u00e9dit d'imp\u00f4t estim\u00e9 (50 %)", "- " + fmtEUR(tg.credit) + s]]) {
+        f(null, "normal", 9, PDFC.ciTx);
+        doc.text(sane(lab), tx0 + 3.5, cy + 3);
+        doc.text(sane(val), tx0 + tw - 3.5, cy + 3, { align: "right" });
+        cy += 4.6;
+      }
+      stroke([134, 239, 172]); doc.setLineWidth(0.2);
+      doc.line(tx0 + 3, cy + 0.5, tx0 + tw - 3, cy + 0.5);
+      cy += 2.5;
+      f(null, "bold", 11.5, PDFC.ciBig);
+      doc.text(sane(bigVal), tx0 + tw - 3.5, cy + 3.4, { align: "right" });
+      f(null, "bold", 10, PDFC.ciBig);
+      bigLines.forEach((ln, i) => doc.text(ln, tx0 + 3.5, cy + 3.2 + i * lh(10)));
+      y += h + 2;
+    }
+  });
   f(null, "normal", 8, PDFC.slate);
   doc.text("TVA non applicable, art. 293 B du CGI", tx0 + tw, y + 2.4, { align: "right" });
-  y += 5;
-
-  if (t.assiette > 0 && !isAvoir) {
-    const bigLab = "Co\u00fbt r\u00e9el estim\u00e9 apr\u00e8s cr\u00e9dit d'imp\u00f4t";
-    const bigVal = fmtEUR(t.reste);
-    f(null, "bold", 11.5);
-    const bigValW = doc.getTextWidth(sane(bigVal));
-    f(null, "bold", 10);
-    const bigLines = doc.splitTextToSize(sane(bigLab), tw - 7 - bigValW - 3);
-    const h = 4 + 4.6 * 2 + 2.5 + bigLines.length * lh(10) + 3;
-    fill(PDFC.ciBg); stroke(PDFC.ciBd); doc.setLineWidth(0.2);
-    doc.roundedRect(tx0, y, tw, h, 2, 2, "FD");
-    let cy = y + 4;
-    for (const [lab, val] of [["Prestations \u00e9ligibles au cr\u00e9dit d'imp\u00f4t", fmtEUR(t.assiette)],
-                              ["Cr\u00e9dit d'imp\u00f4t estim\u00e9 (50 %)", "- " + fmtEUR(t.credit)]]) {
-      f(null, "normal", 9, PDFC.ciTx);
-      doc.text(sane(lab), tx0 + 3.5, cy + 3);
-      doc.text(sane(val), tx0 + tw - 3.5, cy + 3, { align: "right" });
-      cy += 4.6;
-    }
-    stroke([134, 239, 172]); doc.setLineWidth(0.2);
-    doc.line(tx0 + 3, cy + 0.5, tx0 + tw - 3, cy + 0.5);
-    cy += 2.5;
-    f(null, "bold", 11.5, PDFC.ciBig);
-    doc.text(sane(bigVal), tx0 + tw - 3.5, cy + 3.4, { align: "right" });
-    f(null, "bold", 10, PDFC.ciBig);
-    bigLines.forEach((ln, i) => doc.text(ln, tx0 + 3.5, cy + 3.2 + i * lh(10)));
-    y += h + 2;
-  }
-  y += 4;
+  y += 9;
 
   /* ── notes ──────────────────────────────────────────────────────────── */
   if (o.notes) {
@@ -2668,12 +2702,12 @@ function fillPresetSelect(sel) {
     ).join("") + `</optgroup>`).join("");
 }
 
-function rowHTML(l, i) {
+function rowHTML(l, i, avecMensuel) {
   const opts = (arr, val, fmt) => arr.map(o => {
     const v = fmt ? o.v : o, lab = fmt ? o.court : o;
     return `<option value="${v}"${String(v) === String(val) ? " selected" : ""}>${escapeHtml(String(lab))}</option>`;
   }).join("");
-  return `<tr data-i="${i}"${num(l.prix) <= 0 ? ' class="to-price"' : ""}>
+  return `<tr data-i="${i}"${aChiffrer(l) ? ' class="to-price"' : ""}>
     <td>
       <input class="desc-main" data-k="desc" value="${escapeHtml(l.desc)}" placeholder="Intitulé de la prestation" aria-label="Intitulé de la prestation">
       <input class="desc-sub" data-k="detail" value="${escapeHtml(l.detail)}" placeholder="Détail affiché sur le document (optionnel)" aria-label="Détail de la prestation">
@@ -2683,6 +2717,7 @@ function rowHTML(l, i) {
     <td><input class="num" data-k="prix" type="number" min="0" step="any" value="${l.prix}" aria-label="Prix unitaire de base"></td>
     <td><select class="mini" data-k="maj" aria-label="Majoration">${opts(MAJORATIONS, l.maj, true)}</select></td>
     <td class="ci-cell"><input type="checkbox" data-k="sap"${l.sap ? " checked" : ""} aria-label="Éligible au crédit d'impôt"></td>
+    ${avecMensuel ? `<td class="ci-cell"><input type="checkbox" data-k="mensuel"${l.mensuel ? " checked" : ""} aria-label="Prestation régulière : quantité et montant par mois"></td>` : ""}
     <td class="td-total">${fmtEUR(ligneTotal(l))}</td>
     <td style="text-align:center"><button class="btn-del-row" data-del="${i}" title="Supprimer la ligne" aria-label="Supprimer la ligne">✕</button></td>
   </tr>`;
@@ -2695,8 +2730,8 @@ function makeEditor(o) {
   ed.render = function () {
     const lg = ed.get();
     tbody.innerHTML = lg.length
-      ? lg.map(rowHTML).join("")
-      : `<tr class="prest-empty"><td colspan="8">Aucune prestation — ajoutez-en depuis la grille tarifaire ci-dessus, ou créez une ligne libre.</td></tr>`;
+      ? lg.map((l, i) => rowHTML(l, i, o.mensuel)).join("")
+      : `<tr class="prest-empty"><td colspan="${o.mensuel ? 9 : 8}">Aucune prestation — ajoutez-en depuis la grille tarifaire ci-dessus, ou créez une ligne libre.</td></tr>`;
     ed.onChange();
   };
   ed.refreshRow = function (i) {
@@ -2704,7 +2739,7 @@ function makeEditor(o) {
     if (!tr) return;
     const l = ed.get()[i];
     tr.querySelector(".td-total").textContent = fmtEUR(ligneTotal(l));
-    tr.classList.toggle("to-price", num(l.prix) <= 0);
+    tr.classList.toggle("to-price", aChiffrer(l));
   };
 
   function apply(e, rerender) {
@@ -2715,6 +2750,7 @@ function makeEditor(o) {
     const l = ed.get()[i];
     if (!l || !k) return;
     if (k === "sap")            l.sap = e.target.checked;
+    else if (k === "mensuel")   l.mensuel = e.target.checked;
     else if (k === "maj")       l.maj = num(e.target.value);
     else if (k === "heures" || k === "prix") l[k] = num(e.target.value);
     else                        l[k] = e.target.value;
@@ -2749,16 +2785,17 @@ function makeEditor(o) {
 
 /* Récapitulatif chiffré affiché sous le tableau de saisie. */
 function renderTotals(boxId, lignes) {
-  const t = computeTotals(lignes);
   const box = document.getElementById(boxId);
   if (!box) return;
-  box.innerHTML =
-    (t.majorations ? `<div class="total-line sub"><span>Sous-total avant majorations</span><span>${fmtEUR(t.base)}</span></div>
-     <div class="total-line sub"><span>Majorations dimanche / jour férié</span><span>+ ${fmtEUR(t.majorations)}</span></div>` : "") +
-    `<div class="total-line main"><span>TOTAL</span><span>${fmtEUR(t.total)}</span></div>` +
-    (t.assiette > 0 ? `<div class="total-line ci"><span>Dont éligible crédit d'impôt</span><span>${fmtEUR(t.assiette)}</span></div>
-     <div class="total-line ci"><span>Crédit d'impôt estimé (50 %)</span><span>− ${fmtEUR(t.credit)}</span></div>
-     <div class="total-line ci" style="font-weight:700"><span>Coût réel estimé pour le client</span><span>${fmtEUR(t.reste)}</span></div>` : "");
+  box.innerHTML = groupesPeriodicite(lignes).map(g => {
+    const t = computeTotals(g.lignes), s = g.suffixe;
+    return (t.majorations ? `<div class="total-line sub"><span>Sous-total avant majorations</span><span>${fmtEUR(t.base)}${s}</span></div>
+     <div class="total-line sub"><span>Majorations dimanche / jour férié</span><span>+ ${fmtEUR(t.majorations)}${s}</span></div>` : "") +
+      `<div class="total-line main"><span>${g.titre}</span><span>${fmtEUR(t.total)}${s}</span></div>` +
+      (t.assiette > 0 ? `<div class="total-line ci"><span>Dont éligible crédit d'impôt</span><span>${fmtEUR(t.assiette)}${s}</span></div>
+     <div class="total-line ci"><span>Crédit d'impôt estimé (50 %)</span><span>− ${fmtEUR(t.credit)}${s}</span></div>
+     <div class="total-line ci" style="font-weight:700"><span>Coût réel estimé pour le client</span><span>${fmtEUR(t.reste)}${s}</span></div>` : "");
+  }).join("");
 }
 
 /* ══ DEVIS ══ */
@@ -2818,7 +2855,7 @@ async function initDevis() {
   document.getElementById("d-num").value   = await getNextNum();
   if (!devisEditor) devisEditor = makeEditor({
     tbody: "prestBody", select: "presetSelect", addBtn: "devisAddRow",
-    get: () => lignes, onChange: onDevisChange
+    get: () => lignes, onChange: onDevisChange, mensuel: true
   });
   maybeRestoreDraft("devis");
   devisEditor.render();
@@ -2877,11 +2914,11 @@ function validerDevis(pourEnvoi) {
   return d;
 }
 async function confirmerLignesA0(lg) {
-  const zero = lg.filter(l => num(l.prix) <= 0);
+  const zero = lg.filter(aChiffrer);
   if (!zero.length) return true;
   return await showConfirm(
-    "Prestation sans prix",
-    zero.length + " ligne" + (zero.length > 1 ? "s sont" : " est") + " à 0 € (« " + zero.map(l => l.desc || "sans intitulé").join(" », « ") + " »). Continuer quand même ?",
+    "Ligne à compléter",
+    zero.length + " ligne" + (zero.length > 1 ? "s n'ont" : " n'a") + " pas de prix ou pas de quantité (« " + zero.map(l => l.desc || "sans intitulé").join(" », « ") + " »). Continuer quand même ?",
     "Continuer"
   );
 }
@@ -2895,6 +2932,7 @@ async function saveAndSend() {
   btn.disabled = true; btn.textContent = "⏳ Envoi…";
   const total = computeTotals(lignes).total;
   const dm = devisDemande;
+  const totalTexte = texteTotal(lignes);   // « 450,00 € par mois » pour un devis régulier
   let pdfUrl = null, enregistre = false;
 
   try {
@@ -2937,8 +2975,11 @@ async function saveAndSend() {
     await enregistrerDansEspaceClient("Devis", "Devis " + d.num, path, d.client.email, dm && dm.id);
     if (dm) {
       await remplacerAnciensDevis(dm.id, d.num);
+      // Les réponses du client sont relues en base : on complète details sans rien écraser.
+      const { data: actuelle } = await sb.from("demandes").select("details").eq("id", dm.id).maybeSingle();
       await majDemande(dm.id, { statut: "devis_envoye", devis_montant: parseFloat(total.toFixed(2)),
-        devis_chemin: path, devis_envoye_le: new Date().toISOString(), devis_accepte_le: null });
+        devis_chemin: path, devis_envoye_le: new Date().toISOString(), devis_accepte_le: null,
+        details: { ...((actuelle && actuelle.details) || {}), devis_texte: totalTexte } });
     }
 
     // 3. Email au client, avec un lien temporaire : le dossier des PDF est privé.
@@ -2948,7 +2989,7 @@ async function saveAndSend() {
       doc_type:   "Devis",
       doc_num:    d.num,
       doc_url:    await lienTemporaire(path, DUREE_LIEN_EMAIL),
-      total:      fmtEUR(total),
+      total:      totalTexte,
       date_label: "Valable jusqu'au",
       date_val:   d.date2Txt
     });
@@ -3163,7 +3204,7 @@ async function resendDevis(f) {
       doc_type:   "Devis",
       doc_num:    f.numero,
       doc_url:    await lienTemporaire(cheminDevis(f), DUREE_LIEN_EMAIL),
-      total:      fmtEUR(f.total),
+      total:      texteTotal(normLignes(f.lignes)),
       date_label: "Valable jusqu'au",
       date_val:   fmtDateFr(f.date_validite)
     });
@@ -3178,19 +3219,22 @@ async function createFactureFromDevis(f) {
   // Un ancien brouillon de facture ne doit pas écraser ce pré-remplissage.
   _draftRestaure.facture = true;
   clearDraft("facture");
-  factLignes = normLignes(f.lignes);
+  // Une facture porte sur une période réelle : les montants mensuels du devis deviennent les heures du mois.
+  const mensuel = normLignes(f.lignes).some(l => l.mensuel);
+  factLignes = normLignes(f.lignes).map(l => ({ ...l, mensuel: false }));
   const n = parseNotes(f.notes);
   document.getElementById("f-nom").value     = f.client_nom     || "";
   document.getElementById("f-email").value   = f.client_email   || "";
   document.getElementById("f-tel").value     = f.client_tel     || "";
   document.getElementById("f-adresse").value = f.client_adresse || "";
-  document.getElementById("f-periode").value = n.meta.periode   || "";
+  document.getElementById("f-periode").value = mensuel ? moisCourant() : (n.meta.periode || "");
   document.getElementById("f-ref").value     = f.numero         || "";
   document.getElementById("f-notes").value   = n.texte;
   factDemandeId = f.demande_id || null;
   document.querySelector('.nav-item[data-sec="factures"]').click();   // initialise le formulaire et l'historique
   afficherLienFacture();
-  toast(`🧾 Facture pré-remplie depuis le devis ${f.numero}`, "info");
+  toast(mensuel ? `🧾 Facture pré-remplie depuis le devis ${f.numero} : ajustez les quantités aux heures réellement faites ce mois-ci`
+                : `🧾 Facture pré-remplie depuis le devis ${f.numero}`, "info");
 }
 
 /* ══ UPSERT CLIENT (appelé après envoi devis) ══ */
@@ -3399,7 +3443,7 @@ function renderPanneauDemande() {
       <dt>Rythme</dt><dd>${e(RYTHMES_DEMANDE[d.rythme] || d.rythme)}</dd>
       <dt>Reçue le</dt><dd>${e(new Date(d.cree_le).toLocaleString("fr-FR"))}</dd>
       ${d.intervenant ? `<dt>Intervenant</dt><dd>${e(d.intervenant)}</dd>` : ""}
-      ${d.devis_montant != null ? `<dt>Devis</dt><dd>${fmtEUR(d.devis_montant)}${d.devis_envoye_le ? " · envoyé le " + e(fmtDate(d.devis_envoye_le)) : ""}</dd>` : ""}
+      ${d.devis_montant != null ? `<dt>Devis</dt><dd>${e(x.devis_texte || fmtEUR(d.devis_montant))}${d.devis_envoye_le ? " · envoyé le " + e(fmtDate(d.devis_envoye_le)) : ""}</dd>` : ""}
       ${d.devis_accepte_le ? `<dt>Accepté le</dt><dd>${e(new Date(d.devis_accepte_le).toLocaleString("fr-FR"))}</dd>` : ""}
     </dl>
     <div id="demAvis">${avisCompte(d)}</div>
@@ -3439,24 +3483,49 @@ function periodeDemande(d) {
   return [quand, [...new Set(freqs)].join(" / ").toLowerCase()].filter(Boolean).join(" · ");
 }
 
-/* Une ligne de devis par service coché, prise dans la grille tarifaire, avec
-   les quantités tirées des réponses du client et ses réponses en détail. */
+const moisCourant = () => "Mois de " + new Date().toLocaleDateString("fr-FR", { month: "long", year: "numeric" });
+const PASSAGES_MOIS = { "Chaque semaine": 52 / 12, "Toutes les 2 semaines": 26 / 12, "Chaque mois": 1 };
+
+/* Une ligne de devis par service coché, prise dans la grille tarifaire. Une prestation
+   régulière est chiffrée au mois : heures par passage × passages par mois. */
 function lignesDepuisDemande(d) {
   const x = d.details || {};
   const services = x.services && x.services.length ? x.services : [{ id: d.service, nom: nomServiceDemande(d.service), reponses: [] }];
   return services.map(s => {
-    const rep = q => ((s.reponses || []).find(r => r.question === q) || {}).reponse || "";
+    const reps = s.reponses || [];
+    const rep = q => (reps.find(r => r.question === q) || {}).reponse || "";
     const tarif = s.id === "locaux"
       ? (/nuit|soir|matin/i.test(rep("Moment de l'intervention")) ? "locaux-nuit" : "locaux-jour")
       : TARIF_DEMANDE[s.id];
     const l = (tarif && ligneFromTarif(tarif)) ||
       normLigne({ desc: s.nom, heures: 1, prix: 0, unit: s.id === "vitrerie" ? "forfait" : "h", sap: ["compagnie", "lever"].includes(s.id) });
-    if (s.id !== "locaux") l.desc = s.nom;
-    const surface = parseFloat(rep("Surface du logement"));
-    const heures = HEURES_DEMANDE[rep("Durée souhaitée par passage") || rep("Durée par visite") || rep("Horaires de présence")];
-    if (s.id === "demenagement" && surface > 0) l.heures = surface;
-    else if (heures) l.heures = heures;
-    const faits = (s.reponses || []).filter(r => r.question !== "Fréquence").map(r => r.question + " : " + r.reponse);
+    const libelle = s.id === "locaux" ? l.desc : s.nom;
+    const frequence = rep("Fréquence");
+    const duree = HEURES_DEMANDE[(reps.find(r => /^(Durée|Horaires de présence)/.test(r.question)) || {}).reponse];
+    const jours = rep("Jours souhaités");
+    const parSemaine = jours ? jours.split(", ").length : (parseFloat(rep("Passages par semaine") || rep("Nuits par semaine")) || 1);
+    const faits = reps.filter(r => r.question !== "Fréquence").map(r => r.question + " : " + r.reponse);
+    l.desc = libelle;
+
+    if (s.id === "demenagement") {
+      const surface = parseFloat(rep("Surface du logement"));
+      if (surface > 0) l.heures = surface;
+    } else if (PASSAGES_MOIS[frequence]) {
+      const passages = parSemaine * PASSAGES_MOIS[frequence];
+      const nb = fmtQte(passages) + (passages > 1 ? " passages" : " passage");
+      l.mensuel = true;
+      l.desc = libelle + ", " + frequence.toLowerCase();
+      if (l.unit === "h") {
+        l.heures = duree ? Math.round(duree * passages * 2) / 2 : 0;
+        faits.unshift(duree ? `${fmtQte(duree)} h par passage × ${nb} par mois` : `${nb} par mois, durée par passage à estimer`);
+      } else {
+        l.unit = "mois"; l.heures = 1; l.prix = 0;
+        faits.unshift(`${nb} par mois : indiquez le prix mensuel`);
+      }
+    } else if (duree) {
+      l.heures = duree;
+    }
+    if (frequence === "À définir") faits.unshift("Fréquence à définir");
     if (faits.length) l.detail = faits.join(" · ");
     if (x.client === "Professionnel") l.sap = false;
     return l;
@@ -3489,13 +3558,14 @@ async function facturerDemande(d) {
   // Aucun devis relié (traité par téléphone, par exemple) : on part des réponses du client.
   _draftRestaure.facture = true;
   clearDraft("facture");
-  factLignes = lignesDepuisDemande(d);
+  const lgDemande = lignesDepuisDemande(d);
+  factLignes = lgDemande.map(l => ({ ...l, mensuel: false }));
   const x = d.details || {};
   document.getElementById("f-nom").value     = x.societe ? `${x.societe} (${d.nom})` : d.nom;
   document.getElementById("f-email").value   = d.email || "";
   document.getElementById("f-tel").value     = d.telephone || "";
   document.getElementById("f-adresse").value = [d.code_postal, d.adresse].filter(Boolean).join(" ");
-  document.getElementById("f-periode").value = periodeDemande(d);
+  document.getElementById("f-periode").value = lgDemande.some(l => l.mensuel) ? moisCourant() : periodeDemande(d);
   document.getElementById("f-ref").value     = "";
   document.getElementById("f-notes").value   = "";
   relierFacture(d.id);

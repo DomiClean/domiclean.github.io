@@ -464,6 +464,9 @@
     .dem-bloc{border-top:1px solid var(--border);margin-top:16px;padding-top:14px}
     .dem-bloc h3{font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:0 0 10px}
     .dem-bloc h4{font-size:.88rem;margin:12px 0 4px}
+    .dem-sig{display:block;width:100%;max-width:260px;background:#fff;border-radius:8px;padding:6px 10px;margin-top:10px}
+    .dem-sig[hidden]{display:none}
+    .dem-empreinte{font-family:ui-monospace,Consolas,monospace;font-size:.72rem;color:var(--muted)}
     .dem-note{background:var(--dark);border-radius:10px;padding:10px 12px;font-size:.84rem;white-space:pre-wrap;line-height:1.5}
     .dem-avis{border-radius:10px;padding:9px 12px;font-size:.8rem;margin-top:10px;line-height:1.45}
     .dem-avis.ok{background:rgba(34,197,94,.08);color:#86efac;border:1px solid rgba(34,197,94,.2)}
@@ -588,7 +591,7 @@
             <li><strong>Arrivée</strong> — chaque demande faite dans l'espace client arrive ici et un e-mail vous prévient. La pastille du menu compte les nouvelles.</li>
             <li><strong>Détail</strong> — cliquez sur une demande : coordonnées, services cochés avec les réponses du client, informations « sur place » et précisions.</li>
             <li><strong>📝 Créer le devis</strong> — ouvre l'écran Devis déjà rempli : le client, la période, une ligne par service avec les quantités tirées des réponses. Vérifiez, puis chiffrez les lignes à 0 €.</li>
-            <li><strong>Envoi</strong> — la demande passe à « Devis envoyé ». Le client accepte en ligne depuis son espace : l'acceptation est horodatée (article 3 des CGV) et le devis passe « Accepté » dans l'historique.</li>
+            <li><strong>Envoi</strong> — la demande passe à « Devis envoyé ». Le client signe en ligne depuis son espace : nom, signature tracée et case « Bon pour accord ». La date, l'heure, l'adresse IP et l'empreinte du devis sont enregistrées, vous recevez l'alerte « DEVIS ACCEPTÉ », et un devis signé avec son certificat est rangé dans l'espace du client et lui est envoyé.</li>
             <li><strong>📅 Planifier</strong> — date, créneau et intervenant, visibles aussitôt par le client.</li>
             <li><strong>🧾 Facturer</strong> — une fois le devis accepté, la facture se pré-remplit depuis le devis et apparaît dans l'espace du client.</li>
           </ul>
@@ -622,7 +625,7 @@
             <li><strong>Colonne « CI »</strong> — prestation de service à la personne ouvrant droit au crédit d'impôt de 50 %. Cochée d'office pour les prestations aux particuliers, à décocher pour un client professionnel.</li>
             <li><strong>Colonne « Mois »</strong> — prestation régulière : la quantité et le montant sont mensuels (3 h chaque semaine ≈ 13 h par mois, sur 52 semaines ÷ 12). Le devis affiche un « TOTAL MENSUEL », séparé du total des prestations ponctuelles ; vous facturez ensuite chaque mois les heures réellement faites.</li>
             <li><strong>Prestations « sur devis »</strong> — jardinage et fin de chantier arrivent à 0 € et la ligne est surlignée : saisissez le prix négocié avant d'envoyer.</li>
-            <li><strong>Période / lieu</strong> — apparaît sur le document ; utile pour justifier le crédit d'impôt.</li>
+            <li><strong>Début et lieu d'intervention</strong> — le début prévu (« à partir du 5 octobre 2026, le mardi matin ») et, seulement s'il diffère de l'adresse du client, le lieu d'intervention. La fréquence figure sur chaque ligne de prestation.</li>
             <li><strong>🖨️ Imprimer / PDF</strong> — ouvre la fenêtre d'impression du navigateur. « Destination : Enregistrer au format PDF » donne un fichier net et léger, sans l'envoyer ni l'enregistrer.</li>
             <li><strong>Depuis une demande</strong> — le bouton 📝 Créer le devis de l'écran Demandes remplit tout le formulaire. Un bandeau bleu rappelle la demande reliée et les réponses du client.</li>
             <li><strong>📧 Envoyer au client</strong> — génère le PDF, le dépose, l'enregistre, l'ajoute à l'espace du client et envoie l'e-mail avec un lien valable 30 jours.</li>
@@ -632,7 +635,7 @@
         <div class="help-block">
           <h3>🕓 Historique des devis</h3>
           <ul>
-            <li><strong>✓ Accepté</strong> — marque le devis comme accepté par le client. Le bouton 🧾 Facturer apparaît.</li>
+            <li><strong>✓ Accepté</strong> — pour un accord donné hors ligne (devis papier signé, e-mail) : marque le devis comme accepté. Rangez le scan signé dans Documents PDF. Le bouton 🧾 Facturer apparaît.</li>
             <li><strong>✗ Refusé</strong> — archive le devis dans la section "Archive refusés".</li>
             <li><strong>🧾 Facturer</strong> — pré-remplit automatiquement le formulaire Facture avec les données du devis.</li>
             <li><strong>📋 Dupliquer</strong> — ouvre un nouveau devis avec les mêmes infos client et prestations.</li>
@@ -917,9 +920,15 @@
                 <div class="field"><label>Date d'émission</label><input type="date" id="d-date" oninput="updatePreview()"></div>
                 <div class="field"><label>Valable jusqu'au</label><input type="date" id="d-valid" oninput="updatePreview()"></div>
               </div>
-              <div class="field" style="margin-bottom:0;margin-top:12px">
-                <label for="d-periode">Période / lieu d'intervention prévu</label>
-                <input id="d-periode" placeholder="Ex. : tous les mardis, à partir du 15 octobre 2026" oninput="updatePreview()">
+              <div class="form-row" style="margin-top:12px">
+                <div class="field">
+                  <label for="d-periode">Début de l'intervention</label>
+                  <input id="d-periode" placeholder="Ex. : à partir du 15 octobre 2026, le mardi matin" oninput="updatePreview()">
+                </div>
+                <div class="field">
+                  <label for="d-lieu">Lieu d'intervention</label>
+                  <input id="d-lieu" placeholder="Seulement s'il diffère de l'adresse du client" oninput="updatePreview()">
+                </div>
               </div>
             </div>
 
@@ -1724,7 +1733,7 @@ function apercuParametres() {
     date1Txt:   fmtDateFr(isoLocal(new Date())),
     date2Txt:   fmtDateFr(isoLocal(plusJours(estDevis ? 30 : num(document.getElementById("p-delaiPaiement").value, 30)))),
     client:     { nom: "Marie Dupont (exemple)", email: "marie.dupont@exemple.fr", tel: "06 00 00 00 00", adresse: "12 rue de la Paix, 91000 Évry-Courcouronnes" },
-    periode:    estDevis ? "tous les mardis, à partir du mois prochain" : "le mois écoulé",
+    periode:    estDevis ? "à partir du " + fmtDateFr(isoLocal(plusJours(14))) + " (8h – 10h)" : "le mois écoulé",
     ref:        estDevis ? "" : "DC-" + an + "-000",
     notes:      "Exemple de note libre ajoutée au bas du document.",
     lignes: [
@@ -2057,11 +2066,12 @@ function docMentions(o, E, t, isDevis) {
   if (o.kind === "avoir") {
     men.push(`Avoir établi en annulation totale de la facture n° **${e(o.ref)}**${o.date2Txt ? " du " + e(o.date2Txt) : ""}. Ce montant vient en déduction des sommes dues ; s'il a déjà été réglé, il vous est remboursé.`);
   } else if (isDevis) {
-    men.push(`Devis gratuit et sans engagement, valable jusqu'au ${e(o.date2Txt)}. La prestation débute après retour du présent devis daté et signé, revêtu de la mention manuscrite « Bon pour accord ».`);
+    men.push(`Devis gratuit et sans engagement, valable jusqu'au ${e(o.date2Txt)}. Acceptation par signature électronique depuis votre espace client, ou par retour du présent devis daté et signé, précédé de la mention « Bon pour accord ».`);
+    men.push("Client particulier : droit de rétractation de 14 jours à compter de l'acceptation du devis (article 3 des CGV).");
     men.push(`Majorations applicables : + 25 % les dimanches et jours fériés, + 100 % le 1er mai et le 25 décembre. ${e(E.fraisDeplacement)}`);
     men.push("Paiement à réception de facture, par virement bancaire ou en espèces.");
     if ((o.lignes || []).some(l => l.mensuel))
-      men.push("Prestations régulières : quantités et montants mensuels estimés sur 52 semaines par an (52 ÷ 12 ≈ 4,33 semaines par mois). La facture est établie chaque mois selon les interventions réellement effectuées, au tarif indiqué.");
+      men.push("Prestations régulières : quantités et montants mensuels estimés sur 52 semaines par an (52 semaines ÷ 12, soit environ 4,33 semaines par mois). La facture est établie chaque mois selon les interventions réellement effectuées, au tarif indiqué.");
   } else {
     men.push(`Prestations exécutées${o.periode ? " " + e(o.periode) : ""}. Paiement à réception, au plus tard le **${e(o.date2Txt)}**, par virement bancaire${E.iban ? " (IBAN " + e(E.iban) + (E.bic ? " — BIC " + e(E.bic) : "") + ")" : ""} ou en espèces.`);
     men.push(`Pas d'escompte pour paiement anticipé. En cas de retard : pénalités au taux de ${e(E.penalites)}, exigibles sans rappel, et indemnité forfaitaire de ${fmtEUR(E.indemnite)} pour frais de recouvrement due par tout client professionnel (art. L441-10 et D441-5 du code de commerce).`);
@@ -2154,7 +2164,9 @@ function docHTML(o) {
         <div class="nm">${e(o.client.nom) || "—"}</div>
         ${clientLignes}
       </div></div>
-      ${o.periode ? `<div class="pc"><div class="party"><h4>${isDevis ? "Intervention prévue" : "Période d'exécution"}</h4><div class="nm" style="font-size:9.5pt;font-weight:600">${e(o.periode)}</div></div></div>` : ""}
+      ${isDevis
+        ? (o.periode || o.lieu ? `<div class="pc"><div class="party"><h4>Intervention prévue</h4>${o.periode ? `<div class="nm" style="font-size:9.5pt;font-weight:600">Début : ${e(o.periode)}</div>` : ""}${o.lieu ? `<div>Lieu : ${e(o.lieu)}</div>` : ""}</div></div>` : "")
+        : (o.periode ? `<div class="pc"><div class="party"><h4>Période d'exécution</h4><div class="nm" style="font-size:9.5pt;font-weight:600">${e(o.periode)}</div></div></div>` : "")}
     </div>
     <table class="it">
       <thead><tr><th>Prestation</th><th class="c">Quantité</th><th class="r">Prix unitaire</th><th class="r">Montant</th></tr></thead>
@@ -2211,6 +2223,7 @@ function sane(v) {
     .replace(/[\u2018\u2019]/g, "'")
     .replace(/[\u201C\u201D]/g, '"')
     .replace(/\u2026/g, "...")
+    .replace(/\u2248/g, "~")
     .replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\uFE0F]/gu, "")
     .replace(/[ \t]+/g, " ")
     .trim();
@@ -2395,9 +2408,13 @@ function drawDoc(doc, o) {
     name: o.client.nom || "-",
     lines: [o.client.adresse, o.client.email, o.client.tel].filter(Boolean)
   }];
-  if (o.periode) boxes.push({
-    title: isDevis ? "INTERVENTION PR\u00c9VUE" : "P\u00c9RIODE D'EX\u00c9CUTION",
-    name: o.periode, lines: [], small: true
+  if (isDevis && (o.periode || o.lieu)) boxes.push({
+    title: "INTERVENTION PR\u00c9VUE",
+    name: o.periode ? "D\u00e9but : " + o.periode : "Lieu : " + o.lieu,
+    lines: o.periode && o.lieu ? ["Lieu : " + o.lieu] : [], small: true
+  });
+  else if (!isDevis && o.periode) boxes.push({
+    title: "P\u00c9RIODE D'EX\u00c9CUTION", name: o.periode, lines: [], small: true
   });
 
   const bw = boxes.length > 1 ? (PW - 5) / 2 : PW;
@@ -2571,25 +2588,43 @@ function drawDoc(doc, o) {
 
   /* ── cadres de signature (devis uniquement) ─────────────────────────── */
   if (isDevis) {
-    const sw = (PW - 10) / 2, sh = 26;
+    const sw = (PW - 10) / 2, sh = 26, acc = o.acceptation;
+    const xd = PM.l + sw + 10;
     need(sh + 8);
     y += 4;
     doc.setLineDashPattern([1, 1], 0);
     stroke([203, 213, 225]); doc.setLineWidth(0.2);
     doc.roundedRect(PM.l, y, sw, sh, 1.5, 1.5, "D");
-    doc.roundedRect(PM.l + sw + 10, y, sw, sh, 1.5, 1.5, "D");
+    doc.roundedRect(xd, y, sw, sh, 1.5, 1.5, "D");
     doc.setLineDashPattern([], 0);
     f(null, "bold", 8.5, PDFC.slate);
     doc.text("Bon pour accord", PM.l + 4, y + 6);
-    doc.text("Signature du client", PM.l + sw + 10 + sw - 4, y + 6, { align: "right" });
-    f(null, "normal", 8.5, PDFC.slate);
-    doc.text("Date : ____ / ____ / ________", PM.l + 4, y + 11);
-    f(null, "normal", 7.5, PDFC.mute);
-    doc.text("pr\u00e9c\u00e9d\u00e9e de la mention \u00ab Bon pour accord \u00bb",
-             PM.l + sw + 10 + sw - 4, y + 11, { align: "right" });
-    stroke([203, 213, 225]);
-    doc.line(PM.l + 4, y + sh - 5, PM.l + sw - 4, y + sh - 5);
-    doc.line(PM.l + sw + 14, y + sh - 5, PM.l + sw + 10 + sw - 4, y + sh - 5);
+    doc.text("Signature du client", xd + sw - 4, y + 6, { align: "right" });
+    if (acc) {
+      // Devis sign\u00e9 en ligne : la date, le signataire et la signature trac\u00e9e remplacent les pointill\u00e9s.
+      f(null, "normal", 8, PDFC.slate);
+      doc.text(sane("Sign\u00e9 en ligne le " + fmtDateHeure(acc.accepte_le)), PM.l + 4, y + 11);
+      const par = doc.splitTextToSize(sane("par " + acc.signataire + (acc.qualite ? ", " + acc.qualite : "")), sw - 8);
+      doc.text(par.slice(0, 2), PM.l + 4, y + 15.5);
+      f(null, "normal", 7, PDFC.mute);
+      doc.text(sane("Preuve : certificat d'acceptation en derni\u00e8re page"), PM.l + 4, y + sh - 3.5);
+      if (acc.signature) {
+        try {
+          const ip = doc.getImageProperties(acc.signature);
+          const k = Math.min((sw - 10) / ip.width, (sh - 11) / ip.height);
+          doc.addImage(acc.signature, "PNG", xd + (sw - ip.width * k) / 2, y + 8.5, ip.width * k, ip.height * k);
+        } catch (err) { console.error("Signature illisible :", err); }
+      }
+    } else {
+      f(null, "normal", 8.5, PDFC.slate);
+      doc.text("Date : ____ / ____ / ________", PM.l + 4, y + 11);
+      f(null, "normal", 7.5, PDFC.mute);
+      doc.text("pr\u00e9c\u00e9d\u00e9e de la mention \u00ab Bon pour accord \u00bb",
+               xd + sw - 4, y + 11, { align: "right" });
+      stroke([203, 213, 225]);
+      doc.line(PM.l + 4, y + sh - 5, PM.l + sw - 4, y + sh - 5);
+      doc.line(xd + 4, y + sh - 5, xd + sw - 4, y + sh - 5);
+    }
     y += sh + 6;
   }
 
@@ -2605,6 +2640,63 @@ function drawDoc(doc, o) {
     y += 2.5;
     f(null, "normal", 7.5, PDFC.mute);
     doc.text(sane(pied), PM.l + PW / 2, y + 2.4, { align: "center" });
+  }
+
+  /* ── certificat d'acceptation (devis signé en ligne) ────────────────── */
+  if (isDevis && o.acceptation) {
+    const a = o.acceptation;
+    newPage();
+    f(null, "bold", 15, PDFC.slate);
+    doc.text(sane("Certificat d'acceptation électronique"), PM.l, y + 5);
+    y += 10;
+    f(null, "normal", 9, PDFC.mute);
+    doc.text(sane("Devis n° " + o.num + " — " + E.nom), PM.l, y + 3);
+    y += 7;
+    fill(PDFC.blue); doc.rect(PM.l, y, PW, 0.7, "F");
+    y += 6;
+    const utc = new Date(a.accepte_le).toISOString().replace("T", " ").slice(0, 19);
+    const lignesCert = [
+      ["Devis", "n° " + o.num + (a.montant_texte ? " — " + a.montant_texte : "")],
+      ["Client", o.client.nom + (o.client.adresse ? " — " + o.client.adresse : "")],
+      ["Signataire", a.signataire + (a.qualite ? " — " + a.qualite : "")],
+      ["Identification", "Compte client " + a.email + ", ouvert par un lien de connexion à usage unique envoyé à cette adresse."],
+      ["Date et heure", fmtDateHeure(a.accepte_le) + " (heure de Paris), soit " + utc + " UTC"],
+      ["Adresse IP", a.ip || "non transmise"],
+      ["Navigateur", a.navigateur || "non transmis"],
+      ["Empreinte du devis", a.empreinte_pdf ? "SHA-256 " + a.empreinte_pdf : "non disponible (devis envoyé avant la mise en place de la signature)"],
+      ...(a.client_type === "Professionnel" ? [] : [["Rétractation", a.demarrage_anticipe
+        ? "Le client a demandé que la prestation commence avant la fin du délai de rétractation de 14 jours."
+        : "Délai de rétractation de 14 jours à compter de la signature ; pas de demande de démarrage anticipé."]]),
+      ["Déclaration acceptée", a.texte_accepte || ""]
+    ];
+    for (const [k, v] of lignesCert) {
+      const h = Math.max(paraH(v, PW - 46, 9), lh(9)) + 3.5;
+      need(h);
+      f(null, "bold", 8.5, PDFC.slate);
+      doc.text(sane(k), PM.l, y + 3.2);
+      const y0 = y;
+      para(v, PM.l + 44, PW - 46, { size: 9, color: PDFC.body, paged: false });
+      y = y0 + h;
+      stroke(PDFC.line); doc.setLineWidth(0.15);
+      doc.line(PM.l, y - 1.6, PM.l + PW, y - 1.6);
+    }
+    if (a.signature) {
+      need(38);
+      y += 3;
+      f(null, "bold", 8.5, PDFC.slate);
+      doc.text("Signature", PM.l, y + 3.2);
+      stroke([203, 213, 225]); doc.setLineWidth(0.2);
+      doc.roundedRect(PM.l + 44, y, 80, 30, 1.5, 1.5, "D");
+      try {
+        const ip = doc.getImageProperties(a.signature);
+        const k = Math.min(76 / ip.width, 26 / ip.height);
+        doc.addImage(a.signature, "PNG", PM.l + 44 + (80 - ip.width * k) / 2, y + (30 - ip.height * k) / 2, ip.width * k, ip.height * k);
+      } catch (err) { console.error("Signature illisible :", err); }
+      y += 36;
+    }
+    y += 2;
+    para("Signature électronique simple au sens du règlement (UE) n° 910/2014 (eIDAS) et des articles 1366 et 1367 du Code civil. Ces éléments ont été enregistrés par le serveur au moment de la signature et sont conservés par " + E.nom + " avec le devis d'origine, dont l'empreinte SHA-256 permet de vérifier qu'il n'a pas été modifié.",
+         PM.l, PW, { size: 8, color: PDFC.mute });
   }
 
   return doc;
@@ -2841,13 +2933,18 @@ function isoLocal(d) {
   return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
 }
 function plusJours(n) { const d = new Date(); d.setDate(d.getDate() + n); return d; }
+function fmtDateHeure(iso) {
+  const d = new Date(iso);
+  return isNaN(d) ? "—" : d.toLocaleString("fr-FR", { day: "numeric", month: "long", year: "numeric",
+    hour: "2-digit", minute: "2-digit", timeZone: "Europe/Paris" }).replace(/^1 /, "1er ");
+}
 function fmtDateFr(iso) {
   if (!iso) return "—";
   const d = new Date(iso);
-  return isNaN(d) ? "—" : d.toLocaleDateString("fr-FR", { day: "2-digit", month: "long", year: "numeric" });
+  return isNaN(d) ? "—" : d.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }).replace(/^1 /, "1er ");
 }
 
-const DEVIS_FIELDS = ["d-nom","d-email","d-tel","d-adresse","d-notes","d-periode"];
+const DEVIS_FIELDS = ["d-nom","d-email","d-tel","d-adresse","d-notes","d-periode","d-lieu"];
 
 async function initDevis() {
   document.getElementById("d-date").value  = isoLocal(new Date());
@@ -2890,6 +2987,7 @@ function devisData() {
       adresse: document.getElementById("d-adresse").value.trim()
     },
     periode: document.getElementById("d-periode").value.trim(),
+    lieu:    document.getElementById("d-lieu").value.trim(),
     notes:   document.getElementById("d-notes").value.trim(),
     lignes:  lignes
   };
@@ -2938,6 +3036,7 @@ async function saveAndSend() {
   try {
     toast("Génération du PDF…", "info");
     const blob = await makePdf(d, d.num + ".pdf", "Devis " + d.num + " — " + ENTREPRISE.nom, "blob");
+    const empreinte = await sha256Hex(blob);   // preuve de la version envoyée, reprise à la signature
 
     // 1. Dépôt du PDF (upsert:false : on refuse d'écraser un devis portant déjà ce numéro)
     const path = "devis/" + d.num + ".pdf";
@@ -2962,7 +3061,7 @@ async function saveAndSend() {
       client_adresse: d.client.adresse,
       lignes:         lignes,
       total:          parseFloat(total.toFixed(2)),
-      notes:          buildNotes({ periode: d.periode }, d.notes),
+      notes:          buildNotes({ periode: d.periode, lieu: d.lieu }, d.notes),
       date_validite:  d.date2,
       pdf_url:        pdfUrl,
       statut:         "envoyé",
@@ -2979,6 +3078,7 @@ async function saveAndSend() {
       const { data: actuelle } = await sb.from("demandes").select("details").eq("id", dm.id).maybeSingle();
       await majDemande(dm.id, { statut: "devis_envoye", devis_montant: parseFloat(total.toFixed(2)),
         devis_chemin: path, devis_envoye_le: new Date().toISOString(), devis_accepte_le: null,
+        devis_empreinte: empreinte, devis_signe_chemin: null,
         details: { ...((actuelle && actuelle.details) || {}), devis_texte: totalTexte } });
     }
 
@@ -3157,7 +3257,8 @@ async function deleteDevis(f) {
   if (f.demande_id) {
     const { data: dm } = await sb.from("demandes").select("id, devis_chemin").eq("id", f.demande_id).maybeSingle();
     if (dm && dm.devis_chemin === chemin)
-      await majDemande(dm.id, { statut: "envoyee", devis_chemin: null, devis_montant: null, devis_envoye_le: null, devis_accepte_le: null });
+      await majDemande(dm.id, { statut: "envoyee", devis_chemin: null, devis_montant: null, devis_envoye_le: null, devis_accepte_le: null,
+                                devis_empreinte: null, devis_signe_chemin: null });
   }
   toast("🗑️ Devis supprimé");
   loadDevisHistory();
@@ -3188,6 +3289,7 @@ async function duplicateDevis(f) {
   document.getElementById("d-tel").value     = f.client_tel     || "";
   document.getElementById("d-adresse").value = f.client_adresse || "";
   document.getElementById("d-periode").value = n.meta.periode   || "";
+  document.getElementById("d-lieu").value    = n.meta.lieu      || "";
   document.getElementById("d-notes").value   = n.texte;
   await initDevis();
   document.querySelector('[data-sec="devis"]').click();
@@ -3223,11 +3325,19 @@ async function createFactureFromDevis(f) {
   const mensuel = normLignes(f.lignes).some(l => l.mensuel);
   factLignes = normLignes(f.lignes).map(l => ({ ...l, mensuel: false }));
   const n = parseNotes(f.notes);
+  // Prestation ponctuelle : la facture porte la date de l'intervention (planifiée, sinon souhaitée),
+  // pas le « à partir du … » du devis.
+  let periode = n.meta.periode || "";
+  if (mensuel) periode = moisCourant();
+  else if (f.demande_id) {
+    const { data: dm } = await sb.from("demandes").select("date_souhaitee").eq("id", f.demande_id).limit(1);
+    if (dm && dm[0] && dm[0].date_souhaitee) periode = "Le " + fmtDateFr(dm[0].date_souhaitee);
+  }
   document.getElementById("f-nom").value     = f.client_nom     || "";
   document.getElementById("f-email").value   = f.client_email   || "";
   document.getElementById("f-tel").value     = f.client_tel     || "";
   document.getElementById("f-adresse").value = f.client_adresse || "";
-  document.getElementById("f-periode").value = mensuel ? moisCourant() : (n.meta.periode || "");
+  document.getElementById("f-periode").value = periode.charAt(0).toUpperCase() + periode.slice(1);
   document.getElementById("f-ref").value     = f.numero         || "";
   document.getElementById("f-notes").value   = n.texte;
   factDemandeId = f.demande_id || null;
@@ -3292,6 +3402,25 @@ async function ouvrirPdf(chemin, titre) {
   catch (e) { toast("❌ " + e.message, "error"); }
 }
 
+/* ══ SIGNATURE ÉLECTRONIQUE ══ Empreinte du PDF envoyé, et devis refait à l'identique pour y apposer la signature. */
+async function sha256Hex(blob) {
+  if (!window.crypto || !crypto.subtle) return null;
+  const h = await crypto.subtle.digest("SHA-256", await blob.arrayBuffer());
+  return [...new Uint8Array(h)].map(b => b.toString(16).padStart(2, "0")).join("");
+}
+function docDepuisDevis(f) {
+  const n = parseNotes(f.notes);
+  const emis = f.created_at ? isoLocal(new Date(f.created_at)) : "";
+  return {
+    kind: "devis", num: f.numero,
+    date1: emis, date2: f.date_validite || "",
+    date1Txt: fmtDateFr(emis), date2Txt: fmtDateFr(f.date_validite),
+    client: { nom: f.client_nom || "", email: f.client_email || "", tel: f.client_tel || "", adresse: f.client_adresse || "" },
+    periode: n.meta.periode || "", lieu: n.meta.lieu || "", notes: n.texte,
+    lignes: normLignes(f.lignes)
+  };
+}
+
 /* ══ DEMANDES DE L'ESPACE CLIENT ══════════════════════════════════════════
    Circuit complet : demande → devis pré-rempli → acceptation en ligne par le
    client → planification → facture. Chaque étape met la demande à jour, et
@@ -3304,7 +3433,8 @@ const SERVICES_DEMANDE = {
   administratif:{emo:"📋",nom:"Aide administrative"}, compagnie:{emo:"🎲",nom:"Compagnie & activités"},
   medical:{emo:"🏥",nom:"Accompagnement médical"}, lever:{emo:"🌅",nom:"Lever & coucher"},
   medicaments:{emo:"💊",nom:"Prise de médicaments"}, nuit:{emo:"🌙",nom:"Présence de nuit"},
-  jardin:{emo:"🌿",nom:"Jardinage"}
+  jardin:{emo:"🌿",nom:"Espaces verts & jardinage"},
+  "locaux-jour":{emo:"🏢",nom:"Entretien de locaux — journée"}, "locaux-nuit":{emo:"🌃",nom:"Entretien de locaux — nuit"}
 };
 const STATUTS_DEMANDE = {
   envoyee:["new","Nouvelle"], appel_prevu:["pending","Appel prévu"], devis_envoye:["sent","Devis envoyé"],
@@ -3322,8 +3452,8 @@ const FILTRES_DEMANDE = {
   toutes:     () => true
 };
 // Service coché dans l'espace client → ligne de la grille TARIFS (sinon ligne libre à chiffrer).
-const TARIF_DEMANDE = { menage:"menage", courses:"courses", administratif:"courses", medical:"courses",
-                        nuit:"nuit", jardin:"jardin", demenagement:"demenagement", chantier:"chantier" };
+// Les services de l'espace portent les identifiants de TARIFS ; seules d'anciennes demandes ont besoin d'une correspondance.
+const TARIF_DEMANDE = { administratif:"courses", medical:"courses" };
 const HEURES_DEMANDE = { "1 heure":1, "2 heures":2, "3 heures":3, "4 heures":4, "Demi-journée":4, "21 h – 7 h":10, "22 h – 8 h":10 };
 
 let demandes = [];
@@ -3331,6 +3461,9 @@ let demandesChargees = false;
 let demFiltre = "a_traiter";
 let demSelection = null;
 const demComptes = {};
+let acceptations = {};                     // dernière signature en ligne, par demande
+const signaturesVues = {};                 // images de signature déjà chargées
+const signesEnCours = new Set(), signesEchoues = new Set();
 
 const nomServiceDemande = id => (SERVICES_DEMANDE[id] || { nom: id }).nom;
 function nomsServices(d) {
@@ -3354,10 +3487,81 @@ async function loadDemandes(silencieux) {
   if (error) { list.innerHTML = `<div class="err-box"><b>Chargement impossible.</b><br>${escapeHtml(error.message)}</div>`; return; }
   demandes = data || [];
   demandesChargees = true;
+  await chargerAcceptations();
   if (devisDemande) relierDevis(devisDemande.id);
   if (factDemandeId) afficherLienFacture();
   majCompteursDemandes();
   renderDemandes();
+  genererDevisSignes();
+}
+
+/* Signatures électroniques des clients (table « acceptations », remplie par la base). */
+const COLS_ACCEPTATION = "id,demande_id,devis_numero,montant_texte,signataire,qualite,email,client_type,empreinte_pdf,demarrage_anticipe,texte_accepte,ip,navigateur,accepte_le";
+async function chargerAcceptations() {
+  const { data, error } = await sb.from("acceptations").select(COLS_ACCEPTATION).order("accepte_le", { ascending: true });
+  acceptations = {};
+  if (error) return;   // supabase.sql pas encore relancé : rien à afficher
+  for (const a of data || []) acceptations[a.demande_id] = a;   // la plus récente l'emporte
+}
+const estSignee = d => !!acceptations[d.id] && ["devis_accepte", "planifiee", "terminee"].includes(d.statut);
+
+async function signatureDe(a) {
+  if (!(a.id in signaturesVues)) {
+    const { data } = await sb.from("acceptations").select("signature").eq("id", a.id).limit(1);
+    signaturesVues[a.id] = (data && data[0] && data[0].signature) || "";
+  }
+  return signaturesVues[a.id];
+}
+
+/* Un devis signé en ligne est refait avec la signature et un certificat,
+   puis rangé dans l'espace du client et envoyé par e-mail. */
+async function genererDevisSignes() {
+  for (const d of demandes) {
+    if (!estSignee(d) || d.devis_signe_chemin || signesEnCours.has(d.id) || signesEchoues.has(d.id)) continue;
+    signesEnCours.add(d.id);
+    try { await genererDevisSigne(d, acceptations[d.id]); }
+    catch (err) {
+      signesEchoues.add(d.id);
+      console.error(err);
+      toast("⚠️ Devis signé de " + d.nom + " non créé — " + err.message, "error");
+    }
+    finally { signesEnCours.delete(d.id); }
+  }
+}
+
+async function genererDevisSigne(d, a) {
+  let q = sb.from("devis").select("*").eq("demande_id", d.id);
+  q = a.devis_numero ? q.eq("numero", a.devis_numero) : q.eq("statut", "accepté");
+  const { data: trouves, error } = await q.limit(1);
+  if (error) throw new Error(error.message);
+  const f = trouves && trouves[0];
+  if (!f) throw new Error("devis introuvable");
+  const o = { ...docDepuisDevis(f), acceptation: { ...a, signature: await signatureDe(a) } };
+  const blob = await makePdf(o, f.numero + "-signe.pdf", "Devis signé " + f.numero + " — " + ENTREPRISE.nom, "blob");
+  const chemin = "devis/" + f.numero + "-signe.pdf";
+  const up = await sb.storage.from("documents").upload(chemin, blob, { contentType: "application/pdf", upsert: true });
+  if (up.error) throw new Error("dépôt du PDF impossible — " + up.error.message);
+  await enregistrerDansEspaceClient("Devis signé", "Devis signé " + f.numero, chemin, d.email, d.id);
+  const { error: errMaj } = await sb.from("demandes").update({ devis_signe_chemin: chemin }).eq("id", d.id);
+  if (errMaj) throw new Error(errMaj.message);
+  demandes.filter(x => x.id === d.id).forEach(x => { x.devis_signe_chemin = chemin; });
+  if (demSelection === d.id) renderPanneauDemande();
+  try {
+    await emailjs.send("service_hwm2hla", "template_bkhdovi", {
+      to_name:    f.client_nom || d.nom,
+      to_email:   d.email,
+      doc_type:   "Devis signé",
+      doc_num:    f.numero,
+      doc_url:    await lienTemporaire(chemin, DUREE_LIEN_EMAIL),
+      total:      a.montant_texte || fmtEUR(f.total),
+      date_label: "Signé le",
+      date_val:   fmtDateHeure(a.accepte_le)
+    });
+    toast("✍️ Devis " + f.numero + " signé par " + a.signataire + " : copie envoyée à " + d.email);
+  } catch (err) {
+    console.error(err);
+    toast("✍️ Devis " + f.numero + " signé, rangé dans l'espace du client (e-mail non envoyé)", "info");
+  }
 }
 
 function majCompteursDemandes() {
@@ -3404,6 +3608,40 @@ function blocDetailsDemande(d) {
   return services || commun || precisions ? `<div class="dem-bloc"><h3>Besoin du client</h3>${services}${commun}${precisions}${sante}</div>` : "";
 }
 
+function blocSignature(d) {
+  const a = estSignee(d) && acceptations[d.id];
+  if (!a) return "";
+  const e = escapeHtml;
+  let retractation = "";
+  if (a.client_type !== "Professionnel") {
+    const fin = new Date(new Date(a.accepte_le).getTime() + 14 * 864e5);
+    retractation = a.demarrage_anticipe
+      ? `<div class="dem-avis ok">Le client a demandé à commencer avant la fin de son délai de rétractation.</div>`
+      : fin > new Date()
+        ? `<div class="dem-avis warn">Délai de rétractation en cours jusqu'au ${e(fmtDateFr(fin.toISOString()))} : le client n'a pas demandé à commencer avant.</div>`
+        : `<div class="dem-avis ok">Délai de rétractation écoulé depuis le ${e(fmtDateFr(fin.toISOString()))}.</div>`;
+  }
+  return `<div class="dem-bloc"><h3>Signature électronique</h3>
+    <dl class="dem-dl">
+      <dt>Signé par</dt><dd>${e(a.signataire)}${a.qualite ? " · " + e(a.qualite) : ""}</dd>
+      <dt>Le</dt><dd>${e(fmtDateHeure(a.accepte_le))}</dd>
+      <dt>Compte</dt><dd>${e(a.email)}</dd>
+      <dt>Adresse IP</dt><dd>${e(a.ip || "non transmise")}</dd>
+      <dt>Devis</dt><dd>${e(a.devis_numero || "—")}${a.empreinte_pdf ? `<br><span class="dem-empreinte">SHA-256 ${e(a.empreinte_pdf.slice(0, 24))}…</span>` : ""}</dd>
+    </dl>
+    ${retractation}
+    <img class="dem-sig" id="demSig" alt="Signature du client" hidden>
+    ${d.devis_signe_chemin ? "" : `<p style="color:var(--muted);font-size:.8rem;margin:8px 0 0">Devis signé en cours de création…</p>`}
+  </div>`;
+}
+async function afficherSignature(d) {
+  const a = estSignee(d) && acceptations[d.id];
+  if (!a) return;
+  const src = await signatureDe(a);
+  const img = document.getElementById("demSig");
+  if (img && src && demSelection === d.id) { img.src = src; img.hidden = false; }
+}
+
 function avisCompte(d) {
   const c = demComptes[d.email];
   if (c === true)  return `<div class="dem-avis ok">Compte client actif : ses devis et factures apparaissent aussitôt dans son espace.</div>`;
@@ -3447,11 +3685,13 @@ function renderPanneauDemande() {
       ${d.devis_accepte_le ? `<dt>Accepté le</dt><dd>${e(new Date(d.devis_accepte_le).toLocaleString("fr-FR"))}</dd>` : ""}
     </dl>
     <div id="demAvis">${avisCompte(d)}</div>
+    ${blocSignature(d)}
     ${blocDetailsDemande(d)}
     <div class="dem-bloc"><h3>Devis et facture</h3>
       <div class="dem-actions">
         ${["envoyee", "appel_prevu", "devis_envoye"].includes(d.statut) ? `<button class="btn-action blue" data-demact="devis">📝 ${d.devis_chemin ? "Refaire le devis" : "Créer le devis"}</button>` : ""}
         ${d.devis_chemin ? `<button class="btn-action ghost" data-demact="pdf">⬇️ Voir le devis</button>` : ""}
+        ${d.devis_signe_chemin && estSignee(d) ? `<button class="btn-action ghost" data-demact="signe">✍️ Devis signé</button>` : ""}
         ${["devis_accepte", "planifiee", "terminee"].includes(d.statut) ? `<button class="btn-action green" data-demact="facture">🧾 Facturer</button>` : ""}
       </div>
     </div>
@@ -3473,14 +3713,14 @@ function renderPanneauDemande() {
     </div>
   </div>`;
   verifierCompte(d);
+  afficherSignature(d);
 }
 
+/* « Début de l'intervention » du devis. La fréquence, elle, figure sur chaque ligne. */
 function periodeDemande(d) {
-  const quand = d.date_souhaitee ? "À partir du " + fmtDateFr(d.date_souhaitee) + (d.creneau ? ", " + d.creneau : "") : "";
-  const freqs = ((d.details && d.details.services) || [])
-    .map(s => ((s.reponses || []).find(r => r.question === "Fréquence") || {}).reponse)
-    .filter(f => f && f !== "À définir");
-  return [quand, [...new Set(freqs)].join(" / ").toLowerCase()].filter(Boolean).join(" · ");
+  return d.date_souhaitee
+    ? "à partir du " + fmtDateFr(d.date_souhaitee) + (d.creneau ? " (" + d.creneau + ")" : "")
+    : "date à convenir ensemble";
 }
 
 const moisCourant = () => "Mois de " + new Date().toLocaleDateString("fr-FR", { month: "long", year: "numeric" });
@@ -3494,8 +3734,8 @@ function lignesDepuisDemande(d) {
   return services.map(s => {
     const reps = s.reponses || [];
     const rep = q => (reps.find(r => r.question === q) || {}).reponse || "";
-    const tarif = s.id === "locaux"
-      ? (/nuit|soir|matin/i.test(rep("Moment de l'intervention")) ? "locaux-nuit" : "locaux-jour")
+    const tarif = TARIF_INDEX[s.id] ? s.id
+      : s.id === "locaux" ? (/nuit|soir|matin/i.test(rep("Moment de l'intervention")) ? "locaux-nuit" : "locaux-jour")
       : TARIF_DEMANDE[s.id];
     const l = (tarif && ligneFromTarif(tarif)) ||
       normLigne({ desc: s.nom, heures: 1, prix: 0, unit: s.id === "vitrerie" ? "forfait" : "h", sap: ["compagnie", "lever"].includes(s.id) });
@@ -3504,26 +3744,28 @@ function lignesDepuisDemande(d) {
     const duree = HEURES_DEMANDE[(reps.find(r => /^(Durée|Horaires de présence)/.test(r.question)) || {}).reponse];
     const jours = rep("Jours souhaités");
     const parSemaine = jours ? jours.split(", ").length : (parseFloat(rep("Passages par semaine") || rep("Nuits par semaine")) || 1);
-    const faits = reps.filter(r => r.question !== "Fréquence").map(r => r.question + " : " + r.reponse);
+    const faits = reps.filter(r => r.question !== "Fréquence")
+      .map(r => r.question.replace(/, si vous la connaissez$/, "") + " : " + r.reponse);
     l.desc = libelle;
 
-    if (s.id === "demenagement") {
-      const surface = parseFloat(rep("Surface du logement"));
-      if (surface > 0) l.heures = surface;
-    } else if (PASSAGES_MOIS[frequence]) {
+    // Quantité d'un passage : des heures pour un tarif horaire, des m² pour un tarif au m².
+    const surface = parseFloat((reps.find(r => /^Surface/.test(r.question)) || {}).reponse);
+    const parPassage = l.unit === "h" ? duree : (l.unit === "m²" && surface > 0 ? surface : 0);
+    if (PASSAGES_MOIS[frequence]) {
       const passages = parSemaine * PASSAGES_MOIS[frequence];
       const nb = fmtQte(passages) + (passages > 1 ? " passages" : " passage");
       l.mensuel = true;
       l.desc = libelle + ", " + frequence.toLowerCase();
-      if (l.unit === "h") {
-        l.heures = duree ? Math.round(duree * passages * 2) / 2 : 0;
-        faits.unshift(duree ? `${fmtQte(duree)} h par passage × ${nb} par mois` : `${nb} par mois, durée par passage à estimer`);
+      if (l.unit === "h" || l.unit === "m²") {
+        l.heures = parPassage ? Math.round(parPassage * passages * 2) / 2 : 0;
+        faits.unshift(parPassage ? `${fmtQte(parPassage)} ${l.unit} par passage × ${nb} par mois`
+                                 : `${nb} par mois, ${l.unit === "h" ? "durée" : "surface"} par passage à estimer`);
       } else {
         l.unit = "mois"; l.heures = 1; l.prix = 0;
         faits.unshift(`${nb} par mois : indiquez le prix mensuel`);
       }
-    } else if (duree) {
-      l.heures = duree;
+    } else if (parPassage) {
+      l.heures = parPassage;
     }
     if (frequence === "À définir") faits.unshift("Fréquence à définir");
     if (faits.length) l.detail = faits.join(" · ");
@@ -3565,7 +3807,8 @@ async function facturerDemande(d) {
   document.getElementById("f-email").value   = d.email || "";
   document.getElementById("f-tel").value     = d.telephone || "";
   document.getElementById("f-adresse").value = [d.code_postal, d.adresse].filter(Boolean).join(" ");
-  document.getElementById("f-periode").value = lgDemande.some(l => l.mensuel) ? moisCourant() : periodeDemande(d);
+  document.getElementById("f-periode").value = lgDemande.some(l => l.mensuel) ? moisCourant()
+    : (d.date_souhaitee ? "Le " + fmtDateFr(d.date_souhaitee) : "");
   document.getElementById("f-ref").value     = "";
   document.getElementById("f-notes").value   = "";
   relierFacture(d.id);
@@ -3621,7 +3864,12 @@ async function remplacerAnciensDevis(demandeId, sauf) {
 }
 
 async function majDemande(id, champs, message) {
-  const { error } = await sb.from("demandes").update(champs).eq("id", id);
+  let { error } = await sb.from("demandes").update(champs).eq("id", id);
+  if (error && /devis_(empreinte|signe_chemin)/.test(error.message || "")) {
+    // supabase.sql pas encore relancé : on enregistre le reste.
+    const { devis_empreinte, devis_signe_chemin, ...reste } = champs;
+    ({ error } = await sb.from("demandes").update(reste).eq("id", id));
+  }
   if (error) { toast("❌ Mise à jour de la demande impossible — " + error.message, "error"); return false; }
   if (champs.statut === "annulee")
     await sb.from("devis").update({ statut: "refusé" }).eq("demande_id", id).eq("statut", "envoyé");
@@ -3673,6 +3921,7 @@ document.getElementById("demPanel").addEventListener("click", async e => {
   const act = b.dataset.demact;
   if (act === "devis")    return creerDevisDepuisDemande(d);
   if (act === "pdf")      return ouvrirPdf(d.devis_chemin, "Devis — " + d.nom);
+  if (act === "signe")    return ouvrirPdf(d.devis_signe_chemin, "Devis signé — " + d.nom);
   if (act === "facture")  return facturerDemande(d);
   if (act === "copier")   return navigator.clipboard.writeText(recapDemande(d)).then(() => toast("📋 Récapitulatif copié", "info"));
   if (act === "appel")    return majDemande(d.id, { statut: "appel_prevu" }, "📞 Appel prévu");
@@ -3688,6 +3937,13 @@ document.getElementById("demPanel").addEventListener("click", async e => {
     if (!["devis_accepte", "planifiee"].includes(d.statut) &&
         !await showConfirm("Le devis n'est pas encore accepté",
           "Les CGV prévoient une acceptation écrite du devis avant l'intervention. Planifier quand même ?", "Planifier")) return;
+    // Particulier sans demande de démarrage anticipé : pas d'intervention pendant son délai de rétractation.
+    const a = estSignee(d) && acceptations[d.id];
+    if (a && a.client_type !== "Professionnel" && !a.demarrage_anticipe) {
+      const fin = isoLocal(new Date(new Date(a.accepte_le).getTime() + 14 * 864e5));
+      if (date < fin && !await showConfirm("Délai de rétractation en cours",
+          "Le client n'a pas demandé à commencer avant la fin de son délai de rétractation, qui court jusqu'au " + fmtDateFr(fin) + ". Planifier quand même ?", "Planifier")) return;
+    }
     return majDemande(d.id, {
       date_souhaitee: date,
       creneau: document.getElementById("dem-creneau").value,
@@ -3697,15 +3953,17 @@ document.getElementById("demPanel").addEventListener("click", async e => {
   }
 });
 
-/* Nouvelles demandes : vérification discrète toutes les 2 minutes et au retour
-   sur l'onglet, sans effacer une saisie en cours dans le panneau. */
+/* Nouvelles demandes et devis signés : vérification discrète toutes les 2 minutes
+   et au retour sur l'onglet, sans effacer une saisie en cours dans le panneau. */
 async function surveillerDemandes() {
   if (!sessionAdmin || !demandesChargees || document.visibilityState !== "visible") return;
-  const { data, error } = await sb.from("demandes").select("id");
+  const { data, error } = await sb.from("demandes").select("id, statut");
   if (error || !data) return;
-  const connues = new Set(demandes.map(d => d.id));
-  if (!data.some(r => !connues.has(r.id))) return;
-  toast("📥 Nouvelle demande reçue", "info");
+  const connues = new Map(demandes.map(d => [d.id, d.statut]));
+  const nouvelle = data.some(r => !connues.has(r.id));
+  const signee = data.some(r => connues.get(r.id) === "devis_envoye" && r.statut === "devis_accepte");
+  if (!nouvelle && !signee) return;
+  toast(nouvelle ? "📥 Nouvelle demande reçue" : "✍️ Un client vient de signer son devis", "info");
   if (!document.getElementById("demPanel").contains(document.activeElement)) loadDemandes(true);
 }
 setInterval(surveillerDemandes, 120000);

@@ -145,6 +145,9 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 .check{display:flex;gap:10px;align-items:flex-start;font-weight:400;font-size:.84rem;margin:4px 0 14px}
 .check input{width:auto;margin-top:3px;flex:none}
 .req{color:var(--rouge)}
+.sig-pad{display:block;width:100%;height:180px;background:#fff;border:1.5px dashed #b9cbc6;border-radius:14px;touch-action:none;cursor:crosshair}
+.sig-bas{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:6px}
+.linkbtn{background:none;border:0;padding:4px 0;color:var(--accent-deep);font-weight:600;font-size:.85rem;cursor:pointer;text-decoration:underline}
 
 .steps{display:flex;align-items:center;gap:7px;margin:4px 0 18px}
 .steps i{height:4px;flex:1;border-radius:2px;background:var(--line)}
@@ -228,31 +231,35 @@ const CONFIG = {
   backOffice: "https://domiclean.github.io/admin.html#demandes"
 };
 
+/* Les services proposés sont ceux de la grille tarifaire d'admin.html (TARIFS) : mêmes identifiants, mêmes libellés. */
 const CATEGORIES = [
-  { id:"nettoyage", emo:"🧹", nom:"Ménage & nettoyage", desc:"Domicile, locaux, chantier, vitres, déménagement" },
-  { id:"aide",      emo:"🤝", nom:"Aide à domicile", desc:"Courses, démarches, compagnie, santé, nuit" },
-  { id:"jardin",    emo:"🌿", nom:"Jardinage", desc:"Tonte, haies, débroussaillage" }
+  { id:"personne",   emo:"🏠", nom:"Services à la personne" },
+  { id:"pro",        emo:"🏢", nom:"Nettoyage professionnel" },
+  { id:"specifique", emo:"✨", nom:"Prestations spécifiques" }
 ];
 
 const SERVICES = [
-  { id:"menage",       cat:"nettoyage", emo:"🧽", nom:"Ménage à domicile",      desc:"Entretien régulier ou ponctuel de votre logement" },
-  { id:"locaux",       cat:"nettoyage", emo:"🏢", nom:"Locaux professionnels", desc:"Bureaux, commerces, espaces professionnels" },
-  { id:"chantier",     cat:"nettoyage", emo:"🏗️", nom:"Fin de chantier",       desc:"Remise en état après travaux" },
-  { id:"vitrerie",     cat:"nettoyage", emo:"🪟", nom:"Vitrerie",               desc:"Fenêtres, baies vitrées, vitrines" },
-  { id:"demenagement", cat:"nettoyage", emo:"📦", nom:"Après déménagement",     desc:"Remise en état complète du logement" },
-  { id:"courses",      cat:"aide",      emo:"🛒", nom:"Aide aux courses",       desc:"Vos courses selon votre liste" },
-  { id:"administratif",cat:"aide",      emo:"📋", nom:"Aide administrative",    desc:"Courriers et démarches" },
-  { id:"compagnie",    cat:"aide",      emo:"🎲", nom:"Compagnie & activités",  desc:"Jeux, lecture, promenades" },
-  { id:"medical",      cat:"aide",      emo:"🏥", nom:"Accompagnement médical", desc:"Transport et présence aux rendez-vous" },
-  { id:"lever",        cat:"aide",      emo:"🌅", nom:"Lever & coucher",        desc:"Assistance du matin et du soir" }, // plus proposé, gardé pour les anciennes demandes
-  { id:"medicaments",  cat:"aide",      emo:"💊", nom:"Prise de médicaments",   desc:"Rappel et assistance selon prescription" }, // plus proposé (absent d'OFFRES), gardé pour les anciennes demandes
-  { id:"nuit",         cat:"aide",      emo:"🌙", nom:"Présence de nuit",       desc:"Présence rassurante au domicile, la nuit" },
-  { id:"jardin",       cat:"jardin",    emo:"🌿", nom:"Jardinage",              desc:"Tonte, haies, débroussaillage" }
+  { id:"menage",       cat:"personne",   emo:"🧽", nom:"Ménage & entretien du domicile",        desc:"Nettoyage complet, dépoussiérage, sanitaires et sols" },
+  { id:"courses",      cat:"personne",   emo:"🛒", nom:"Aide aux courses, RDV & administratif", desc:"Courses, accompagnement aux rendez-vous, courrier et papiers" },
+  { id:"nuit",         cat:"personne",   emo:"🌙", nom:"Présence & assistance de nuit",         desc:"Présence rassurante et sécurité au domicile, la nuit" },
+  { id:"jardin",       cat:"personne",   emo:"🌿", nom:"Espaces verts & jardinage",             desc:"Tonte de pelouse, débroussaillage, taille de haies" },
+  { id:"locaux-jour",  cat:"pro",        emo:"🏢", nom:"Entretien de locaux — journée",         desc:"Bureaux, commerces, cabinets, copropriétés" },
+  { id:"locaux-nuit",  cat:"pro",        emo:"🌃", nom:"Entretien de locaux — nuit",            desc:"Interventions en horaires décalés" },
+  { id:"chantier",     cat:"specifique", emo:"🏗️", nom:"Fin de chantier & nettoyage vitres",    desc:"Remise en état après travaux, vitrerie" },
+  { id:"demenagement", cat:"specifique", emo:"📦", nom:"Après déménagement / vitrines",         desc:"Remise en état fin de bail ou entretien de vitrines" },
+  // Plus proposés : gardés pour afficher les anciennes demandes.
+  { id:"locaux",        cat:"pro",      emo:"🏢", nom:"Locaux professionnels",  desc:"" },
+  { id:"vitrerie",      cat:"personne", emo:"🪟", nom:"Vitrerie",               desc:"" },
+  { id:"administratif", cat:"personne", emo:"📋", nom:"Aide administrative",    desc:"" },
+  { id:"compagnie",     cat:"personne", emo:"🎲", nom:"Compagnie & activités",  desc:"" },
+  { id:"medical",       cat:"personne", emo:"🏥", nom:"Accompagnement médical", desc:"" },
+  { id:"lever",         cat:"personne", emo:"🌅", nom:"Lever & coucher",        desc:"" },
+  { id:"medicaments",   cat:"personne", emo:"💊", nom:"Prise de médicaments",   desc:"" }
 ];
 
 const OFFRES = {
-  Particulier:   ["menage","demenagement","chantier","vitrerie","jardin","courses","administratif","compagnie","medical","nuit"],
-  Professionnel: ["locaux","chantier","vitrerie","demenagement"]
+  Particulier:   ["menage","courses","nuit","jardin","chantier","demenagement"],
+  Professionnel: ["locaux-jour","locaux-nuit","chantier","demenagement"]
 };
 
 /* Questions par service (grille tarifaire d'admin.html) ; « commun » = posée une seule fois, à l'étape « Sur place ». */
@@ -266,6 +273,16 @@ const AUTONOMIE = { id:"autonomie", label:"Autonomie de la personne aidée", typ
 const DUREE     = { id:"duree", label:"Durée par visite", type:"choix", options:["1 heure","2 heures","3 heures","Demi-journée","À définir"] };
 const JOURS_SEM = { id:"jours", label:"Jours souhaités", type:"multi", options:["Lun","Mar","Mer","Jeu","Ven","Sam","Dim"] };
 const TRAJETS   = { id:"trajets", label:"Déplacements", type:"choix", options:["À pied ou en transports","Véhicule nécessaire"] };
+
+const LOCAUX = [
+  FREQ,
+  { id:"type_local", label:"Type de local", type:"choix", options:["Bureaux","Commerce","Cabinet médical","Parties communes","Autre"] },
+  { id:"surface", label:"Surface", type:"nombre", unite:"m²", requis:true },
+  { id:"sanitaires", label:"Nombre de sanitaires", type:"nombre" },
+  { id:"passages", label:"Passages par semaine", type:"nombre" },
+  { id:"duree", label:"Durée par passage, si vous la connaissez", type:"choix", options:["1 heure","2 heures","3 heures","4 heures","Je ne sais pas"] },
+  ETAGE, ACCES, PARKING
+];
 
 const QUESTIONS = {
   menage: [
@@ -281,11 +298,12 @@ const QUESTIONS = {
     ETAGE, ANIMAUX, ACCES, PARKING
   ],
   demenagement: [
-    { id:"surface", label:"Surface du logement", type:"nombre", unite:"m²", requis:true },
-    { id:"logement", label:"Type de logement", type:"choix", options:["Appartement","Maison"] },
-    { id:"etat", label:"Le jour du ménage, le logement sera", type:"choix", options:["Vide","Encore meublé"] },
+    FREQ,
+    { id:"objet", label:"À nettoyer", type:"choix", options:["Logement après déménagement","Vitrines"], requis:true },
+    { id:"surface", label:"Surface à nettoyer", type:"nombre", unite:"m²", requis:true },
+    { id:"etat", label:"Pour un logement, il sera", type:"choix", options:["Vide","Encore meublé"] },
     { id:"extras", label:"À inclure", type:"multi", options:["Four","Réfrigérateur","Placards","Vitres","Balcon, cave ou garage"] },
-    { id:"echeance", label:"Date de l'état des lieux ou de la remise des clés", type:"date" },
+    { id:"echeance", label:"Date de l'état des lieux ou date limite", type:"date" },
     ETAGE, ACCES, PARKING
   ],
   chantier: [
@@ -297,25 +315,8 @@ const QUESTIONS = {
     { id:"echeance", label:"Date de livraison ou d'emménagement", type:"date" },
     ETAGE, ACCES, PARKING
   ],
-  vitrerie: [
-    FREQ,
-    { id:"lieu", label:"Où ?", type:"choix", options:["Logement","Bureaux","Vitrine de commerce"] },
-    { id:"fenetres", label:"Nombre de fenêtres", type:"nombre", requis:true },
-    { id:"baies", label:"Baies vitrées ou portes-fenêtres", type:"nombre" },
-    { id:"faces", label:"Côtés à nettoyer", type:"choix", options:["Intérieur et extérieur","Extérieur seulement","Intérieur seulement"] },
-    { id:"hauteur", label:"Accès aux vitres", type:"choix", options:["Sans échelle","Échelle nécessaire"] },
-    ETAGE, ACCES, PARKING
-  ],
-  locaux: [
-    FREQ,
-    { id:"type_local", label:"Type de local", type:"choix", options:["Bureaux","Commerce","Cabinet médical","Parties communes","Autre"] },
-    { id:"surface", label:"Surface", type:"nombre", unite:"m²", requis:true },
-    { id:"sanitaires", label:"Nombre de sanitaires", type:"nombre" },
-    { id:"moment", label:"Moment de l'intervention", type:"choix", options:["En journée","Tôt le matin ou le soir","La nuit"] },
-    { id:"duree", label:"Durée par passage, si vous la connaissez", type:"choix", options:["1 heure","2 heures","3 heures","4 heures","Je ne sais pas"] },
-    { id:"passages", label:"Passages par semaine", type:"nombre" },
-    ETAGE, ACCES, PARKING
-  ],
+  "locaux-jour": LOCAUX,
+  "locaux-nuit": [...LOCAUX, { id:"horaires", label:"Horaires souhaités", type:"texte", placeholder:"Par exemple après 19 h ou avant 7 h" }],
   jardin: [
     FREQ,
     { id:"surface", label:"Surface du jardin", type:"nombre", unite:"m²", requis:true },
@@ -325,18 +326,9 @@ const QUESTIONS = {
     { id:"materiel", label:"Matériel (tondeuse, taille-haie…)", type:"choix", options:["J'ai le matériel","À apporter"] },
     ACCES, ANIMAUX, PARKING
   ],
-  courses: [FREQ, POUR_QUI, DUREE, JOURS_SEM, TRAJETS, AUTONOMIE, ETAGE, PARKING],
-  administratif: [FREQ, POUR_QUI,
-    { id:"demarches", label:"Démarches", type:"multi", options:["Tri du courrier","Dossiers et formulaires","Démarches en ligne","Classement"] },
-    DUREE, JOURS_SEM, PARKING],
-  compagnie: [FREQ, POUR_QUI,
-    { id:"activites", label:"Activités", type:"multi", options:["Conversation","Jeux","Lecture","Promenade","Sorties"] },
-    DUREE, JOURS_SEM, AUTONOMIE, ANIMAUX, PARKING],
-  medical: [FREQ, POUR_QUI,
-    { id:"ville_rdv", label:"Ville du rendez-vous", type:"texte" },
-    TRAJETS,
-    { id:"pendant", label:"Pendant le rendez-vous", type:"choix", options:["Rester avec la personne","Dépose puis retour"] },
-    AUTONOMIE, ETAGE, PARKING],
+  courses: [FREQ, POUR_QUI,
+    { id:"besoins", label:"Besoins", type:"multi", options:["Courses","Rendez-vous médicaux","Démarches administratives","Tri du courrier"], requis:true },
+    DUREE, JOURS_SEM, TRAJETS, AUTONOMIE, ETAGE, PARKING],
   nuit: [FREQ, POUR_QUI,
     { id:"horaires", label:"Horaires de présence", type:"choix", options:["21 h – 7 h","22 h – 8 h","Autres horaires"] },
     { id:"nuits", label:"Nuits par semaine", type:"nombre" },
@@ -410,7 +402,7 @@ const store = {
     const { data, error } = await sb.from("demandes").select("*").order("cree_le", { ascending:false });
     if (error){ console.error(error); return []; }
     return data.map(d => ({
-      id:d.id, service:d.service, rythme:d.rythme, date:d.date_souhaitee, creneau:d.creneau,
+      id:d.id, nom:d.nom, service:d.service, rythme:d.rythme, date:d.date_souhaitee, creneau:d.creneau,
       adresse:d.adresse, cp:d.code_postal, precisions:d.precisions, statut:d.statut,
       intervenant:d.intervenant, devis_chemin:d.devis_chemin, devis_montant:d.devis_montant,
       devis_accepte_le:d.devis_accepte_le, cree_le:d.cree_le, details:d.details
@@ -431,6 +423,19 @@ const store = {
     if (!sb){ const s = demo.read(); const x = s.demandes.find(v => v.id === id); if (x) Object.assign(x, champsDemo); demo.save(s); return { ok:true }; }
     const { error } = await sb.rpc(nom, { p_demande:id });
     return error ? { ok:false, error:error.message } : { ok:true };
+  },
+  // Signature électronique : la base enregistre elle-même l'heure, l'adresse IP et l'empreinte du devis.
+  async signer(id, p){
+    if (!sb){
+      const s = demo.read(), x = s.demandes.find(v => v.id === id), quand = new Date().toISOString();
+      if (x) Object.assign(x, { statut:"devis_accepte", devis_accepte_le:quand });
+      demo.save(s); return { ok:true, quand };
+    }
+    const { data, error } = await sb.rpc("accepter_devis", {
+      p_demande:id, p_signataire:p.nom, p_qualite:p.qualite || null, p_signature:p.signature,
+      p_demarrage_anticipe:!!p.anticipe, p_texte:p.texte
+    });
+    return error ? { ok:false, error:error.message } : { ok:true, quand:data };
   },
   async listDocs(){
     if (!sb) return [];
@@ -534,7 +539,7 @@ function ecranAccueil(){
       <p style="opacity:.9;font-size:.92rem;margin-bottom:16px">${esc(nomPrestation(aValider))}${montantDevis(aValider) ? " · " + esc(montantDevis(aValider)) : ""}. Valable 30 jours, sans engagement.</p>
       <div class="acts">
         ${aValider.devis_chemin ? `<button data-doc="${esc(aValider.devis_chemin)}">Lire le devis</button>` : ""}
-        <button data-accepter="${aValider.id}">Accepter</button>
+        <button data-go="#/signer/${aValider.id}">Signer le devis</button>
       </div>
     </section>`;
   } else {
@@ -577,6 +582,7 @@ function ligne(d, avecActions = false){
       <h3>${esc(nomPrestation(d))}</h3>
       <div class="meta">${dt ? esc(d.creneau || "horaire à confirmer") : "Date à convenir"}${montantDevis(d) ? " · " + esc(montantDevis(d)) : ""}</div>
       <div class="meta">${esc(d.adresse)}</div>
+      ${d.devis_accepte_le && ["devis_accepte","planifiee","terminee"].includes(d.statut) ? `<div class="meta">Devis accepté le ${esc(new Date(d.devis_accepte_le).toLocaleDateString("fr-FR"))}</div>` : ""}
       ${tagStatut(d.statut)}
       ${avecActions ? actionsDemande(d) : ""}
     </div>
@@ -587,7 +593,7 @@ function actionsDemande(d){
   const a = [];
   if (d.statut === "devis_envoye"){
     if (d.devis_chemin) a.push(`<button class="btn ghost slim" data-doc="${esc(d.devis_chemin)}">Lire le devis</button>`);
-    a.push(`<button class="btn slim" data-accepter="${d.id}">Accepter le devis</button>`);
+    a.push(`<button class="btn slim" data-go="#/signer/${d.id}">Signer le devis</button>`);
   }
   if (["planifiee","devis_accepte"].includes(d.statut)){
     a.push(`<button class="btn ghost slim" data-report="${d.id}">Reporter</button>`);
@@ -700,6 +706,94 @@ function ecranSuivi(){
     ${liensLegaux()}`;
 }
 
+/* ---- Signature du devis ---- */
+const numeroDevis = d => (d.devis_chemin || "").split("/").pop().replace(/\.pdf$/i, "") || "—";
+const texteAccord = d => `J'ai lu le devis n° ${numeroDevis(d)} et les conditions générales de vente, et je l'accepte : bon pour accord.`;
+const TEXTE_ANTICIPE = "Je demande que la prestation puisse commencer avant la fin du délai de rétractation. Si je me rétracte ensuite, je paierai les prestations déjà effectuées ; une prestation entièrement réalisée avant la fin du délai ne pourra plus faire l'objet d'une rétractation.";
+const sig = { points:0 };
+
+function ecranSignature(id){
+  if (!state.user) return besoinConnexion("Connectez-vous pour signer votre devis.");
+  const d = state.demandes.find(x => x.id === id);
+  const retour = `<button class="backlink" data-go="#/suivi">← Mes demandes</button>`;
+  if (!d || d.statut !== "devis_envoye")
+    return `${retour}<div class="card"><p class="muted" style="margin:0">Ce devis n'est plus en attente de signature.</p></div>`;
+  const pro = d.details?.client === "Professionnel";
+  const debut = d.date
+    ? new Date(d.date + "T00:00:00").toLocaleDateString("fr-FR", { day:"numeric", month:"long", year:"numeric" }) + (d.creneau ? " · " + d.creneau : "")
+    : "à convenir ensemble";
+  return `${retour}
+    <h1 style="margin:0 0 6px">Signer le devis</h1>
+    <p class="muted small">Votre signature électronique a la même valeur qu'une signature sur papier.</p>
+    <div class="recap">
+      <div><span>Devis</span><span>n° ${esc(numeroDevis(d))}</span></div>
+      <div><span>Prestation</span><span>${esc(nomPrestation(d))}</span></div>
+      ${montantDevis(d) ? `<div><span>Montant</span><span>${esc(montantDevis(d))}</span></div>` : ""}
+      <div><span>Début</span><span>${esc(debut)}</span></div>
+    </div>
+    ${d.devis_chemin ? `<button class="btn ghost" data-doc="${esc(d.devis_chemin)}" style="margin-bottom:20px">Lire le devis complet (PDF)</button>` : ""}
+    <div class="field"><label for="s-nom">Nom et prénom du signataire <span class="req">*</span></label>
+      <input id="s-nom" autocomplete="name" value="${esc(d.nom || "")}"></div>
+    ${pro ? `<div class="field"><label for="s-qualite">Société et fonction</label>
+      <input id="s-qualite" placeholder="Par exemple : Boutique Lumière, gérante" value="${esc(d.details?.societe ? d.details.societe + ", " : "")}"></div>` : ""}
+    <div class="field">
+      <div class="lab">Votre signature <span class="req">*</span></div>
+      <canvas id="sig-pad" class="sig-pad" aria-label="Zone de signature : signez avec le doigt ou la souris"></canvas>
+      <div class="sig-bas"><span class="muted small">Signez dans le cadre, avec le doigt ou la souris.</span><button type="button" class="linkbtn" data-sig-effacer>Effacer</button></div>
+    </div>
+    <label class="check"><input type="checkbox" id="s-accord"><span>J'ai lu le devis n° ${esc(numeroDevis(d))} et les <a href="${CONFIG.cgv}" target="_blank" rel="noopener">conditions générales de vente</a>, et je l'accepte : <b>bon pour accord</b>.</span></label>
+    ${pro ? "" : `<div class="avis">Vous disposez de 14 jours après votre signature pour vous rétracter, sans avoir à vous justifier (<a href="${CONFIG.cgv}#devis" target="_blank" rel="noopener">article 3 des CGV</a>).</div>
+    <label class="check"><input type="checkbox" id="s-anticipe"><span>${TEXTE_ANTICIPE} <span class="muted">(facultatif)</span></span></label>`}
+    <button class="btn" data-signer="${d.id}" disabled>Signer et accepter le devis</button>
+    <p class="muted small center" style="margin-top:12px">Nous enregistrons la date, l'heure, votre adresse e-mail, votre adresse IP et l'empreinte du devis comme preuve de votre accord. Un exemplaire signé vous est ensuite envoyé et rangé dans « Mon compte ».</p>
+    ${liensLegaux()}`;
+}
+
+/* Zone de signature : trait au doigt, au stylet ou à la souris. */
+function initSignature(){
+  const c = $("#sig-pad");
+  sig.points = 0;
+  if (!c) return;
+  const ratio = Math.max(window.devicePixelRatio || 1, 1);
+  c.width = c.clientWidth * ratio; c.height = c.clientHeight * ratio;
+  const ctx = c.getContext("2d");
+  ctx.scale(ratio, ratio);
+  ctx.lineWidth = 2.4; ctx.lineCap = "round"; ctx.lineJoin = "round";
+  ctx.strokeStyle = ctx.fillStyle = "#10242C";
+  let precedent = null;
+  const pos = e => { const r = c.getBoundingClientRect(); return { x:e.clientX - r.left, y:e.clientY - r.top }; };
+  c.addEventListener("pointerdown", e => {
+    e.preventDefault(); c.setPointerCapture(e.pointerId);
+    precedent = pos(e);
+    ctx.beginPath(); ctx.arc(precedent.x, precedent.y, 1.2, 0, Math.PI * 2); ctx.fill();
+    sig.points++;
+  });
+  c.addEventListener("pointermove", e => {
+    if (!precedent) return;
+    e.preventDefault();
+    const p = pos(e);
+    ctx.beginPath(); ctx.moveTo(precedent.x, precedent.y); ctx.lineTo(p.x, p.y); ctx.stroke();
+    precedent = p; sig.points++;
+  });
+  const fin = () => { if (precedent){ precedent = null; majSigner(); } };
+  ["pointerup","pointercancel"].forEach(ev => c.addEventListener(ev, fin));
+  majSigner();
+}
+
+function majSigner(){
+  const b = $("[data-signer]");
+  if (b) b.disabled = !(($("#s-nom")?.value.trim().length || 0) >= 2 && $("#s-accord")?.checked && sig.points >= 12);
+}
+
+/* Image PNG de 600 px de large : assez nette pour le PDF, assez légère pour la base. */
+function exportSignature(){
+  const c = $("#sig-pad");
+  const o = document.createElement("canvas");
+  o.width = 600; o.height = Math.round(600 * c.height / c.width);
+  o.getContext("2d").drawImage(c, 0, 0, o.width, o.height);
+  return o.toDataURL("image/png");
+}
+
 /* ---- Compte ---- */
 function ecranCompte(){
   if (!state.user) return besoinConnexion("Recevez un lien de connexion par e-mail, sans mot de passe à retenir.");
@@ -753,13 +847,15 @@ const ROUTES = { "/accueil":ecranAccueil, "/demande":ecranDemande, "/suivi":ecra
 
 async function render(){
   const route = location.hash.replace("#", "") || "/accueil";
+  const aSigner = route.startsWith("/signer/") ? route.slice(8) : null;
   if (route === "/compte" && state.user && sb) state.docs = await store.listDocs();
-  view.innerHTML = (ROUTES[route] || ecranAccueil)();
+  view.innerHTML = aSigner ? ecranSignature(aSigner) : (ROUTES[route] || ecranAccueil)();
   document.querySelectorAll(".tabbar a").forEach(a => {
-    if (a.getAttribute("href") === "#" + route) a.setAttribute("aria-current", "page");
+    if (a.getAttribute("href") === "#" + (aSigner ? "/suivi" : route)) a.setAttribute("aria-current", "page");
     else a.removeAttribute("aria-current");
   });
   window.scrollTo(0, 0);
+  if (aSigner) initSignature();
 }
 addEventListener("hashchange", render);
 
@@ -767,7 +863,7 @@ addEventListener("hashchange", render);
    6. INTERACTIONS
    ===================================================================== */
 document.addEventListener("click", async e => {
-  const t = e.target.closest("[data-svc],[data-creneau],[data-next],[data-back],[data-go],[data-appel],[data-login],[data-logout],[data-report],[data-annuler],[data-accepter],[data-doc],[data-q],[data-client]");
+  const t = e.target.closest("[data-svc],[data-creneau],[data-next],[data-back],[data-go],[data-appel],[data-login],[data-logout],[data-report],[data-annuler],[data-signer],[data-sig-effacer],[data-doc],[data-q],[data-client]");
   if (!t) return;
   const b = state.b;
 
@@ -847,12 +943,31 @@ document.addEventListener("click", async e => {
   }
   if (t.hasAttribute("data-logout")){ await store.signOut(); await refresh(); return render(); }
 
-  if (t.dataset.accepter){
-    const d = state.demandes.find(x => x.id === t.dataset.accepter);
-    if (!confirm(`En acceptant, vous validez le devis par écrit au sens de nos CGV${d && montantDevis(d) ? ` (${montantDevis(d)})` : ""}. Confirmer ?`)) return;
-    const r = await store.action("accepter_devis", d.id, { statut:"devis_accepte", devis_accepte_le:new Date().toISOString() });
-    if (!r.ok) return toast("Acceptation impossible : " + r.error);
-    await refresh(); toast("Devis accepté. Nous planifions l'intervention."); return render();
+  if (t.hasAttribute("data-sig-effacer")){
+    const c = $("#sig-pad");
+    c.getContext("2d").clearRect(0, 0, c.width, c.height);
+    sig.points = 0;
+    return majSigner();
+  }
+  if (t.dataset.signer){
+    const d = state.demandes.find(x => x.id === t.dataset.signer);
+    if (!d) return;
+    const pro = d.details?.client === "Professionnel";
+    const anticipe = !pro && !!$("#s-anticipe")?.checked;
+    const nom = $("#s-nom").value.trim();
+    const qualite = ($("#s-qualite")?.value || "").trim().replace(/,\s*$/, "");
+    // Le texte exact de ce que le client a accepté est conservé avec sa signature.
+    const texte = [texteAccord(d),
+      pro ? "" : "Information reçue : délai de rétractation de 14 jours à compter de la signature (article 3 des CGV).",
+      anticipe ? TEXTE_ANTICIPE : ""].filter(Boolean).join("\n");
+    t.disabled = true; t.textContent = "Signature en cours…";
+    const r = await store.signer(d.id, { nom, qualite, signature:exportSignature(), anticipe, texte });
+    if (!r.ok){ t.disabled = false; t.textContent = "Signer et accepter le devis"; return toast("Signature impossible : " + r.error); }
+    alerterAcceptation(d, nom, qualite, r.quand, pro, anticipe);
+    await refresh();
+    toast("Devis signé. Merci, nous planifions l'intervention.");
+    location.hash = "/suivi";
+    return;
   }
 
   if (t.dataset.report){
@@ -892,6 +1007,7 @@ document.addEventListener("input", e => {
 });
 
 function majContinuer(){ const n = $("[data-next]"); if (n) n.disabled = !valide(); }
+["input","change"].forEach(ev => document.addEventListener(ev, e => { if (/^s-/.test(e.target.id || "")) majSigner(); }));
 
 function accuserReception(d){
   if (!window.emailjs || !CONFIG.emailjs.accuse) return;
@@ -920,6 +1036,24 @@ function notifierEntreprise(d){
   window.emailjs.send(CONFIG.emailjs.service, CONFIG.emailjs.template, {
     from_name:d.nom, from_prenom:"", from_email:d.email, from_tel:d.telephone,
     // Les « • » et « ▸ » gardent le message lisible si le modèle EmailJS ignore les retours à la ligne.
+    message:lignes.join("\n")
+  }, CONFIG.emailjs.publicKey).catch(err => console.error("Alerte e-mail :", err));
+}
+
+/* Alerte à l'entreprise dès qu'un client signe son devis. */
+function alerterAcceptation(d, nom, qualite, quand, pro, anticipe){
+  if (!window.emailjs) return;
+  const le = new Date(quand || Date.now()).toLocaleString("fr-FR", { dateStyle:"long", timeStyle:"short" });
+  const lignes = [
+    "DEVIS ACCEPTÉ ET SIGNÉ EN LIGNE",
+    `• Devis : n° ${numeroDevis(d)}${montantDevis(d) ? " · " + montantDevis(d) : ""}`,
+    `• Prestation : ${nomPrestation(d)}`,
+    `• Signé par : ${nom}${qualite ? " (" + qualite + ")" : ""}, le ${le}`,
+    pro ? "" : `• Démarrage avant la fin du délai de rétractation : ${anticipe ? "demandé" : "non demandé, intervention après 14 jours"}`,
+    `▸ À planifier : ${CONFIG.backOffice}`
+  ].filter(Boolean);
+  window.emailjs.send(CONFIG.emailjs.service, CONFIG.emailjs.template, {
+    from_name:nom, from_prenom:"", from_email:state.user?.email || "", from_tel:"",
     message:lignes.join("\n")
   }, CONFIG.emailjs.publicKey).catch(err => console.error("Alerte e-mail :", err));
 }
